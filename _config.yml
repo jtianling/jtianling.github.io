@@ -1,0 +1,10 @@
+name: Aigars Dzerviniks
+markdown: redcarpet
+pygments: true
+permalink: /:title
+url: http://dzerviniks.com
+description: Dzīve. Tehnoloģijas. Izklaide.
+author: Aigars Dzerviniks
+
+redcarpet:
+  extensions: [strikethrough, tables]

@@ -1,0 +1,19 @@
+---
+layout: default
+title: Archive
+---
+
+<section class="posts archive">
+  <article>
+    <header class="center">
+      <h2>{{ page.title }}</h2>
+    </header>
+
+    <ul class="center">
+    {% for post in site.posts %}
+      <li><time>{{ post.date | date_to_long_string }}</time><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+    </ul>
+
+  </article>
+</section>

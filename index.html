@@ -1,0 +1,17 @@
+---
+layout: default
+---
+
+<section class="posts">
+{% for post in site.posts limit: 10 %}
+  <article>
+    <header class="center">
+      <time>{{ post.date | date_to_long_string }}</time>
+      {% if post.type == "post" %}
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+      {% endif %}
+    </header>
+    {{ post.content }}
+  </article>
+{% endfor %}
+</section>
