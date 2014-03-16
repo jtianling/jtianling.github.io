@@ -1,0 +1,308 @@
+/**
+ * General styles
+ */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;
+  color: #3A4145;
+  font-weight: 400;
+  line-height: 1.6;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+@media screen and (max-width: 656px) {
+  body {
+    font-size: 1rem;
+  }
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol, dl,
+hr,
+blockquote,
+.fluid-width-video-wrapper {
+  margin-bottom: 30px;
+}
+
+@media screen and (max-width: 656px) {
+  h1, h2, h3, h4, h5, h6, p, ul, ol, dl,
+  hr,
+  blockquote,
+  .fluid-width-video-wrapper {
+    margin-bottom: 20px;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 { font-weight: normal; }
+
+a { color: steelblue; }
+a:hover { text-decoration: none; }
+
+img {
+  max-width: 100%;
+  height: auto;
+  border: none;
+  outline: none;
+}
+
+hr {
+  border: 0;
+  height: 25px;
+  background: url(/public/images/eagle.png) center center no-repeat;
+}
+
+blockquote {
+  font-size: 1.4rem;
+  font-style: italic;
+
+  border-left: 5px solid #ccc;
+}
+
+@media screen and (max-width: 656px) {
+  blockquote {
+    font-size: 1.2rem;
+  }
+}
+
+.container { max-width: 900px; }
+
+.center { text-align: center; }
+
+.right {
+  float: right;
+  margin: 0 0 10px 10px;
+}
+
+.left {
+  float: left;
+  margin: 0 10px 10px 0;
+}
+
+@media screen and (max-width: 564px) {
+  .right,
+  .left {
+    float: none;
+    margin: 0;
+  }
+}
+
+/**
+ * Header
+ */
+#main {
+  margin: 30px 0;
+
+  border-bottom: 1px solid #ccc;
+}
+
+@media screen and (max-width: 900px) {
+  #main { margin: 30px 50px; }
+}
+
+@media screen and (max-width: 488px) {
+  #main { margin: 30px 20px; }
+}
+
+#logo {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+
+  background-image: url(/public/images/logo.png);
+  background-size: 100px 100px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.tagline {
+  font-family: 'Istok Web', sans-serif;
+  text-transform: uppercase;
+}
+
+#main h1 {
+  font-weight: normal;
+  font-size: .8rem;
+}
+
+#main nav {
+  position: relative;
+
+  text-align: left;
+}
+
+#social {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  text-align: right;
+}
+
+@media screen and (max-width: 488px) {
+  #social {
+    position: relative;
+    margin-left: 5px;
+
+    text-align: left;
+  }
+}
+
+#main #social a {
+  padding: 0 5px;
+
+  font-size: 1.2rem;
+  color: #3A4145;
+}
+
+#main #social a:hover { color: lightcoral; }
+
+#main nav a {
+  display: inline-block;
+  padding: 5px 10px;
+
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: .9rem;
+}
+
+#main nav a:hover { text-decoration: underline; }
+
+/**
+ * Index page
+ */
+article { margin-bottom: 150px; }
+
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6 {
+  text-align: center;
+}
+
+article header a {
+  text-decoration: none;
+  color: #3A4145;
+}
+
+article header a:hover { text-decoration: underline; }
+
+article header time,
+.archive li time {
+  font-family: 'Istok Web', sans-serif;
+  text-transform: uppercase;
+  font-size: .8rem;
+}
+
+article p { padding: 0 100px; }
+article blockquote p { padding: 0 50px; }
+
+article img:not(.position) {
+  margin-left: -100px;
+  max-width: 900px;
+}
+
+@media screen and (max-width: 900px) {
+  article h1,
+  article h2,
+  article h3,
+  article h4,
+  article h5,
+  article h6 {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  article p { padding: 0 50px; }
+  article blockquote {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+
+  article img:not(.position) {
+    margin-left: 0;
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 564px) {
+  article blockquote p { padding: 0 20px  }
+}
+
+@media screen and (max-width: 488px) {
+  article h1,
+  article h2,
+  article h3,
+  article h4,
+  article h5,
+  article h6 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  article p { padding: 0 20px; }
+
+  article blockquote {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+/**
+ * Single post.
+ */
+@media screen and (max-width: 900px) {
+  #disqus_thread {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+}
+
+@media screen and (max-width: 488px) {
+  #disqus_thread {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+/**
+ * Archive page.
+ *
+ * This is supposed to display a list of all posts (title and date).
+ */
+.archive ul { list-style: none; }
+.archive li { margin-bottom: 20px; }
+.archive li time { display: block; }
+
+@media screen and (max-width: 900px) {
+  .archive ul { padding: 0 50px; }
+}
+
+@media screen and (max-width: 488px) {
+  .archive ul { padding: 0 20px; }
+}
+
+/**
+ * Footer
+ */
+footer {
+  padding-top: 30px;
+
+  font-size: 1rem;
+
+  border-top: 1px solid #ccc;
+}
+
+@media screen and (max-width: 900px) {
+  footer { margin: 0 50px; }
+}
+
+@media screen and (max-width: 488px) {
+  footer { margin: 0 20px; }
+}
