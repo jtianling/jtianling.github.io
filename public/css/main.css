@@ -97,7 +97,7 @@ blockquote {
 #main {
   margin: 30px 0;
 
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px dotted #3A4145;
 }
 
 @media screen and (max-width: 900px) {
@@ -296,7 +296,7 @@ footer {
 
   font-size: 1rem;
 
-  border-top: 1px solid #ccc;
+  border-top: 1px dotted #3A4145;
 }
 
 @media screen and (max-width: 900px) {
