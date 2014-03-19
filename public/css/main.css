@@ -91,6 +91,14 @@ blockquote {
   }
 }
 
+::selection {
+  background: lightcoral;
+}
+
+::-moz-selection {
+  background: lightcoral;
+}
+
 /**
  * Header
  */
