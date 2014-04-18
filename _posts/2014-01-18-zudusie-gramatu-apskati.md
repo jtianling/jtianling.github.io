@@ -25,7 +25,7 @@ Ir vērts pieminēt, ka pēc tās ir veidota arī 2010. gada filma "Twelve". Dau
 
 ### Džeimss Tvinings "Melnā saule" (James Twining "The Black Sun")
 
-<img src="/public/images/posts/black-sun.jpg" alt="The Black Sun" style="max-width: 267px;" class="position right">
+<img src="/public/images/posts/black-sun.jpg" alt="The Black Sun" style="max-width: 267px;" class="position right responsive">
 
 Vispār jau laikam ir dīvaini izdalīt vienu grāmatu no veselas sērijas, bet šoreiz es to atļaušos, jo šī, manuprāt ir vislabākā daļa.
 
@@ -37,7 +37,7 @@ Džeimss Tvinings vispār ir mans iecienītākais autors. Viņa stāstus var sal
 
 ### Duglass Prestons un Linkolns Čailds "Lamatas" (Douglas Preston and Lincoln Child "Riptide")
 
-<img src="/public/images/posts/riptide.jpg" alt="Riptide" style="max-width: 267px;" class="position right">
+<img src="/public/images/posts/riptide.jpg" alt="Riptide" style="max-width: 267px;" class="position right responsive">
 
 Vēl viens drūms stāsts manā kolekcijā. Ko nu padarīsi, ja tie ir paši labākie?
 
