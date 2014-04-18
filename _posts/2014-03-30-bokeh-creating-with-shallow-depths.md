@@ -9,9 +9,9 @@ Lai arī nekad neesmu ieguldījis laiku, lai apgūtu šo nodarbi profesionālā 
 
 Jāatzīst, ka lielu lomu manā absolūta amatiera interesē par fotogrāfiju ir spēlējis Instagram. Reģistrējos Instagram salīdzinoši nesen (līdz ar tā pieejamību uz Windows Phone), bet nu tas ir kļuvis par manu otro iecienītāko sociālo tīklu, un tā dēļ aizvien biežāk attopos ar kameru rokā, lai arī tikai 1 no 100 uzņēmumiem galu galā nokļūst manā profilā, un jā - 90% bilžu veidoju ar atsevišķu fotokameru un telefonu izmantoju ikdienišķāku fotouzņēmumu veikšanai, jo tajā esošā kamera nav nekas dižs un bieži vien nespēj uzņemt attēlu, kādu es vēlos, turklāt, lai arī Instagram ir uz mobilajām ierīcēm orientēts sociālais tikls, tas primāri ir paredzēts, lai dalītos ar fotogrāfijā notvertiem mirkļiem neatkarīgi no avota.
 
-Intereses par šo jomu vadīts, šad tad mēdzu arī palasīt kādu īsāku vai garāku tekstu vai pat grāmatu par fotogrāfiju vai noskatīties kādu video apmācību, un pirms pāris dienām internetā atradu norādi uz [50% atlaidi Christopher O'Donnel grāmatai "Bokeh: Creating with Shallow Depths"](http://christopherodonnellphotography.com/art-of-bokeh-guide-shallow-depths-landscape-photography/ "Bokeh: Creating with Shallow Depths eBook » Christopher O'Donnell"). 
+Intereses par šo jomu vadīts, šad tad mēdzu arī palasīt kādu īsāku vai garāku tekstu vai pat grāmatu par fotogrāfiju vai noskatīties kādu video apmācību, un pirms pāris dienām internetā atradu norādi uz [50% atlaidi Christopher O'Donnel grāmatai "Bokeh: Creating with Shallow Depths"](http://christopherodonnellphotography.com/art-of-bokeh-guide-shallow-depths-landscape-photography/ "Bokeh: Creating with Shallow Depths eBook » Christopher O'Donnell").
 
-<img class="position right responsive" src="/public/images/posts/bokeh-ebook.jpg" alt="Bokeh ebook" style="max-width: 360px;">
+<img class="position right" src="/public/images/posts/bokeh-ebook.jpg" alt="Bokeh ebook" style="max-width: 360px;">
 
 Grāmata ir salīdzinoši plāna - tikai 121 lpp - un lielu daļu satura veido attēli, tāpēc tā lasās ļoti ātri. Kā jau var secināt pēc nosaukuma, grāmatā ir aprakstīta autora tehnika bokeh efekta iegūšanai. Atzīšos - man šī bija pirmā dzirdēšana par tādu lietu, un sākumā šķita, ka tas ir vien uzpūstāks nosaukums izplūdušam fonam, bet, izlasot grāmatu, kļūst skaidrs, ka tas ir nedaudz sarežģītāks koncepts.
 
