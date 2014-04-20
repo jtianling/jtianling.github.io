@@ -1,7 +1,6 @@
 ---
 layout: post
-collection: articles
-type: post
+category: post
 title: Kādēļ atteikties no 3 miljardiem dolāru?
 ---
 

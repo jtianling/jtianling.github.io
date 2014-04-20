@@ -1,7 +1,6 @@
 ---
 layout: post
-collection: articles
-type: post
+category: post
 title: "Stāsts par 2 makiem, jeb pacietība ir nenovērtējama"
 ---
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-type: post
+category: post
 title: "Microsoft iekārdināja, bet es gribu vairāk"
 ---
 
