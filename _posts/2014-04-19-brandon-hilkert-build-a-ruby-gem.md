@@ -1,5 +1,6 @@
 ---
 layout: post
+type: post
 title: Brandon Hilkert "Build a Ruby Gem"
 ---
 
