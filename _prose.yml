@@ -3,10 +3,14 @@ prose:
   siteurl: 'http://dzerviniks.com'
   media: 'public/images/posts'
   ignore:
-    - index.md
     - _config.yml
     - /_layouts
     - /_includes
+    - /_site
+    - /public
+    - browserconfig.xml
+    - CNAME
+    - feed.xml
   metadata:
     _posts:
       - name: "layout"
@@ -17,4 +21,19 @@ prose:
         field:
           element: "text"
           label: "Title"
+          value: ""
+    pages:
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "page"
+      - name: "title"
+        field:
+          element: "text"
+          label: "Title"
+          value: ""
+      - name: "permalink"
+        field:
+          element: "text"
+          label: "Permalink"
           value: ""
