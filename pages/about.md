@@ -1,6 +1,7 @@
 ---
 layout: page
 title: About
+permalink: /about/index.html
 ---
 
 Aigars Dzerviniks ir aplikāciju izstrādātājs, kurš galvenokārt darbojas ar web tehnoloģijām uzņēmumā [Novo IT](http://novoit.eu "Novo IT - PHP developers from Latvia"). Papildus tam viņš iegulda laiku arī dažādos atvērtā koda projektos, kurus var atrast viņa [GitHub profilā](http://github.com/aigarsdz "aigarsdz (Aigars Dzerviniks)").

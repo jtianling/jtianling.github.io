@@ -2,6 +2,7 @@ name: Aigars Dzerviniks
 markdown: redcarpet
 pygments: true
 permalink: /:title
+relative_permalinks: false
 url: http://dzerviniks.com
 description: Dzīve. Tehnoloģijas. Izklaide.
 author: Aigars Dzerviniks
