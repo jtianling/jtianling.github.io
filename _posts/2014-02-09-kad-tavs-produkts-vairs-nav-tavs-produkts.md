@@ -1,6 +1,5 @@
 ---
 layout: post
-category: post
 title: "Kad tavs produkts vairs nav tavs produkts"
 ---
 

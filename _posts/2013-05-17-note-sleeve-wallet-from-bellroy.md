@@ -1,6 +1,5 @@
 ---
 layout: post
-category: post
 title: Note Sleeve Wallet from Bellroy
 ---
 

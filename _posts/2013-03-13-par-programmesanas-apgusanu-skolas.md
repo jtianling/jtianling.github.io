@@ -1,6 +1,5 @@
 ---
 layout: post
-category: post
 title: Par programmēšanas apgūšanu skolās
 ---
 

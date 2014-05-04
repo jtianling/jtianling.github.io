@@ -1,6 +1,5 @@
 ---
 layout: post
-category: post
 title: Es ticu, ka spēju lidot
 ---
 

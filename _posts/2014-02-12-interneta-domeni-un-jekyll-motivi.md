@@ -1,6 +1,5 @@
 ---
 layout: post
-category: post
 title: "Interneta domēni un Jekyll motīvi"
 ---
 

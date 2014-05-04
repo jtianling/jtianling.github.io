@@ -7,9 +7,9 @@ layout: default
   <article>
     <header class="center">
       <time>{{ post.date | date_to_long_string }}</time>
-      {% if post.categories contains "post" %}
+      {% unless post.categories contains "photo" %}
       <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-      {% endif %}
+      {% endunless %}
     </header>
     {{ post.content }}
   </article>

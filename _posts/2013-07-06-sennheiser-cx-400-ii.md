@@ -1,6 +1,5 @@
 ---
 layout: post
-category: post
 title: Sennheiser CX 400 II
 ---
 

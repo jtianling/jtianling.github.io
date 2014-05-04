@@ -1,6 +1,5 @@
 ---
 layout: post
-category: post
 title: "Bokeh: Creating with Shallow Depths"
 ---
 

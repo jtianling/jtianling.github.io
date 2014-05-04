@@ -1,6 +1,5 @@
 ---
 layout: post
-category: post
 title: "Budžeta plānošanas aplikācija"
 ---
 

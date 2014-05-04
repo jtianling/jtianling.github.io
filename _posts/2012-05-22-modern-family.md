@@ -1,8 +1,6 @@
 ---
 layout: post
-category: post
 title: Modern Family
-permalink: modern-family
 ---
 
 Vienu brīdi visa kinoindustrija kļuva apsēsta ar 3D. Tas dažus (mani) nereāli kaitināja un esmu priecīgs, ka 3D nekļuva par standartu. Tagad esmu pamanījis, ka ir sācies jauns bums - found footage. Labi, tas sākās jau pirms kāda laiciņa, bet aizvien vairāk un vairāk filmu tiek veidots tādā stilā. Atliek vien sagaidīt, kad kādam pacelsies roka uzfilmēt 3D found footage gabalu!
