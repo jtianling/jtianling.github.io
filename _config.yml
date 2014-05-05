@@ -1,11 +1,52 @@
-name: Aigars Dzerviniks
-markdown: redcarpet
+# ----------------------- #
+#      Main Configs       #
+# ----------------------- #
+url: http://jtianling.github.io
+title: 九天的Blog
+subtitle: 程序即人生
+author: 九天
+simple_search: https://www.google.com/search
+description: 九天的博客(原程序即人生), 主要是记录自己学习编程的过程, 不过各种爱好都可能会写一些, 比如玩过的游戏, 看过的电影, 读过的书, 走过的路.
+
+# RSS / Email (optional) subscription links (change if using something like Feedburner)
+subscribe_rss: /feed
+
+root: /
+date_format: "%Y-%m-%d %R"
+# github need
+safe: true
+lsi: false
+source: .
+destination: ./_site
+layouts:     ./_layouts
+include:     ['.htaccess']
+exclude:     ['Gemfile', 'Gemfile.lock', 'README.md']
+keep_files:  ['.git','.svn']
+gems:        []
+timezone:    Asia/Shanghai
+encoding:    utf-8
+
+future:      true
+show_drafts: nil
+limit_posts: 0
+highlighter: pygments
 pygments: true
-permalink: /:title
+
 relative_permalinks: false
-url: http://dzerviniks.com
-description: Dzīve. Tehnoloģijas. Izklaide.
-author: Aigars Dzerviniks
+
+permalink:     date
+paginate_path: 'page:num'
+paginate:      10
+
+markdown:      redcarpet
+markdown_ext:  md
+
+# excerpt_separator: "\n\n"
+
+host:        localhost
+port:        4000
+baseurl:     /
+url:         http://localhost:4000
 
 redcarpet:
-  extensions: [strikethrough, tables]
+  extensions: ["no_intra_emphasis", "tables", "fenced_code_blocks", "autolink",  "disable_indented_code_blocks", "strikethrough", "lax_spacing", "with_toc_data", "footnotes", "hard_wrap"]

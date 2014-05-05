@@ -1,1 +1,1 @@
-My personal blog at [dezrviniks.com](http://dzerviniks.com)
+My personal blog theme by[dezrviniks.com](http://dzerviniks.com)

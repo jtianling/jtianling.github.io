@@ -213,8 +213,14 @@ article header time,
 article p { padding: 0 100px; }
 article blockquote p { padding: 0 50px; }
 
+article ol { padding: 0 100px; }
+article ul { padding: 0 100px; }
+article .highlight {
+ padding: 0 100px;
+}
+
 article img:not(.position) {
-  margin-left: -100px;
+  margin-left: 0px;
   max-width: 900px;
 }
 
