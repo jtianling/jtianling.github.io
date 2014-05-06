@@ -51,4 +51,4 @@ baseurl:     /
 url:         http://localhost:4000
 
 redcarpet:
-  extensions: ["no_intra_emphasis", "tables", "fenced_code_blocks", "autolink",  "disable_indented_code_blocks", "strikethrough", "lax_spacing", "with_toc_data", "footnotes"]
+  extensions: ["no_intra_emphasis", "tables", "fenced_code_blocks", "autolink",  "disable_indented_code_blocks", "strikethrough", "lax_spacing", "with_toc_data", "footnotes", "hard_wrap"]
