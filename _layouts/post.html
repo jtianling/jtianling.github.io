@@ -5,8 +5,8 @@ layout: default
 <section class="posts">
   <article>
     <header class="center">
-      <time>{{ page.date | date_to_long_string }}</time>
-      <h2><a href="{{ page.url }}">{{ page.title }}</a></h2>
+			<time>{{ page.date | date: "%Y年%m月%d日" }}</time>
+      <h1><a href="{{ page.url }}">{{ page.title }}</a></h2>
     </header>
     {{ content }}
 

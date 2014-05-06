@@ -1,19 +1,14 @@
 ---
 layout: post
 title: "Spine的使用(With Cocos2d-x)"
-date: 2013-06-06 22:20:00 +0800
+date: 2013-06-06
 comments: true
-categories: 技术
+categories: 编程
 tags: Cocos2d-x, Spine
 ---
 
 Spine是一个2D的骨骼动画编辑器, 因为其良好的UI设计及完整的功能, 在kickstarter上发布以后立即收到追捧, 作为一个几乎只有游戏开发者才会使用的小众工具, 募集了远超目标5倍的资金, 共计6.7W多美元.  我在其项目发布后, 成为了Spine在kickstarter的早一批backer, 这是我在kickstarter上第一个, 也是目前唯一一个支持的项目. 随后, 通过不断收到的邮件见证了Spine逐步完善的过程, 直到其发出target完成的邮件.  又过了这么长时间了, 因为手头的项目一直不需要太复杂的2D骨骼动画, 拖着没有研究, 现在也是时候看看Spine了, 可惜的是, Spine的使用还有一系列的[视频教学](http://esotericsoftware.com/spine-videos/)可以参考, 而Spine的Runtime使用完全没有文档, 只有一两个简单的例子. Spine团队的主要精力目前还是放在一些新功能的开发和Runtime的继续支持上, 写文档还排在[Next up](https://trello.com/board/spine-runtimes/5131f92a7d6864661c002455)上.  
-
 <!--more-->
-
-* auto-gen TOC:
-{:toc}
-
 ## Runtime使用
 ### 简单的循环动画
 编辑上看视频教程吧, 只是打包文件需要使用[TexturePacker](http://www.codeandweb.com/texturepacker)的libgdx的Data Format来导出, 后缀改为atlas.  

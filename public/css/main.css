@@ -8,7 +8,7 @@
 
 body {
 	font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   color: #3A4145;
   font-weight: 400;
   line-height: 1.6;
@@ -22,11 +22,12 @@ body {
   }
 }
 
-h1, h2, h3, h4, h5, h6, p, ul, ol, dl,
-hr,
-blockquote,
-.fluid-width-video-wrapper {
-  margin-bottom: 30px;
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 10px;
+}
+
+p, ul, ol, dl, hr, .fluid-width-video-wrapper  {
+  margin-bottom: 20px;
 }
 
 @media screen and (max-width: 656px) {
@@ -41,7 +42,7 @@ blockquote,
 h1, h2, h3, h4, h5, h6 { font-weight: normal; }
 
 a { color: steelblue; }
-a:hover { text-decoration: none; }
+a:hover { text-decoration: blue; }
 
 img {
   max-width: 100%;
@@ -57,15 +58,15 @@ hr {
 }
 
 blockquote {
-  font-size: 1.4rem;
+  font-size: 1.0rem;
   font-style: italic;
-
+	margin: 0 100px 20px 120px;
   border-left: 5px solid #ccc;
 }
 
 @media screen and (max-width: 656px) {
   blockquote {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 }
 
@@ -93,20 +94,11 @@ blockquote {
   }
 }
 
-::selection {
-  background: lightcoral;
-}
-
-::-moz-selection {
-  background: lightcoral;
-}
-
 /**
  * Header
  */
 #main {
   margin: 30px 0;
-
   border-bottom: 1px dotted #3A4145;
 }
 
@@ -132,7 +124,7 @@ blockquote {
 .sitename {
 	font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
   text-transform: uppercase;
-	font-size: 1.2rem;
+	font-size: 1.6rem;
 }
 
 .tagline {
@@ -141,14 +133,8 @@ blockquote {
 	font-size: 0.9rem;
 }
 
-#main h1 {
-  font-weight: normal;
-  font-size: .8rem;
-}
-
 #main nav {
   position: relative;
-
   text-align: left;
 }
 
@@ -156,7 +142,6 @@ blockquote {
   position: absolute;
   top: 0;
   right: 0;
-
   text-align: right;
 }
 
@@ -164,7 +149,6 @@ blockquote {
   #social {
     position: relative;
     margin-left: 5px;
-
     text-align: left;
   }
 }
@@ -176,7 +160,7 @@ blockquote {
   color: #3A4145;
 }
 
-#main #social a:hover { color: lightcoral; }
+#main #social a:hover { color: steelblue; }
 
 #main nav a {
   display: inline-block;
@@ -187,20 +171,31 @@ blockquote {
   font-size: .9rem;
 }
 
-#main nav a:hover { text-decoration: underline; }
+#main nav a:hover { 
+	color: black; 
+}
+
+main #uyan_frame {
+	padding: 0 100px; 
+}
+
 
 /**
  * Index page
  */
-article { margin-bottom: 150px; }
+article { margin-bottom: 50px; }
 
-article h1,
-article h2,
-article h3,
-article h4,
-article h5,
-article h6 {
+article header time,
+.archive li time {
+	font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+  font-size: .8rem;
+}
+
+article header h1 {
+	margin-bottom: 30px;
+  font-weight: bold;
   text-align: center;
+	font-size: 1.4rem;
 }
 
 article header a {
@@ -208,32 +203,53 @@ article header a {
   color: #3A4145;
 }
 
-article header a:hover { text-decoration: underline; }
+article header a:hover {
+  color: steelblue;
+}
 
-article header time,
-.archive li time {
-	font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
-  text-transform: uppercase;
-  font-size: .8rem;
+article h1 {
+	font-size: 1.3rem;
+  text-align: left;
+	padding: 0 100px;
+}
+
+article h2,
+article h3,
+article h4,
+article h5,
+article h6 {
+	font-size: 1.2rem;
+  text-align: left;
+	padding: 0 100px;
 }
 
 article p { padding: 0 100px; }
-article blockquote p { padding: 0 50px; }
+article ol, article ul { padding: 0 100px 0 120px; }
+article blockquote p { 
+	padding: 0;
+	margin: 0 0 0 20px;
+}
 
-article ol { padding: 0 100px; }
-article ul { padding: 0 100px; }
+article blockquote ol,
+article blockquote ul { 
+	padding: 0 0 0 20px;
+	margin: 0 0 0 20px;
+}
+
 article .highlight {
+ margin-bottom: 20px;
  padding: 0 100px;
- font-family: Consolas, Monaco, Lucida Console, monospace;
+ font-family: Monaco, Consolas, Lucida Console, monospace;
 }
 
 article .jiathis_style {
 	padding: 0 100px;
 }
 
-article img:not(.position) {
-  margin-left: 0px;
-  max-width: 900px;
+article img {
+	display: inline-block;
+	background-position: center center;
+	background-repeat: no-repeat;
 }
 
 @media screen and (max-width: 900px) {

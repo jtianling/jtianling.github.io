@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 作者简介
+title: 关于作者
 permalink: /about/index.html
 ---
 

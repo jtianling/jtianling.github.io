@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "发布一个开源项目 -- cocoslicer(cocos2d/cocos2d-x 打包后的资源分割器)"
-date: 2013-05-21 00:00:00 +0800
+title: "cocoslicer(cocos2d/cocos2d-x 打包后的资源分割器)"
+date: 2013-05-21
 comments: true
-categories: my-projects
+categories: 我的项目
 tags: Cocos2d-x, TexturePacker
 ---
 
