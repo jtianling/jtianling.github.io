@@ -26,14 +26,16 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
 }
 
-p, ul, ol, dl, hr, .fluid-width-video-wrapper  {
+p, ul, ol, dl, hr, .sign, .fluid-width-video-wrapper  {
   margin-bottom: 20px;
+	font-weight: normal; 
 }
 
 @media screen and (max-width: 656px) {
   h1, h2, h3, h4, h5, h6, p, ul, ol, dl,
   hr,
   blockquote,
+	.sign,
   .fluid-width-video-wrapper {
     margin-bottom: 20px;
   }
@@ -176,7 +178,12 @@ blockquote {
 }
 
 main #uyan_frame {
-	padding: 0 100px; 
+	padding-left: 100px; 
+	padding-right: 100px; 
+}
+
+article .jiathis_style {
+	padding: 0 100px;
 }
 
 
@@ -224,7 +231,11 @@ article h6 {
 }
 
 article p { padding: 0 100px; }
-article ol, article ul { padding: 0 100px 0 120px; }
+article ol, article ul { 
+	padding-left: 120px; 
+	padding-right: 100px; 
+}
+
 article blockquote p { 
 	padding: 0;
 	margin: 0 0 0 20px;
@@ -237,19 +248,19 @@ article blockquote ul {
 }
 
 article .highlight {
- margin-bottom: 20px;
- padding: 0 100px;
+ padding-left: 100px;
+ padding-right: 100px;
  font-family: Monaco, Consolas, Lucida Console, monospace;
-}
-
-article .jiathis_style {
-	padding: 0 100px;
 }
 
 article img {
 	display: inline-block;
 	background-position: center center;
 	background-repeat: no-repeat;
+}
+
+article .sign {
+	text-align: right;
 }
 
 @media screen and (max-width: 900px) {
@@ -263,16 +274,34 @@ article img {
     padding-right: 50px;
   }
 
+	article ol, article ul {
+		padding-left: 70px; 
+		padding-right: 50px; 
+  }
   article p { padding: 0 50px; }
   article blockquote {
     margin-left: 50px;
     margin-right: 50px;
   }
 
+	article .highlight {
+		padding-left: 50px;
+		padding-right: 50px;
+	}
+
   article img:not(.position) {
     margin-left: 0;
     max-width: 100%;
   }
+
+	main #uyan_frame {
+		padding-left: 50px; 
+		padding-right: 50px; 
+	}
+
+	article .jiathis_style {
+		padding: 0 50px;
+	}
 }
 
 @media screen and (max-width: 564px) {
@@ -286,16 +315,35 @@ article img {
   article h4,
   article h5,
   article h6 {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  article p { padding: 0 20px; }
+	article ol, article ul {
+		padding-left: 30px; 
+		padding-right: 10px; 
+  }
+
+  article p { padding: 0 10px; }
 
   article blockquote {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
+
+	article .highlight {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	main #uyan_frame {
+		padding-left: 10px; 
+		padding-right: 10px; 
+	}
+
+	article .jiathis_style {
+		padding: 0 10px;
+	}
 }
 
 /**

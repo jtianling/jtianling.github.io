@@ -12,7 +12,9 @@ layout: default
       {% endunless %}
     </header>
     {{ post.content }}
+		<p class="sign"> Posted By {{ site.author }} on {{ post.date | date: "%Y年%m月%d日" }}</p>
   </article>
+	<hr>
 {% endfor %}
 </section>
 
