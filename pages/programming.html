@@ -1,0 +1,35 @@
+---
+layout: page
+title: 编程
+permalink: /programming/index.html
+description: "九天记录的跟编程相关的一切"
+---
+
+<section class="posts archive">
+	<article>
+		<ul class="center">
+		{% for category in site.categories %}
+			{% if category[0] == '编程' %}
+				{% assign pages_list = category[1] %}  
+
+				{% for post in pages_list %}
+					{% if post.title != null %}
+						{% if group == null or group == post.group %}
+							<li><time>{{ post.date | date: "%Y年%m月%d日" }}</time>
+							<a href="{{ post.url }}">{{ post.title }}</a></li>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+
+			{% assign pages_list = nil %}
+			{% assign group = nil %}
+		{% endfor %}
+		</ul>
+	</article>
+</section>
+
+
+
+
+

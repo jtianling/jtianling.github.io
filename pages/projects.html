@@ -1,0 +1,35 @@
+---
+layout: page
+title: 我的项目
+permalink: /projects/index.html
+description: "记录下我曾经参与过的项目, 开源的代码"
+---
+
+<section class="posts archive">
+	<article>
+		<ul class="center">
+		{% for category in site.categories %}
+			{% if category[0] == '我的项目' %}
+				{% assign pages_list = category[1] %}  
+
+				{% for post in pages_list %}
+					{% if post.title != null %}
+						{% if group == null or group == post.group %}
+							<li><time>{{ post.date | date: "%Y年%m月%d日" }}</time>
+							<a href="{{ post.url }}">{{ post.title }}</a></li>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+
+			{% assign pages_list = nil %}
+			{% assign group = nil %}
+		{% endfor %}
+		</ul>
+	</article>
+</section>
+
+
+
+
+

@@ -232,7 +232,7 @@ article h6 {
 
 article p { padding: 0 100px; }
 article ol, article ul { 
-	padding-left: 120px; 
+	padding-left: 130px; 
 	padding-right: 100px; 
 }
 
@@ -248,9 +248,19 @@ article blockquote ul {
 }
 
 article .highlight {
- padding-left: 100px;
- padding-right: 100px;
- font-family: Monaco, Consolas, Lucida Console, monospace;
+	padding-left: 100px;
+	padding-right: 100px;
+	margin-bottom: 20px;
+	word-wrap: break-word; 
+	word-break: break-all;
+	font-family: Monaco, Consolas, Lucida Console, monospace;
+}
+
+article .highlight pre {
+	padding-left: 5px;
+	padding-right: 5px;
+	display: block;
+	background-color: #f9f9f9;
 }
 
 article img {
@@ -275,7 +285,7 @@ article .sign {
   }
 
 	article ol, article ul {
-		padding-left: 70px; 
+		padding-left: 80px; 
 		padding-right: 50px; 
   }
   article p { padding: 0 50px; }
@@ -320,7 +330,7 @@ article .sign {
   }
 
 	article ol, article ul {
-		padding-left: 30px; 
+		padding-left: 40px; 
 		padding-right: 10px; 
   }
 

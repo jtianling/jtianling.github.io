@@ -1,0 +1,49 @@
+---
+layout: page
+title: Categories
+permalink: /categories/index.html
+description: "An archive of posts sorted by category."
+---
+
+{% for category in site.categories %}
+  <h2 id="{{ category[0] }}">{{ category[0] }}</h2>
+  {% assign pages_list = category[1] %}  
+  {% for post in pages_list %}
+    {% if post.title != null %}
+    {% if group == null or group == post.group %}
+
+<article>
+  <div>
+    <header>
+      <h1 class="entry-title">
+        <a href="{{ site.url }}{{ post.url }}">
+          {{ post.title }}
+        </a>
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-date">
+          {{ post.date | date: "%B %e, %Y" }}
+        </span>
+        {% if site.disqus_shortname and post.comments %}
+        |
+        <span class="comment-link">
+          <a href="#disqus_thread">Comment</a>
+        </span>
+        {% endif %}
+      </div>
+    </header>
+
+    <div class="entry-content clearfix">
+      {{ post.excerpt }}
+    </div>
+  </div>
+</article>
+<hr />
+
+    {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% assign pages_list = nil %}
+  {% assign group = nil %}
+{% endfor %}

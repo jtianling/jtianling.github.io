@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>{% if page.title %}{{ page.title }} &middot; {% endif %}{{ site.name }}</title>
+    <title>{% if page.title %}{{ page.title - site.name }} &middot; {% endif %}{{ site.name }}</title>
 
     <!-- Enable responsiveness on mobile devices-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -18,11 +18,18 @@
 
     <!-- Meta information -->
     <meta name="author" content="{{ site.author }}">
+		<meta http-equiv="refresh" content="80000">
 
     {% if page.title %}
     <meta name="description" content="{{ page.content | strip_html | strip_newlines | truncate: 120 }}">
     {% else %}
     <meta name="description" content="{{ site.description }}">
+    {% endif %}
+
+    {% if page.tags %}
+			<meta name="keywords" content="{{ page.tags | array_to_sentence_string }}">
+    {% else %}
+			<meta name="keywords" content="九天, 九天雁翎, jtianling, 程序即人生, 编程, 游戏, 电影, 音乐, 程序, 阅读, 安卓, iOS, iPhone, iPad, Android, App, C++, Ruby, Python, Java, 3D, OpenGL, Cocos2d-x, 算法, 搜索, 引擎">
     {% endif %}
 
     <!-- Schema.org meta tags for Google+ -->
@@ -52,7 +59,10 @@
 
         <nav>
           <a href="/" title="{{ site.name }}">首页</a>
+          <a href="/programming" title="编程">编程</a>
+          <a href="/essay" title="随笔">随笔</a>
           <a href="/archive" title="所有文章" >所有文章</a>
+          <a href="/projects" title="我的项目" >我的项目</a>
           <a href="/about" title="关于作者">关于作者</a>
 
           <div id="social">

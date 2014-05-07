@@ -9,7 +9,14 @@ layout: default
       <h1><a href="{{ page.url }}">{{ page.title }}</a></h2>
     </header>
     {{ content }}
-		<p class="sign"> Posted By {{ site.author }} on {{ page.date | date: "%Y年%m月%d日" }}</p>
+		<p> tags: 
+			{% for tag in page.tags %}
+			<a href="/tags/#{{ tag }}" class="tag">{{ tag }}&nbsp;</a>
+			{% endfor %}
+	  </p>
+		<div class="sign">
+			<p> Posted By {{ site.author }} on {{ page.date | date: "%Y年%m月%d日" }}</p>
+	  </div>
 
 		<!-- JiaThis Button BEGIN -->
 		<div class="jiathis_style">

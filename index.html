@@ -11,8 +11,8 @@ layout: default
       <h1><a href="{{ post.url }}">{{ post.title }}</a></h1>
       {% endunless %}
     </header>
-    {{ post.content }}
-		<p class="sign"> Posted By {{ site.author }} on {{ post.date | date: "%Y年%m月%d日" }}</p>
+    {{ post.excerpt }}
+		<p class="sign"><a href="{{ post.url}}"> 阅读全文....</a></p>
   </article>
 	<hr>
 {% endfor %}
