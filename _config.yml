@@ -1,7 +1,7 @@
 # ----------------------- #
 #      Main Configs       #
 # ----------------------- #
-url: http://blog.jtianling.com
+url: http://jtianling.com
 title: 九天雁翎的博客
 name: 九天雁翎的博客
 subtitle: 程序即人生
@@ -11,7 +11,7 @@ description: 九天雁翎的博客(原程序即人生), 主要是记录自己学
 tagline: 书写是为了纪念那些已逝去的时光
 
 # RSS / Email (optional) subscription links (change if using something like Feedburner)
-subscribe_rss: /feed
+subscribe_rss: /feed.xml
 
 root: /
 date_format: "%Y-%m-%d"
@@ -45,10 +45,9 @@ markdown_ext:  md
 
 excerpt_separator: "<!-- more -->"
 
-host:        192.168.0.100
+host:        127.0.0.1
 port:        8080
 baseurl:     /
-url:         http://192.168.0.107:8080
 
 redcarpet:
   extensions: ["no_intra_emphasis", "tables", "fenced_code_blocks", "autolink",  "disable_indented_code_blocks", "strikethrough", "lax_spacing", "with_toc_data", "footnotes", "hard_wrap"]

@@ -72,6 +72,17 @@ blockquote {
   }
 }
 
+.nav_previous {
+	float: left;
+	margin-left: 100px;
+}
+
+.nav_next {
+	float: right;
+	margin-right: 100px;
+}
+
+
 .container { max-width: 900px; }
 
 .responsive { width: 100%; }
@@ -299,6 +310,14 @@ article .sign {
 		padding-right: 50px;
 	}
 
+	.nav_previous {
+		margin-left: 50px;
+	}
+
+	.nav_next {
+		margin-right: 50px;
+	}
+
   article img:not(.position) {
     margin-left: 0;
     max-width: 100%;
@@ -344,6 +363,14 @@ article .sign {
 	article .highlight {
 		padding-left: 10px;
 		padding-right: 10px;
+	}
+
+	.nav_previous {
+		margin-left: 10px;
+	}
+
+	.nav_next {
+		margin-right: 10px;
 	}
 
 	main #uyan_frame {
