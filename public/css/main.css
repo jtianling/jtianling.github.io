@@ -258,7 +258,9 @@ article blockquote ul {
 	margin: 0 0 0 20px;
 }
 
-article .highlight {
+article .highlight,
+article .codehilite
+{
 	padding-left: 100px;
 	padding-right: 100px;
 	margin-bottom: 20px;
@@ -267,7 +269,9 @@ article .highlight {
 	font-family: Monaco, Consolas, Lucida Console, monospace;
 }
 
-article .highlight pre {
+article .highlight pre,
+article .codehilite pre
+{
 	padding-left: 5px;
 	padding-right: 5px;
 	display: block;
@@ -305,7 +309,9 @@ article .sign {
     margin-right: 50px;
   }
 
-	article .highlight {
+	article .highlight,
+	article .codehilite
+	{
 		padding-left: 50px;
 		padding-right: 50px;
 	}
@@ -360,7 +366,9 @@ article .sign {
     margin-right: 10px;
   }
 
-	article .highlight {
+	article .highlight,
+	article .codehilite
+	{
 		padding-left: 10px;
 		padding-right: 10px;
 	}
