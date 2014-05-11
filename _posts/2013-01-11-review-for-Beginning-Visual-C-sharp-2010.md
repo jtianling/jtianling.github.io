@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "入门有余, 经典不足 -- 小评《C#入门经典》"
-date: 2013-07-30
+date: 2013-01-11
 comments: true
 categories: 编程
 tags: C#, C#入门经典
