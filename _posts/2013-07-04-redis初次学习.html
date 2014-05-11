@@ -44,32 +44,13 @@ author:
   first_name: ''
   last_name: ''
 ---
-<div class="toc">
-<ul>
-<li><a href="#redis">Redis介绍</a></li>
-<li><a href="#_1">安装</a>
-<ul>
-<li><a href="#macos">MacOS</a></li>
-<li><a href="#ubuntu">Ubuntu</a></li>
-</ul>
-</li>
-<li><a href="#repl">REPL</a></li>
-<li><a href="#_2">数据类型</a></li>
-<li><a href="#_3">命令</a></li>
-<li><a href="#redis-with-nodejs">Redis With Nodejs</a>
-<ul>
-<li><a href="#_4">实际的例子</a></li>
-</ul>
-</li>
-<li><a href="#_5">小结</a></li>
-</ul>
-</div>
 <p>NoSQL热了很久了, 很惭愧直到今天我才初次学习NoSQL的东西.  从一开始做C++的后端用了MySQL和SQL Server后, 一直在做游戏客户端, 真是远离数据库相关的东西太久了, 有意思的是, 很久前, 对编程相关知识如饥似渴的时候, 工作中碰到任何相关的知识, 哪怕是一个新领域, 起码都要买一本大部头来学习的, 当时只有数据库是真的点到为止, 没有深入学习, 直到今天我也说不上具体为什么......</p>
 <h1 id="redis">Redis介绍</h1>
 <p>就不比较各个用NoSQL统称的大量非关系型数据库了, 相关的内容可以看看<a href="http://kkovacs.eu/cassandra-vs-mongodb-vs-couchdb-vs-redis"><em>Cassandra vs MongoDB vs CouchDB vs Redis vs Riak vs HBase vs Couchbase vs Neo4j vs Hypertable vs ElasticSearch vs Accumulo vs VoltDB vs Scalaris comparison</em></a>这篇文章, 看看标题有多长, 就知道如今NoSQL的阵营其实有多庞大了.<br />
 <a href="http://redis.io/">Redis</a>只是其中的一个我感觉最简单的.<br />
 就我的感觉, 用Redis的最大好处就是比SQL数据库要简单...... 也许还有类似处理超大规模数据的效率更高吧, 但是我目前还体会不到, 但是简单却是很重要, 很重要的, 起码你不用预先设计好一堆的表, 和处理好各个表之间的各种关系.<br />
 Redis简单来说是以key-value方式来存储数据的数据库, 类似一个大的hash表.  想想hash表有多么好用, 那么Redis就有多么好用.  </p>
+<!-- more -->
 <h1 id="_1">安装</h1>
 <h2 id="macos">MacOS</h2>
 <div class="codehilite">
