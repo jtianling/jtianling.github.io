@@ -1,0 +1,99 @@
+---
+layout: post
+title: "通过纯静态分析来还原算法，获取《加密与解密》第2章的TraceMe的注册机"
+categories:
+- "汇编和反汇编"
+tags:
+- "《加密与解密》"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '6'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<br />
+<h1>通过纯静态分析来还原算法，获取《加密与解密》第2章的TraceMe的注册机 <br />
+</h1>
+<p>
+ </p>
+<p style="text-align: right"><span style="color:#c0504d; text-decoration:underline"><strong>write by <span style="font-family:宋体">九天雁翎</span>(JTianLing) -- www.jtianling.com</strong></span></p>
+<p> <br />
+ </p>
+<p>其实原书有源代码，并且也介绍了一种通过内存断点来获取注册码的方法。但是这里我是为了检验今天看静态分析这一章的成果，纯粹靠IDA Pro静态分析不带调试信息Release版本，也不动态调试的方法来分析算法。并还原算法，写出注册机。这里并没有鼓励或提倡以此方式来分析程序的意思。呵呵，书中好像也鼓励大家试试写出一个注册机来，作为购买了正版书籍的读者，自然要响应作者号召了。</p>
+<p>另外，我虽然最近老是发一些奇怪的文章，但是我只是个C++程序员，是以开发游戏为生的，最近研究这些东西并不是准备将来以此牟利，仅仅是为了学习，最近的工作是反外挂，所以才学习这些东西。这方面我是纯粹的新手，发点文章属于记录学习过程和个人爱好，有不对或者稚嫩的地方请高手指教。</p>
+<p>这里仅仅只看我注释的片段，全部源代码即完整程序请去下载《加密与解密》（第3版）的配套光盘第2章部分，或者购买原书。</p>
+<p>关键函数如下：调用环境其实可知lpString1为用户输入的key,lpString2为用户输入的用户名，aiLen为长度</p>
+<p>.text:00401340     ; int __cdecl KeyGenAndCompare(LPCSTR lpString1, LPSTR lpString2, int aiLen)</p>
+<p>.text:00401340     KeyGenAndCompare proc near              ; CODE XREF: DialogFunc+115p</p>
+<p>.text:00401340</p>
+<p>.text:00401340     lpString1       = dword ptr  4</p>
+<p>.text:00401340     lpString2       = dword ptr  8</p>
+<p>.text:00401340     aiLen           = dword ptr  0Ch</p>
+<p>.text:00401340</p>
+<p>.text:00401340 000                 push    ebp</p>
+<p>.text:00401341 004                 mov     ebp, [esp+4+lpString2]</p>
+<p>.text:00401345 004                 push    esi</p>
+<p>.text:00401346 008                 push    edi</p>
+<p>.text:00401347 00C                 mov     edi, [esp+0Ch+aiLen] ; 总是通过esp来操作，有点混乱，其实就是将长度保存到edi</p>
+<p>.text:0040134B 00C                 mov     ecx, 3</p>
+<p>.text:00401350 00C                 xor     esi, esi        ; 清空esi</p>
+<p>.text:00401352 00C                 xor     eax, eax        ; 清空eax</p>
+<p>.text:00401354 00C                 cmp     edi, ecx        ; Compare Two Operands</p>
+<p>.text:00401356 00C                 jle     short loc_401379 ; 判断当长度小于等于3时，不进行计算了，因为肯定是错的</p>
+<p>.text:00401358 00C                 push    ebx</p>
+<p>.text:00401359</p>
+<p>.text:00401359     KeyGenLoop:                             ; CODE XREF: KeyGenAndCompare+36j</p>
+<p>.text:00401359 010                 cmp     eax, 7          ; three below: if ( eax &gt; 7 ) eax = 0;</p>
+<p>.text:0040135C 010                 jle     short loc_401360 ; Jump if Less or Equal (ZF=1 | SF!=OF)</p>
+<p>.text:0040135E 010                 xor     eax, eax        ; Logical Exclusive OR</p>
+<p>.text:00401360</p>
+<p>.text:00401360     loc_401360:                             ; CODE XREF: KeyGenAndCompare+1Cj</p>
+<p>.text:00401360 010                 xor     edx, edx        ; Logical Exclusive OR</p>
+<p>.text:00401362 010                 xor     ebx, ebx        ; Logical Exclusive OR</p>
+<p>.text:00401364 010                 mov     dl, [ecx+ebp]   ; 这里可以知道是从第3个元素才开始比较的</p>
+<p>.text:00401367 010                 mov     bl, gacCode[eax] ; 这里用eax从0增长，等于7时清零来循环遍历一个数组</p>
+<p>.text:0040136D 010                 imul    edx, ebx        ; Signed Multiply</p>
+<p>.text:00401370 010                 add     esi, edx        ; Add</p>
+<p>.text:00401372 010                 inc     ecx             ; Increment by 1</p>
+<p>.text:00401373 010                 inc     eax             ; Increment by 1</p>
+<p>.text:00401374 010                 cmp     ecx, edi        ; Compare Two Operands</p>
+<p>.text:00401376 010                 jl      short KeyGenLoop ; Jump if Less (SF!=OF)</p>
+<p>.text:00401378 010                 pop     ebx</p>
+<p>.text:00401379</p>
+<p>.text:00401379     loc_401379:                             ; CODE XREF: KeyGenAndCompare+16j</p>
+<p>.text:00401379 00C                 push    esi</p>
+<p>.text:0040137A 010                 push    offset aLd      ; "%ld"</p>
+<p>.text:0040137F 014                 push    ebp             ; LPSTR</p>
+<p>.text:00401380 018                 call    ds:wsprintfA    ; Indirect Call Near Procedure</p>
+<p>.text:00401386 018                 mov     eax, [esp+18h+lpString1]</p>
+<p>.text:0040138A 018                 add     esp, 0Ch        ; Add</p>
+<p>.text:0040138D 00C                 push    ebp             ; lpString2</p>
+<p>.text:0040138E 010                 push    eax             ; lpString1</p>
+<p>.text:0040138F 014                 call    ds:lstrcmpA     ; Indirect Call Near Procedure</p>
+<p>.text:00401395 00C                 neg     eax             ; Two's Complement Negation</p>
+<p>.text:00401397 00C                 sbb     eax, eax        ; Integer Subtraction with Borrow</p>
+<p>.text:00401399 00C                 pop     edi</p>
+<p>.text:0040139A 008                 pop     esi</p>
+<p>.text:0040139B 004                 inc     eax             ; Increment by 1</p>
+<p>.text:0040139C 004                 pop     ebp</p>
+<p>.text:0040139D 000                 retn                    ; Return Near from Procedure</p>
+<p>.text:0040139D     KeyGenAndCompare endp</p>
+<p>
+ </p>
+<p>
+ </p>
+<p>还原的算法源代码如下：</p>
+<p><span style="font-family:Courier New"><span style="color:#804040"> 1 </span><span style="color:#a020f0">#include </span><span style="color:fuchsia"><stdio.h></stdio.h></span><br /><span style="color:#804040"> 2 </span><span style="color:#a020f0">#include </span><span style="color:fuchsia"><string.h></string.h></span><br /><span style="color:#804040"> 3 </span><span style="color:seagreen"><strong>int</strong></span> gacCode[] = {<span style="color:fuchsia">0x0c</span>, <span style="color:fuchsia">0x0A</span>, <span style="color:fuchsia">0x13</span>, <span style="color:fuchsia">0x9</span>, <span style="color:fuchsia">0x0c</span>, <span style="color:fuchsia">0x0b</span>, <span style="color:fuchsia">0x0a</span>, <span style="color:fuchsia">0x08</span>};<br /><span style="color:#804040"> 4 </span><br /><span style="color:#804040"> 5 </span><span style="color:seagreen"><strong>int</strong></span> __cdecl KeyGen(<span style="color:seagreen"><strong>char</strong></span>* lpName, <span style="color:seagreen"><strong>int</strong></span> aiLen)<br /><span style="color:#804040"> 6 </span>{<br /><span style="color:#804040"> 7 </span>    <span style="color:seagreen"><strong>int</strong></span> liTemp = <span style="color:fuchsia">0</span>; <span style="color:blue">// means esi</span><br /><span style="color:#804040"> 8 </span>    <span style="color:seagreen"><strong>int</strong></span> i = <span style="color:fuchsia">3</span>; <span style="color:blue">//just because using VC6,know 3 from ecx == 3</span><br /><span style="color:#804040"> 9 </span>    <span style="color:seagreen"><strong>int</strong></span> j = <span style="color:fuchsia">0</span>;<br /><span style="color:#804040">10 </span>    <span style="color:#804040"><strong>for</strong></span>(; i<ailen><br /><span style="color:#804040">11 </span>    {<br /><span style="color:#804040">12 </span>        <span style="color:#804040"><strong>if</strong></span>(j &gt; <span style="color:fuchsia">7</span>)<br /><span style="color:#804040">13 </span>        {<br /><span style="color:#804040">14 </span>            j = <span style="color:fuchsia">0</span>;<br /><span style="color:#804040">15 </span>        }<br /><span style="color:#804040">16 </span>        liTemp += lpName[i] * gacCode[j];<br /><span style="color:#804040">17 </span>    }<br /><span style="color:#804040">18 </span><br /><span style="color:#804040">19 </span>    <span style="color:#804040"><strong>return</strong></span> liTemp;<br /><span style="color:#804040">20 </span>}<br /><span style="color:#804040">21 </span><br /><span style="color:#804040">22 </span><br /><span style="color:#804040">23 </span><span style="color:seagreen"><strong>int</strong></span> main()<br /><span style="color:#804040">24 </span>{<br /><span style="color:#804040">25 </span>    <span style="color:seagreen"><strong>char</strong></span> lszName[] = <span style="color:fuchsia">"abcdefg"</span>;<br /><span style="color:#804040">26 </span>    <span style="color:seagreen"><strong>int</strong></span> liKey = KeyGen(lszName, strlen(lszName));<br /><span style="color:#804040">27 </span><br /><span style="color:#804040">28 </span>    printf(<span style="color:fuchsia">"</span><span style="color:slateblue">%i/n</span><span style="color:fuchsia">"</span>,liKey);<br /><span style="color:#804040">29 </span>    <span style="color:#804040"><strong>return</strong></span> <span style="color:fuchsia">0</span>;<br /><span style="color:#804040">30 </span>}<br /><span style="color:#804040">31</span><span style="color:#a020f0"><br />
+</span></ailen></span></p>
+<p>
+ </p>
+<p style="text-align: right"><span style="color:#c0504d; text-decoration:underline"><strong>write by <span style="font-family:宋体">九天雁翎</span>(JTianLing) -- www.jtianling.com</strong></span></p>

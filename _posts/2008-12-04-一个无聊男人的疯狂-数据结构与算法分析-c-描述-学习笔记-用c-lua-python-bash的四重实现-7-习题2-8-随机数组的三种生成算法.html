@@ -1,0 +1,907 @@
+---
+layout: post
+title: "一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记 用C++/lua/python/bash的四重实现（7）习题2.8 随机数组的三种生成算法"
+categories:
+- Lua
+- Python
+- "算法"
+tags:
+- Bash
+- C++
+- Lua
+- Python
+- "《数据结构与算法分析-C++描述》"
+- "随机数组"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '8'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>
+&nbsp;<br />
+<style>--<br />
+ /* Font Definitions */<br />
+ @font-face<br />
+	{font-family:Wingdings;<br />
+	panose-1:5 0 0 0 0 0 0 0 0 0;<br />
+	mso-font-charset:2;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}<br />
+@font-face<br />
+	{font-family:宋体;<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-alt:SimSun;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"Cambria Math";<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1107304683 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Cambria;<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073741899 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Calibri;<br />
+	panose-1:2 15 5 2 2 2 4 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:swiss;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073750139 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:"/@宋体";<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+ /* Style Definitions */<br />
+ p.MsoNormal, li.MsoNormal, div.MsoNormal<br />
+	{mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+h1<br />
+	{mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-link:"标题 1 Char";<br />
+	mso-style-next:正文;<br />
+	margin-top:24.0pt;<br />
+	margin-right:0cm;<br />
+	margin-bottom:0cm;<br />
+	margin-left:0cm;<br />
+	margin-bottom:.0001pt;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan lines-together;<br />
+	page-break-after:avoid;<br />
+	mso-outline-level:1;<br />
+	font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	mso-font-kerning:1.0pt;}<br />
+h2<br />
+	{mso-style-priority:9;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-link:"标题 2 Char";<br />
+	mso-style-next:正文;<br />
+	margin-top:13.0pt;<br />
+	margin-right:0cm;<br />
+	margin-bottom:13.0pt;<br />
+	margin-left:0cm;<br />
+	line-height:173%;<br />
+	mso-pagination:widow-orphan lines-together;<br />
+	page-break-after:avoid;<br />
+	mso-outline-level:2;<br />
+	font-size:16.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+p.MsoHeader, li.MsoHeader, div.MsoHeader<br />
+	{mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-link:"页眉 Char";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	text-align:center;<br />
+	mso-pagination:widow-orphan;<br />
+	tab-stops:center 207.65pt right 415.3pt;<br />
+	layout-grid-mode:char;<br />
+	border:none;<br />
+	mso-border-bottom-alt:solid windowtext .75pt;<br />
+	padding:0cm;<br />
+	mso-padding-alt:0cm 0cm 1.0pt 0cm;<br />
+	font-size:9.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+p.MsoFooter, li.MsoFooter, div.MsoFooter<br />
+	{mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-link:"页脚 Char";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	mso-pagination:widow-orphan;<br />
+	tab-stops:center 207.65pt right 415.3pt;<br />
+	layout-grid-mode:char;<br />
+	font-size:9.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+a:link, span.MsoHyperlink<br />
+	{mso-style-priority:99;<br />
+	color:blue;<br />
+	text-decoration:underline;<br />
+	text-underline:single;}<br />
+a:visited, span.MsoHyperlinkFollowed<br />
+	{mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	color:purple;<br />
+	mso-themecolor:followedhyperlink;<br />
+	text-decoration:underline;<br />
+	text-underline:single;}<br />
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate<br />
+	{mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-link:"批注框文本 Char";<br />
+	margin:0cm;<br />
+	margin-bottom:.0001pt;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:9.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph<br />
+	{mso-style-priority:34;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	text-indent:21.0pt;<br />
+	mso-char-indent-count:2.0;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+span.MsoIntenseReference<br />
+	{mso-style-priority:32;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	font-variant:small-caps;<br />
+	color:#C0504D;<br />
+	mso-themecolor:accent2;<br />
+	letter-spacing:.25pt;<br />
+	font-weight:bold;<br />
+	text-decoration:underline;<br />
+	text-underline:single;}<br />
+span.1Char<br />
+	{mso-style-name:"标题 1 Char";<br />
+	mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:"标题 1";<br />
+	mso-ansi-font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	font-weight:bold;}<br />
+span.2Char<br />
+	{mso-style-name:"标题 2 Char";<br />
+	mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:"标题 2";<br />
+	mso-ansi-font-size:16.0pt;<br />
+	mso-bidi-font-size:16.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	mso-font-kerning:0pt;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;<br />
+	font-weight:bold;}<br />
+span.Char<br />
+	{mso-style-name:"页眉 Char";<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:页眉;<br />
+	mso-ansi-font-size:9.0pt;<br />
+	mso-bidi-font-size:9.0pt;<br />
+	mso-font-kerning:0pt;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+span.Char0<br />
+	{mso-style-name:"页脚 Char";<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:页脚;<br />
+	mso-ansi-font-size:9.0pt;<br />
+	mso-bidi-font-size:9.0pt;<br />
+	mso-font-kerning:0pt;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+span.Char1<br />
+	{mso-style-name:"批注框文本 Char";<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:批注框文本;<br />
+	mso-ansi-font-size:9.0pt;<br />
+	mso-bidi-font-size:9.0pt;<br />
+	mso-font-kerning:0pt;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+.MsoChpDefault<br />
+	{mso-style-type:export-only;<br />
+	mso-default-props:yes;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+ /* Page Definitions */<br />
+ @page<br />
+	{mso-page-border-surround-header:no;<br />
+	mso-page-border-surround-footer:no;}<br />
+@page Section1<br />
+	{size:595.3pt 841.9pt;<br />
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;<br />
+	mso-header-margin:42.55pt;<br />
+	mso-footer-margin:49.6pt;<br />
+	mso-paper-source:0;<br />
+	layout-grid:15.6pt;}<br />
+div.Section1<br />
+	{page:Section1;}<br />
+ /* List Definitions */<br />
+ @list l0<br />
+	{mso-list-id:879979139;<br />
+	mso-list-type:hybrid;<br />
+	mso-list-template-ids:-2200530 -26160278 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}<br />
+@list l0:level1<br />
+	{mso-level-start-at:0;<br />
+	mso-level-number-format:bullet;<br />
+	mso-level-text:;<br />
+	mso-level-tab-stop:none;<br />
+	mso-level-number-position:left;<br />
+	margin-left:18.0pt;<br />
+	text-indent:-18.0pt;<br />
+	font-family:Wingdings;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+@list l1<br />
+	{mso-list-id:1980842703;<br />
+	mso-list-type:hybrid;<br />
+	mso-list-template-ids:310389072 -1595380626 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}<br />
+@list l1:level1<br />
+	{mso-level-start-at:0;<br />
+	mso-level-number-format:bullet;<br />
+	mso-level-text:;<br />
+	mso-level-tab-stop:none;<br />
+	mso-level-number-position:left;<br />
+	margin-left:18.0pt;<br />
+	text-indent:-18.0pt;<br />
+	font-family:Wingdings;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+ol<br />
+	{margin-bottom:0cm;}<br />
+ul<br />
+	{margin-bottom:0cm;}<br />
+--&gt;<br />
+</style>
+<p><!--[if gte mso 10]&gt;<br />
+&lt;style&gt;<br />
+ /* Style Definitions */<br />
+ table.MsoNormalTable<br />
+	{mso-style-name:普通表格;<br />
+	mso-tstyle-rowband-size:0;<br />
+	mso-tstyle-colband-size:0;<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;<br />
+	mso-para-margin:0cm;<br />
+	mso-para-margin-bottom:.0001pt;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:10.5pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-font-kerning:1.0pt;}<br />
+&lt;/style&gt;<br />
+&lt;![endif]--></p>
+<h1><span lang="EN-US">&nbsp;&nbsp;</span><span style="font-family: 宋体;">一个无聊男人的疯狂《数据结构与算法分析</span><span lang="EN-US">-C++</span><span style="font-family: 宋体;">描述》学习笔记</span><br />
+<span style="font-family: 宋体;">用</span><span lang="EN-US">C++/lua/python/bash</span><span style="font-family: 宋体;">的四重实现（</span><span lang="EN-US">7</span><span style="font-family: 宋体;">）习题</span><span lang="EN-US">2.8 </span><span style="font-family: 宋体;">随机数组的三种生成算法</span></h1>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">九天雁翎</span><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b></p>
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;" lang="EN-US">&lt;&lt;Data Structures and Algorithm Analysis in C++&gt;&gt;<o:p></o:p></span></p>
+<p class="MsoListParagraph" style="margin-left: 18pt; text-indent: 0cm;"><span style="font-family: 宋体;" lang="EN-US">--</span><span style="font-family: 宋体;">《数据结构与算法分析</span><span style="" lang="EN-US">c++</span><span style="font-family: 宋体;">描述》</span><span style="" lang="EN-US"> Mark Allen Weiss</span><span style="font-family: 宋体;">著</span><span style=""> </span><span style="font-family: 宋体;">人民邮电大学出版</span><span style=""> </span><span style="font-family: 宋体;">中文版第<span lang="EN-US">49</span>面， 一</span><span style="font-family: 宋体;">随机数组的三种生成</span><span style="font-family: 宋体;" lang="EN-US">算法</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">这一次没有截图，因为我受不了让</span><span style="" lang="EN-US">bash</span><span style="font-family: 宋体;">运行</span><span style="" lang="EN-US">100</span><span style="font-family: 宋体;">次的速度，怎么说来着，还是那句话，</span><span style="" lang="EN-US">Bash</span><span style="font-family: 宋体;">根本就不适合也不是设计用来描述算法的语言，我根本就是自讨苦吃。用了最多的时间，得到的是最低的效率。。。。。。还有最扭曲的代码。但是因为工作中不用到</span><span style="" lang="EN-US">bash</span><span style="font-family: 宋体;">，不常用用还真怕都忘了。。。现在用</span><span style="" lang="EN-US">python</span><span style="font-family: 宋体;">的时候就常有这样的感觉，以前看的书就像白看了一样。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">相对于</span><span style="" lang="EN-US">bash</span><span style="font-family: 宋体;">来说，</span><span style="" lang="EN-US">python</span><span style="font-family: 宋体;">的优雅一次一次的深入我心，每一次它都是代码最短的，最最优雅的，很多便捷的语法都是让人用的很痛快，虽然刚开始用的时候由于没有大括号。。。（我用</span><span style="" lang="EN-US">c++</span><span style="font-family: 宋体;">习惯了）感觉代码就像悬在空中一样的不可靠。。。呵呵，习惯了以后，怎么看怎么爽。再加上丰富的库，绝了。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US">write by </span><span style="font-family: 宋体;" lang="EN-US">九天雁翎</span><span lang="EN-US">(JTianLing)<br />
+-- www.jtianling.com</p>
+<p></span><span style="font-family: 宋体;" lang="EN-US">以下为实现部分</span><span lang="EN-US">: </p>
+<p></span><span style="font-size: 24pt; line-height: 115%;" lang="EN-US">CPP: </span><span lang="EN-US"></p>
+<p></span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;&nbsp;1<br />
+</span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">#include<br />
+</span><span style='font-family: "Courier New"; color: fuchsia;' lang="EN-US">&lt;stdio.h&gt;</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;2 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;stdlib.h&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;3 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;algorithm&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;4 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;iterator&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;5 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;iostream&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;6 <b>using</b></span>&nbsp;<b><span style="color: seagreen;">namespace</span></b>&nbsp;std;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;7 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;8 </span><b><span style="color: seagreen;">int</span></b>&nbsp;randInt(<b><span style="color: seagreen;">int</span></b>&nbsp;i, <b><span style="color: seagreen;">int</span></b>&nbsp;j)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;9 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;10 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(i &gt; j)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;11 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;12 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;temp = i;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;13 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i<br />
+= j;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;14 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j<br />
+= temp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;15 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;16 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;17 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;rand() % (j-i) + i;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;18 </span>}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;19 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;20 </span><b><span style="color: seagreen;">void</span></b>&nbsp;randArr1(<b><span style="color: seagreen;">int</span></b>&nbsp;arr[], <b><span style="color: seagreen;">int</span></b>&nbsp;n)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;21 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;22 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>(<b><span style="color: seagreen;">int</span></b>&nbsp;i=<span style="color: fuchsia;">0</span>; i&lt;n; ++i)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;23 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;24 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>(<span style="color: fuchsia;">true</span>)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;25 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;26 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// some thing don't like py</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;27 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// because my randInt is create number</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;28 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// in [0,n) and py is [0,n]</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;29 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;temp = randInt(<span style="color: fuchsia;">0</span>, n);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;30 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;j = <span style="color: fuchsia;">0</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;31 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>(j &lt; i)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;32 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;33 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(arr[j] == temp)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;34 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;35 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;36 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;37 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++j;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;38 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;39 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(j == i)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;40 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;41 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arr[j]<br />
+= temp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;42 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;43 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;44 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;45 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;46 </span>}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;47 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;48 </span><b><span style="color: seagreen;">void</span></b>&nbsp;randArr2(<b><span style="color: seagreen;">int</span></b>&nbsp;a[], <b><span style="color: seagreen;">int</span></b>&nbsp;n)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;49 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;50 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">bool</span></b>&nbsp;*lpb = <b><span style="color: rgb(128, 64, 64);">new</span></b>&nbsp;<b><span style="color: seagreen;">bool</span></b>[n];<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;51 </span>&nbsp;&nbsp;&nbsp;&nbsp;memset(lpb,<br />
+<span style="color: fuchsia;">0</span>, n);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;52 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;53 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>(<b><span style="color: seagreen;">int</span></b>&nbsp;i=<span style="color: fuchsia;">0</span>; i&lt;n; ++i)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;54 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;55 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>(<span style="color: fuchsia;">true</span>)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;56 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;57 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;temp = randInt(<span style="color: fuchsia;">0</span>, n);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;58 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(!lpb[temp])<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;59 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;60 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i]<br />
+= temp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;61 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lpb[temp]<br />
+= <span style="color: fuchsia;">true</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;62 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;63 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;64 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;65 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;66 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;67 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;68 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">delete</span></b>&nbsp;lpb;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;69 </span>&nbsp;&nbsp;&nbsp;&nbsp;lpb = <span style="color: fuchsia;">NULL</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;70 </span>}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;71 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;72 </span><b><span style="color: seagreen;">void</span></b>&nbsp;swap(<b><span style="color: seagreen;">int</span></b>&amp; a, <b><span style="color: seagreen;">int</span></b>&amp;<br />
+b)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;73 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;74 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;temp = a;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;75 </span>&nbsp;&nbsp;&nbsp;&nbsp;a = b;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;76 </span>&nbsp;&nbsp;&nbsp;&nbsp;b = temp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;77 </span>}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;78 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;79 </span><span style="color: blue;">// just<br />
+for fun,but I like it.</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;80 </span><span style="color: blue;">// when py<br />
+could have range and bash could have seq</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;81 </span><span style="color: blue;">// why cpp<br />
+couldn't have a seq like this? lol</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;82 </span><b><span style="color: seagreen;">template</span></b>&lt;<b><span style="color: seagreen;">typename</span></b>&nbsp;T&gt;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;83 </span><b><span style="color: seagreen;">class</span></b>&nbsp;CFBSeq<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;84 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;85 <b>public</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;86 </span>&nbsp;&nbsp;&nbsp;&nbsp;CFBSeq(<b><span style="color: seagreen;">const</span></b>&nbsp;T&amp; aValue) : mValue(aValue) {<br />
+}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;87 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;88 </span>&nbsp;&nbsp;&nbsp;&nbsp;T <b><span style="color: rgb(128, 64, 64);">operator</span></b>()()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;89 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;90 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;mValue++;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;91 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;92 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;93 <b>private</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;94 </span>&nbsp;&nbsp;&nbsp;&nbsp;T mValue;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;95 </span>};<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;96 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;97 </span><b><span style="color: seagreen;">void</span></b>&nbsp;randArr3(<b><span style="color: seagreen;">int</span></b>&nbsp;a[], <b><span style="color: seagreen;">int</span></b>&nbsp;n)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;98 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;99 </span>&nbsp;&nbsp;&nbsp;&nbsp;generate(a,<br />
+a+n, CFBSeq&lt;<b><span style="color: seagreen;">int</span></b>&gt;(<span style="color: fuchsia;">0</span>));<br />
+<span style="color: rgb(128, 64, 64);">100 </span><br />
+<span style="color: rgb(128, 64, 64);">101 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>(<b><span style="color: seagreen;">int</span></b>&nbsp;i=<span style="color: fuchsia;">1</span>; i&lt;n; ++i)<br />
+<span style="color: rgb(128, 64, 64);">102 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">103 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(a[i],<br />
+a[randInt(<span style="color: fuchsia;">0</span>,i)]);<br />
+<span style="color: rgb(128, 64, 64);">104 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">105 </span><br />
+<span style="color: rgb(128, 64, 64);">106 </span>}<br />
+<span style="color: rgb(128, 64, 64);">107 </span><br />
+<span style="color: rgb(128, 64, 64);">108 </span><br />
+<span style="color: rgb(128, 64, 64);">109 </span><br />
+<span style="color: rgb(128, 64, 64);">110 </span><br />
+<span style="color: rgb(128, 64, 64);">111 </span><br />
+<span style="color: rgb(128, 64, 64);">112 </span><b><span style="color: seagreen;">int</span></b>&nbsp;main(<b><span style="color: seagreen;">int</span></b>&nbsp;argc, <b><span style="color: seagreen;">char</span></b>*<br />
+argv[])<br />
+<span style="color: rgb(128, 64, 64);">113 </span>{<br />
+<span style="color: rgb(128, 64, 64);">114 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">const</span></b>&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;TIMES=<span style="color: fuchsia;">100</span>;<br />
+<span style="color: rgb(128, 64, 64);">115 </span>&nbsp;&nbsp;&nbsp;&nbsp;srand(time(<span style="color: fuchsia;">NULL</span>));<br />
+<span style="color: rgb(128, 64, 64);">116 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;a[TIMES],b[TIMES],c[TIMES];<br />
+<span style="color: rgb(128, 64, 64);">117 </span>&nbsp;&nbsp;&nbsp;&nbsp;randArr1(a,TIMES);<br />
+<span style="color: rgb(128, 64, 64);">118 </span>&nbsp;&nbsp;&nbsp;&nbsp;copy(a, a+TIMES,<br />
+ostream_iterator&lt;<b><span style="color: seagreen;">int</span></b>&gt;(cout,<span style="color: fuchsia;">" "</span>));<br />
+<span style="color: rgb(128, 64, 64);">119 </span>&nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: fuchsia;">"</span><span style="color: slateblue;">/n</span><span style="color: fuchsia;">"</span>);<br />
+<span style="color: rgb(128, 64, 64);">120 </span>&nbsp;&nbsp;&nbsp;&nbsp;randArr2(b,TIMES);<br />
+<span style="color: rgb(128, 64, 64);">121 </span>&nbsp;&nbsp;&nbsp;&nbsp;copy(b, b+TIMES,<br />
+ostream_iterator&lt;<b><span style="color: seagreen;">int</span></b>&gt;(cout,<span style="color: fuchsia;">" "</span>));<br />
+<span style="color: rgb(128, 64, 64);">122 </span>&nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: fuchsia;">"</span><span style="color: slateblue;">/n</span><span style="color: fuchsia;">"</span>);<br />
+<span style="color: rgb(128, 64, 64);">123 </span>&nbsp;&nbsp;&nbsp;&nbsp;randArr3(c,<br />
+TIMES);<br />
+<span style="color: rgb(128, 64, 64);">124 </span>&nbsp;&nbsp;&nbsp;&nbsp;copy(c, c+TIMES,<br />
+ostream_iterator&lt;<b><span style="color: seagreen;">int</span></b>&gt;(cout,<span style="color: fuchsia;">" "</span>));<br />
+<span style="color: rgb(128, 64, 64);">125 </span><br />
+<span style="color: rgb(128, 64, 64);">126 </span><br />
+<span style="color: rgb(128, 64, 64);">127 </span><br />
+<span style="color: rgb(128, 64, 64);">128 </span>&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: fuchsia;">0</span>);<br />
+<span style="color: rgb(128, 64, 64);">129 </span>}<br />
+<span style="color: rgb(128, 64, 64);">130 </span><br />
+</span><span lang="EN-US"></p>
+<p>
+</span><span style="font-size: 24pt; line-height: 115%;" lang="EN-US">LUA: </span><span lang="EN-US"></p>
+<p></span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;1<br />
+</span><span style='font-family: "Courier New"; color: blue;' lang="EN-US">#!/usr/bin/env<br />
+lua</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 </span><span style="color: teal;">math.randomseed</span>(<span style="color: teal;">os.time</span>())<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 </span><span style="color: teal;">function</span>&nbsp;randArr1(a,<br />
+n)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;i=<span style="color: fuchsia;">1</span>,n<br />
+<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>&nbsp;<span style="color: fuchsia;">true</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;temp = <span style="color: teal;">math.random</span>(<span style="color: fuchsia;">1</span>, n)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span><br />
+<span style="color: rgb(128, 64, 64);">10 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;j = <span style="color: fuchsia;">1</span><br />
+<span style="color: rgb(128, 64, 64);">11 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>&nbsp;j &lt; i <b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">12 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;a[j] == temp <b><span style="color: rgb(128, 64, 64);">then</span></b>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">13 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b><br />
+<span style="color: rgb(128, 64, 64);">14 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">15 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">-- Again damed that There is no ++</span><br />
+<span style="color: rgb(128, 64, 64);">16 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">-- and even no composite operator += !</span><br />
+<span style="color: rgb(128, 64, 64);">17 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">-- No one knows that is more concision</span><br />
+<span style="color: rgb(128, 64, 64);">18 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">-- and more effective?</span><br />
+<span style="color: rgb(128, 64, 64);">19 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j<br />
+= j + <span style="color: fuchsia;">1</span><br />
+<span style="color: rgb(128, 64, 64);">20 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">21 </span><br />
+<span style="color: rgb(128, 64, 64);">22 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;j == i <b><span style="color: rgb(128, 64, 64);">then</span></b><br />
+<span style="color: rgb(128, 64, 64);">23 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i]<br />
+= temp<br />
+<span style="color: rgb(128, 64, 64);">24 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b><br />
+<span style="color: rgb(128, 64, 64);">25 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">26 </span><br />
+<span style="color: rgb(128, 64, 64);">27 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">28 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">29 </span><span style="color: teal;">end</span><br />
+<span style="color: rgb(128, 64, 64);">30 </span><br />
+<span style="color: rgb(128, 64, 64);">31 </span><br />
+<span style="color: rgb(128, 64, 64);">32 </span><span style="color: teal;">function</span>&nbsp;randArr2(a,<br />
+n)<br />
+<span style="color: rgb(128, 64, 64);">33 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">-- use nil as false as a lua's special hack</span><br />
+<span style="color: rgb(128, 64, 64);">34 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;bt = <b><span style="color: seagreen;">{}</span></b><br />
+<span style="color: rgb(128, 64, 64);">35 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;i=<span style="color: fuchsia;">1</span>,n<br />
+<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">36 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>&nbsp;<span style="color: fuchsia;">true</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">37 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;temp = <span style="color: teal;">math.random</span>(<span style="color: fuchsia;">1</span>,n)<br />
+<span style="color: rgb(128, 64, 64);">38 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">not</span></b>&nbsp;bt[temp]<br />
+<b><span style="color: rgb(128, 64, 64);">then</span></b><br />
+<span style="color: rgb(128, 64, 64);">39 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i]<br />
+= temp<br />
+<span style="color: rgb(128, 64, 64);">40 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bt[temp]<br />
+= <span style="color: fuchsia;">true</span><br />
+<span style="color: rgb(128, 64, 64);">41 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b><br />
+<span style="color: rgb(128, 64, 64);">42 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">43 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">44 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">45 </span><span style="color: teal;">end</span><br />
+<span style="color: rgb(128, 64, 64);">46 </span><br />
+<span style="color: rgb(128, 64, 64);">47 </span><span style="color: teal;">function</span>&nbsp;randArr3(a,<br />
+n)<br />
+<span style="color: rgb(128, 64, 64);">48 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;i=<span style="color: fuchsia;">1</span>,n<br />
+<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">49 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i]<br />
+= i<br />
+<span style="color: rgb(128, 64, 64);">50 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">51 </span>&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">52 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;i=<span style="color: fuchsia;">1</span>,n<br />
+<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">53 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;temp = <span style="color: teal;">math.random</span>(<span style="color: fuchsia;">1</span>,n)<br />
+<span style="color: rgb(128, 64, 64);">54 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">-- one of the most things i like in lua&amp;py</span><br />
+<span style="color: rgb(128, 64, 64);">55 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i],a[temp]<br />
+= a[temp],a[i] <br />
+<span style="color: rgb(128, 64, 64);">56 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">57 </span><span style="color: teal;">end</span><br />
+<span style="color: rgb(128, 64, 64);">58 </span><br />
+<span style="color: rgb(128, 64, 64);">59 </span><br />
+<span style="color: rgb(128, 64, 64);">60 </span><br />
+<span style="color: rgb(128, 64, 64);">61 </span><span style="color: blue;">-- Test Code</span><br />
+<span style="color: rgb(128, 64, 64);">62 </span><br />
+<span style="color: rgb(128, 64, 64);">63 </span>times = <span style="color: fuchsia;">100</span><br />
+<span style="color: rgb(128, 64, 64);">64 </span>t = <b><span style="color: seagreen;">{}</span></b><br />
+<span style="color: rgb(128, 64, 64);">65 </span>randArr1(t, times)<br />
+<span style="color: rgb(128, 64, 64);">66 <b>for</b></span>&nbsp;i,v <b><span style="color: rgb(128, 64, 64);">in</span></b>&nbsp;<span style="color: teal;">ipairs</span>(t)<br />
+<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">67 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">io.write</span>(v .. <span style="color: fuchsia;">"<br />
+"</span>)<br />
+<span style="color: rgb(128, 64, 64);">68 <b>end</b></span><br />
+<span style="color: rgb(128, 64, 64);">69 </span><br />
+<span style="color: rgb(128, 64, 64);">70 </span><br />
+<span style="color: rgb(128, 64, 64);">71 </span>t2 = <b><span style="color: seagreen;">{}</span></b><br />
+<span style="color: rgb(128, 64, 64);">72 </span>randArr2(t2, times)<br />
+<span style="color: rgb(128, 64, 64);">73 <b>for</b></span>&nbsp;i,v <b><span style="color: rgb(128, 64, 64);">in</span></b>&nbsp;<span style="color: teal;">ipairs</span>(t2)<br />
+<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">74 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">io.write</span>(v .. <span style="color: fuchsia;">"<br />
+"</span>)<br />
+<span style="color: rgb(128, 64, 64);">75 <b>end</b></span><br />
+<span style="color: rgb(128, 64, 64);">76 </span><br />
+<span style="color: rgb(128, 64, 64);">77 </span><br />
+<span style="color: rgb(128, 64, 64);">78 </span>t3 = <b><span style="color: seagreen;">{}</span></b><br />
+<span style="color: rgb(128, 64, 64);">79 </span>randArr3(t3, times)<br />
+<span style="color: rgb(128, 64, 64);">80 <b>for</b></span>&nbsp;i,v <b><span style="color: rgb(128, 64, 64);">in</span></b>&nbsp;<span style="color: teal;">ipairs</span>(t3)<br />
+<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">81 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">io.write</span>(v .. <span style="color: fuchsia;">"<br />
+"</span>)<br />
+<span style="color: rgb(128, 64, 64);">82 <b>end</b></span><br />
+<span style="color: rgb(128, 64, 64);">83 </span><br />
+<span style="color: rgb(128, 64, 64);">84 </span><br />
+<span style="color: rgb(128, 64, 64);">85 </span><br />
+</span><span lang="EN-US"></p>
+<p>
+</span><span style="font-size: 24pt; line-height: 115%;" lang="EN-US">PYTHON: </span><span lang="EN-US"></p>
+<p></span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;1<br />
+</span><span style='font-family: "Courier New"; color: blue;' lang="EN-US">#!/usr/bin/env<br />
+python</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 </span><span style="color: rgb(160, 32, 240);">from</span>&nbsp;random<br />
+<span style="color: rgb(160, 32, 240);">import</span>&nbsp;randint<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 <b>def</b></span>&nbsp;<span style="color: teal;">randArr1</span>(a,n):<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;i <b><span style="color: rgb(128, 64, 64);">in</span></b>&nbsp;range(n):<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>&nbsp;True:<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp<br />
+= randint(0, n-1)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;j <b><span style="color: rgb(128, 64, 64);">in</span></b>&nbsp;range(i):<br />
+<span style="color: rgb(128, 64, 64);">10 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;a[j] == temp:<br />
+<span style="color: rgb(128, 64, 64);">11 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">12 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;"># another one of the things I like in py(for else)</span><br />
+<span style="color: rgb(128, 64, 64);">13 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">else</span></b>:<br />
+<span style="color: rgb(128, 64, 64);">14 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.append(temp)<br />
+<span style="color: rgb(128, 64, 64);">15 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">16 </span><br />
+<span style="color: rgb(128, 64, 64);">17 <b>def</b></span>&nbsp;<span style="color: teal;">randArr2</span>(a,n):<br />
+<span style="color: rgb(128, 64, 64);">18 </span><span style="color: blue;">#surely it is<br />
+not need be a dict but dict is faster then list</span><br />
+<span style="color: rgb(128, 64, 64);">19 </span>&nbsp;&nbsp;&nbsp;&nbsp;bd = {}<br />
+<span style="color: rgb(128, 64, 64);">20 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;i <b><span style="color: rgb(128, 64, 64);">in</span></b>&nbsp;range(n):<br />
+<span style="color: rgb(128, 64, 64);">21 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>&nbsp;True:<br />
+<span style="color: rgb(128, 64, 64);">22 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp<br />
+= randint(0, n-1)<br />
+<span style="color: rgb(128, 64, 64);">23 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;temp <b><span style="color: rgb(128, 64, 64);">not</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">in</span></b>&nbsp;tl:<br />
+<span style="color: rgb(128, 64, 64);">24 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.append(temp)<br />
+<span style="color: rgb(128, 64, 64);">25 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tl[temp]<br />
+= True<br />
+<span style="color: rgb(128, 64, 64);">26 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b><br />
+<span style="color: rgb(128, 64, 64);">27 </span><br />
+<span style="color: rgb(128, 64, 64);">28 <b>def</b></span>&nbsp;<span style="color: teal;">randArr3</span>(a,n):<br />
+<span style="color: rgb(128, 64, 64);">29 </span>&nbsp;&nbsp;&nbsp;&nbsp; a = range(n)<br />
+<span style="color: rgb(128, 64, 64);">30 </span>&nbsp;&nbsp;&nbsp;&nbsp; <b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;i <b><span style="color: rgb(128, 64, 64);">in</span></b>&nbsp;range(n):<br />
+<span style="color: rgb(128, 64, 64);">31 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+temp = randint(0, n-1)<br />
+<span style="color: rgb(128, 64, 64);">32 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: blue;"># like in lua</span><br />
+<span style="color: rgb(128, 64, 64);">33 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+a[i],a[temp] = a[temp],a[i]<br />
+<span style="color: rgb(128, 64, 64);">34 </span><br />
+<span style="color: rgb(128, 64, 64);">35 <b>def</b></span>&nbsp;<span style="color: teal;">test</span>():<br />
+<span style="color: rgb(128, 64, 64);">36 </span>&nbsp;&nbsp;&nbsp;&nbsp;times = 100<br />
+<span style="color: rgb(128, 64, 64);">37 </span>&nbsp;&nbsp;&nbsp;&nbsp;l = []<br />
+<span style="color: rgb(128, 64, 64);">38 </span>&nbsp;&nbsp;&nbsp;&nbsp;randArr1(l,<br />
+times)<br />
+<span style="color: rgb(128, 64, 64);">39 </span><br />
+<span style="color: rgb(128, 64, 64);">40 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">print</span></b>&nbsp;l<br />
+<span style="color: rgb(128, 64, 64);">41 </span>&nbsp;&nbsp;&nbsp;&nbsp;l2 = []<br />
+<span style="color: rgb(128, 64, 64);">42 </span>&nbsp;&nbsp;&nbsp;&nbsp;randArr1(l2,<br />
+times)<br />
+<span style="color: rgb(128, 64, 64);">43 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">print</span></b>&nbsp;l2<br />
+<span style="color: rgb(128, 64, 64);">44 </span><br />
+<span style="color: rgb(128, 64, 64);">45 </span>&nbsp;&nbsp;&nbsp;&nbsp;l2 = []<br />
+<span style="color: rgb(128, 64, 64);">46 </span>&nbsp;&nbsp;&nbsp;&nbsp;randArr1(l2,<br />
+times)<br />
+<span style="color: rgb(128, 64, 64);">47 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">print</span></b>&nbsp;l2<br />
+<span style="color: rgb(128, 64, 64);">48 </span><br />
+<span style="color: rgb(128, 64, 64);">49 </span><br />
+<span style="color: rgb(128, 64, 64);">50 </span><br />
+<span style="color: rgb(128, 64, 64);">51 <b>if</b></span>&nbsp;__name__ == '<span style="color: fuchsia;">__main__</span>':<br />
+<span style="color: rgb(128, 64, 64);">52 </span>&nbsp;&nbsp;&nbsp;&nbsp;test()<br />
+</span><span lang="EN-US"></p>
+<p>
+</span><span style="font-size: 24pt; line-height: 115%;" lang="EN-US">BASH: </span><span lang="EN-US"></p>
+<p></span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;&nbsp;1<br />
+</span><span style='font-family: "Courier New"; color: blue;' lang="EN-US">#!/usr/bin/env<br />
+bash</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;2 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;3 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;4 </span><span style="color: blue;">#<br />
+just for a range rand....let me die....</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;5 </span><span style="color: blue;">#<br />
+what I had said? bash is not a good</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;6 </span><span style="color: blue;">#<br />
+language for describing algorithms</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;7 </span>randInt<b><span style="color: rgb(128, 64, 64);">()</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;8 </span><span style="color: slateblue;">{</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;9 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;<span style="color: teal;">a</span>=<span style="color: rgb(160, 32, 240);">$1</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;10 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;<span style="color: teal;">b</span>=<span style="color: rgb(160, 32, 240);">$2</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;11 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;12 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;<span style="color: slateblue;">((</span>&nbsp;a<br />
+<b><span style="color: rgb(128, 64, 64);">&gt;</span></b>&nbsp;b <span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;13 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">then</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;14 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;temp<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;15 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: slateblue;">((</span>&nbsp;temp <b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;<span style="color: fuchsia;">a</span>&nbsp;<span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;16 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: slateblue;">((</span>&nbsp;a <b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;<span style="color: fuchsia;">b</span>&nbsp;<span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;17 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: slateblue;">((</span>&nbsp;b <b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;<span style="color: fuchsia;">temp</span>&nbsp;<span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;18 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">fi</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;19 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;20 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;mi<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;21 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">((</span></b>&nbsp;mi <b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;b<br />
+- a + <span style="color: fuchsia;">1</span><b><span style="color: rgb(128, 64, 64);">))</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;22 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">r=</span></b><span style="color: rgb(160, 32, 240);">$((RANDOM</span><span style="color: slateblue;">%</span><span style="color: rgb(160, 32, 240);">${mi}</span><span style="color: slateblue;">+</span><span style="color: rgb(160, 32, 240);">${a}))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;23 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">echo</span></b><span style="color: fuchsia;">&nbsp;-n </span><span style="color: rgb(160, 32, 240);">$r</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;24 </span><span style="color: slateblue;">}</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;25 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;26 </span>randArr1<b><span style="color: rgb(128, 64, 64);">()</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;27 </span><span style="color: slateblue;">{</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;28 </span><span style="color: blue;"># only one<br />
+argument because I hate the</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;29 </span><span style="color: blue;"># bash's<br />
+indirect reference</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;30 </span><span style="color: blue;"># you can<br />
+reference the (4) binarySearch to</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;31 </span><span style="color: blue;"># see what<br />
+I said</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;32 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;<span style="color: teal;">n</span>=<span style="color: rgb(160, 32, 240);">$1</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;33 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">declare</span></b>&nbsp;<span style="color: teal;">-a</span>&nbsp;<span style="color: teal;">a</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;34 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;<span style="color: slateblue;">((</span>&nbsp;i<b><span style="color: rgb(128, 64, 64);">=</span></b><span style="color: fuchsia;">1</span><b><span style="color: rgb(128, 64, 64);">;</span></b>&nbsp;i<b><span style="color: rgb(128, 64, 64);">&lt;=</span></b>n<b><span style="color: rgb(128, 64, 64);">;</span></b>&nbsp;++i <span style="color: slateblue;">))</span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;35 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;36 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while&nbsp;true</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;37 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do</b></span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;38 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">temp</span>=<span style="color: slateblue;">`randInt </span><span style="color: fuchsia;">1</span><span style="color: slateblue;">&nbsp;</span><span style="color: rgb(160, 32, 240);">$n</span><span style="color: slateblue;">`</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;39 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">j</span>=<span style="color: fuchsia;">1</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;40 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while&nbsp;</span></b><span style="color: slateblue;">((</span>&nbsp;j<b><span style="color: rgb(128, 64, 64);">&lt;</span></b>i <span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;41 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do</b></span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;42 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;<span style="color: slateblue;">((</span>&nbsp;a<b><span style="color: rgb(128, 64, 64);">[</span></b>j<b><span style="color: rgb(128, 64, 64);">]</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">==</span></b>&nbsp;<span style="color: fuchsia;">temp</span>&nbsp;<span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;43 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">then</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;44 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;45 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">fi</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;46 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">((</span></b>&nbsp;++j <b><span style="color: rgb(128, 64, 64);">))</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;47 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">done</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;48 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;<span style="color: slateblue;">((</span>&nbsp;j<br />
+<b><span style="color: rgb(128, 64, 64);">==</span></b>&nbsp;<span style="color: fuchsia;">i</span>&nbsp;<span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;49 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">then</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;50 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: slateblue;">((</span>&nbsp;a<b><span style="color: rgb(128, 64, 64);">[</span></b>j<b><span style="color: rgb(128, 64, 64);">]</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;<span style="color: fuchsia;">temp</span>&nbsp;<span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;51 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;52 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">fi</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;53 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">done</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;54 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">done</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;55 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;56 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">echo</span></b><span style="color: fuchsia;">&nbsp;</span><span style="color: rgb(160, 32, 240);">${a[</span>*<span style="color: rgb(160, 32, 240);">]}</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;57 </span><span style="color: slateblue;">}</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;58 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;59 </span>randArr2<b><span style="color: rgb(128, 64, 64);">()</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;60 </span><span style="color: slateblue;">{</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;61 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;<span style="color: teal;">n</span>=<span style="color: rgb(160, 32, 240);">$1</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;62 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">declare</span></b>&nbsp;<span style="color: teal;">-a</span>&nbsp;<span style="color: teal;">a</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;63 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;"># used for bool array</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;64 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">declare</span></b>&nbsp;<span style="color: teal;">-a</span>&nbsp;<span style="color: teal;">b</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;65 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;<span style="color: slateblue;">((</span>&nbsp;i<b><span style="color: rgb(128, 64, 64);">=</span></b><span style="color: fuchsia;">1</span><b><span style="color: rgb(128, 64, 64);">;</span></b>&nbsp;i<b><span style="color: rgb(128, 64, 64);">&lt;=</span></b>n<b><span style="color: rgb(128, 64, 64);">;</span></b>&nbsp;++i <span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;66 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;67 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while&nbsp;true</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;68 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do</b></span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;69 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;<span style="color: teal;">temp</span>=<span style="color: slateblue;">`randInt </span><span style="color: fuchsia;">1</span><span style="color: slateblue;">&nbsp;</span><span style="color: rgb(160, 32, 240);">$n</span><span style="color: slateblue;">`</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;70 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">[</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">-z</span></b>&nbsp;<span style="color: rgb(160, 32, 240);">${b[</span>temp<span style="color: rgb(160, 32, 240);">]}</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">]</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;71 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">then</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;72 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: slateblue;">((</span>&nbsp;a<b><span style="color: rgb(128, 64, 64);">[</span></b>i<b><span style="color: rgb(128, 64, 64);">]</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;<span style="color: fuchsia;">temp</span>&nbsp;<span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;73 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: slateblue;">((</span>&nbsp;b<b><span style="color: rgb(128, 64, 64);">[</span></b>temp<b><span style="color: rgb(128, 64, 64);">]</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;<span style="color: fuchsia;">true</span>&nbsp;<span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;74 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;75 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">fi</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;76 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">done</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;77 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">done</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;78 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;79 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">echo</span></b><span style="color: fuchsia;">&nbsp;</span><span style="color: rgb(160, 32, 240);">${a[</span>*<span style="color: rgb(160, 32, 240);">]}</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;80 </span><span style="color: slateblue;">}</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;81 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;82 </span>randArr3<b><span style="color: rgb(128, 64, 64);">()</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;83 </span><span style="color: slateblue;">{</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;84 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;<span style="color: teal;">n</span>=<span style="color: rgb(160, 32, 240);">$1</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;85 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;<span style="color: slateblue;">((</span>&nbsp;i<b><span style="color: rgb(128, 64, 64);">=</span></b><span style="color: fuchsia;">1</span><b><span style="color: rgb(128, 64, 64);">;</span></b>&nbsp;i<b><span style="color: rgb(128, 64, 64);">&lt;=</span></b>n<b><span style="color: rgb(128, 64, 64);">;</span></b>&nbsp;++i <span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;86 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;87 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">((</span></b>&nbsp;a<b><span style="color: rgb(128, 64, 64);">[</span></b>i<b><span style="color: rgb(128, 64, 64);">]</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;i<br />
+<b><span style="color: rgb(128, 64, 64);">))</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;88 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">done</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;89 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">for</span></b>&nbsp;<span style="color: slateblue;">((</span>&nbsp;i<b><span style="color: rgb(128, 64, 64);">=</span></b><span style="color: fuchsia;">1</span><b><span style="color: rgb(128, 64, 64);">;</span></b>&nbsp;i<b><span style="color: rgb(128, 64, 64);">&lt;=</span></b>n<b><span style="color: rgb(128, 64, 64);">;</span></b>&nbsp;++i <span style="color: slateblue;">))</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;90 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;91 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;<span style="color: teal;">temp</span>=<span style="color: slateblue;">`randInt </span><span style="color: fuchsia;">1</span><span style="color: slateblue;">&nbsp;</span><span style="color: rgb(160, 32, 240);">$n</span><span style="color: slateblue;">`</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;92 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">((</span></b>&nbsp;t <b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;a<b><span style="color: rgb(128, 64, 64);">[</span></b>i<b><span style="color: rgb(128, 64, 64);">]</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">))</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;93 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">((</span></b>&nbsp;a<b><span style="color: rgb(128, 64, 64);">[</span></b>i<b><span style="color: rgb(128, 64, 64);">]</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;a<b><span style="color: rgb(128, 64, 64);">[</span></b>temp<b><span style="color: rgb(128, 64, 64);">]</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">))</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;94 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">((</span></b>&nbsp;a<b><span style="color: rgb(128, 64, 64);">[</span></b>temp<b><span style="color: rgb(128, 64, 64);">]</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">=</span></b>&nbsp;t<br />
+<b><span style="color: rgb(128, 64, 64);">))</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;95 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">done</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;96 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;97 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">echo</span></b><span style="color: fuchsia;">&nbsp;</span><span style="color: rgb(160, 32, 240);">${a[</span>*<span style="color: rgb(160, 32, 240);">]}</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;98 </span><span style="color: slateblue;">}</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;99 </span><br />
+<span style="color: rgb(128, 64, 64);">100 </span><br />
+<span style="color: rgb(128, 64, 64);">101 </span><span style="color: blue;"># so slow that<br />
+I can't bear it run 100 times</span><br />
+<span style="color: rgb(128, 64, 64);">102 </span>randArr1 <span style="color: fuchsia;">10</span><br />
+<span style="color: rgb(128, 64, 64);">103 </span>randArr2 <span style="color: fuchsia;">10</span><br />
+<span style="color: rgb(128, 64, 64);">104 </span>randArr3 <span style="color: fuchsia;">10</span><br />
+<span style="color: rgb(128, 64, 64);">105</span></span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;">九天雁翎</span></u></b><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) -- www.jtianling.com</span></u></b><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>

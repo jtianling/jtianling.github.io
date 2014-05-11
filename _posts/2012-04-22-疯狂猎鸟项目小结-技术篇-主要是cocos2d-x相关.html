@@ -1,0 +1,44 @@
+---
+layout: post
+title: "疯狂猎鸟项目小结 -- 技术篇（主要是cocos2d-x相关）"
+categories:
+- "工作总结"
+- "游戏开发"
+tags:
+- cocos2d-x
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  ratings_users: '1'
+  ratings_score: '5'
+  ratings_average: '5'
+  views: '2571'
+  _aioseop_title: "疯狂猎鸟项目小结 — 技术篇（主要是cocos2d-x相关）"
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>上次写了篇关于自己浅薄的管理经验的博客，被一些筒子们批评了，这次还是写篇技术贴吧，这样就不会有人说了，因为......那些人看不懂。该文早就和肖寒泉说了要写，但是因为写完后感觉好话不多，技术不多，就一直没有发布，现在我们又要开新项目了，而且不使用cocos2d-x了，那就发布了吧。</p>
+<p>先说游戏引擎，疯狂猎鸟用的游戏引擎是cocos2d-x。</p>
+<p>在一年多前（大概有这么久吧）就搜遍互联网，去寻找一个能跨win32,iphone平台的开源引擎，以方便进行iphone游戏的开发，只有很少的几个选项，甚至尝试过irrlicht不成熟的opengl es版，最后也尝试了orx，其实都不算特别理想，那个时候cocos2d-x刚刚出来没有多久，第一个支持的手机种类是沃phone,而iphone版本的demo都跑不顺畅，所以没敢使用。那个那时真的是有心自己写一个，无奈能力有限，但是很认可cocos2d-x的方向。</p>
+<p>一年以后，当我开始再次为团队选择游戏引擎的时候，又一次的看了一下cocos2d-x，在查看了一下已经与cocos2d无异的demo后，说实话，相当长信心啊，我觉得自己能用到的特性也不会超过cocos2d-x的demo多少，那这样说的话，cocos2d-x就能用了，即使还有bug或者有什么平台相关的问题，因为cocos2d-x是开源引擎，那也不用怕，这也算是开源引擎的一个竞争优势，那就是不用100%成熟就能让人有信心使用。</p>
+<p>初步研究后，作为传统的C++开发者（请允许我这样称呼自己），会有些受不了在C++中模拟objc的那种内存管理方式和类的初始化方式。看了cocos2d-x官网上的《<a href="http://www.cocos2d-x.org/news/18">Cocos2dxSimpleGame &amp; Tutorials for beginners</a>》后，就能很直接的感受到，cocos2d-x就是为移植而生的，所以文中一再的强调从cocos2d(objc)到cocos2d-x(C++) 几乎句句对译的优势，其实这个优势在真正用C++做原生开发的时候，就比较悲剧，因为这样的使用方式，根本就不是C++ style，你会感觉到内存不是完全在自己的控制之下。再进一步的看到cocos2d-x用C++实现的CCObject，CCAutoreleasePool，用于模拟objc的内存管理方式时，我觉得很悲催，cocos2d-x的作者们太辛苦了....然而，这还不算什么， CCArray,CCSet等objc容器和CCImage出现的时候，我近乎老泪纵横了，这是准备用C++实现一个objc吗？还带cocoa的......这可是GNU组织都没有实现的目标啊......开源社区的强大，让我感叹不已。</p>
+<div>技术上，我能讲的东西不多，因为2D方面的东西也的确没有太多好讲。内存管理上，对于初学者，特别是刚刚毕业，学了点C++，连C++本身的内存管理都还没有弄明白的人，看到cocos2d-x绝对是晕的。建议是了解一些objc+cocoa的东西，最好是用过cocos2d，那样你就会明白那么多看起来别扭的设计是怎么来的了。其中，假如真的团队是初学者，那么可以完全限定不用autorelease那一套（也就是SpriteWithXXX那种接口），完全要求使用new来完成对象的创建，同时只是使用Release接口来完成内存释放，其中的管理还是自己完全接手即可，需要注意一个问题在于讲cocos2d-x编译成动态库时（iphone上不存在此问题)，这样的做法不满足内存在哪分配在哪释放的原则（内存空间不同的问题），会crash。使用类似autoreleasepool时，实际相当于把最后一次引用技术放到了内存池中，每个循环都会集中清理一次，不用当心完全不会释放。</div>
+<div></div>
+<div>delegate的模拟机制做的不是很好，因为C++天生就不是适合干这个事情的材料，再加上Object的引用计数等问题，比如Action的回调使用时，保持Action的回调对象存在，一直加一个引用计数啥的（不知道是不是这个意思），容易导致内存管理混乱，同时，delegate的使用很混乱，因为用的是一个单独的基类来管理所有的回调类型。C++11的function,bind假如能用在这里，感觉设计上会清楚无数倍。</div>
+<div></div>
+<div>抽象上，cocos2d本身是单平台引擎，所以底层的设计本来就没有太多的考虑跨平台的事情，cocos2d-x比较单纯的去模仿，所以在平台抽象上做的就不是很好，比如渲染引擎的切换（opengl,opengl es,directx之间）就没有，导致win32上长期是opengl es加模拟（依赖于厂商的），平台的抽象也不是很好。建议参考irrlicht的抽象方式，哪怕是orx也好。</div>
+<div></div>
+<div>上面讲了那么多不好的地方，都是我们实际使用的时候碰到的问题，但是总体来说，cocos2d-x还是目前你想开发跨平台2d游戏最好的选择，上面也许只能说是爱之深恨之切吧。</div>
+<div></div>
+<div>其他的技术方面，texture packer很好用，值得买，particle designer也是粒子编辑器不二的选择。</div>
+<div>
+<p dir="ltr">
+</div>
+<div style="text-align: right;">原创文章作者保留版权 转载请注明原作者 并给出链接</div>
+<div style="text-align: right;"><a title="write by 九天雁翎(JTianLing) -- www.jtianling.com" href="http://www.jtianling.com/">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></div>

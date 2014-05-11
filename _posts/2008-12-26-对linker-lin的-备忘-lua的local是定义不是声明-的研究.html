@@ -1,0 +1,737 @@
+---
+layout: post
+title: "对Linker.Lin的 《[备忘]Lua的local是定义不是声明!》的研究"
+categories:
+- Lua
+tags:
+- Lua
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '11'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="ProgId" content="Word.Document" /><meta name="Generator" content="Microsoft Word 12" /><meta name="Originator" content="Microsoft Word 12" />
+<link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_filelist.xml" />
+<link rel="themeData" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_themedata.thmx" />
+<link rel="colorSchemeMapping" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_colorschememapping.xml" /><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:WordDocument&gt;<br />
+  &lt;w:View&gt;Normal&lt;/w:View&gt;<br />
+  &lt;w:Zoom&gt;0&lt;/w:Zoom&gt;<br />
+  &lt;w:TrackMoves /&gt;<br />
+  &lt;w:TrackFormatting /&gt;<br />
+  &lt;w:PunctuationKerning /&gt;<br />
+  &lt;w:DrawingGridVerticalSpacing&gt;7.8 磅&lt;/w:DrawingGridVerticalSpacing&gt;<br />
+  &lt;w:DisplayHorizontalDrawingGridEvery&gt;0&lt;/w:DisplayHorizontalDrawingGridEvery&gt;<br />
+  &lt;w:DisplayVerticalDrawingGridEvery&gt;2&lt;/w:DisplayVerticalDrawingGridEvery&gt;<br />
+  &lt;w:ValidateAgainstSchemas /&gt;<br />
+  &lt;w:SaveIfXMLInvalid&gt;false&lt;/w:SaveIfXMLInvalid&gt;<br />
+  &lt;w:IgnoreMixedContent&gt;false&lt;/w:IgnoreMixedContent&gt;<br />
+  &lt;w:AlwaysShowPlaceholderText&gt;false&lt;/w:AlwaysShowPlaceholderText&gt;<br />
+  &lt;w:DoNotPromoteQF /&gt;<br />
+  &lt;w:LidThemeOther&gt;EN-US&lt;/w:LidThemeOther&gt;<br />
+  &lt;w:LidThemeAsian&gt;ZH-CN&lt;/w:LidThemeAsian&gt;<br />
+  &lt;w:LidThemeComplexScript&gt;X-NONE&lt;/w:LidThemeComplexScript&gt;<br />
+  &lt;w:Compatibility&gt;<br />
+   &lt;w:SpaceForUL /&gt;<br />
+   &lt;w:BalanceSingleByteDoubleByteWidth /&gt;<br />
+   &lt;w:DoNotLeaveBackslashAlone /&gt;<br />
+   &lt;w:ULTrailSpace /&gt;<br />
+   &lt;w:DoNotExpandShiftReturn /&gt;<br />
+   &lt;w:AdjustLineHeightInTable /&gt;<br />
+   &lt;w:BreakWrappedTables /&gt;<br />
+   &lt;w:SnapToGridInCell /&gt;<br />
+   &lt;w:WrapTextWithPunct /&gt;<br />
+   &lt;w:UseAsianBreakRules /&gt;<br />
+   &lt;w:DontGrowAutofit /&gt;<br />
+   &lt;w:SplitPgBreakAndParaMark /&gt;<br />
+   &lt;w:DontVertAlignCellWithSp /&gt;<br />
+   &lt;w:DontBreakConstrainedForcedTables /&gt;<br />
+   &lt;w:DontVertAlignInTxbx /&gt;<br />
+   &lt;w:Word11KerningPairs /&gt;<br />
+   &lt;w:CachedColBalance /&gt;<br />
+   &lt;w:UseFELayout /&gt;<br />
+  &lt;/w:Compatibility&gt;<br />
+  &lt;m:mathPr&gt;<br />
+   &lt;m:mathFont m:val="Cambria Math" /&gt;<br />
+   &lt;m:brkBin m:val="before" /&gt;<br />
+   &lt;m:brkBinSub m:val="&#45;-" /&gt;<br />
+   &lt;m:smallFrac m:val="off" /&gt;<br />
+   &lt;m:dispDef /&gt;<br />
+   &lt;m:lMargin m:val="0" /&gt;<br />
+   &lt;m:rMargin m:val="0" /&gt;<br />
+   &lt;m:defJc m:val="centerGroup" /&gt;<br />
+   &lt;m:wrapIndent m:val="1440" /&gt;<br />
+   &lt;m:intLim m:val="subSup" /&gt;<br />
+   &lt;m:naryLim m:val="undOvr" /&gt;<br />
+  &lt;/m:mathPr&gt;&lt;/w:WordDocument&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="true"<br />
+  DefSemiHidden="true" DefQFormat="false" DefPriority="99"<br />
+  LatentStyleCount="267"&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="0" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Normal" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="heading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="35" QFormat="true" Name="caption" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="10" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" Name="Default Paragraph Font" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="11" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtitle" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="22" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Strong" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="20" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="59" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Table Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Placeholder Text" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="No Spacing" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Revision" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="34" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="List Paragraph" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="29" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="30" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="19" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="21" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="31" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="32" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="33" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Book Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="37" Name="Bibliography" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" QFormat="true" Name="TOC Heading" /&gt;<br />
+ &lt;/w:LatentStyles&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><br />
+<style>
+<!--<br />
+ /* Font Definitions */<br />
+ @font-face<br />
+	{font-family:宋体;<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-alt:SimSun;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"Cambria Math";<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1107304683 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Cambria;<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073741899 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Calibri;<br />
+	panose-1:2 15 5 2 2 2 4 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:swiss;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073750139 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:"/@宋体";<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+ /* Style Definitions */<br />
+ p.MsoNormal, li.MsoNormal, div.MsoNormal<br />
+	{mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+h1<br />
+	{mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-link:"标题 1 Char";<br />
+	mso-style-next:正文;<br />
+	margin-top:24.0pt;<br />
+	margin-right:0cm;<br />
+	margin-bottom:0cm;<br />
+	margin-left:0cm;<br />
+	margin-bottom:.0001pt;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan lines-together;<br />
+	page-break-after:avoid;<br />
+	mso-outline-level:1;<br />
+	font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	mso-font-kerning:1.0pt;}<br />
+a:link, span.MsoHyperlink<br />
+	{mso-style-priority:99;<br />
+	color:blue;<br />
+	text-decoration:underline;<br />
+	text-underline:single;}<br />
+a:visited, span.MsoHyperlinkFollowed<br />
+	{mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	color:purple;<br />
+	mso-themecolor:followedhyperlink;<br />
+	text-decoration:underline;<br />
+	text-underline:single;}<br />
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph<br />
+	{mso-style-priority:34;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	text-indent:21.0pt;<br />
+	mso-char-indent-count:2.0;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+span.1Char<br />
+	{mso-style-name:"标题 1 Char";<br />
+	mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:"标题 1";<br />
+	mso-ansi-font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	font-weight:bold;}<br />
+.MsoChpDefault<br />
+	{mso-style-type:export-only;<br />
+	mso-default-props:yes;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+ /* Page Definitions */<br />
+ @page<br />
+	{mso-page-border-surround-header:no;<br />
+	mso-page-border-surround-footer:no;}<br />
+@page Section1<br />
+	{size:595.3pt 841.9pt;<br />
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;<br />
+	mso-header-margin:42.55pt;<br />
+	mso-footer-margin:49.6pt;<br />
+	mso-paper-source:0;<br />
+	layout-grid:15.6pt;}<br />
+div.Section1<br />
+	{page:Section1;}<br />
+ /* List Definitions */<br />
+ @list l0<br />
+	{mso-list-id:2118059388;<br />
+	mso-list-type:hybrid;<br />
+	mso-list-template-ids:1479283678 -277469948 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}<br />
+@list l0:level1<br />
+	{mso-level-tab-stop:none;<br />
+	mso-level-number-position:left;<br />
+	margin-left:18.0pt;<br />
+	text-indent:-18.0pt;}<br />
+ol<br />
+	{margin-bottom:0cm;}<br />
+ul<br />
+	{margin-bottom:0cm;}<br />
+--><br />
+</style>
+<p><!--[if gte mso 10]&gt;<br />
+&lt;style&gt;<br />
+ /* Style Definitions */<br />
+ table.MsoNormalTable<br />
+	{mso-style-name:普通表格;<br />
+	mso-tstyle-rowband-size:0;<br />
+	mso-tstyle-colband-size:0;<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;<br />
+	mso-para-margin:0cm;<br />
+	mso-para-margin-bottom:.0001pt;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:10.5pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-font-kerning:1.0pt;}<br />
+&lt;/style&gt;<br />
+&lt;![endif]--></p>
+<h1><span style="font-family: 宋体;">对</span><span lang="EN-US">Linker.Lin</span><span style="font-family: 宋体;">的</span><span lang="EN-US">&nbsp;</span><span style="font-family: 宋体;">《</span><span lang="EN-US">[</span><span style="font-family: 宋体;">备忘</span><span lang="EN-US">]Lua</span><span style="font-family: 宋体;">的</span><span lang="EN-US">local</span><span style="font-family: 宋体;">是定义不是声明</span><span lang="EN-US">!</span><span style="font-family: 宋体;">》的研究</span><span lang="EN-US"> </span></h1>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">九天雁翎</span><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">因为这样的特性实在是太奇怪了，所以不得不好好研究一下。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">原文见</span><span style="" lang="EN-US"><a href="http://blog.csdn.net/linkerlin/archive/2008/12/25/3603897.aspx">http://blog.csdn.net/linkerlin/archive/2008/12/25/3603897.aspx</a><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">由于很短，我贴过来，顺面给他的代码上个色</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">test1:<o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">1 </span><span style='font-family: "Courier New";' lang="EN-US">g=<span style="color: fuchsia;">'hi~'</span><br />
+<span style="color: rgb(128, 64, 64);">2 <b>local</b></span>&nbsp;g=<span style="color: fuchsia;">'hello!'</span><br />
+<span style="color: rgb(128, 64, 64);">3 <b>for</b></span>&nbsp;i=<span style="color: fuchsia;">1</span>,<span style="color: fuchsia;">2</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">4 </span></span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span></span><b><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">local</span></b><span style='font-family: "Courier New";' lang="EN-US">&nbsp;g=g..<span style="color: fuchsia;">'1'</span><br />
+<span style="color: rgb(128, 64, 64);">5 </span><span style="color: teal;">print</span>(g)<br />
+<span style="color: rgb(128, 64, 64);">6 <b>end</b></span></span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;">输出<span lang="EN-US">:<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US">hello!1<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US">hello!1<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">他的结论很明显了，题目就是了。先推断一下他的理解</span><span style="" lang="EN-US">(</span><span style="font-family: 宋体;">假如不对请告诉我啊：</span><span style="" lang="EN-US">)</span><span style="font-family: 宋体;">）</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">因为上述程序输出</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US">hello!1<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US">hello!1<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">而下面这种仅仅去掉了</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">的程序</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">test2:<o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">1 </span><span style='font-family: "Courier New";' lang="EN-US">g=<span style="color: fuchsia;">'hi~'</span><br />
+<span style="color: rgb(128, 64, 64);">2 <b>local</b></span>&nbsp;g=<span style="color: fuchsia;">'hello!'</span><br />
+<span style="color: rgb(128, 64, 64);">3 <b>for</b></span>&nbsp;i=<span style="color: fuchsia;">1</span>,<span style="color: fuchsia;">2</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">4 </span></span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span></span><span style='font-family: "Courier New";' lang="EN-US">g=g..<span style="color: fuchsia;">'1'</span><br />
+<span style="color: rgb(128, 64, 64);">5 </span><span style="color: teal;">print</span>(g)<br />
+<span style="color: rgb(128, 64, 64);">6 <b>end</b></span></span><b><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p></o:p></span></b></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">输出的是</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US">hello!1<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US">hello!11<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;">注意区别，没有<span lang="EN-US">local</span>的时候，<span lang="EN-US">g</span>相当于直接在原有的基础上加了<span lang="EN-US">1</span>，而加了<span lang="EN-US">local</span>的时候是两次重新的定义，都是<span lang="EN-US">hello!1</span>。自此，</span><span style="" lang="EN-US">Linker.Lin</span><span style="font-family: 宋体;">得出了结论，“</span><span style="" lang="EN-US">Lua</span><span style="font-family: 宋体;">的</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">是定义不是声明</span><span style="" lang="EN-US">!</span><span style="font-family: 宋体;">”。呵呵，好像一切都比较符合逻辑，不知道</span><span style="" lang="EN-US">Linker.Lin</span><span style="font-family: 宋体;">是不是这样理解的。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;">其实，我的理解是，虽然这一次</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">的声明导致</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">变成定义，但是说</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">就是定义。。。。好像很奇怪。。。。。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="" lang="EN-US">test3:<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">1 </span><span style='font-family: "Courier New";' lang="EN-US">g=<span style="color: fuchsia;">'hi~'</span><br />
+<span style="color: rgb(128, 64, 64);">2 <b>local</b></span>&nbsp;g=<span style="color: fuchsia;">'hello!'</span><br />
+<span style="color: rgb(128, 64, 64);">3 <b>for</b></span>&nbsp;i=<span style="color: fuchsia;">1</span>,<span style="color: fuchsia;">2</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">4 </span>&nbsp;&nbsp;&nbsp;&nbsp;x=g..<span style="color: fuchsia;">'1'</span><br />
+<span style="color: rgb(128, 64, 64);">5 </span><span style="color: teal;">print</span>(x)<br />
+<span style="color: rgb(128, 64, 64);">6 <b>end</b></span></span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;">一样是可以得出<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US">hello!1<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 宋体;" lang="EN-US">hello!1<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="line-height: 115%; font-family: 宋体;">的和<span lang="EN-US">test1</span></span><span style="font-family: 宋体;">一致的输出的，这里</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">没有</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">，也是定义</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">test2</span><span style="font-family: 宋体;">：得出的那样的结果原因在于，由于</span><span style="" lang="EN-US">for</span><span style="font-family: 宋体;">外部已经有个变量</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">了，所以在用</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New";' lang="EN-US">g=g..<span style="color: fuchsia;">'1'<o:p></o:p></span></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">的语句时，相当于使用了外部的</span><span style="" lang="EN-US">g,</span><span style="font-family: 宋体;">即将</span><span style="" lang="EN-US">for</span><span style="font-family: 宋体;">前的</span><span style="" lang="EN-US">local g</span><span style="font-family: 宋体;">的</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">改变了，第二次循环的时候，还是用外部的</span><span style="" lang="EN-US">g,</span><span style="font-family: 宋体;">此时的</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">已经被改变了，所以相当于在</span><span style="" lang="EN-US">hello1</span><span style="font-family: 宋体;">后再加了个</span><span style="" lang="EN-US">1.<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">而</span><span style="" lang="EN-US">test1:</span><span style="font-family: 宋体;">中用了</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">，其实是声明此处的</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">变量为局部变量，而局部没有</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">变量，按照</span><span style="" lang="EN-US">lua</span><span style="font-family: 宋体;">的规则是自动定义出</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">变量来进行操作的，此时</span><span style="" lang="EN-US">for</span><span style="font-family: 宋体;">循环内局部的</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">赋值为</span><span style="" lang="EN-US">hello1</span><span style="font-family: 宋体;">，当此次循环结束时，局部的变量</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">自动销毁（作用域结束了），第二次循环开始的时候，重新定义了新的局部变量</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">，所以两次都是</span><span style="" lang="EN-US">hello1</span><span style="font-family: 宋体;">。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">这里多给出几个例子：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">test4:<o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">1 </span><span style='font-family: "Courier New";' lang="EN-US">g=<span style="color: fuchsia;">'hi~'</span><br />
+<span style="color: rgb(128, 64, 64);">2 <b>local</b></span>&nbsp;g=<span style="color: fuchsia;">'hello!'</span><br />
+<span style="color: rgb(128, 64, 64);">3 <b>for</b></span>&nbsp;i=<span style="color: fuchsia;">1</span>,<span style="color: fuchsia;">2</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">4 </span>&nbsp;&nbsp;&nbsp;&nbsp;g = g .. <span style="color: fuchsia;">'1'</span><br />
+<span style="color: rgb(128, 64, 64);">5 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">print</span>(g)<br />
+<span style="color: rgb(128, 64, 64);">6 <b>end</b></span><br />
+<span style="color: rgb(128, 64, 64);">7 </span><span style="color: teal;">print</span>(g)</span><span style='font-family: "Courier New";' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">输出：</span><span style='font-family: "Courier New";' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New";' lang="EN-US">hello!1<o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New";' lang="EN-US">hello!11<o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New";' lang="EN-US">hello!11<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">证明内部变量</span><span style='font-family: "Courier New";' lang="EN-US">g</span><span style="font-family: 宋体;">的使用，实际是用了外部的变量</span><span style='font-family: "Courier New";' lang="EN-US">g<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">最后来个复杂点的例子：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">test5:<o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;1 </span><span style='font-family: "Courier New";' lang="EN-US">g=<span style="color: fuchsia;">'hi~'</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 <b>local</b></span>&nbsp;g=<span style="color: fuchsia;">'hello!'</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 <b>for</b></span>&nbsp;i=<span style="color: fuchsia;">1</span>,<span style="color: fuchsia;">2</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">print</span>(x)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 </span>&nbsp;&nbsp;&nbsp;&nbsp;x = x <b><span style="color: rgb(128, 64, 64);">and</span></b>&nbsp;x .. <span style="color: fuchsia;">'1'</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">or</span></b>&nbsp;g .. <span style="color: fuchsia;">'1'</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">print</span>(x)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;x = x .. <span style="color: fuchsia;">'1'</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">print</span>(x)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;x = x .. <span style="color: fuchsia;">'1'</span><br />
+<span style="color: rgb(128, 64, 64);">10 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">print</span>(x)<br />
+<span style="color: rgb(128, 64, 64);">11 <b>end</b></span><br />
+<span style="color: rgb(128, 64, 64);">12 </span><span style="color: teal;">print</span>(x)</span><span style='font-family: "Courier New";' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">输出</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">nil<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-- </span><span style="font-family: 宋体;">第一次进入循环输出时，</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">为</span><span style="" lang="EN-US">nil<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-left: 104.8pt; text-indent: -104.8pt;"><span style="" lang="EN-US">hello!1<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-- </span><span style="font-family: 宋体;">因为</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">为</span><span style="" lang="EN-US">nil,</span><span style="font-family: 宋体;">所以第</span><span style="" lang="EN-US">5</span><span style="font-family: 宋体;">行第一次运行后，</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">为</span><span style="" lang="EN-US">g..’1’</span><span style="font-family: 宋体;">，此处</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">明显也是定义</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">hello!11<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-- local x = hello!1 .. ‘1’<br />
+</span><span style="font-family: 宋体;">还没有什么好奇怪的</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-left: 105pt; text-indent: -105pt;"><span style="" lang="EN-US">hello!1<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-- </span><span style="font-family: 宋体;">第二次进入循环，此时</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">已经有值了，并且是</span><span style="" lang="EN-US">hello!1</span><span style="font-family: 宋体;">，那么表示此值是前一个没有加</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">定义的</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">，因为</span><span style="" lang="EN-US">local x</span><span style="font-family: 宋体;">应该起码是</span><span style="" lang="EN-US">hello!11<span style="">&nbsp; </span></span><span style="font-family: 宋体;">吧</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">hello!11<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-- </span><span style="font-family: 宋体;">第二次第五行后此时非</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">的</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">也变成了</span><span style="" lang="EN-US">hello!11<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">hello!111<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-- </span><span style="font-family: 宋体;">此时</span><span style="" lang="EN-US">local x</span><span style="font-family: 宋体;">又重新定义一次，所以等于</span><span style="" lang="EN-US">hello!11 .. ‘1’<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">hello!11<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>-- </span><span style="font-family: 宋体;">非</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">的</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">有超出</span><span style="" lang="EN-US">for</span><span style="font-family: 宋体;">的作用域</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">其实，这仅仅是个作用域的问题，</span><span style="" lang="EN-US">lua</span><span style="font-family: 宋体;">中有起码有两个作用域，全局的，局部的，</span><span style="" lang="EN-US">for</span><span style="font-family: 宋体;">构成一个</span><span style="" lang="EN-US">Block(</span><span style="font-family: 宋体;">块</span><span style="" lang="EN-US">)</span><span style="font-family: 宋体;">，构成一个局部的概念，</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">的变量，作用域就在此局部内直到此局部范围结束。一个循环结束后，也算是一次局部范围的结束。于是</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">的变量销毁了。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">形成了上述的看似奇怪的输出结果，其实本质上是作用域的特点，仅仅是三个语言特点的叠加效果。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoListParagraph" style="margin-left: 18pt; text-indent: -18pt;"><!--[if !supportLists]--><span style="" lang="EN-US"><span style="">1.<span style='font-family: "Times New Roman"; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span style="" lang="EN-US">lua</span><span style="font-family: 宋体;">作为动态脚本语言有的自动定义变量特性。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoListParagraph" style="margin-left: 18pt; text-indent: -18pt;"><!--[if !supportLists]--><span style="" lang="EN-US"><span style="">2.<span style='font-family: "Times New Roman"; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span style="font-family: 宋体;">几乎所有的语言的（起码我知道的那么几种是）都有局部掩盖全局的概念，这是为了更好的局部化，不因为全局的东西影响局部。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoListParagraph" style="margin-left: 18pt; text-indent: -18pt;"><!--[if !supportLists]--><span style="" lang="EN-US"><span style="">3.<span style='font-family: "Times New Roman"; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span style="" lang="EN-US">lua</span><span style="font-family: 宋体;">比较少见的默认全局特性，这点的确少见（</span><span style="" lang="EN-US">bash</span><span style="font-family: 宋体;">也是），因为这是和前一点的好处相违背的，可能属于老的脚本语言的遗留特性。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">特性</span><span style="" lang="EN-US">1</span><span style="font-family: 宋体;">自动定义特性的结果就是在一个作用域中发现使用一个没有定义的变量（上述例子中为</span><span style="" lang="EN-US">x</span><span style="font-family: 宋体;">或</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">）就自动定义一个来使用，而不需要像静态语言（如</span><span style="" lang="EN-US">C/C++</span><span style="font-family: 宋体;">）中一样先确定的定义，再使用。特性</span><span style="" lang="EN-US">2</span><span style="font-family: 宋体;">局部掩盖导致在用</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">声明使用某个局部变量时，</span><span style="" lang="EN-US">lua</span><span style="font-family: 宋体;">发现局部没有此变量，就自动定义了一个。并且此</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">变量的作用域内，再次使用此变量名，优先使用局部的，比如</span><span style="" lang="EN-US">test5</span><span style="font-family: 宋体;">第</span><span style="" lang="EN-US">8</span><span style="font-family: 宋体;">，</span><span style="" lang="EN-US">10</span><span style="font-family: 宋体;">行输出的就是</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">变量的值，而不是前一个全局的</span><span style="" lang="EN-US">x.<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">默认全局不影响</span><span style="" lang="EN-US">Linker.Lin</span><span style="font-family: 宋体;">的测试，但是影响了最后一个测试的结果。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">总而言之，</span><span style="" lang="EN-US">Linker.Lin</span><span style="font-family: 宋体;">能够得出的结论都是变量的作用域问题，就算是其他语言也是类似的：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">为了对比，看一个</span><span style="" lang="EN-US">C++</span><span style="font-family: 宋体;">程序（不调试了啊）</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">string<br />
+str = “Hello!”;<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">for (int<br />
+i = 0; i<span style="">&nbsp; </span>&lt; 2; ++i)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">{<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>string str = str + “1”;<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>cout &lt;&lt;string;<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">cout<br />
+&lt;&lt;string;<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">只是，在</span><span style="" lang="EN-US">C++</span><span style="font-family: 宋体;">中，局部的概念是默认的，没有</span><span style="" lang="EN-US">local</span><span style="font-family: 宋体;">，一样定义。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">但是，呵呵，好东西都是留到最后嘛，（不要怪我前面废话那么多，认清楚问题嘛，靠</span><span style="" lang="EN-US">C++</span><span style="font-family: 宋体;">吃饭的我。。。有个特点就是喜欢知其然，并知其所以然，所以解释起来都是一大堆的。。。。）</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">当</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">for<br />
+i=1,2 do<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">local g<br />
+= ‘1’<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">local g<br />
+= ‘2’<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">end<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">时，第二个</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">是复用了第一个</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">呢？还是重新定义了一个新的变量</span><span style="" lang="EN-US">g?</span><span style="font-family: 宋体;">这才是问题的关键。最简单的办法自然是看两个</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">的地址是否一样。。。。不过好像没有把办法（还是我不知道？？）在</span><span style="" lang="EN-US">lua</span><span style="font-family: 宋体;">中获取一个普通变量的地址啊。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">我尝试这样做</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;1 </span><span style='font-family: "Courier New";' lang="EN-US">g<br />
+= <b><span style="color: seagreen;">{}</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 <b>for</b></span>&nbsp;i=<span style="color: fuchsia;">1</span>,<span style="color: fuchsia;">2</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">io.write</span>(<span style="color: fuchsia;">"global<br />
+g:"</span>)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">print</span>(g)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;g = <b><span style="color: seagreen;">{}</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">io.write</span>(<span style="color: fuchsia;">"first<br />
+local g:"</span>)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">print</span>(g)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;g = <b><span style="color: seagreen;">{}</span></b>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">io.write</span>(<span style="color: fuchsia;">"second<br />
+local g:"</span>)<br />
+<span style="color: rgb(128, 64, 64);">10 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">print</span>(g)<br />
+<span style="color: rgb(128, 64, 64);">11 <b>end</b></span><br />
+<span style="color: rgb(128, 64, 64);">12 </span><span style="color: teal;">print</span>(g)</span><span style='font-family: "Courier New";' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">毕竟</span><span style="" lang="EN-US">table</span><span style="font-family: 宋体;">是可以看到地址的。。。。结果输出的地址是不一样的。我可以确定结论了吗？真是这样也许还草率了一点。这点也许还不一定能够说明问题，因为每次</span><span style="" lang="EN-US">lua</span><span style="font-family: 宋体;">都会创建</span><span style="" lang="EN-US">{}</span><span style="font-family: 宋体;">，两次的</span><span style="" lang="EN-US">{}</span><span style="font-family: 宋体;">可以都是创建出来的，</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">不过就是对于</span><span style="" lang="EN-US">{}</span><span style="font-family: 宋体;">的一个引用，两次输出不同的地址也许仅仅代表了两个不同的</span><span style="" lang="EN-US">{}</span><span style="font-family: 宋体;">的地址而已，还是不能说明</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">的地址。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">从普通代码没有办法获得结果，那么借助于其他办法罗，我首先想到的就是调试，没有问题，试试：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;1 </span><span style='font-family: "Courier New"; color: blue;' lang="EN-US">#!/usr/bin/env lua</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 </span>g = <span style="color: fuchsia;">'1'</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 <b>for</b></span>&nbsp;i=<span style="color: fuchsia;">1</span>,<span style="color: fuchsia;">2</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 </span>&nbsp;&nbsp;&nbsp;&nbsp;g = g .. <span style="color: fuchsia;">'2'</span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;g = <span style="color: fuchsia;">'3'</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;g = g .. <span style="color: fuchsia;">'4'</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 </span>&nbsp;&nbsp;&nbsp;&nbsp;g = g .. <span style="color: fuchsia;">'5'</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;i = <span style="color: fuchsia;">1</span><br />
+<span style="color: rgb(128, 64, 64);">10 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>&nbsp;<span style="color: fuchsia;">true</span>&nbsp;<b><span style="color: rgb(128, 64, 64);">do</span></b><br />
+<span style="color: rgb(128, 64, 64);">11 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">local</span></b>&nbsp;name,value = <span style="color: teal;">debug.getlocal</span>(<span style="color: fuchsia;">1</span>,i)<br />
+<span style="color: rgb(128, 64, 64);">12 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>&nbsp;<b><span style="color: rgb(128, 64, 64);">not</span></b>&nbsp;name<br />
+<b><span style="color: rgb(128, 64, 64);">then</span></b>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">13 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">14 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">15 </span><br />
+<span style="color: rgb(128, 64, 64);">16 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: teal;">print</span>(name, value)<br />
+<span style="color: rgb(128, 64, 64);">17 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i<br />
+= i + <span style="color: fuchsia;">1</span><br />
+<span style="color: rgb(128, 64, 64);">18 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">end</span></b><br />
+<span style="color: rgb(128, 64, 64);">19 <b>end</b></span></span><b><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p></o:p></span></b></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">输出的结果：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">(for<br />
+index)<span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>1<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">(for<br />
+limit)<span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>2<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">(for<br />
+step)<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>1<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">i<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>1<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">g<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>3<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">g<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>345<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">i<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>7<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">(for<br />
+index)<span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>2<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">(for<br />
+limit)<span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>2<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">(for<br />
+step)<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>1<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">i<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>2<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">g<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>3<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">g<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>345<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">i<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>7<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">第</span><span style="" lang="EN-US">5</span><span style="font-family: 宋体;">行对</span><span style="" lang="EN-US">g</span><span style="font-family: 宋体;">的使用，但是没有输出证明</span><span style='font-family: "Courier New"; color: teal;' lang="EN-US">debug.getlocal</span><span style="font-family: 宋体;">并不是对每个在局部使用的变量都获取，仅仅获取在局部分配的变量，那么一次</span><span style='font-family: "Courier New";' lang="EN-US">g 3</span><span style="font-family: 宋体;">，一次</span><span style='font-family: "Courier New";' lang="EN-US">g 345</span><span style="font-family: 宋体;">的出现就很能说明问题了，</span><span style='font-family: "Courier New";' lang="EN-US">g 34</span><span style="font-family: 宋体;">的定义也没有出现，说明</span><span style='font-family: "Courier New";' lang="EN-US">getlocal</span><span style="font-family: 宋体;">仅仅获取的是分配变量的最后保留值，作为变量</span><span style='font-family: "Courier New";' lang="EN-US">g</span><span style="font-family: 宋体;">，最后的值有</span><span style='font-family: "Courier New";' lang="EN-US">2</span><span style="font-family: 宋体;">个，一个</span><span style='font-family: "Courier New";' lang="EN-US">3</span><span style="font-family: 宋体;">，一个</span><span style='font-family: "Courier New";' lang="EN-US">345</span><span style="font-family: 宋体;">，说明的确是一个</span><span style='font-family: "Courier New";' lang="EN-US">local</span><span style="font-family: 宋体;">定义了一个变量。。。。。。只有到这个时候，我才能得出</span><span style='font-family: "Courier New";' lang="EN-US">Linker.Lin</span><span style="font-family: 宋体;">的结论。</span><span style='font-family: "Courier New";' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">九天雁翎</span><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>

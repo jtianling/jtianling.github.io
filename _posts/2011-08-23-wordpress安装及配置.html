@@ -1,0 +1,125 @@
+---
+layout: post
+title: wordpress安装及配置
+categories:
+- "随笔"
+tags:
+- Wordpress
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '26'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>
+<span style="font-family:Georgia,'Times New Roman','Bitstream Charter',Times,serif; font-size:13px; line-height:19px"></span></p>
+<p>用一个周末总算在ubuntu下把www.jtianling.com博客搭建好了，这里分享一些不成熟的经验。</p>
+<h2 style="font-size:1.5em"><span style="color:rgb(0,128,0)">准备工作</span></h2>
+<p>安装wordpress前需要安装的软件如下：</p>
+<p>1.apache2，这个不用说了，没有apache就没有http服务器啊。</p>
+<p>apt-get install apache2</p>
+<p>2.php5，wordpress是用php写的</p>
+<p>apt-get install libapache2-mod-php5 php5</p>
+<p>3.mysql，wordpress以mysql为标准的数据库</p>
+<p>apt-get install mysql-server-5.0 mysql-common mysql-admin php5-mysql</p>
+<p>4.额外的东西，比如phpmyadmin，用于方便管理mysql，比如unzip,用于解压zip包。</p>
+<p>大部分情况下，以上软件的安装只需要用apt-get install就能简单的安装。</p>
+<p>用</p>
+<p>/etc/init.d/apache2 restart</p>
+<p>来重启apache服务器，基本上以上服务就可用了。</p>
+<h4 style="font-size:1em">apache mod加载</h4>
+<p>可以通过</p>
+<p>ls /etc/apache2/mods-enabled</p>
+<p>来查看已经加载的apache mod，</p>
+<p>通过</p>
+<p>ls&nbsp;/etc/apache2/mods-available/</p>
+<p>来查看安装了但是没有加载的模块。</p>
+<p>假如没有加载好的话，可以通过a2enmod 加载。比如加载php模块。</p>
+<p>a2enmod php5</p>
+<p>加载后，需要重新启动apache。</p>
+<h4 style="font-size:1em">phpmyadmin与mysql的配置</h4>
+<p>需要注意一点，在mysql刚刚安装好的时候，密码为空，而phpmyadmin偏偏不允许空密码，于是矛盾就产生了，也就是你第一次时没法直接就用phpmyadmin管理mysql服务器。</p>
+<p>解决办法：</p>
+<p>在phpmyadmin的配置</p>
+<p>/etc/phpmyadmin/config.inc.php</p>
+<p>中找到并取消调AllowNoPassword=TRUE一行前面的注释。</p>
+<p>登录后，再修改密码，为了安全，最好记得回来再次注释调这一行。</p>
+<p>在phpmyadmin为wordpress建立一个数据库，可以任意取名，默认的wordpress以wordpress命名数据库，数据库中以wp_开头建立表&#26684;。</p>
+<h2 style="font-size:1.5em"><span style="color:rgb(0,128,0)">安装wordpress</span></h2>
+<p>安装wordpress再简单不过了，你可以直接apt-get install一个，然后通过ln链接/share/wordpress到/var/www目录即可。不过这个一般是英文版，而且版本较老。</p>
+<p>这里我用<a href="http://cn.wordpress.org/">http://cn.wordpress.org/</a>这里的中文版本，最新版本的<a href="http://cn.wordpress.org/wordpress-3.2.1-zh_CN.zip" target="_blank">下载地址</a>，可以先下载在本地，然后通过ssh或者ftp传到服务器，也可以通过wget直接在服务器端下载，这个自己选择。</p>
+<h4 style="font-size:1em">ssh传文件：</h4>
+<p>参考：http://bingu.net/653/howto-use-ssh-upload-and-download-files/</p>
+<p>apt-get install&nbsp;lrzsz</p>
+<p>安装rz,sz命令。</p>
+<p>使用SecureCRT工具，登录后，使用rz传文件到服务器，sz从服务器传文件到本地。（默认存在我的文档）</p>
+<h4 style="font-size:1em">wget下载：</h4>
+<p>这个就更加简单了，</p>
+<p>apt-get install wget</p>
+<p>然后直接wget file_link，就能直接下载地址指定的文件到服务器。</p>
+<p>ftp需要配置ftp服务器，这个先不谈了。不管用什么办法，把http://cn.wordpress.org/wordpress-3.2.1-zh_CN.zip这个文件弄到服务器后，用unzip命令解压一份，然后直接mv到/var/www下，假如你愿意将整个apache都作为wordpress 博客（即apache的主目录），那么就直接将所有内容都放到www目录下，不然的话，可以放到/var/www/blog下。</p>
+<p>然后通过</p>
+<p>chmod -R 777 /var/www/</p>
+<p>修改权限（上面操作不够安全）</p>
+<p>也可以尝试通过</p>
+<p>chown -R www-data:www-data /var/www</p>
+<p>来修改文件本身所属的组和用户（我没有实验该操作）</p>
+<p>解压后，wordpress目录还没有<tt>wp-config.php配置文件，一种方法是直接用wp-config-sample.php修改成wp-config.php，<a href="http://codex.wordpress.org/zh-cn:%E5%AE%89%E8%A3%85WordPress" target="_blank">见此文档</a>。</tt></p>
+<p>事实上在此时直接用浏览器访问wordpress所在的地址，就能有自动安装的配置页面引导安装，如下图：</p>
+<p><a href="http://184.82.230.158/wp-content/uploads/2011/08/wordpress_install.png"><img class="alignnone size-medium wp-image-73" title="wordpress_install" src="http://184.82.230.158/wp-content/uploads/2011/08/wordpress_install-300x206.png" alt="" width="300" height="206" style="border-top-width:0px; border-right-width:0px; border-bottom-width:0px; border-left-width:0px; border-style:initial; border-color:initial" /></a></p>
+<p>这个非常简单，配置好mysql的数据库名，用户名，密码等信息，wordpress的用户名，密码即可。</p>
+<p>然后，登录后即可见到wordpress的管理页面。</p>
+<p><a href="http://www.jtianling.com/wp-content/uploads/2011/08/20110822235801.png"><img class="alignnone size-medium wp-image-72" title="20110822235801" src="http://184.82.230.158/wp-content/uploads/2011/08/20110822235801-102x300.png" alt="" width="102" height="300" style="border-top-width:0px; border-right-width:0px; border-bottom-width:0px; border-left-width:0px; border-style:initial; border-color:initial" /></a></p>
+<p>此时说明安装已经成功了，直接到你配置的地址去看看效果吧，wordpress默认给你建立了一个博客文章，一个页面。</p>
+<h2 style="font-size:1.5em"><span style="font-size:20px; color:rgb(0,128,0)">配置及美化</span></h2>
+<p>wordpress的安装别提有多简单了，根本不费时间，但是实际上，为了让日志www.jtianling.com正常工作，用了我几乎整整一个周末，原因就在于wordpress虽然强大，但是强大在可配置性强，所以我用了很多时间找合适的主题，插件等来合理的搭配，并取得较好的效果。（目前我也实在不想再在blog的效果上再花太多时间了~~~其实我最喜欢的是<a href="http://www.kenengba.com/" target="_blank">可能吧</a>的主题，但是好像没地儿找去...)</p>
+<h4 style="font-size:1em">主题：</h4>
+<p>我很喜欢coolshell.cn，于是找到了<a href="http://coolshell.cn/" target="_blank">酷壳</a>的主题，主题的名字叫做<a href="http://wordpress.org/extend/themes/download/inove.1.4.6.zip" target="_blank">inove</a>。</p>
+<p>并且inove主题的主题选项中，附带Feed配置，页面上也有个较为符合中国人习惯的RSS按钮。</p>
+<p>还附带Google analytics的代码输入地址，非常方便。</p>
+<h4 style="font-size:1em">插件：</h4>
+<p>酷壳无私的介绍了其<a href="http://coolshell.cn/plugins" target="_blank">博客使用的插件</a>，因为博客的类型类&#20284;，也为了节省时间，就尝试了几个他列出的插件：</p>
+<p>其中<strong><a href="http://akismet.com/" target="_blank">Akismet</a></strong>，因为用户不够多，还没有用上&nbsp;。</p>
+<p><strong><a href="http://semperfiwebdesign.com/" target="_blank">All in One SEO Pack</a>&nbsp;</strong>不知道用了有什么用，看不到明显的效果。</p>
+<p><strong><a href="http://www.arnebrachhold.de/redir/sitemap-home/" target="_blank">Google XML Sitemaps</a></strong>没有兴趣使用。</p>
+<p><strong></strong><strong></strong><strong></strong><strong><a href="http://ocaoimh.ie/wp-super-cache/" target="_blank">WP Super Cache</a></strong>，也没有感觉到用途。</p>
+<p><strong></strong><strong></strong><strong></strong><strong></strong><strong><a href="http://www.viper007bond.com/wordpress-plugins/syntaxhighlighter/" target="_blank">SyntaxHighlighter Evolved</a></strong>，安装了，也还没有使用......</p>
+<p>倒是发现了其他几个插件的好用之处：</p>
+<p><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong><a href="http://blog.ticktag.org/2009/02/19/2765/" target="_blank">Faster Image Insert</a>&nbsp;</strong>- 批量图片插入插件，非常好用。</p>
+<p><span style="font-weight:bold"><span style="font-weight:bold"><span style="font-weight:bold"><span style="font-weight:bold"><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong><a href="http://lesterchan.net/portfolio/programming/php/" target="_blank">WP-PostRatings</a>&nbsp;</strong></span></span></span></span>-&nbsp;<a href="http://downloads.wordpress.org/plugin/wp-postratings.zip" target="_blank">下载地址</a>。评分插件，我才不管IE浏览器是否能看呢，我的读者里面有用IE浏览器的吗？</p>
+<p>插件开启使用后，需要进行一定的配置。</p>
+<p>在single的页面，插入</p>
+<p>&lt;?php if(function_exists('the_ratings')) { the_ratings(); } ?&gt;</p>
+<p>到</p>
+<p>&lt;?php include('templates/comments.php'); ?&gt;</p>
+<p>之前，也就是放在评论之前。</p>
+<p>在index的页面配置文件，插入到</p>
+<p>&lt;div id=&quot;pagenavi&quot;&gt;</p>
+<p>之前，也就是页面浏览之前。</p>
+<p>这个也可以自己把握。</p>
+<p><a href="http://www.liaozuhui.com/wp-content/uploads/2010/03/wp_plugin_limit-posts-automatically-cn.zip" target="_blank">日志自动截断&nbsp;</a>-&nbsp;自动截断日志文字的插件的中文版，使用此插件后，撰写日志时无需再加入more标签进行文字截断操作。采用UTF-8模式截取，中文无乱码。这个插件是为了达到coolshell那种首页只显示文章一部分内容而需要的，实际使用效果不错。</p>
+<h4 style="font-size:1em">feeds:</h4>
+<p>参考：<a href="http://codex.wordpress.org/WordPress_Feeds">http://codex.wordpress.org/WordPress_Feeds</a></p>
+<p>最后我用了</p>
+<p>http://www.jtianling.com/feed=rss2</p>
+<p>这个，然后用域名</p>
+<p>http://feed.jtianling.com转向支持，作为永久的feed地址。</p>
+<h4 style="font-size:1em">字体：</h4>
+<p>参考：http://www.qiyecao.org/wordpress/wordpress-fontstyle-setting.html</p>
+<p>简单的说是，</p>
+<p>font-family:宋体,微软雅黑,Arial,Verdana,arial,serif;</p>
+<p>font-size自己进行合适的修改，一般来说，普通的12px改为14px，其他的酌情放大处理。原因在于主题是英文的，而英文一般用12px,中文用12px偏小，用14px较为合适。</p>
+<h2 style="font-size:1.5em"><span style="color:rgb(0,128,0)">备份</span></h2>
+<p>好不容易搞了这么多东西，不备份一下心里不踏实啊：<br />
+tar czvf www.tar /var/www</p>
+<p>然后用sz传回到本地保存起来</p>
+<p>最后的样子，也就是本博客的样子了~~~~</p>

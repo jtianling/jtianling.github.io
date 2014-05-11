@@ -1,0 +1,35 @@
+---
+layout: post
+title: Windows中多指针输入技术的实现与应用(8 总结及继续MFC的讨论
+categories:
+- "我的程序"
+tags:
+- MFC
+- Windows
+- "多鼠标"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '4'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><span lang="EN-US" style="FONT-SIZE: 16pt; LINE-HEIGHT: 150%; FONT-FAMILY: 黑体">Windows中多指针输入技术的实现与应用(8 总结及继续MFC的讨论) </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%" align="right"><span lang="EN-US" style="FONT-SIZE: 16pt; LINE-HEIGHT: 150%; FONT-FAMILY: 黑体">湖南大学 谢祁衡</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><span lang="EN-US" style="FONT-SIZE: 16pt; LINE-HEIGHT: 150%; FONT-FAMILY: 黑体">5 </span><span style="FONT-SIZE: 16pt; LINE-HEIGHT: 150%; FONT-FAMILY: 黑体; mso-font-kerning: 0pt; mso-bidi-font-weight: bold">结论和目前各实现的不足<span lang="EN-US"><o:p></o:p></span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; mso-font-kerning: 0pt; mso-bidi-font-weight: bold"><span style="mso-tab-count: 1"><font face="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体; mso-font-kerning: 0pt; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-weight: bold">本文通过几种目前国外常用的多鼠标控制输入实现方法的比较，分析了各种方法的优劣，并给出使用建议。最后简单介绍了本文得出的综合性能最佳的</span><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; mso-font-kerning: 0pt; mso-bidi-font-weight: bold"><font face="Times New Roman">SDG Toolkit</font></span><span style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体; mso-font-kerning: 0pt; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-weight: bold">具体使用方法。本文希望通过对此技术两种实现方法原理的详细介绍，各种实现方法的简单介绍，和对</span><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; mso-font-kerning: 0pt; mso-bidi-font-weight: bold"><font face="Times New Roman">SDG Toolkit</font></span><span style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体; mso-font-kerning: 0pt; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-weight: bold">具体使用方法的简单介绍，可以让人了解并可以在更多多指针输入技术有优势的相关的软件中使用此技术。</span><span lang="EN-US" style="FONT-SIZE: 16pt; LINE-HEIGHT: 150%; FONT-FAMILY: 黑体"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><font size="3"><span lang="EN-US"><span style="mso-tab-count: 1"><font face="Times New Roman">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="FONT-FAMILY: 宋体; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'">但是</span><span style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'">即便是现在最佳的实现方案</span></font><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%"><font face="Times New Roman">SDG Toolkit</font></span><span style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'">也仍然有很多不足之处，目前没有任何方案能够较完美的兼容以前的软件，使得任何开发人员要利用此技术都不得不通过对此技术的学习，并且必须要对以前的软件进行一定改变才能很好的利用此技术。另外，虽然多指针输入的软件开发方案已经比较多了，但仅仅是解决了多鼠标操作同一个软件的问题，离</span><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%"><font face="Times New Roman">SDG</font></span><span style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'">目标真正的实现还有一定差距，比如目前还没有办法同时让各人使用自己的鼠标操作各自不同的软件，就像分屏技术那样与其他人互不影响。因为此种技术的实现必然牵涉到</span><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%"><font face="Times New Roman">Windows</font></span><span style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'">底层的窗口焦点问题，难度比较大，所以笔者目前还没有看到任何真正的实现。</span><span style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体; mso-font-kerning: 0pt; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-weight: bold">笔者非常希望期待有一天真正通用的多指针输入设备软件出现，或者有一天微软能从操作系统层面完全的支持多指针设备的输入，让软件开发者不需要了解任何相关知识，就可以在需要的时候，利用这种在很多方面都有独特优点的技术。不用MFC的朋友们就可以不往下看了，以下专门写个和我一样在MFC中痛苦挣扎的兄弟们。</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><span style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; FONT-FAMILY: 宋体; mso-font-kerning: 0pt; mso-ascii-font-family: 'Times New Roman'; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-weight: bold"></span><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; mso-font-kerning: 0pt; mso-bidi-font-weight: bold"><o:p>&nbsp;&nbsp;&nbsp;&nbsp; 另外，个人比较遗憾的是，我最常用的类库MFC并没有很好的多鼠标技术实现，于是只能自己从头编程，这点我很郁闷，只能自己摸索摸索了，原论文到这里就完了，关于MFC的部分是我后来加的，我今天就要去北京了，所以不知道什么时候再有时间来完成关于MFC的部分了，甚至连梳理一下思路的时间都没有，啊。。。我已经一晚上没有睡了，虽然看了前面一部分估计你们都可以自己在MFC下实现了，但是为了抛砖引玉，我贴出以前两人五子棋的源代码，供大家参考，这里我要说明一下的是，那时候的版本还不是太好，但是我也对第2章的内容进行了优化，那就是只更新鼠标移动的一定范围内的矩形，以此达到减少全屏刷新的问题，那个程序很久没有动它了，其实就算要更新矩形也应该计算一下移动，然后更新移动范围内的矩形较好，当时仅仅作为测试，就没有想太多，就是更新了一个我自己定义的范围而已。现在我新的摸索中的实现是利用SDG Toolkit中类似的思想，让透明的绘制有鼠标指针图标的窗口作为鼠标指针，这样刷新的就仅仅是上层窗口了，那样几乎是我能想到的最完美的鼠标指针绘制方式，假如我等下能找到以前写的一些代码的话，我也贴出来。</o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; mso-font-kerning: 0pt; mso-bidi-font-weight: bold"><o:p>由于现在我在家里电脑，没有安装VS,无法测试现存代码的正确性，不知道在进行了相关更改尝试后程序还能不能正常编译运行，但是方法和思想都还在里面，主要的问题就是绘制顶层透明窗口的问题而已，希望你们自己能识别一下。谢谢了，假如以后有时间的话，我把关于MFC的部分再梳理一下，也把我的程序源代码解释一下^^</o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; mso-font-kerning: 0pt; mso-bidi-font-weight: bold"><o:p>其中我还尝试了在MFC 中插入.Net控件的方式，希望能在MFC中利用SDG Toolkit，但是发现实际的效果并不好，因为消息映射起来会相当麻烦，都要依靠手工代码，而且效率明显不如纯MFC程序，这里我就没有讲这种方法了，还是那句话，以后有时间也讲讲，大家各取所需吧。</o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; mso-font-kerning: 0pt; mso-bidi-font-weight: bold"><o:p>目前这个系列也就到这里了，呵呵，要都看完和理解估计也不是那么快的吧：）</o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%"><span lang="EN-US" style="FONT-SIZE: 12pt; LINE-HEIGHT: 150%; mso-font-kerning: 0pt; mso-bidi-font-weight: bold"><o:p>下面就贴几个源代码吧</o:p></span></p>

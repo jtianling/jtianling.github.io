@@ -1,0 +1,340 @@
+---
+layout: post
+title: "非典型2D游戏引擎 Orx 源码阅读笔记(3) 内存管理"
+categories:
+- "游戏开发"
+tags:
+- Orx
+- "游戏引擎"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '11'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="margin:1em 0px 0.5em" align="right"><strong><a style="color:#006bad;text-decoration:none" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p style="margin:1em 0px 0.5em" align="right"><a style="color:#770000;text-decoration:none" href="http://groups.google.com/group/jiutianfile/"><strong>讨论新闻组及文件</strong><br />
+</a></p>
+<p>内存管理在任何希望达到高效的游戏引擎中都是基础，我以前恰好做过类似的工作，所以这里先看看Orx的实现，再谈谈自己以往做类似工作时的经验。</p>
+<h2>Memory模块</h2>
+<p>个人感觉这是非常没有必要成为一个模块的模块。因为实质上没有任何必要的全局变量需要初始化，退出的时候也没有任何需要的扫尾工作，仅仅是几个函数而已，为啥Orx中这些函数会集中在一起作为一个Orx的模块，除了出于逻辑上一致的考虑，我感觉纯粹属于过度设计。。。。。。。。起码从目前来看是这样。<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;*orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxMemory_Allocate(orxU32 _u32Size, orxMEMORY_TYPE _eMemType);<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxMemory_Free(<span style="color: #008000;">void</span><br />
+&nbsp;*_pMem);<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;*orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxMemory_Copy(<span style="color: #008000;">void</span><br />
+&nbsp;*_pDest, <span style="color: #008000;">const</span><br />
+&nbsp;<span style="color: #008000;">void</span><br />
+&nbsp;*_pSrc, orxU32 _u32Size);<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;*orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxMemory_Move(<span style="color: #008000;">void</span><br />
+&nbsp;*_pDest, <span style="color: #008000;">void</span><br />
+&nbsp;*_pSrc, orxU32 _u32Size);<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI orxU32 orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp; orxMemory_Compare(<span style="color: #008000;">const</span><br />
+&nbsp;<span style="color: #008000;">void</span><br />
+&nbsp;*_pMem1, <span style="color: #008000;">const</span><br />
+&nbsp;<span style="color: #008000;">void</span><br />
+&nbsp;*_pMem2, orxU32 _u32Size);<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;*orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxMemory_Set(<span style="color: #008000;">void</span><br />
+&nbsp;*_pDest, orxU8 _u8Data, orxU32 _u32Size);<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;*orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxMemory_Zero(<span style="color: #008000;">void</span><br />
+&nbsp;*_pDest, orxU32 _u32Size);<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;*orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxMemory_Reallocate(<span style="color: #008000;">void</span><br />
+&nbsp;*_pMem, orxU32 _u32Size);<br />
+</span><br />
+<br />
+除了allocate多了一个type，其余全部的有用接口其实都是C语言中对应接口的直接包装，都只需要一条C语句就能完成。</p>
+<p>从内存的type上：<br />
+typedef enum __orxMEMORY_TYPE_t<br />
+{<br />
+&nbsp; orxMEMORY_TYPE_MAIN = 0,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**&lt; Main memory type */</p>
+<p>&nbsp; orxMEMORY_TYPE_VIDEO,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**&lt; Video memory type */<br />
+&nbsp; orxMEMORY_TYPE_SPRITE,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**&lt; Sprite memory type */<br />
+&nbsp; orxMEMORY_TYPE_BACKGROUND,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**&lt; Background memory type */<br />
+&nbsp; orxMEMORY_TYPE_PALETTE,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**&lt; Palette memory type */</p>
+<p>&nbsp; orxMEMORY_TYPE_CONFIG,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**&lt; Config memory */<br />
+&nbsp; orxMEMORY_TYPE_TEXT,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**&lt; Text memory */</p>
+<p>&nbsp; orxMEMORY_TYPE_TEMP,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**&lt; Temporary / scratch memory */</p>
+<p>&nbsp; orxMEMORY_TYPE_NUMBER,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /**&lt; Number of memory type */</p>
+<p>&nbsp; orxMEMORY_TYPE_NONE = orxENUM_NONE&nbsp;&nbsp;&nbsp; /**&lt; Invalid memory type */</p>
+<p>} orxMEMORY_TYPE;<br />
+可以看到作者的一些想法，但是事实上，物理上都没有区分的内存，（除了显存）无论怎么按类型分都是没有实际价值的。事实上，现在Orx也没有关心这个type。<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #008000;">void</span><br />
+&nbsp;*orxFASTCALL orxMemory_Allocate(orxU32 _u32Size, orxMEMORY_TYPE _eMemType)<br />
+ {<br />
+ &nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;Module initialized ? </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;orxASSERT((sstMemory.u32Flags &amp; orxMEMORY_KU32_STATIC_FLAG_READY) == orxMEMORY_KU32_STATIC_FLAG_READY);</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;Valid parameters ? </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;orxASSERT(_eMemType &lt; orxMEMORY_TYPE_NUMBER);</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;Returns system allocation function </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;<span style="color: #804000;">return</span><br />
+((<span style="color: #008000;">void</span><br />
+&nbsp;*)malloc(_u32Size));<br />
+ }<br />
+</span><br />
+<br />
+对C语言中标准的函数进行无意义的封装个人感觉除了影响效率，没有任何好处，这些C标准的东西本身也是跨平台的，封装它们干什么？从优化效率上考虑，稍微有些必要封装的也就是malloc和free两个而已。（realloc用的实在不多）除非Orx的作者看的更远，希望将来对包括内存<span style="font-family: monospace;">Copy</span><br />
+,compare在内的内存操作函数都进行自己针对特定CPU/平台的汇编级优化。</p>
+<h2>bank模块</h2>
+<p>这是Orx用于优化性能实现的内存缓存的模块。<br />
+主要结构如下：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">**************************************************************************</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* Structure declaration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *</span><br />
+<br />
+<span style="color: #804000;">&nbsp;**************************************************************************</span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">struct</span><br />
+&nbsp;__orxBANK_SEGMENT_t<br />
+ {<br />
+ &nbsp;&nbsp;orxU32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *pu32CellAllocationMap; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; List of bits that represents free and used elements in the segment </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;<span style="color: #008000;">void</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *pSegmentData;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Pointer address on the head of the segment data cells </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;<span style="color: #008000;">struct</span><br />
+&nbsp;__orxBANK_SEGMENT_t *pstNext;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Pointer on the next segment </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;orxU16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u16NbFree;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Number of free elements in the segment </span><br />
+<span style="color: #804000;">*/</span></p>
+<p> } orxBANK_SEGMENT;</p>
+<p><span style="color: #008000;">struct</span><br />
+&nbsp;__orxBANK_t<br />
+ {<br />
+ &nbsp;&nbsp;orxBANK_SEGMENT&nbsp; *pstFirstSegment;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; First segment used in the bank </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;orxU32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u32Flags;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Flags set for the memory bank </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;orxMEMORY_TYPE&nbsp;&nbsp;&nbsp; eMemType;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Memory type that will be used by the memory allocation </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;orxU32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u32ElemSize;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Size of a cell </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;orxU16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u16NbCellPerSegments;&nbsp;&nbsp; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Number of cells per banks </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;orxU16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u16SizeSegmentBitField; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Number of u32 (4 bytes) to represent a segment </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;orxU32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u32Counter;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Number of allocated cells </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ };</p>
+<p><span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">struct</span><br />
+&nbsp;__orxBANK_STATIC_t<br />
+ {<br />
+ &nbsp;&nbsp;orxU32 u32Flags;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Flags set by the memory module </span><br />
+<span style="color: #804000;">*/</span></p>
+<p> } orxBANK_STATIC;</p>
+<p><span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">**************************************************************************</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* Module global variable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *</span><br />
+<br />
+<span style="color: #804000;">&nbsp;**************************************************************************</span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">static</span><br />
+&nbsp;orxBANK_STATIC sstBank;</p>
+<p>从结构上看，bank应该以<span style="font-family: monospace;">__orxBANK_t</span><br />
+结构为主要结构，代表一个bank,每个bank中还可以包含一个<span style="font-family: monospace;">orxBANK_SEGMENT</span><br />
+类型的列表。实际内存缓存在<span style="font-family: monospace;"><span style="font-family: monospace;">orxBANK_SEGMENT</span><br />
+类型对象的<span style="font-family: monospace;">pSegmentData成员变量中。</p>
+<p>主要对外接口有4个：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* Creates a new bank in memory and returns a pointer on it</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @param[in] _u16NbElem&nbsp; Number of elements per segments</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @param[in] _u32Size&nbsp;&nbsp;&nbsp; Size of an element</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @param[in] _u32Flags&nbsp;&nbsp; Flags set for this bank</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @param[in] _eMemType&nbsp;&nbsp; Memory type where the datas will be allocated</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @return&nbsp; returns a pointer on the memory bank</span><br />
+<br />
+&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI orxBANK *orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxBank_Create(orxU16 _u16NbElem, orxU32 _u32Size, orxU32 _u32Flags, orxMEMORY_TYPE _eMemType);</p>
+<p><span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* Frees a portion of memory allocated with orxMemory_Allocate</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @param[in] _pstBank&nbsp;&nbsp;&nbsp; Pointer on the memory bank allocated by orx</span><br />
+<br />
+&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxBank_Delete(orxBANK *_pstBank);</p>
+<p><span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* Allocates a new cell from the bank</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @param[in] _pstBank&nbsp;&nbsp;&nbsp; Pointer on the memory bank to use</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @return a new cell of memory (orxNULL if no allocation possible)</span><br />
+<br />
+&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;*orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxBank_Allocate(orxBANK *_pstBank);</p>
+<p><span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* Frees an allocated cell</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @param[in] _pstBank&nbsp;&nbsp;&nbsp; Bank of memory from where _pCell has been allocated</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @param[in] _pCell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pointer on the cell to free</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @return a new cell of memory (orxNULL if no allocation possible)</span><br />
+<br />
+&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxBank_Free(orxBANK *_pstBank, <span style="color: #008000;">void</span><br />
+&nbsp;*_pCell);<br />
+</span></p>
+<p>从流程上来看看：<br />
+先建立一个测试工程，在原来的Orx独立应用程序上改改，有下面的代码已经几乎可以做到走遍bank全部主要部分代码：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #008000;">struct</span><br />
+&nbsp;myStruct {<br />
+ &nbsp;&nbsp;<span style="color: #008000;">int</span><br />
+&nbsp;i;<br />
+ };<br />
+ orxSTATUS GameApp::Init() {<br />
+ &nbsp;&nbsp;orxBANK *bank = orxBank_Create(<span style="color: #008080;">2</span><br />
+, <span style="color: #804000;">sizeof</span><br />
+(myStruct), orxBANK_KU32_FLAG_NONE, orxMEMORY_TYPE_MAIN);<br />
+ &nbsp;&nbsp;myStruct *p1 = (myStruct *)orxBank_Allocate(bank);<br />
+ &nbsp;&nbsp;myStruct *p2 = (myStruct *)orxBank_Allocate(bank);<br />
+ &nbsp;&nbsp;myStruct *p3 = (myStruct *)orxBank_Allocate(bank);<br />
+ &nbsp;&nbsp;orxBank_Free(bank, p1);<br />
+ &nbsp;&nbsp;orxBank_Free(bank, p2);<br />
+ &nbsp;&nbsp;orxBank_Free(bank, p3);<br />
+ &nbsp;&nbsp;orxBank_Delete(bank);<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">return</span><br />
+&nbsp;orxSTATUS_SUCCESS;<br />
+ }<br />
+<span style="font-family: monospace;">orxBank_Create与<span style="font-family: monospace;">orxBank_Delete是一对，用于创建删除一个bank对象。<br />
+然后可以通过<span style="font-family: monospace;">orxBank_Allocate</span><br />
+，<span style="font-family: monospace;">orxBank_Free</span><br />
+来获取或者释放内存。使用还算是简单，对于完全不想自己写内存管理模块的，即使是自己的项目也可以使用这个内存管理的部分，因为这是Orx中最最底层的代码，没有依赖太多其他的东西，剥离出来也不是很难。<br />
+</span><br />
+</span><br />
+</span><br />
+<br />
+因为内存这一部分可以说是小技巧众多并且非常dirty的部分了，几乎都是一个一个字节相关的内容，我就是从编写内存管理模块和文件系统开始习惯看成篇的2进制内存/文件数据的。所以这里我也没有兴趣一句一句的去了解Orx的做法了，大概的了解一下。<br />
+</span><br />
+</span><br />
+</span><br />
+操作流程部分：在用<span style="font-family: monospace;">orxBank_Create</span><br />
+创建bank的时候，就会使用orxBank_SegmentCreate创建一个指定数量缓存的Segment，每个cell的大小当然就是第2个参数指定的。事实上，每一个Segment都是一个列表，保存着<span style="font-family: monospace;">orxBank_Create</span><br />
+第一参数指定数量的cell。在默认情况下， 当一个Segment中的缓存都分配完了的时候，会自动分配新的Segment，新的Segment中的cell数量还是一样多，并且通过前一个Segment的<span style="font-family: monospace;">pstNext</span><br />
+成员变量串起来。</p>
+<p>内存实际分配结构：<br />
+每次分配Segment的时候实际分配的大小为：<br />
+&nbsp; /* Compute the segment size */<br />
+&nbsp; u32SegmentSize = sizeof(orxBANK_SEGMENT) +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Size of the structure */<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _pstBank-&gt;u16SizeSegmentBitField * sizeof(orxU32) +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Size of bitfields */<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _pstBank-&gt;u16NbCellPerSegments * _pstBank-&gt;u32ElemSize;&nbsp; /* Size of stored Data */</p>
+<p>总体的使用：<br />
+<span style="font-family: monospace;"><br />
+ &nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;Allocate a new segent of memory </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;pstSegment = (orxBANK_SEGMENT *)orxMemory_Allocate(u32SegmentSize, _pstBank-&gt;eMemType);<br />
+ &nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+(pstSegment != orxNULL)<br />
+ &nbsp;&nbsp;{<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;Set initial segment values </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;orxMemory_Zero(pstSegment, u32SegmentSize);<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;pstSegment-&gt;pstNext&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = orxNULL;<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;pstSegment-&gt;u16NbFree&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = _pstBank-&gt;u16NbCellPerSegments;<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;pstSegment-&gt;pu32CellAllocationMap = (orxU32 *)(((orxU8 *)pstSegment) + <span style="color: #804000;">sizeof</span><br />
+(orxBANK_SEGMENT));<br />
+ &nbsp;&nbsp;&nbsp;&nbsp;pstSegment-&gt;pSegmentData&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = (<span style="color: #008000;">void</span><br />
+&nbsp;*)(((orxU8 *)pstSegment-&gt;pu32CellAllocationMap) + (_pstBank-&gt;u16SizeSegmentBitField * <span style="color: #804000;">sizeof</span><br />
+(orxU32)));<br />
+ &nbsp;&nbsp;}<br />
+</span><br />
+<br />
+相当于将Segment自己的内存与其需要对外分配的内存一起分配，每次分配内存前面sizeof(orxBANK_SEGMENT)字节数的内存实际就做一个Segment结构对象使用，后面的_pstBank-&gt;u16SizeSegmentBitField * sizeof(orxU32)字节数内存作为一个标志数组使用，用于标志对应的某段内存是否已经分配，再后面的，才是实际会返回给用户使用的内存。</p>
+<h2>小结</h2>
+<p>Orx的内存管理模块对于习惯使用缓存并且非常需要使用缓存的地方还算是比较合适的，并且也还算容易使用。类似的技术也已经非常普遍了。<br />
+但是，个人感觉，类似的方式仅适用于的确已经常年习惯使用这种方式的人了，将这样添加缓存的功能完全的压到每个程序员头上，我感觉并不是很合适，最好的办法应该是在最底层透明的实现相关的功能，而不是这样将性能方面的要求强加给每个人。其次，对于已有项目，使用类似的技术需要对每个使用缓存的部分新加特别的代码，并不是很方便。还有，将缓存的代码遍布于项目中的每个角落，实在也不便于修改。在Orx中，memory,bank模块几乎被任何一个其他模块所依赖，很难想象需要改动的时候怎么办。</p>
+<p>其实做的更加人性，更加好一点的办法也不难，说的简单点，在C语言下就是直接替换malloc,free的实现，在C++中就是重载new,delete操作符，直接通过内存的size来进行用户级别的缓存，而完全不考虑每次分配内存的用途(比如Orx中的内存type)，实际的内存分配模块也的确不应该考虑和关心用户到底最后用此内存来做什么，给用户需要长度的内存就好了，那样做是加大了两方面的耦合。<br />
+基于size的缓存可以做的很简单，也可以很复杂，一般来说，对很小size的内存单独成链，为了限制链表的数量，可以取2次幂的方式。比如保存4,8,16,32,64等size的链表，每次分配这些大小的内存直接从链表中取，假如分配的大小在两个大小之间，则直接取一个更大的内存返回即可。比如用户分配9字节的内存，返回16给它，虽然造成了一定的内存浪费，但是考虑到效率和实现的问题，这并不是不可以接受。另外，对于C++来说，还可以重载标准库容器的分配器，上述方法和重载容器的分配器的方法可以参考一下SGI的STL实现。（在侯捷《STL源码剖析》中有详细描述）<br />
+其实，内存管理在C/C++中不仅仅出于效率方面的考虑，在大型项目中对于内存泄露的检测（特别是隐式的）这也是很重要的。<br />
+最后，其实，就我看到的资料都说明，现在C语言实现的自动垃圾回收效率已经非常高了，甚至已经比一般人写的手工内存管理效率还要高，如此说来，一个自动或半自动的垃圾回收机制也是个不错的选择。<br />
+总之，虽然我以前写服务器代码（常常需要以空间换时间）时写过很多类似Orx这种手工管理缓存的代码，但是，我感觉还是有很多更好的替代方案的。</p>
+<p align="left">&nbsp;</p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接</p>
+<p align="right"><strong><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p></p>

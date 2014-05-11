@@ -1,0 +1,1201 @@
+---
+layout: post
+title: "《Inside C++ Object 》 阅读笔记(1)， NRV（Named Return Value）"
+categories:
+- C++
+tags:
+- C++
+- NRV
+- "《Inside C++ Object 》"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '20'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="ProgId" content="Word.Document" /><meta name="Generator" content="Microsoft Word 12" /><meta name="Originator" content="Microsoft Word 12" />
+<link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_filelist.xml" />
+<link rel="themeData" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_themedata.thmx" />
+<link rel="colorSchemeMapping" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_colorschememapping.xml" /><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:WordDocument&gt;<br />
+  &lt;w:View&gt;Normal&lt;/w:View&gt;<br />
+  &lt;w:Zoom&gt;0&lt;/w:Zoom&gt;<br />
+  &lt;w:TrackMoves /&gt;<br />
+  &lt;w:TrackFormatting /&gt;<br />
+  &lt;w:PunctuationKerning /&gt;<br />
+  &lt;w:DrawingGridVerticalSpacing&gt;7.8 磅&lt;/w:DrawingGridVerticalSpacing&gt;<br />
+  &lt;w:DisplayHorizontalDrawingGridEvery&gt;0&lt;/w:DisplayHorizontalDrawingGridEvery&gt;<br />
+  &lt;w:DisplayVerticalDrawingGridEvery&gt;2&lt;/w:DisplayVerticalDrawingGridEvery&gt;<br />
+  &lt;w:ValidateAgainstSchemas /&gt;<br />
+  &lt;w:SaveIfXMLInvalid&gt;false&lt;/w:SaveIfXMLInvalid&gt;<br />
+  &lt;w:IgnoreMixedContent&gt;false&lt;/w:IgnoreMixedContent&gt;<br />
+  &lt;w:AlwaysShowPlaceholderText&gt;false&lt;/w:AlwaysShowPlaceholderText&gt;<br />
+  &lt;w:DoNotPromoteQF /&gt;<br />
+  &lt;w:LidThemeOther&gt;EN-US&lt;/w:LidThemeOther&gt;<br />
+  &lt;w:LidThemeAsian&gt;ZH-CN&lt;/w:LidThemeAsian&gt;<br />
+  &lt;w:LidThemeComplexScript&gt;X-NONE&lt;/w:LidThemeComplexScript&gt;<br />
+  &lt;w:Compatibility&gt;<br />
+   &lt;w:SpaceForUL /&gt;<br />
+   &lt;w:BalanceSingleByteDoubleByteWidth /&gt;<br />
+   &lt;w:DoNotLeaveBackslashAlone /&gt;<br />
+   &lt;w:ULTrailSpace /&gt;<br />
+   &lt;w:DoNotExpandShiftReturn /&gt;<br />
+   &lt;w:AdjustLineHeightInTable /&gt;<br />
+   &lt;w:BreakWrappedTables /&gt;<br />
+   &lt;w:SnapToGridInCell /&gt;<br />
+   &lt;w:WrapTextWithPunct /&gt;<br />
+   &lt;w:UseAsianBreakRules /&gt;<br />
+   &lt;w:DontGrowAutofit /&gt;<br />
+   &lt;w:SplitPgBreakAndParaMark /&gt;<br />
+   &lt;w:DontVertAlignCellWithSp /&gt;<br />
+   &lt;w:DontBreakConstrainedForcedTables /&gt;<br />
+   &lt;w:DontVertAlignInTxbx /&gt;<br />
+   &lt;w:Word11KerningPairs /&gt;<br />
+   &lt;w:CachedColBalance /&gt;<br />
+   &lt;w:UseFELayout /&gt;<br />
+  &lt;/w:Compatibility&gt;<br />
+  &lt;m:mathPr&gt;<br />
+   &lt;m:mathFont m:val="Cambria Math" /&gt;<br />
+   &lt;m:brkBin m:val="before" /&gt;<br />
+   &lt;m:brkBinSub m:val="&#45;-" /&gt;<br />
+   &lt;m:smallFrac m:val="off" /&gt;<br />
+   &lt;m:dispDef /&gt;<br />
+   &lt;m:lMargin m:val="0" /&gt;<br />
+   &lt;m:rMargin m:val="0" /&gt;<br />
+   &lt;m:defJc m:val="centerGroup" /&gt;<br />
+   &lt;m:wrapIndent m:val="1440" /&gt;<br />
+   &lt;m:intLim m:val="subSup" /&gt;<br />
+   &lt;m:naryLim m:val="undOvr" /&gt;<br />
+  &lt;/m:mathPr&gt;&lt;/w:WordDocument&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="true"<br />
+  DefSemiHidden="true" DefQFormat="false" DefPriority="99"<br />
+  LatentStyleCount="267"&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="0" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Normal" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="heading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="35" QFormat="true" Name="caption" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="10" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" Name="Default Paragraph Font" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="11" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtitle" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="22" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Strong" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="20" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="59" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Table Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Placeholder Text" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="No Spacing" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Revision" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="34" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="List Paragraph" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="29" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="30" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="19" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="21" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="31" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="32" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="33" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Book Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="37" Name="Bibliography" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" QFormat="true" Name="TOC Heading" /&gt;<br />
+ &lt;/w:LatentStyles&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><br />
+<style>
+<!--<br />
+ /* Font Definitions */<br />
+ @font-face<br />
+	{font-family:宋体;<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-alt:SimSun;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"Cambria Math";<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1107304683 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Cambria;<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073741899 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Calibri;<br />
+	panose-1:2 15 5 2 2 2 4 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:swiss;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073750139 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:"/@宋体";<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+ /* Style Definitions */<br />
+ p.MsoNormal, li.MsoNormal, div.MsoNormal<br />
+	{mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+h1<br />
+	{mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-link:"标题 1 Char";<br />
+	mso-style-next:正文;<br />
+	margin-top:24.0pt;<br />
+	margin-right:0cm;<br />
+	margin-bottom:0cm;<br />
+	margin-left:0cm;<br />
+	margin-bottom:.0001pt;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan lines-together;<br />
+	page-break-after:avoid;<br />
+	mso-outline-level:1;<br />
+	font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	mso-font-kerning:1.0pt;}<br />
+span.1Char<br />
+	{mso-style-name:"标题 1 Char";<br />
+	mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:"标题 1";<br />
+	mso-ansi-font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	font-weight:bold;}<br />
+.MsoChpDefault<br />
+	{mso-style-type:export-only;<br />
+	mso-default-props:yes;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+ /* Page Definitions */<br />
+ @page<br />
+	{mso-page-border-surround-header:no;<br />
+	mso-page-border-surround-footer:no;}<br />
+@page Section1<br />
+	{size:612.0pt 792.0pt;<br />
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;<br />
+	mso-header-margin:36.0pt;<br />
+	mso-footer-margin:36.0pt;<br />
+	mso-paper-source:0;}<br />
+div.Section1<br />
+	{page:Section1;}<br />
+--><br />
+</style>
+<p><!--[if gte mso 10]&gt;<br />
+&lt;style&gt;<br />
+ /* Style Definitions */<br />
+ table.MsoNormalTable<br />
+	{mso-style-name:普通表格;<br />
+	mso-tstyle-rowband-size:0;<br />
+	mso-tstyle-colband-size:0;<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;<br />
+	mso-para-margin:0cm;<br />
+	mso-para-margin-bottom:.0001pt;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:10.5pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-font-kerning:1.0pt;}<br />
+&lt;/style&gt;<br />
+&lt;![endif]--><br />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="ProgId" content="Word.Document" /><meta name="Generator" content="Microsoft Word 12" /><meta name="Originator" content="Microsoft Word 12" />
+<link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_filelist.xml" />
+<link rel="themeData" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_themedata.thmx" />
+<link rel="colorSchemeMapping" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_colorschememapping.xml" /><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:WordDocument&gt;<br />
+  &lt;w:View&gt;Normal&lt;/w:View&gt;<br />
+  &lt;w:Zoom&gt;0&lt;/w:Zoom&gt;<br />
+  &lt;w:TrackMoves /&gt;<br />
+  &lt;w:TrackFormatting /&gt;<br />
+  &lt;w:PunctuationKerning /&gt;<br />
+  &lt;w:DrawingGridVerticalSpacing&gt;7.8 磅&lt;/w:DrawingGridVerticalSpacing&gt;<br />
+  &lt;w:DisplayHorizontalDrawingGridEvery&gt;0&lt;/w:DisplayHorizontalDrawingGridEvery&gt;<br />
+  &lt;w:DisplayVerticalDrawingGridEvery&gt;2&lt;/w:DisplayVerticalDrawingGridEvery&gt;<br />
+  &lt;w:ValidateAgainstSchemas /&gt;<br />
+  &lt;w:SaveIfXMLInvalid&gt;false&lt;/w:SaveIfXMLInvalid&gt;<br />
+  &lt;w:IgnoreMixedContent&gt;false&lt;/w:IgnoreMixedContent&gt;<br />
+  &lt;w:AlwaysShowPlaceholderText&gt;false&lt;/w:AlwaysShowPlaceholderText&gt;<br />
+  &lt;w:DoNotPromoteQF /&gt;<br />
+  &lt;w:LidThemeOther&gt;EN-US&lt;/w:LidThemeOther&gt;<br />
+  &lt;w:LidThemeAsian&gt;ZH-CN&lt;/w:LidThemeAsian&gt;<br />
+  &lt;w:LidThemeComplexScript&gt;X-NONE&lt;/w:LidThemeComplexScript&gt;<br />
+  &lt;w:Compatibility&gt;<br />
+   &lt;w:SpaceForUL /&gt;<br />
+   &lt;w:BalanceSingleByteDoubleByteWidth /&gt;<br />
+   &lt;w:DoNotLeaveBackslashAlone /&gt;<br />
+   &lt;w:ULTrailSpace /&gt;<br />
+   &lt;w:DoNotExpandShiftReturn /&gt;<br />
+   &lt;w:AdjustLineHeightInTable /&gt;<br />
+   &lt;w:BreakWrappedTables /&gt;<br />
+   &lt;w:SnapToGridInCell /&gt;<br />
+   &lt;w:WrapTextWithPunct /&gt;<br />
+   &lt;w:UseAsianBreakRules /&gt;<br />
+   &lt;w:DontGrowAutofit /&gt;<br />
+   &lt;w:SplitPgBreakAndParaMark /&gt;<br />
+   &lt;w:DontVertAlignCellWithSp /&gt;<br />
+   &lt;w:DontBreakConstrainedForcedTables /&gt;<br />
+   &lt;w:DontVertAlignInTxbx /&gt;<br />
+   &lt;w:Word11KerningPairs /&gt;<br />
+   &lt;w:CachedColBalance /&gt;<br />
+   &lt;w:UseFELayout /&gt;<br />
+  &lt;/w:Compatibility&gt;<br />
+  &lt;m:mathPr&gt;<br />
+   &lt;m:mathFont m:val="Cambria Math" /&gt;<br />
+   &lt;m:brkBin m:val="before" /&gt;<br />
+   &lt;m:brkBinSub m:val="&#45;-" /&gt;<br />
+   &lt;m:smallFrac m:val="off" /&gt;<br />
+   &lt;m:dispDef /&gt;<br />
+   &lt;m:lMargin m:val="0" /&gt;<br />
+   &lt;m:rMargin m:val="0" /&gt;<br />
+   &lt;m:defJc m:val="centerGroup" /&gt;<br />
+   &lt;m:wrapIndent m:val="1440" /&gt;<br />
+   &lt;m:intLim m:val="subSup" /&gt;<br />
+   &lt;m:naryLim m:val="undOvr" /&gt;<br />
+  &lt;/m:mathPr&gt;&lt;/w:WordDocument&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="true"<br />
+  DefSemiHidden="true" DefQFormat="false" DefPriority="99"<br />
+  LatentStyleCount="267"&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="0" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Normal" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="heading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="35" QFormat="true" Name="caption" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="10" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" Name="Default Paragraph Font" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="11" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtitle" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="22" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Strong" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="20" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="59" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Table Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Placeholder Text" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="No Spacing" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Revision" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="34" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="List Paragraph" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="29" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="30" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="19" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="21" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="31" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="32" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="33" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Book Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="37" Name="Bibliography" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" QFormat="true" Name="TOC Heading" /&gt;<br />
+ &lt;/w:LatentStyles&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><br />
+<style>
+<!--<br />
+ /* Font Definitions */<br />
+ @font-face<br />
+	{font-family:宋体;<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-alt:SimSun;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"Cambria Math";<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1107304683 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Cambria;<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073741899 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Calibri;<br />
+	panose-1:2 15 5 2 2 2 4 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:swiss;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073750139 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:新宋体;<br />
+	panose-1:2 1 6 9 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:modern;<br />
+	mso-font-pitch:fixed;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"/@宋体";<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"/@新宋体";<br />
+	panose-1:2 1 6 9 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:modern;<br />
+	mso-font-pitch:fixed;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+ /* Style Definitions */<br />
+ p.MsoNormal, li.MsoNormal, div.MsoNormal<br />
+	{mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+h1<br />
+	{mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-link:"标题 1 Char";<br />
+	mso-style-next:正文;<br />
+	margin-top:24.0pt;<br />
+	margin-right:0cm;<br />
+	margin-bottom:0cm;<br />
+	margin-left:0cm;<br />
+	margin-bottom:.0001pt;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan lines-together;<br />
+	page-break-after:avoid;<br />
+	mso-outline-level:1;<br />
+	font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	mso-font-kerning:1.0pt;}<br />
+span.1Char<br />
+	{mso-style-name:"标题 1 Char";<br />
+	mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:"标题 1";<br />
+	mso-ansi-font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	font-weight:bold;}<br />
+.MsoChpDefault<br />
+	{mso-style-type:export-only;<br />
+	mso-default-props:yes;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+ /* Page Definitions */<br />
+ @page<br />
+	{mso-page-border-surround-header:no;<br />
+	mso-page-border-surround-footer:no;}<br />
+@page Section1<br />
+	{size:595.3pt 841.9pt;<br />
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;<br />
+	mso-header-margin:42.55pt;<br />
+	mso-footer-margin:49.6pt;<br />
+	mso-paper-source:0;<br />
+	layout-grid:15.6pt;}<br />
+div.Section1<br />
+	{page:Section1;}<br />
+--><br />
+</style>
+<p><!--[if gte mso 10]&gt;<br />
+&lt;style&gt;<br />
+ /* Style Definitions */<br />
+ table.MsoNormalTable<br />
+	{mso-style-name:普通表格;<br />
+	mso-tstyle-rowband-size:0;<br />
+	mso-tstyle-colband-size:0;<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;<br />
+	mso-para-margin:0cm;<br />
+	mso-para-margin-bottom:.0001pt;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:10.5pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-font-kerning:1.0pt;}<br />
+&lt;/style&gt;<br />
+&lt;![endif]--></p>
+<h1><span style="font-family: 宋体;">《</span><span lang="EN-US">Inside C++ Object&nbsp;</span><span style="font-family: 宋体;">》</span> <span style="font-family: 宋体;">阅读笔记</span><span lang="EN-US">(1)</span><span style="font-family: 宋体;">，</span><span lang="EN-US">&nbsp;NRV</span><span style="font-family: 宋体;">（</span><span lang="EN-US">Named Return<br />
+Value</span><span style="font-family: 宋体;">）</span></h1>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; text-align: center; line-height: normal;" align="center"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">九天雁翎</span><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">书其实看完了，因为实在公司抽中午吃饭剩余时间看的，所以其实一直没有好好的试验一下，现在将书带到家里好好的一个一个将感兴趣的测试一下了。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">&nbsp;NRV</span><span style="font-family: 宋体;">（</span><span style="" lang="EN-US">Named Return Value</span><span style="font-family: 宋体;">）是我阅读《</span><span style="" lang="EN-US">Inside C++ Object</span><span style="font-family: 宋体;">》碰到的第一个感兴趣的东西，书上面有</span><span style="" lang="EN-US">Lippman</span><span style="font-family: 宋体;">的测试数据和侯捷的测试数据。当然，对于</span><span style="" lang="EN-US">VS</span><span style="font-family: 宋体;">的效率一直没有报太大希望，但是不至于这个</span><span style="" lang="EN-US">Lippman</span><span style="font-family: 宋体;">所说的编译器的义不容辞的优化都不做吧。可能因为侯捷用的</span><span style="" lang="EN-US">VC5.0</span><span style="font-family: 宋体;">实在太老了，于是我自己决定测试一下。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">首先在</span><span style="" lang="EN-US">Linux</span><span style="font-family: 宋体;">下</span><span style="" lang="EN-US">,</span><span style="font-family: 宋体;">我测试了一下。测试代码书上有，我还是贴一下：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">#include</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(163, 21, 21);">&lt;stdio.h&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">#include</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(163, 21, 21);">&lt;stdlib.h&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">#include</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(163, 21, 21);">&lt;memory&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">#ifdef _WIN32<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">#include </span><span style='font-family: "Times New Roman","serif";' lang="EN-US">“</span><span style="font-family: 新宋体;" lang="EN-US">jtianling.h</span><span style='font-family: "Times New Roman","serif";' lang="EN-US">”</span><span style="font-family: 新宋体;" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: rgb(163, 21, 21);" lang="EN-US">#endif<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">using</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: blue;">namespace</span> <span style="color: rgb(1, 0, 1);">std</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">class</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(1, 0, 1);">CTest<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">friend</span> <span style="color: rgb(1, 0, 1);">CTest</span><br />
+<span style="color: rgb(1, 0, 1);">foo</span>(<span style="color: blue;">double</span>);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">public</span><span style="font-family: 新宋体;" lang="EN-US">:<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">CTest</span>()<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">memset</span>(<span style="color: blue;">array</span>, 0, 100*<span style="color: blue;">sizeof</span>(<span style="color: blue;">double</span>));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">// </span><span style="font-family: 新宋体;">以下面的语句决定是否进行<span lang="EN-US">NRV<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">CTest</span>(<span style="color: blue;">const</span><br />
+<span style="color: rgb(1, 0, 1);">CTest</span>&amp;<span style="color: rgb(1, 0, 1);">t</span>)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">memcpy</span>(<span style="color: blue;">this</span>, &amp;<span style="color: rgb(1, 0, 1);">t</span>, <span style="color: blue;">sizeof</span>(<span style="color: rgb(1, 0, 1);">CTest</span>));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">private</span><span style="font-family: 新宋体;" lang="EN-US">:<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">double</span> <span style="color: blue;">array</span>[100];<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">};<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: rgb(1, 0, 1);" lang="EN-US">CTest</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(1, 0, 1);">foo</span>(<span style="color: blue;">double</span> <span style="color: rgb(1, 0, 1);">val</span>)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">CTest</span> <span style="color: rgb(1, 0, 1);">local</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">local</span>.<span style="color: blue;">array</span>[0]<br />
+= <span style="color: rgb(1, 0, 1);">val</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">local</span>.<span style="color: blue;">array</span>[99]<br />
+= <span style="color: rgb(1, 0, 1);">val</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">return</span> <span style="color: rgb(1, 0, 1);">local</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">int</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(1, 0, 1);">main</span>(<span style="color: blue;">int</span> <span style="color: rgb(1, 0, 1);">argc</span>, <span style="color: blue;">char</span>* <span style="color: rgb(1, 0, 1);">argv</span>[])<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">#ifdef _WIN32<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">double</span> <span style="color: rgb(1, 0, 1);">timenow</span><br />
+= <span style="color: rgb(1, 0, 1);">jtianling</span>::<span style="color: rgb(1, 0, 1);">GetTime</span>();<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">#endif<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">for</span>(<span style="color: blue;">int</span><br />
+<span style="color: rgb(1, 0, 1);">i</span>=0; <span style="color: rgb(1, 0, 1);">i</span>&lt;10000000;<br />
+++<span style="color: rgb(1, 0, 1);">i</span>)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">CTest</span> <span style="color: rgb(1, 0, 1);">t</span> = <span style="color: rgb(1, 0, 1);">foo</span>(<span style="color: blue;">double</span>(<span style="color: rgb(1, 0, 1);">i</span>));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">#ifdef _WIN32<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">timenow</span> = <span style="color: rgb(1, 0, 1);">jtianling</span>::<span style="color: rgb(1, 0, 1);">GetTime</span>()<br />
+- <span style="color: rgb(1, 0, 1);">timenow</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">cout</span> &lt;&lt;<span style="color: rgb(1, 0, 1);">timenow</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">#endif<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">system</span>(<span style="color: rgb(163, 21, 21);">"pause"</span>);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">exit</span>(0);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">因为在</span><span style="" lang="EN-US">linux</span><span style="font-family: 宋体;">下我有</span><span style="" lang="EN-US">sheel</span><span style="font-family: 宋体;">下的</span><span style="" lang="EN-US">time</span><span style="font-family: 宋体;">可以用，所以不需要自己在程序中计时（实际上这还导致</span><span style="" lang="EN-US">linux</span><span style="font-family: 宋体;">下的时间会长一些，因为记上了循环外的部分，包括了</span><span style="" lang="EN-US">main</span><span style="font-family: 宋体;">的调用等），</span><span style="" lang="EN-US">windows</span><span style="font-family: 宋体;">下用我自己的带有</span><span style="" lang="EN-US">gettime</span><span style="font-family: 宋体;">的一个库。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">效果是很有意思的，在</span><span style="" lang="EN-US">linux</span><span style="font-family: 宋体;">下测试得出不进行</span><span style="" lang="EN-US">NRV</span><span style="font-family: 宋体;">优化，进行</span><span style="" lang="EN-US">NRV</span><span style="font-family: 宋体;">优化（</span><span style="" lang="EN-US">g++ -O1</span><span style="font-family: 宋体;">）和进行</span><span style="" lang="EN-US">NRV</span><span style="font-family: 宋体;">优化</span><span style="" lang="EN-US">(g++ -O3)</span><span style="font-family: 宋体;">时，在我的</span><span style="" lang="EN-US">P3 800</span><span style="font-family: 宋体;">的可怜机器上得出的结果是</span><span style="" lang="EN-US">8.61,5.08,4.67</span><span style="font-family: 宋体;">。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">在我的</span><span style="" lang="EN-US">windows</span><span style="font-family: 宋体;">下用</span><span style="" lang="EN-US">VS 2005 SP1</span><span style="font-family: 宋体;">编译，跑在</span><span style="" lang="EN-US">E2160</span><span style="font-family: 宋体;">的机子上，</span><span style="" lang="EN-US">debug</span><span style="font-family: 宋体;">时，没有拷贝构造，即理论上不进行</span><span style="" lang="EN-US">NRV</span><span style="font-family: 宋体;">优化时的时间是</span><span style="" lang="EN-US">5.07</span><span style="font-family: 宋体;">，加上拷贝构造函数，即理论上进行</span><span style="" lang="EN-US">NRV</span><span style="font-family: 宋体;">时的时间的确和侯捷一致，时间增加到了</span><span style="" lang="EN-US">5.55.</span><span style="font-family: 宋体;">可见起码在关闭优化的时候，</span><span style="" lang="EN-US">VS2005</span><span style="font-family: 宋体;">没有进行优化。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">开启优化呢？更绝得事情来了，</span><span style="" lang="EN-US">VS2005</span><span style="font-family: 宋体;">将整个循环优化掉了</span><span style="" lang="EN-US">-_-!</span><span style="font-family: 宋体;">作弊！时间虽然短到</span><span style="" lang="EN-US">-7e</span><span style="font-family: 宋体;">，但是我也不承认：）</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">罪证拷贝如下：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401038<span style="">&nbsp; </span>call<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>edi<span style="">&nbsp; </span><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">0040103A<span style="">&nbsp; </span>fild<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>qword ptr [esp+30h] <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">0040103E<span style="">&nbsp; </span>fild<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>qword ptr<br />
+[___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+8<br />
+(403390h)] <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401044<span style="">&nbsp; </span>fdivp<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>st(1),st <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>for(int i=0;<br />
+i&lt;10000000; ++i)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>CTest t =<br />
+foo(double(i));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>timenow =<br />
+jtianling::GetTime() - timenow;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401046<span style="">&nbsp; </span>mov<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>edx,dword ptr<br />
+[___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+8<br />
+(403390h)] <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">0040104C<span style="">&nbsp; </span>fstp<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>qword ptr [esp+30h] <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401050<span style="">&nbsp; </span>or<span style="">&nbsp;&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>edx,dword ptr<br />
+[___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+0Ch<br />
+(403394h)] <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401056<span style="">&nbsp; </span>jne<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>main+67h (401067h) <o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9pt; line-height: 115%; font-family: 新宋体; color: gray;" lang="EN-US">00401058<span style="">&nbsp; </span>push<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>offset ___@@_PchSym_@00@UnbLwlx<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9pt; line-height: 115%; font-family: 新宋体; color: gray;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">会发现循环完全被抛弃掉了，不过虽然影响了测试，但是这个时候我还得承认这是条还算合理的优化，因为在</span><span style="" lang="EN-US">release</span><span style="font-family: 宋体;">时，这个循环不能给我们带来任何我们想要的东西。实际上以前就经常碰到这样的问题，</span><span style="" lang="EN-US">MS</span><span style="font-family: 宋体;">老是喜欢将它认为无意义的东西直接优化没有，。。。。常常影响测试。。。。。呵呵，今天我是的确想知道，它到底有没有</span><span style="" lang="EN-US">NRV</span><span style="font-family: 宋体;">优化，于是，让这个循环有意义吧。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">将程序改成如下状态</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">#include</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(163, 21, 21);">"jtianling.h"<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">#include</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(163, 21, 21);">&lt;stdio.h&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">#include</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(163, 21, 21);">&lt;stdlib.h&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">#include</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(163, 21, 21);">&lt;memory&gt;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">using</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: blue;">namespace</span> <span style="color: rgb(1, 0, 1);">std</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">int</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(1, 0, 1);">gi</span> = 1;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">int</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(1, 0, 1);">gj</span> = 1;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">class</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(1, 0, 1);">CTest<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">friend</span> <span style="color: rgb(1, 0, 1);">CTest</span><br />
+<span style="color: rgb(1, 0, 1);">foo</span>(<span style="color: blue;">double</span>);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">public</span><span style="font-family: 新宋体;" lang="EN-US">:<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">CTest</span>()<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">gj</span>++;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">memset</span>(<span style="color: blue;">array</span>, 0, 100*<span style="color: blue;">sizeof</span>(<span style="color: blue;">double</span>));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: green;">//CTest(const CTest&amp;t)<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: green;">//{<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: green;">//<span style="">&nbsp; </span>gj++;<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: green;">//<span style="">&nbsp; </span>memcpy(this,<br />
+&amp;t, sizeof(CTest));<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: green;">//}<o:p></o:p></span></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: green;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">double</span> <span style="color: blue;">array</span>[100];<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">};<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: rgb(1, 0, 1);" lang="EN-US">CTest</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(1, 0, 1);">foo</span>(<span style="color: blue;">double</span> <span style="color: rgb(1, 0, 1);">val</span>)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">CTest</span> <span style="color: rgb(1, 0, 1);">local</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">local</span>.<span style="color: blue;">array</span>[0]<br />
+= <span style="color: rgb(1, 0, 1);">val</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">local</span>.<span style="color: blue;">array</span>[99]<br />
+= <span style="color: rgb(1, 0, 1);">val</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">return</span> <span style="color: rgb(1, 0, 1);">local</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">int</span><span style="font-family: 新宋体;" lang="EN-US"> <span style="color: rgb(1, 0, 1);">main</span>(<span style="color: blue;">int</span> <span style="color: rgb(1, 0, 1);">argc</span>, <span style="color: blue;">char</span>* <span style="color: rgb(1, 0, 1);">argv</span>[])<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">double</span> <span style="color: rgb(1, 0, 1);">timenow</span><br />
+= <span style="color: rgb(1, 0, 1);">jtianling</span>::<span style="color: rgb(1, 0, 1);">GetTime</span>();<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">for</span>(<span style="color: blue;">int</span><br />
+<span style="color: rgb(1, 0, 1);">i</span>=0; <span style="color: rgb(1, 0, 1);">i</span>&lt;10000000;<br />
+++<span style="color: rgb(1, 0, 1);">i</span>)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">CTest</span> <span style="color: rgb(1, 0, 1);">t</span> = <span style="color: rgb(1, 0, 1);">foo</span>(<span style="color: blue;">double</span>(<span style="color: rgb(1, 0, 1);">i</span>));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">gi</span> = <span style="color: rgb(1, 0, 1);">t</span>.<span style="color: blue;">array</span>[99];<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">timenow</span> = <span style="color: rgb(1, 0, 1);">jtianling</span>::<span style="color: rgb(1, 0, 1);">GetTime</span>()<br />
+- <span style="color: rgb(1, 0, 1);">timenow</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">cout</span> &lt;&lt;<span style="color: rgb(1, 0, 1);">timenow</span> &lt;&lt;<span style="color: rgb(163, 21, 21);">"/t"</span><br />
+&lt;&lt;<span style="color: rgb(1, 0, 1);">gi</span> &lt;&lt;<span style="color: rgb(163, 21, 21);">"/t"</span><br />
+&lt;&lt;<span style="color: rgb(1, 0, 1);">gj</span> &lt;&lt;<span style="color: rgb(1, 0, 1);">endl</span>;<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">system</span>(<span style="color: rgb(163, 21, 21);">"pause"</span>);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp; </span><span style="color: rgb(1, 0, 1);">exit</span>(0);<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US">}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">分别测试有</span><span style="" lang="EN-US">copy constructor</span><span style="font-family: 宋体;">和没有的情况，结果仍然和以前一致，虽然速度很快，但是，有</span><span style="" lang="EN-US">copy constructor</span><span style="font-family: 宋体;">的时候速度还是要慢一些，这点很让人不解，更让人不解的是，既然没有开启</span><span style="" lang="EN-US">NRV</span><span style="font-family: 宋体;">，那么应该会有</span><span style="" lang="EN-US">1</span><span style="font-family: 宋体;">次</span><span style="" lang="EN-US">default constructor</span><span style="font-family: 宋体;">的调用用来构建临时变量，然后再有一次</span><span style="" lang="EN-US">copy constructor</span><span style="font-family: 宋体;">来返回值，但是实际上</span><span style="" lang="EN-US">gj</span><span style="font-family: 宋体;">显示</span><span style="" lang="EN-US">default constructor</span><span style="font-family: 宋体;">和</span><span style="" lang="EN-US">copy constructor</span><span style="font-family: 宋体;">中只有一个被调用了。说明起码是进行了某种优化了。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">难道</span><span style="" lang="EN-US">MS</span><span style="font-family: 宋体;">用的是另外一个不同于</span><span style="" lang="EN-US">NRV</span><span style="font-family: 宋体;">的优化方案？</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">于是我还是从汇编来看，再怎么优化它逃不过我的眼睛：）</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>for(int i=0;<br />
+i&lt;10000000; ++i)<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401337<span style="">&nbsp; </span>xor<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>esi,esi <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401339<span style="">&nbsp; </span>fstp<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>qword ptr [esp+38h] <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: red;" lang="EN-US">0040133D<span style="">&nbsp; </span>add<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>dword ptr [gj (403024h)],989680h <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401347<span style="">&nbsp; </span>mov<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>dword ptr [esp+30h],esi <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">0040134B<span style="">&nbsp; </span>jmp<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>main+60h (401350h) <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">0040134D<span style="">&nbsp; </span>lea<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>ecx,[ecx] <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>{<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>CTest t = foo(double(i));<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401350<span style="">&nbsp; </span>fild<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>dword ptr [esp+30h] <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>gi =<br />
+t.array[99];<o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401354<span style="">&nbsp; </span>call<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>_ftol2_sse (401BE0h) <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401359<span style="">&nbsp; </span>add<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>esi,1 <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">0040135C<span style="">&nbsp; </span>cmp<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>esi,989680h <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401362<span style="">&nbsp; </span>mov<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>dword ptr [gi (403020h)],eax <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">00401367<span style="">&nbsp; </span>mov<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>dword ptr [esp+30h],esi <o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-size: 9pt; font-family: 新宋体; color: gray;" lang="EN-US">0040136B<span style="">&nbsp; </span>jl<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span>main+60h (401350h) <o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9pt; line-height: 115%; font-family: 新宋体;" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>}<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">Have you seen it?</span><span style="font-family: 宋体;">红色部分，当我第一次看到</span><span style="" lang="EN-US">989680h</span><span style="font-family: 宋体;">的时候，它的值已经是一千万了，说白了就是</span><span style="" lang="EN-US">MS</span><span style="font-family: 宋体;">将原来的废循环中的唯一一条不废的语句抽出来，然后在编译期就算好了这条不废语句应该有的值，然后运行时仅仅进行了一条赋值操作。而且绝的是，编译期的这个值的计算是按</span><span style="" lang="EN-US">NRV</span><span style="font-family: 宋体;">优化后的流程进行的，即</span><span style="" lang="EN-US">gj</span><span style="font-family: 宋体;">为</span><span style="" lang="EN-US">1</span><span style="font-family: 宋体;">千万。。。。。。优化成这样，我不知道该怎么说了。。。。。根本就不会有任何的构造函数和拷贝构造函数的调用。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">然后我将</span><span style="" lang="EN-US">copy constructor</span><span style="font-family: 宋体;">注释掉，再次编译运行，最最让人惊讶的事情发生了，汇编代码完全一样。。。。。不是我眼睛不好使，我用</span><span style="" lang="EN-US">BC</span><span style="font-family: 宋体;">对比后结果也是一样的。天哪，这还算优化吗？。。。。简直是恶意篡改代码</span><span style="" lang="EN-US">........</span><span style="font-family: 宋体;">呵呵，说严重了。问题是。。。最大的问题是，无论我测多少次，一样的汇编代码，在有</span><span style="" lang="EN-US">copy constructor</span><span style="font-family: 宋体;">的版本总会慢一些，数量级在</span><span style="" lang="EN-US">0.0001</span><span style="font-family: 宋体;">上，我也曾怀疑可能是偶尔的机器性能波动，但是实际多次测试，有</span><span style="" lang="EN-US">copy constructor</span><span style="font-family: 宋体;">的版本就是会慢一些，希望有人能给我解答这个问题。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><span style="">&nbsp;</span></span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;">九天雁翎</span></u></b><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>

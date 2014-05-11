@@ -1,0 +1,413 @@
+---
+layout: post
+title: "从剪贴板到剪贴板的通用语法高亮软件发布（支持N多语言）"
+categories:
+- "我的程序"
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '11'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p>&nbsp;</p>
+<p style="margin: 1em 0px 0.5em;" align="right"><strong><a style="color: #006bad; text-decoration: none;" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p style="margin: 1em 0px 0.5em;" align="right"><a style="color: #770000; text-decoration: none;" href="http://groups.google.com/group/jiutianfile/"><strong>讨论新闻组及文件</strong><br />
+</a></p>
+<h2 style="margin: 0px;">&nbsp;需求来源</h2>
+<p>&nbsp;&nbsp; &nbsp;不太喜欢太限制于Windows下的Windows live<br />
+writer（以下简称WLW），虽然很多人认为它是博客写作工具的number<br />
+one，甚至看到有外国的朋友曾经高呼，Linux下唯一缺少替代品的软件就是WLW了，经过长久的使用，本身功能并不算太强大，但是开放的插件系统，让<br />
+其强大到无以复加，我在以前《<span style="font-size: small;"><a href="http://www.jtianling.com/archive/2009/10/18/4689516.aspx" target="_blank"><span style="color: #c60a00;">windows</span><br />
+<span style="color: #c60a00;">live</span><br />
+<span style="color: #c60a00;">writer</span><br />
+试用及众多插件试用评测...</a><br />
+</span><br />
+》<br />
+文中有很详细的描述，过程中也解决过很多WLW本身的问题，比如没有模板的问题，(通过autohotkey解决），比如说本地保存目录不能改变的问题，<br />
+（通过junction来改变）比如在公司及家中文档不能同步的问题，（通过dropbox)，但是越依赖WLW，我就感觉越不舒服，因为我在Linux<br />
+下越来越感觉没有好用的博客写作工具了，而且WLW专有的格式，使得我无法太好的使用已有的文档，这些都是无法忽视的大问题，于是，最终，我决定彻底的迁<br />
+移到Google Document上来，无论是普通的文档，还是Blog的写作。</p>
+<p>&nbsp;&nbsp;&nbsp; 首先有个先天性的问题，Google<br />
+Document是没有开发插件系统的，这样，碰到问题我们都没有办法通过扩展来解决，特别突出的问题就是代码高亮问题，对于程序员的博客。。。。。。贴<br />
+代码实在是太经常的事情了，不能解决此问题也是我以前甚至愿意用Word2007来写博客都不用Google<br />
+Document。既然今天决定了使用Google<br />
+Document，那么找个办法来解决此问题吧，方法目前想到一个，HTML的直接插入，（还好Google<br />
+Document支持），那么我只需要将代码在剪贴板中保存为高亮的HTML，然后直接嵌入Google Document就行了，So<br />
+Easy................解决此问题吧，于是就有了我的新工程&ldquo;<a style="text-decoration: none; color: #000000;" href="http://code.google.com/p/code-highlight-clipboard2clipboard/">code-highlight-clipboard2clipboard</a><br />
+&rdquo;，因为自己写语法分析及高亮的代码实在太麻烦了，只好选择站在巨人的肩膀上：）我利用GVim来解决此问题。（目前使用时需要自己先安装Gvim，并且将其目录加进PATH中，即在任何目录下都能通过gvim命令调用到gvim）</p>
+<p>&nbsp;</p>
+<h2>先看看效果<br />
+</h2>
+<p>&nbsp;</p>
+<p>此文在Google Document下完成，以下是主体源代码的实际转换效果。还算是比较漂亮吧：）</p>
+<p>&nbsp;</p>
+<p>
+<span style="font-family: monospace;"><br />
+<span style="color: #804040;">&nbsp;1 </span><br />
+<span style="color: #a020f0;">from</span><br />
+&nbsp;optparse <span style="color: #a020f0;">import</span><br />
+&nbsp;OptionParser<br />
+<span style="color: #804040;">&nbsp;2 </span><br />
+<span style="color: #a020f0;">from</span><br />
+&nbsp;distutils.file_util <span style="color: #a020f0;">import</span><br />
+&nbsp;*<br />
+<span style="color: #804040;">&nbsp;3 </span><br />
+<span style="color: #a020f0;">import</span><br />
+&nbsp;os<br />
+<span style="color: #804040;">&nbsp;4 </span><br />
+<span style="color: #a020f0;">import</span><br />
+&nbsp;tempfile<br />
+<span style="color: #804040;">&nbsp;5 </span><br />
+<br />
+<span style="color: #804040;">&nbsp;6 </span><br />
+<span style="color: #804040;"><strong>def</strong><br />
+</span><br />
+&nbsp;<span style="color: #008080;">main</span><br />
+():<br />
+<span style="color: #804040;">&nbsp;7 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: #804040;">&nbsp;8 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;usage = '<span style="color: #ff00ff;">usage: %prog [options]</span><br />
+'<br />
+<span style="color: #804040;">&nbsp;9 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;version = '''<span style="color: #ff00ff;">%prog 0.1 Created By JTianLing</span><br />
+<br />
+<span style="color: #804040;">10 </span><br />
+<span style="color: #ff00ff;">Any Question could be sent to JTianLing{at}Gmail.com,</span><br />
+<br />
+<span style="color: #804040;">11 </span><br />
+<span style="color: #ff00ff;">and any advice or any bug report is appreciated too.</span><br />
+'''<br />
+<span style="color: #804040;">12 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: #804040;">13 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;parser = OptionParser(usage, version = version)<br />
+<span style="color: #804040;">14 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;parser.add_option('<span style="color: #ff00ff;">-f</span><br />
+', '<span style="color: #ff00ff;">--filename</span><br />
+', metavar = '<span style="color: #ff00ff;">FILE</span><br />
+', dest = '<span style="color: #ff00ff;">filename</span><br />
+', <br />
+<span style="color: #804040;">15 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;help = '<span style="color: #ff00ff;">Write output to FILE and save it.</span><br />
+')<br />
+<span style="color: #804040;">16 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;parser.add_option('<span style="color: #ff00ff;">-t</span><br />
+', '<span style="color: #ff00ff;">--syntax</span><br />
+', action = '<span style="color: #ff00ff;">store</span><br />
+',<br />
+<span style="color: #804040;">17 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type = '<span style="color: #ff00ff;">string</span><br />
+', dest = '<span style="color: #ff00ff;">syntax</span><br />
+',<br />
+<span style="color: #804040;">18 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default = '',<br />
+<span style="color: #804040;">19 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;help = '<span style="color: #ff00ff;">Set the code syntax type</span><br />
+')<br />
+<span style="color: #804040;">20 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;parser.add_option('<span style="color: #ff00ff;">-c</span><br />
+', '<span style="color: #ff00ff;">--color</span><br />
+', action = '<span style="color: #ff00ff;">store</span><br />
+',<br />
+<span style="color: #804040;">21 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type = '<span style="color: #ff00ff;">string</span><br />
+', dest = '<span style="color: #ff00ff;">color</span><br />
+',<br />
+<span style="color: #804040;">22 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default = '<span style="color: #ff00ff;">default</span><br />
+',<br />
+<span style="color: #804040;">23 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;help = '<span style="color: #ff00ff;">Set the code highlight color template</span><br />
+')<br />
+<span style="color: #804040;">24 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;parser.add_option('<span style="color: #ff00ff;">-n</span><br />
+', action= '<span style="color: #ff00ff;">store_true</span><br />
+', dest = '<span style="color: #ff00ff;">isNumber</span><br />
+',<br />
+<span style="color: #804040;">25 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default = False,<br />
+<span style="color: #804040;">26 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;help = '<span style="color: #ff00ff;">Is output with line number.</span><br />
+')<br />
+<span style="color: #804040;">27 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;(options, args) = parser.parse_args()<br />
+<span style="color: #804040;">28 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: #804040;">29 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;filename = tempfile.mktemp() + '<span style="color: #ff00ff;">.tmp</span><br />
+'<br />
+<span style="color: #804040;">30 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: #804040;">31 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;cboutStr = '<span style="color: #ff00ff;">cbout &gt; </span><br />
+' + filename<br />
+<span style="color: #804040;">32 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;os.system(cboutStr)<br />
+<span style="color: #804040;">33 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: #804040;">34 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;syn = options.syntax<br />
+<span style="color: #804040;">35 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;color = options.color<br />
+<span style="color: #804040;">36 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: #804040;">37 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;"># ugly but useful vim's format code</span><br />
+<br />
+<span style="color: #804040;">38 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;vimCmd = '<span style="color: #ff00ff;">gvim -c &quot;:syntax on|:color </span><br />
+' + color + '<span style="color: #ff00ff;">|:set syn=</span><br />
+' + syn<span style="color: #6a5acd;">/</span><br />
+<br />
+<span style="color: #804040;">39 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp; + '<span style="color: #ff00ff;">|:set nu</span><br />
+' + (''&nbsp;<span style="color: #804040;"><strong>if</strong><br />
+</span><br />
+&nbsp;options.isNumber <span style="color: #804040;"><strong>else</strong><br />
+</span><br />
+&nbsp;'<span style="color: #ff00ff;">!</span><br />
+') + '<span style="color: #ff00ff;">|TOhtml&quot; -c &quot;:w|:qa&quot; </span><br />
+' + filename<br />
+<span style="color: #804040;">40 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;os.system(vimCmd) <br />
+<span style="color: #804040;">41 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;">#print(vimCmd)</span><br />
+<br />
+<span style="color: #804040;">42 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: #804040;">43 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;newFilename = filename + '<span style="color: #ff00ff;">.html</span><br />
+'<br />
+<span style="color: #804040;">44 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;cbinStr = '<span style="color: #ff00ff;">more </span><br />
+' + newFilename + '<span style="color: #ff00ff;">&nbsp;| cbin</span><br />
+'<br />
+<span style="color: #804040;">45 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;os.system(cbinStr)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<span style="color: #804040;">46 </span><br />
+<br />
+<span style="color: #804040;">47 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000ff;"># Del the temp file when that's needed</span><br />
+<br />
+<span style="color: #804040;">48 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>if</strong><br />
+</span><br />
+&nbsp;options.filename:<br />
+<span style="color: #804040;">49 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;move_file(newFilename, '<span style="color: #ff00ff;">./</span><br />
+' + options.filename)<br />
+<span style="color: #804040;">50 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>else</strong><br />
+</span><br />
+:<br />
+<span style="color: #804040;">51 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.remove(newFilename)<br />
+<span style="color: #804040;">52 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: #804040;">53 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;os.remove(filename)<br />
+<span style="color: #804040;">54 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: #804040;">55 </span><br />
+<span style="color: #804040;"><strong>if</strong><br />
+</span><br />
+&nbsp;__name__ == '<span style="color: #ff00ff;">__main__</span><br />
+':<br />
+<span style="color: #804040;">56 </span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;main()<br />
+</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>使用<br />
+</h2>
+<p>&nbsp;</p>
+<p>除了以上的源代码，我还实现了两个类似于stdin及stdout的与剪贴板相关的cbin,cbout命令(clipboard in or out)。实际使用方法类似stdin及stdout，分别是写入剪贴版中及从剪贴板中读出数据，（只支持文本格式）</p>
+<p>其实下一版预计还可以抽出整个转换的过程，那样使用起来可能更加灵活。目前此代码仅在Windows下测试，但是为了兼容，我使用了PyQt的库（所以狂大，其实才几行代码），将来会在Linux下测试及发布Linux的</p>
+<p>二进制版本。</p>
+<p>&nbsp;</p>
+<p>使用方法是在Google Document中通过（Edit-&gt;Edit Html-&gt;粘贴-&gt;Update），你也可以保存为任何你想要的文件/粘贴到你想要去的任何位置。</p>
+<p>命令的使用方法如下：</p>
+<p>&nbsp;</p>
+<p>&gt;chc2c --help<br />
+Usage: chc2c [options]</p>
+<p>Options:<br />
+&nbsp; --version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show program's version number and exit<br />
+&nbsp; -h, --help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; show this help message and exit<br />
+&nbsp; -f FILE, --filename=FILE<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Write output to FILE and save it.<br />
+&nbsp; -t SYNTAX, --syntax=SYNTAX<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Set the code syntax type<br />
+&nbsp; -c COLOR, --color=COLOR<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Set the code highlight color template<br />
+&nbsp; -n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Is output with line number.</p>
+<p>&nbsp;</p>
+<h2>支持的语言<br />
+</h2>
+<p>&nbsp;</p>
+<p>支持的语言种类/语法格式几乎囊括了常见的所有语言，（仅限制于Vim支持的种类，站在巨人的肩膀上就是好），以下是一个列表：</p>
+<p>&nbsp;</p>
+<p>
+<span style="font-family: monospace;"><br />
+2html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a2ps<br />
+a65&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; aap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; abap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; abaqus<br />
+abc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; abel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; acedb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ada<br />
+aflex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ahdl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alsaconf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; amiga<br />
+aml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ampl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ant&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; antlr<br />
+apache&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; apachestyle&nbsp;&nbsp;&nbsp; arch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; art<br />
+asm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; asm68k&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; asmh8300&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; asn<br />
+aspperl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; aspvbs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; asterisk&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; asteriskvm<br />
+atlas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; autohotkey&nbsp;&nbsp;&nbsp;&nbsp; autoit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; automake<br />
+ave&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; awk&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ayacc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b<br />
+baan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; basic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bdf<br />
+bib&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bindzone&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; blank&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bst<br />
+btm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bzr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; calendar<br />
+catalog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cdl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cdrdaoconf&nbsp;&nbsp;&nbsp;&nbsp; cdrtoc<br />
+cf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cfg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; change<br />
+changelog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; chaskell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cheetah&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; chill<br />
+chordpro&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; clean&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; clipper<br />
+cmake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cmusrc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cobol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; coco<br />
+colortest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; conaryrecipe&nbsp;&nbsp; conf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; config<br />
+context&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cpp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; crm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; crontab<br />
+cs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; csc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; csh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; csp<br />
+css&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cterm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ctrlh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cuda<br />
+cupl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cuplsim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cvs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cvsrc<br />
+cweb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cynlib&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cynpp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d<br />
+dcd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dcl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; debchangelog&nbsp;&nbsp; debcontrol<br />
+debsources&nbsp;&nbsp;&nbsp;&nbsp; def&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; denyhosts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; desc<br />
+desktop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dictconf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dictdconf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; diff<br />
+dircolors&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; diva&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; django&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dns<br />
+docbk&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; docbksgml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; docbkxml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dosbatch<br />
+dosini&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; doxygen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dracula<br />
+dsl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dtd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dtml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dtrace<br />
+dylan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dylanintr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dylanlid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ecd<br />
+edif&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eiffel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; elf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; elinks<br />
+elmfilt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; erlang&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eruby&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; esmtprc<br />
+esqlc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; esterel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eterm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eviews<br />
+exim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; expect&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exports&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fasm<br />
+fdcc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fetchmail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fgl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; flexwiki<br />
+focexec&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; form&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; forth&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fortran<br />
+foxpro&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; framescript&nbsp;&nbsp;&nbsp; freebasic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fstab<br />
+fvwm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fvwm2m4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gdb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gdmo<br />
+gedcom&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; git&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gitcommit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gitconfig<br />
+gitrebase&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gitsendemail&nbsp;&nbsp; gkrellmrc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gnuplot<br />
+gp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gpg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; grads&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gretl<br />
+groff&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; groovy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; group&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; grub<br />
+gsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gtkrc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; haml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hamster<br />
+haskell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; haste&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hastepreproc&nbsp;&nbsp; hb<br />
+help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hercules&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hitest<br />
+hog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hostconf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; htmlcheetah<br />
+htmldjango&nbsp;&nbsp;&nbsp;&nbsp; htmlm4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; htmlos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ia64<br />
+ibasic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; icemenu&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; icon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idl<br />
+idlang&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; indent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inform&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; initex<br />
+initng&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inittab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ipfilter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ishd<br />
+iss&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jam<br />
+jargon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; java&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; javacc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; javascript<br />
+jess&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jgraph&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jproperties&nbsp;&nbsp;&nbsp; jsp<br />
+kconfig&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kscript&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kwt<br />
+lace&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; latte&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ld&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ldapconf<br />
+ldif&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lftp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lhaskell<br />
+libao&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lifelines&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lilo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; limits<br />
+lisp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; litestep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; loginaccess<br />
+logindefs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; logtalk&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lotos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lout<br />
+lpc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lprolog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lscript&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lsl<br />
+lss&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lua&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lynx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m4<br />
+mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mailaliases&nbsp;&nbsp;&nbsp; mailcap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; make<br />
+man&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; manconf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; manual&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maple<br />
+masm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mason&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; master&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; matlab<br />
+maxima&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; messages&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mf<br />
+mgl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mgp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mib&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mma<br />
+mmix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mmp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; modconf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; model<br />
+modsim3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; modula2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; modula3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; monk<br />
+moo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mplayerconf&nbsp;&nbsp;&nbsp; mrxvtrc<br />
+msidl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; msmessages&nbsp;&nbsp;&nbsp;&nbsp; msql&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mupad<br />
+mush&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; muttrc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mysql&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; named<br />
+nanorc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nasm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nastran&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; natural<br />
+ncf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netrc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; netrw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nosyntax<br />
+nqc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nroff&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nsis&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; objc<br />
+objcpp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ocaml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; occam&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; omnimark<br />
+openroad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; opl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ora&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pamconf<br />
+papp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pascal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; passwd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pcap<br />
+pccts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pdf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; perl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pf<br />
+pfmain&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; php&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; phtml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pic<br />
+pike&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pilrc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pine&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pinfo<br />
+plaintex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; plm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; plp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; plsql<br />
+po&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pod&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; postscr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pov<br />
+povini&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ppd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ppwiz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prescribe<br />
+privoxy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; procmail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; progress&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prolog<br />
+promela&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; protocols&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; psf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ptcap<br />
+purifylog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pyrex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; python&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; qf<br />
+quake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; racc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; radiance<br />
+ratpoison&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rcs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rcslog<br />
+readline&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; README.txt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rebol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; registry<br />
+remind&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; resolv&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reva&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rexx<br />
+rhelp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rib&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rnc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rnoweb<br />
+robots&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rpcgen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rpl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rst<br />
+rtf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ruby&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; samba&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sas<br />
+sass&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sather&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; scheme&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; scilab<br />
+screen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sdl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sed<br />
+sendpr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sensors&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; services&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; setserial<br />
+sgml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sgmldecl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sgmllnx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sh<br />
+sicad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sieve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; simula&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sinda<br />
+sindacmp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sindaout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sisu&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; skill<br />
+sl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slang&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slice&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slpconf<br />
+slpreg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slpspi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slrnrc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slrnsc<br />
+sm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; smarty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; smcl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; smil<br />
+smith&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; snnsnet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; snnspat<br />
+snnsres&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; snobol4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; spec&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; specman<br />
+spice&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; splint&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; spup&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; spyce<br />
+sql&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sqlanywhere&nbsp;&nbsp;&nbsp; sqlforms&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sqlinformix<br />
+sqlj&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sqloracle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sqr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; squid<br />
+sshconfig&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sshdconfig&nbsp;&nbsp;&nbsp;&nbsp; st&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stata<br />
+stp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strace&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sudoers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; svn<br />
+syncolor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; synload&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; syntax&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sysctl<br />
+tads&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tags&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tak&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; takcmp<br />
+takout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tasm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tcl<br />
+tcsh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; terminfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; texinfo<br />
+texmf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tidy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tilde<br />
+tli&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tpp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; trasys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; trustees<br />
+tsalt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tsscl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tssgm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tssop<br />
+uc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; udevconf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; udevperm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; udevrules<br />
+uil&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; updatedb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; valgrind&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vb<br />
+vera&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; verilog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; verilogams&nbsp;&nbsp;&nbsp;&nbsp; vgrindefs<br />
+vhdl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; viminfo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; virata<br />
+vmasm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voscm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vrml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vsejcl<br />
+wdiff&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; web&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; webmacro&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wget<br />
+whitespace&nbsp;&nbsp;&nbsp;&nbsp; winbatch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wsh<br />
+wsml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wvdial&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xbl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xdefaults<br />
+xf86conf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xhtml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xinetd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xkb<br />
+xmath&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmodmap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xpm<br />
+xpm2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xquery&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xsd<br />
+xslt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xxd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yacc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yaml<br />
+z8a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; zsh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>是不是比目前存在的所有语法高亮工具支持的语言种类还要多？你要是说你懂的上面没有的语言，我一定认为你是神仙。。。。。。。。。。。。</p>
+<p>&nbsp;</p>
+<p>好了，别的不多说了，自己下载试用吧，目前还是0.1版，以后会慢慢增加一些功能的，最主要的是找到一个精简版的vim(目前需要首先自己安装Vim才能使用，并将Vim的目录加入PATH中才能使用）</p>
+<h2 style="margin: 0px;">&nbsp;</h2>
+<h2 style="margin: 0px;">&nbsp;</h2>
+<h2 style="margin: 0px;">完整源代码获取说明</h2>
+<p>工程保管在Google上：http://code.google.com/p/code-highlight-clipboard2clipboard/</p>
+<p style="margin: 1em 0px 0.5em;">也可以直接使用Mercurial克隆下库：</p>
+<p style="margin: 1em 0px 0.5em;"><a style="color: #770000; text-decoration: none;" href="https://blog-sample-code.jtianling.googlecode.com/hg/">https://code-highlight-clipboard2clipboard.googlecode.com/hg/</a></p>
+<p style="margin: 1em 0px 0.5em;">Mercurial使用方法见《<a style="color: #006bad; text-decoration: none;" href="http://www.jtianling.com/archive/2009/09/25/4593687.aspx">分布式的，新一代版本控制系统Mercurial的介绍及简要入门</a><br />
+》</p>
+<p align="left">&nbsp;</p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接</p>
+<p align="right"><strong><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p>&nbsp;</p>

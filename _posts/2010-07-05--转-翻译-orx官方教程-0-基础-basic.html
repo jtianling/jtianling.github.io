@@ -1,0 +1,270 @@
+---
+layout: post
+title: "【转】【翻译】Orx官方教程：0.基础（Basic）"
+categories:
+- "转载"
+tags:
+- Orx
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '17'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p>本文译自<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/main"><br />
+ orx tutorials </a><br />
+的<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/main">首<br />
+页(main)</a><br />
+。<a href="http://blog.feihoo.com/">phpxer</a><br />
+ 译，九天雁翎 （<a onclick="javascript:pageTracker._trackPageview('/outbound/article/blog.csdn.net');" href="http://www.jtianling.com">博<br />
+客</a><br />
+）修订。最新版本见<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/cn/orx/main">Orx<br />
+官方Wiki中文教程</a><br />
+。转载自：phpxer的<a href="http://blog.feihoo.com/">博客</a><br />
+。原文链接在<a href="http://blog.feihoo.com/2010/07/orx_tutorial_cn_basic.html">http://blog.feihoo.com/2010/07/orx_tutorial_cn_basic.html</a><br />
+。</p>
+<p>希望有新人能够加入这个翻译者的队伍，早日将Orx的WIKI页中文化。有兴趣的请加入qq群73063577，并与我取得联系，防止重复翻译。</p>
+<h1 id="internal-source-marker_0.1506159657689189">
+</h1>
+<h1><span style="font-size: 24pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; text-decoration: none; vertical-align: baseline;">教程</span><br />
+</h1>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">本教程主要包含Orx的基础和<br />
+高级教程。Orx 是一个开源、跨平台、轻量级、数据驱动的2D游戏引擎。</span></p>
+<h2>
+</h2>
+<h2><span style="font-size: 18pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; text-decoration: none; vertical-align: baseline;">安装</span><br />
+</h2>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">这些教程演示了如何设置不同的<br />
+编程环境(IDE)</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">来运行</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/docs.google.com');" href="https://docs.google.com/document/edit?id=1UGLudR9zxbNw8tNoAqoRX4y45JoBKvjd4OzubCHQJ3E&amp;hl=en&amp;authkey=CMza34sF"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">orx</span><br />
+</a><br />
+<span style="font-size: 6.6pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: super;">1)</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">。</span></p>
+<ul>
+<li style="list-style-type: disc; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">Microsoft Visual<br />
+Studio (C++) for Windows:</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/setup_msvs"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">Tutorial</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> /</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/www.microsoft.com');" href="http://www.microsoft.com/Express/VC/"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">Download (Express<br />
+ version)</span><br />
+</a>
+</li>
+<li style="list-style-type: disc; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">CodeLite for Windows,<br />
+ Linux and Mac OS X:</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/setup_codelite"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">Tutorial</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> /</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/www.codelite.org');" href="http://www.codelite.org/"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">Download</span><br />
+</a>
+</li>
+<li style="list-style-type: disc; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">XCode for Mac OS X:</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/setup_xcode"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">Tutorial</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> /</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/developer.apple.com');" href="http://developer.apple.com/technology/Xcode.html"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">Download</span><br />
+</a>
+</li>
+</ul>
+<h2>
+</h2>
+<h2><a onclick="javascript:pageTracker._trackPageview('/outbound/article/developer.apple.com');" href="http://developer.apple.com/technology/Xcode.html"><span style="font-size: 18pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; text-decoration: none; vertical-align: baseline;">基础</span><br />
+</a><br />
+</h2>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">本节将要介绍orx的基础知<br />
+识。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">你可以从</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/sourceforge.net');" href="https://sourceforge.net/projects/orx/files"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">这里</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">下载Windows(mingw,<br />
+msvs2005 &amp; msvs2008). Linux 和 MacOS X下的</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">可执行文件</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">（包括项目文件，数据和源码）。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">前九个基础教程（#1 &ndash;<br />
+#9）使用默认的orx启动程序为</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">基础</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">(underlying<br />
+  layer)，这样易于快速测试/制作原型</span><br />
+<span style="font-size: 6.6pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: super;">2</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">它们被编译成运行时加载（在命<br />
+令行</span><br />
+<span style="font-size: 6.6pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: super;">3)</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> 上<br />
+或配置文件中指定它们的名字）的动态连接库。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">此外，下面的内容</span><br />
+<span style="font-size: 6.6pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: super;"> </span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/main#fn__4"><span style="font-size: 6.6pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: super; text-decoration: underline;">4)</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><br />
+解释了哪些行为是由默认的orx.exe/orx 启动程序提供的。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">这是一个基础的C教程。</span><br />
+<br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">由于我们在本教程中使用默认的可执行文件，下面<br />
+的代码将以插件的方式加载和执行。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">另外，一些</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">基础设施</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">有</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">主执行文件</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">为我们处理。</span><br />
+<br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">首先，它会加载所有可用的插件和模块。如果你只<br />
+ 需要其中的一些，最好编写你自己的</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">可执行文件</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">而不是插件。这部分包含在</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/standalone"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">后面的教程</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">中。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">主执行文件还处理下面这些</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">键盘输入</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">：</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">* F11 是</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">纵向对齐切换</span><br />
+<br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">* Escape 退出</span><br />
+<br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">* F12 截屏</span><br />
+<br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">* 退格键(Backspace)<br />
+重新载入全部配置文件</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">如果有<br />
+orxSYSTEM_EVENT_CLOSE事件发生，程序也会退出。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">不过，如果使用<br />
+orx作为传统库构建你自己的可执行文件当然也是可以的（也很容易做到）。在</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/standalone"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">教程 #10</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">(使用C++编写) 和 </span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/spawner"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">教程 #11</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> (使用 C编写)。</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/standalone"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">教程 #10</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> 还演示了如何使用orx编写C++代码</span><br />
+<span style="font-size: 6.6pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: super;">5)</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">。<br />
+同样地，你可以用任何可与C连接的语言编写程序。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">在将来的发布中将会为某些常见<br />
+语言提供封装。如果你想编写这种封装库，为orx做贡献，请通过</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/forum.orx-project.org');" href="http://forum.orx-project.org/"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">论坛</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">联系我们。</span></p>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">当前提供的基础教程列表：</span></p>
+<ol>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/object"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">object</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/clock"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">clock</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/frame"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">frame</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/anim"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">animation</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/viewport"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">viewport &amp;<br />
+camera</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/sound"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">sound &amp; music</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/fx"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">fx</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/physics"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">physics</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/scrolling"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">scrolling</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C++]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/standalone"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">stand alone &amp;<br />
+  localization</span><br />
+</a>
+</li>
+<li style="list-style-type: decimal; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">[C]</span><br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/spawner"><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> </span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">spawner &amp;<br />
+shader</span><br />
+</a>
+</li>
+</ol>
+<h2>
+</h2>
+<h2><a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/spawner"><span style="font-size: 18pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; text-decoration: none; vertical-align: baseline;">社区</span><br />
+</a><br />
+</h2>
+<p><span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">下面这些教程由社区创建，它们<br />
+是了解如何使用 orx的不错的资源，可以在这里寻找到对一些简单问题的解答。</span></p>
+<ul>
+<li style="list-style-type: disc; font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/community/grey"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">Grey&rsquo;s tutorials</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">（英文版）</span>
+</li>
+</ul>
+<p>
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/main#fnt__1"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">1)</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> 所有的IDE都是免费可以从英特网上下载的。</span><br />
+<br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/main#fnt__2"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">2)</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> one line for the<br />
+whole initialization, no main function to write, no loop to handle</span><br />
+<br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">用一行代码完成初始化，不需要写main函数，<br />
+ 没有</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">循环</span><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;">要<br />
+处理</span><br />
+<br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/main#fnt__3"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">3)</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> 另提供了 .bat/.sh<br />
+脚本方便启动所有示例</span><br />
+<br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/main#fnt__4"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">4)</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"><br />
+你将在在所有教程的源文件的开始处看到这些内容</span><br />
+<br />
+<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/main#fnt__5"><span style="font-size: 11pt; font-family: Arial; color: #000099; background-color: transparent; font-weight: normal; font-style: normal; vertical-align: baseline; text-decoration: underline;">5)</span><br />
+</a><br />
+<span style="font-size: 11pt; font-family: Arial; color: #000000; background-color: transparent; font-weight: normal; font-style: normal; text-decoration: none; vertical-align: baseline;"> Orx本身使用C编写</span></p>

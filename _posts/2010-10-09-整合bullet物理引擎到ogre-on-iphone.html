@@ -1,0 +1,82 @@
+---
+layout: post
+title: "整合Bullet物理引擎到Ogre on iPhone"
+categories:
+- iOS
+- "游戏开发"
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '26'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="margin: 1em 0px 0.5em;" align="right"><strong><a style="color: #006bad; text-decoration: none;" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p style="margin: 1em 0px 0.5em;" align="right"><a style="color: #770000; text-decoration: none;" href="http://groups.google.com/group/jiutianfile/"><strong>讨论新闻组及文件</strong><br />
+</a></p>
+<h2>为什么选择Bullet</h2>
+<p>&nbsp;&nbsp;&nbsp; <a id="t-no" title="Bullet" href="http://bulletphysics.org/" title="Bullet">Bullet</a><br />
+算是一个比较流行的3D物理引擎了，大概的看了几眼以后，了解了一些基本用法，发现很多3D物理中的概念与2D（比如Box2d）中的概念是相同的，甚至，Bullet的一些用法都与Box2D类似。基本了解以后，对于我来说，那就是iPhone平台的问题了。<br />
+&nbsp;&nbsp; &nbsp;我选择Bullet而不是其它一大堆同样著名的物理引擎，主要源自乌龙(<a id="jy8k" title="oolongengine" href="http://code.google.com/p/oolongengine/" title="oolongengine">oolongengine</a><br />
+)<br />
+引擎，该引擎由wolfgang.engel最先创建，并且内嵌了bullet的支持，竟然如此大牛都青睐的引擎，我怎么能无视呢？何<br />
+况，oolongengine的使用，也说明Bullet在iPhone中使用完全没有问题。另外，还有Blender这个非常著名的3D建模工具也是对<br />
+Bullet有直接支持，可见Bullet的流行程度。事实上，还有些故事，比如oolongengine的项目负责人之一erwin.coumans，<br />
+同时就也是Bullet的项目创建者兼现在的负责人。（到Google<br />
+Code上去看看就知道了）并且,erwin提到，Bullet能够流畅的在iPhone上运行，wolfgang提供了很大的帮助，对浮点运算进行了特<br />
+别优化。最有意思的是，迪斯尼公司，自己的一些项目用到了Bullet，（看主页上的介绍，起码玩具总动员3这个游戏用到了Bullet）所以开发了自己<br />
+的MAYA<br />
+Bullet插件，为了回报开源社区，已经将此插件开源了。。。。。感谢Bullet，也感谢迪斯尼，同时感叹国外这种开源社区之间的交互。。。。。呵<br />
+呵，这才叫欣欣向荣的良性发展，你帮助我，我帮助你，公司受到帮助，也对社区进行回报。知道了这么多故事以后，更加是对Bullet多了很多好感。最值得<br />
+一提的是，<a id="y40o" title="erwin" href="http://code.google.com/u/erwin.coumans/" title="erwin">erwin</a><br />
+简直就是个开源狂人。。。。。他还发起过一个叫做<a href="http://code.google.com/p/gamekit/">gamekit</a><br />
+的开源游戏引擎项目，希望整合Ogre/Irrlicht和Bullet，因为是erwin创建的项目，也非常值得期待。。。。。。。<br />
+&nbsp;&nbsp; &nbsp;闲话多说一向是我的毛病。。。。也就说到这里了，用以前的<a id="y8lr" title="OGRE on iPhone" href="http://www.jtianling.com/archive/2010/09/18/5893288.aspx" title="OGRE on iPhone">OGRE on iPhone</a><br />
+工程直接开工了。</p>
+<h2>
+</h2>
+<h2>在XCode中编译Bullet和OgreBullet</h2>
+<p>&nbsp;&nbsp;&nbsp;<br />
+ 初下载Bullet后，用CMake做工程，只能做Mac OS<br />
+X的工程，没有iPhone的选项，于是参考一下乌龙引擎的做法，就是将整个Src目录都拷贝进自己的工程，好像是从iPhone开始，流行这种&quot;暴力&quot;<br />
+使用源代码的方式了。。。。。只能说Apple的XCode开发的还不足够人性化，所以建库的工程没有VS那么方便，再加上iPhone天生的不支持动态<br />
+库，更加助长了这种&ldquo;暴力&rdquo;使用源代码的方式，其实每次修改工程文件编译都会慢很多，无奈啊。。。。。在Bullet的论坛中，搜索到erwin的准<a id="au:v" title="官方解决方案" href="http://www.bulletphysics.org/Bullet/phpBB3/viewtopic.php?p=&amp;f=9&amp;t=2628" title="官方解决方案">官方解决方案</a><br />
+就是拷贝全部目录。。。。汗一个-_-!<br />
+&nbsp;&nbsp;&nbsp; 既然如此，一切倒是简单了。。。。。下载<a id="v6.a" title="Bullet的源码" href="http://code.google.com/p/bullet/downloads/list" title="Bullet的源码">Bullet的源码</a><br />
+，目前最新的是2.77，拷贝Src目录，删掉无用文件，比如CMake的一些文件。（或者直接从oolong引擎中将整个Bullet目录拷贝过来最简单，只不过版本目前是2.73）然后配置Bullet的Include目录，编译，一切OK。<br />
+&nbsp;&nbsp;&nbsp;</p>
+<p>现在开始尝试嵌入OgreBullet，方法还是直接包含源代码。比较特殊点的是OgreBullet需要用到Bullet的<br />
+ConvexDecomposition，这个库在Bullet的Extra中，也将源代码都拖过来，然后弄好include目录，就没有问题了。</p>
+<h2>
+</h2>
+<h2>测试</h2>
+<p>&nbsp;&nbsp;&nbsp; 现在进入测试阶段，就用OgreBullet的<a id="ooic" title="Tutorial" href="http://www.ogre3d.org/tikiwiki/Ogre+Bullet+Tutorial+1+-+Source+Code&amp;structure=Libraries" title="Tutorial">Tutorial</a><br />
+中<br />
+的例子。源代码全部拷贝过来，唯一的问题是ExampleApplication在iPhone中有些小问题，修改一下函数，namespace后问题解<br />
+决。运行时崩溃，查看问题，还是ExampleApplication这个类的问题，难怪在Ogre的iPhone<br />
+template不用这个类，崩溃的地方很有意思，OIS获取键盘的时候：<br />
+mKeyboard = static_cast&lt;OIS::Keyboard*&gt;(mInputManager-&gt;createInputObject( OIS::OISKeyboard, bufferedKeys ));<br />
+注释更加有意思：<br />
+//Create all devices (We only catch joystick exceptions here, as, most people have Key/Mouse)<br />
+典型反映了代码永远赶不上时代变化，既然这个类已经不被人使用了，我也就不费劲去用了，将原来的例子代码全部嵌入到OgreFramework类中。<br />
+运行，崩溃，发现忘了添加新增的资源，将BumpyMetal.jpg材质和cube.mesh模型添加进工程。再次运行，一些正常，有图有真相：</p>
+<div id="xnsh" style="text-align: left;">
+</div>
+<p><img src="http://hi.csdn.net/attachment/201010/8/0_1286559023j642.gif" alt="" /></p>
+<p>当一切都OK以后，我发现我的目标竟然与GameKit是一样的。。。。。不就是Ogre+Bullet吗？<a id="e7wy" title="erwin" href="http://code.google.com/u/erwin.coumans/" title="erwin">erwin</a><br />
+估计以前就已经想过我所想了。。。。。也许，尝试下GameKit也不错。</p>
+<p align="left">&nbsp;</p>
+<p style="text-align: right;">原创文章作者保留版权 转载请注明原作者 并给出链接</p>
+<p style="text-align: right;"><strong><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>

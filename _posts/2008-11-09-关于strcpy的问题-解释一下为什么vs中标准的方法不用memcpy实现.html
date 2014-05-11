@@ -1,0 +1,186 @@
+---
+layout: post
+title: "关于strcpy的问题，解释一下为什么VS中标准的方法不用memcpy实现"
+categories:
+- C++
+tags:
+- C++
+- memcpy
+- strcpy
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '9'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p><!--<br />
+ /* Font Definitions */<br />
+ @font-face<br />
+	{font-family:宋体;<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-alt:SimSun;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"Cambria Math";<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1107304683 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Calibri;<br />
+	panose-1:2 15 5 2 2 2 4 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:swiss;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073750139 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:新宋体;<br />
+	panose-1:2 1 6 9 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:modern;<br />
+	mso-font-pitch:fixed;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"/@新宋体";<br />
+	panose-1:2 1 6 9 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:modern;<br />
+	mso-font-pitch:fixed;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"/@宋体";<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+ /* Style Definitions */<br />
+ p.MsoNormal, li.MsoNormal, div.MsoNormal<br />
+	{mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+.MsoChpDefault<br />
+	{mso-style-type:export-only;<br />
+	mso-default-props:yes;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+ /* Page Definitions */<br />
+ @page<br />
+	{mso-page-border-surround-header:no;<br />
+	mso-page-border-surround-footer:no;}<br />
+@page Section1<br />
+	{size:612.0pt 792.0pt;<br />
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;<br />
+	mso-header-margin:36.0pt;<br />
+	mso-footer-margin:36.0pt;<br />
+	mso-paper-source:0;}<br />
+div.Section1<br />
+	{page:Section1;}<br />
+--></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体; color: blue;" lang="EN-US">原文：http://blog.csdn.net/youyouzhishen/archive/2008/11/02/3207836.aspx<br /></span></p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;">&nbsp;</p>
+<p><span style="font-family: 新宋体; color: blue;" lang="EN-US"><span style="color: #000000; font-family: Arial;"><br />
+</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: blue; FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">#include</span><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"> <span style="COLOR: #a31515">&lt;cstring&gt;</span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: blue; FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">using</span><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"> <span style="COLOR: blue">namespace</span> <span style="COLOR: #010001">std</span>;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: blue; FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">inline</span><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"> <span style="COLOR: blue">char</span>* <span style="COLOR: #010001">myStrcpy</span>(<span style="COLOR: blue">char</span>* <span style="COLOR: #010001">apszDest</span>, <span style="COLOR: blue">char</span>* <span style="COLOR: #010001">apszSrc</span>)</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">{</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp; </span><span style="COLOR: #010001">memcpy</span>(<span style="COLOR: #010001">apszDest</span>, <span style="COLOR: #010001">apszSrc</span>, <span style="COLOR: #010001">strlen</span>(<span style="COLOR: #010001">apszSrc</span>) + 1);</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp; </span><span style="COLOR: blue">return</span> <span style="COLOR: #010001">apszDest</span>;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">}</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: blue; FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">int</span><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"> <span style="COLOR: #010001">_tmain</span>(<span style="COLOR: blue">int</span> <span style="COLOR: #010001">argc</span>, <span style="COLOR: #010001">_TCHAR</span>* <span style="COLOR: #010001">argv</span>[])</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">{</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp; </span><span style="COLOR: blue">char</span> <span style="COLOR: #010001">lszSrc</span>[] = <span style="COLOR: #a31515">"GOD, I'm a test string./n"</span>;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp; </span><span style="COLOR: blue">char</span> <span style="COLOR: #010001">lszDest</span>[256];</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp; </span><span style="COLOR: #010001">printf</span>(<span style="COLOR: #a31515">"%s"</span>,<span style="COLOR: #010001">myStrcpy</span>(<span style="COLOR: #010001">lszDest</span>, <span style="COLOR: #010001">lszSrc</span>));</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp; </span><span style="COLOR: #010001">printf</span>(<span style="COLOR: #a31515">"%s"</span>,<span style="COLOR: #010001">strcpy</span>(<span style="COLOR: #010001">lszDest</span>, <span style="COLOR: #010001">lszSrc</span>));</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp; </span><span style="COLOR: blue">return</span> 0;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: &ETH;&Acirc;&Euml;&Icirc;&Igrave;&aring;; mso-bidi-font-size: 12.0pt; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">}</span></p>
+<p><span style="font-family: 新宋体; color: blue;" lang="EN-US"><font face="Arial" color="#000000"><br />
+</font></span>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;">&nbsp;</p>
+<p>&nbsp;</p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;">&nbsp;</p>
+<p><span style="font-family: 新宋体; color: blue;" lang="EN-US"><span style="color: #000000; font-family: Arial;"><br /></span></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"><span style="font-family: 新宋体;" lang="EN-US"></span></p>
+<p><span style="FONT-FAMILY: Arial"></span></p>
+<p>其实strcpy实现成我上面写的那样一样也可以实现strcpy,并且平均效率似乎要更高。这种错觉来自于debug时看到的strcpy的源代码（K&amp;R中，一般的笔试题也广为通用此源代码）</p>
+<p>其实到最近才知道，debug时可以看到strcpy的实现，memcpy一般情况下比strcpy那样的实现效率要高，这是很明显的，哪怕字符数量比较小，memcpy起码也不输给strcpy，但是，事实上，在优化后的release汇编代码就能发现，其实strcpy这样常用的函数（虽然是C Runtime Library的函数），但是编译器实际是做了优化的，这些叫做内部函数（中文版VS2005标准译法），直接就通过strcpy生成了汇编代码，所以实现上就没有必要使用memcpy了，见下面的汇编代码。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp; </span>printf("%s",myStrcpy(lszDest, lszSrc));</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401026 8D 44 24 08<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>lea<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax,[esp+8] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040102A A4<span style="mso-spacerun: yes">&nbsp;&nbsp; </span><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>movs<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>byte ptr es:[edi],byte ptr [esi] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040102B 8D 50 01<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>lea<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>edx,[eax+1] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040102E 8B FF<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>mov<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>edi,edi </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401030 8A 08<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>mov<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>cl,byte ptr [eax] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401032 83 C0 01<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>add<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax,1 </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401035 84 C9<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>test<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>cl,cl </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401037 75 F7<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>jne<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>wmain+30h (401030h) </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401039 2B C2<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>sub<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax,edx </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040103B 83 C0 01<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>add<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax,1 </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040103E 50<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>push<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax<span style="mso-spacerun: yes">&nbsp; </span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040103F 8D 44 24 0C<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>lea<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax,[esp+0Ch] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401043 50<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>push<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax<span style="mso-spacerun: yes">&nbsp; </span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401044 8D 4C 24 2C<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>lea<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>ecx,[esp+2Ch] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401048 51<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>push<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>ecx<span style="mso-spacerun: yes">&nbsp; </span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401049 E8 26 08 00 00<span style="mso-spacerun: yes">&nbsp;&nbsp; </span>call<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>memcpy (401874h) </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040104E 8B 35 A0 20 40 00 mov<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>esi,dword ptr [__imp__printf (4020A0h)] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401054 8D 54 24 30<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>lea<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>edx,[esp+30h] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401058 52<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>push<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>edx<span style="mso-spacerun: yes">&nbsp; </span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401059 68 10 21 40 00<span style="mso-spacerun: yes">&nbsp;&nbsp; </span>push<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>offset string "%s" (402110h) </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040105E FF D6<span style="mso-spacerun: yes">&nbsp;&nbsp; </span><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>call<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>esi<span style="mso-spacerun: yes">&nbsp; </span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401060 83 C4 14<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>add<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>esp,14h </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp; </span>printf("%s",strcpy(lszDest, lszSrc));</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401063 33 C0<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>xor<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax,eax </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401065 8A 4C 04 08<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>mov<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>cl,byte ptr [esp+eax+8] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401069 88 4C 04 24<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>mov<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>byte ptr [esp+eax+24h],cl </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040106D 83 C0 01<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>add<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax,1 </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401070 84 C9<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>test<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>cl,cl </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401072 75 F1<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>jne<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>wmain+65h (401065h) </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401074 8D 44 24 24<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>lea<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax,[esp+24h] </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401078 50<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;</span>push<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>eax<span style="mso-spacerun: yes">&nbsp; </span></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">00401079 68 10 21 40 00<span style="mso-spacerun: yes">&nbsp;&nbsp; </span>push<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>offset string "%s" (402110h) </span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; mso-pagination: none; mso-layout-grid-align: none"><span style="COLOR: gray; FONT-FAMILY: 新宋体; mso-bidi-font-size: 12.0pt; mso-hansi-font-family: 'Times New Roman'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA; mso-no-proof: yes" lang="EN-US">0040107E FF D6<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>call<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>esi<span style="mso-spacerun: yes">&nbsp; </span></span></p>
+<p>&nbsp;</p>
+<p>没有见过strcpy的汇编代码前。。。。哪想的到原来这么简单</p>

@@ -1,0 +1,125 @@
+---
+layout: post
+title: OpenGL(ES) 线性插值算法黑边问题探源
+categories:
+- "图形技术"
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '32'
+  _edit_last: '1'
+  ks_metadata: a:7:{s:4:"lang";s:2:"en";s:8:"keywords";s:60:"0f,gimg,scale,float,gltexcoord2f,glvertex3f,height,drawimage";s:19:"keywords_autoupdate";s:1:"1";s:11:"description";s:178:"0f,
+    y, 2.0f); DrawImage(x, y + gImg.Height * 2.0f, 2.0f); DrawImage(x + gImg.Width
+    * 2.0f, y + gImg.Height * 2.0f, 2.0f); } 当然，这里我主要关心linear方式，所以：";s:22:"description_autoupdate";s:1:"1";s:5:"title";s:0:"";s:6:"robots";s:12:"index,follow";}
+  _wp_old_slug: "%0d%0a%20%20%20%20%20%20%20%20opengl%28es%29%20%e7%ba%bf%e6%80%a7%e6%8f%92%e5%80%bc%e7%ae%97%e6%b3%95%e9%bb%91%e8%be%b9%e9%97%ae%e9%a2%98%e6%8e%a2%e6%ba%90%0d%0a%20%20%20%20%20%20%20%20"
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p class="c8 c14" style="text-align: right;">第二次使用别人的引擎碰到用OpenGL线性过滤算法放大图片出现黑边的问题了，而引擎的制作者竟然不知道怎么解决，两次碰到此问题时都是试图教导我使用最近点过滤方式绕行，我很无奈，帮助其解决一下，顺面将问题简单的记录于此。</p>
+<p class="c3"><span class="c5">OpenGL在放大图片时有两种方法，一种是最近点(NEAREST)，一种是线性(LINEAR)，虽然在OpenGL里面，设置纹理参数的时候都称为过滤(filter)，都通过glTexParameteri函数设置。比如二维时，设置线性过滤：</span></p>
+<p class="c4"><span class="c18">glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );</span></p>
+<p class="c3 c6">
+<p class="c3"><span class="c5">放大时实际算法为插值（</span><br />
+<span class="c1">interpolation）。</span></p>
+<p class="c3"><span class="c5">具体的</span><br />
+<span class="c0"><a href="http://en.wikipedia.org/wiki/Nearest-neighbor_interpolation">最近点过滤算法参考</a><br />
+</span><br />
+<span class="c5">，</span><br />
+<span class="c0"><a href="http://en.wikipedia.org/wiki/Linear_interpolation">线性过滤算法参考</a><br />
+</span><br />
+<span class="c5">。</span></p>
+<p class="c3"><span class="c5">简单的讲，最近点过滤算法就是用最靠近像素中心的那个纹理单元进行放大和缩小，效率更高，效果不好，锯齿严重。</span></p>
+<p class="c3"><span class="c5">线性过滤算法是对靠近像素中心的2*2纹理单元（二维时，三维为2*2*2），取加权平均值，用于放大和缩小。效果更好，效率稍低。（参看《OpenGL编程指南》第六版）</span></p>
+<p class="c3"><span class="c5">一般来说，我们常用Linear方式，但是Linear方式有个问题，那就是碰到边缘时怎么处理的问题，一种是取边缘外元素作为普通点进行加权计算，一种是不取。</span></p>
+<p class="c3"><span class="c5">为了方便演示，我使用一张Android SDK中附带的图片，并放大2.0f倍，多次紧密排列绘制，以观察效果，主要绘制源代码如下：</span></p>
+<p class="c4"><span class="c1">void DrawImage(float x, float y, float scale) {</span></p>
+<p class="c4"><span class="c1"> glBegin(GL_QUADS);</span></p>
+<p class="c4"><span class="c1"> glTexCoord2f(0.0  , 0.0  ); glVertex3f(x, y, 0.0f);</span></p>
+<p class="c4"><span class="c1"> glTexCoord2f(1.0  , 0.0  ); glVertex3f(x + (gImg.Width * scale), y, 0.0f);</span></p>
+<p class="c4"><span class="c1"> glTexCoord2f(1.0  , 1.0  ); glVertex3f(x + (gImg.Width * scale), y + (gImg.Height * scale), 0.0f);</span></p>
+<p class="c4"><span class="c1"> glTexCoord2f(0.0  , 1.0  ); glVertex3f(x, y + (gImg.Height * scale), 0.0f);</span></p>
+<p class="c4"><span class="c1"> glEnd();</span></p>
+<p class="c4"><span class="c1">}</span></p>
+<p class="c4 c6">
+<p class="c4"><span class="c1">void DrawImages(float x, float y) {</span></p>
+<p class="c4"><span class="c1"> DrawImage(x, y, 2.0f);</span></p>
+<p class="c4"><span class="c1"> DrawImage(x + gImg.Width * 2.0f, y, 2.0f);</span></p>
+<p class="c4"><span class="c1"> DrawImage(x, y + gImg.Height * 2.0f, 2.0f);</span></p>
+<p class="c4"><span class="c1"> DrawImage(x + gImg.Width * 2.0f, y + gImg.Height * 2.0f, 2.0f);</span></p>
+<p class="c4"><span class="c1">}</span></p>
+<p class="c3 c6">
+<p class="c3"><span class="c5">当然，这里我主要关心linear方式，所以：</span></p>
+<p class="c4"><span class="c1"> glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,</span></p>
+<p class="c4"><span class="c1">                 GL_LINEAR );</span></p>
+<p class="c4 c6">
+<p class="c4"><span class="c1"> glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,</span></p>
+<p class="c4"><span class="c1">                 GL_LINEAR );</span></p>
+<p class="c3 c6">
+<p class="c3"><span class="c5">在默认时，OpenGL</span><br />
+<span class="c0"><a href="http://www.opengl.org/sdk/docs/man/">是默认设置GL_REPEAT的</a><br />
+</span><br />
+<span class="c5">，此时，加权的纹理单元是从原纹理单元的相反一侧去取。效果的好坏依赖与图片的内容。</span></p>
+<p class="c3"><span class="c5">绘制4张图片时感觉效果还行：</span></p>
+<p class="c3"><span class="c5"><img src="http://hi.csdn.net/attachment/201105/3/0_1304445771XGSm.gif" alt="" /></p>
+<p></span></p>
+<p class="c3 c6">
+<p class="c3"><span class="c5">但是仅绘制上面两张图片时，效果明显有问题,可以看到下面有明显的白边（加权计算来自于上面白色的状态栏）</span></p>
+<p class="c3 c6"><img src="http://hi.csdn.net/attachment/201105/3/0_1304445858SW7D.gif" alt="" /></p>
+<p class="c3 c6">
+<p class="c3 c6">
+<p class="c3"><span class="c5">在OpenGL中，还有几种情况</span></p>
+<p class="c3"><span class="c5">1.GL_CLAMP，线性算法会取边框外的像素点进行计算，导致黑边，这也就是常见的黑边效果。</span></p>
+<p class="c4"><span class="c5">2.</span><br />
+<span class="c12">GL_CLAMP_TO_EDGE，忽略边框，为简单设置时想要的正确效果。</span></p>
+<p class="c3"><span class="c5">3.GL_CLAMP_TO_BORDER，添加边框颜色值，在纹理坐标超出边框时，按设定的颜色值进行计算，在没有为边框设置值时，效果类似GL_CLAMP。（可以将此时的边框值看做为黑色）</span></p>
+<p class="c3"><span class="c5">比如，我用如下方法，设置一个红色边框值，  </span></p>
+<p class="c3"><span class="c1">glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);</span></p>
+<p class="c4"><span class="c1">glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);</span></p>
+<p class="c4"><span class="c1">float color[4] = { 1.0f, 0.0f, 0.0f, 1.0f };</span></p>
+<p class="c4"><span class="c1">glTexParameterfv( GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);</span></p>
+<p class="c3 c6">
+<p class="c3"><span class="c5">效果就会如下，明显多出一个红色边框：</span></p>
+<p class="c3 c6"><img src="http://hi.csdn.net/attachment/201105/3/0_1304446111sK2e.gif" alt="" /></p>
+<p class="c3 c6">
+<p class="c3 c6">
+<p class="c3"><span class="c5">加入还觉得不够明显的话，修改draw函数，</span></p>
+<p class="c4"><span class="c1">void DrawImage(float x, float y, float scale) {</span></p>
+<p class="c4"><span class="c1"> glBegin(GL_QUADS);</span></p>
+<p class="c4"><span class="c1"> glTexCoord2f(-0.1  , -0.1  ); glVertex3f(x, y, 0.0f);</span></p>
+<p class="c4"><span class="c1"> glTexCoord2f(1.1  , -0.1  ); glVertex3f(x + (gImg.Width * scale), y, 0.0f);</span></p>
+<p class="c4"><span class="c1"> glTexCoord2f(1.1  , 1.1  ); glVertex3f(x + (gImg.Width * scale), y + (gImg.Height * scale), 0.0f);</span></p>
+<p class="c4"><span class="c1"> glTexCoord2f(-0.1  , 1.1  ); glVertex3f(x, y + (gImg.Height * scale), 0.0f);</span></p>
+<p class="c4"><span class="c1"> glEnd();</span></p>
+<p class="c4"><span class="c1">}</span></p>
+<p class="c3 c6">
+<p class="c3"><span class="c5">这下意思明显了吧：</span></p>
+<p class="c3 c6"><img src="http://hi.csdn.net/attachment/201105/3/0_1304446264srxr.gif" alt="" /></p>
+<p class="c3 c6">
+<p class="c3"><span class="c5">以上是OpenGL的情况，OpenGL ES的情况又需要单独讲一下：</span></p>
+<p class="c3"><span class="c5">OpenGL ES 1.1中，只有两种情况，REPEAT（默认），和</span><br />
+<span class="c12">GL_CLAMP_TO_EDGE。</span><br />
+<span class="c0"><a href="http://www.google.com/url?q=http%3A%2F%2Fwww.khronos.org%2Fopengles%2Fsdk%2F1.1%2Fdocs%2Fman%2F&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNG5joRXOaJOzjGrxgw-MLMF8O2g3Q">参考这里</a><br />
+</span><br />
+<span class="c5">。</span></p>
+<p class="c3"><span class="c5">Android的情况，在我手机（Nexus S)中，默认的Repeat方式，会看到黑边。（这个有点奇怪,与OpenGL中的现象不一样）设置为</span><br />
+<span class="c12">GL_CLAMP_TO_EDGE后，问题解决。</span></p>
+<p class="c3">
+<p class="c3"><span class="c12">iphone上的情况，望知情人通知，目前没有时间测试。</span></p>
+<p class="c3 c6">
+<p class="c3 c10 c6"><span class="c9"><br />
+</span></p>
+<p class="c11"><span class="c5"> </span></p>
+<p class="c8" style="text-align: right;"><span class="c5">原创文章作者保留版权 转载请注明原作者 并给出链接</span></p>
+<p class="c8" style="text-align: right;"><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></p>
+<p class="c8 c6"><span class="c2"><br />
+</span></p>
+<p>&nbsp;</p>

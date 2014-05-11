@@ -1,0 +1,306 @@
+---
+layout: post
+title: "谢尔宾斯基三角(Sierpinski triangle)的显示 (with OpenGL)"
+categories:
+- "图形技术"
+tags:
+- OpenGL
+- Sierpinski triangle
+- "谢尔宾斯基三角"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '29'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="margin: 1em 0px 0.5em;" align="right"><strong><a style="color: #006bad; text-decoration: none;" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p style="margin: 1em 0px 0.5em;" align="right"><a style="color: #770000; text-decoration: none;" href="http://groups.google.com/group/jiutianfile/"><strong>讨论新闻组及文件</strong><br />
+</a></p>
+<p>&nbsp;&nbsp; &nbsp;<a id="d4l4" title="Sierpinski triangle" href="http://en.wikipedia.org/wiki/Sierpinski_triangle" title="Sierpinski triangle">Sierpinski triangle</a><br />
+的图形我早就见过了，是很漂亮的分形图形，只是今天才知道它叫这么个复杂的名字，很显然是以某个人命名的，因为我不研究分形，所以也不管他了。<br />
+&nbsp;&nbsp;&nbsp;<br />
+ 只是最近看《Interactive Computer Graphics》(5nd Edward<br />
+Angel著）一书的时候，作者在讲解OpenGL<br />
+API的时候就引入了这个有意思的图形，本书作为讲图形学的技术书籍（还是作为美国标准教材类型写作的），算是别具趣味性了。里面有几个绘制<br />
+Sierpinski triangle的例子（书中称此图形为Sierpinski<br />
+gasket，是一样的)，算是符合我以前学习的精神，用学到的最少的几个知识点，鼓捣出最大的乐趣。^^原文中的例子都是仅带源代码文件，（不带工程）<br />
+源代码还是仅仅只能一个一个下载，而且显示的时候是一次性显示的，这个我感觉不太爽，不能显示出这种分形图形生成时那种渐变的感觉，特别是用点随机生成的<br />
+那种类似粒子系统的乱中有序的效果，于是乎，一方面，给我感兴趣的原始版本配上XCode工程，（需要VS工程的就只能自己鼓捣了)另外一方面，提供动态<br />
+生成图形的例子，也算是加深理解。。。。。。</p>
+<!-- more -->
+<p>第一个例子,通过限定随机的点来获取图形：<br />
+#include &lt;stdlib.h&gt;<br />
+#include &lt;GLUT/GLUT.h&gt;</p>
+<p>void init() {<br />
+&nbsp; glClearColor(0.0, 0.0, 0.0, 0.0);<br />
+&nbsp; glClear(GL_COLOR_BUFFER_BIT);<br />
+&nbsp; glColor3f(1.0, 0.0, 0.0);<br />
+&nbsp; glMatrixMode(GL_PROJECTION);<br />
+&nbsp; glLoadIdentity();<br />
+&nbsp; glOrtho(0.0, 50.0, 0.0, 50.0, -1.0, 1.0);<br />
+}</p>
+<p>void display() { &nbsp;<br />
+&nbsp; GLfloat vertices[3][3] = { {0.0,0.0,0.0}, {25.0, 50.0, 0.0}, {50.0, 0.0, 0.0}};<br />
+&nbsp; GLfloat p[3] = {7.5,5.0,0.0};<br />
+&nbsp; <br />
+&nbsp; glBegin(GL_POINTS);<br />
+&nbsp; for (int i=0; i&lt;5000; ++i) {<br />
+&nbsp;&nbsp;&nbsp; int x = rand()%3;<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp;&nbsp; p[0] = (p[0] + vertices[x][0])/2;<br />
+&nbsp;&nbsp;&nbsp; p[1] = (p[1] + vertices[x][1])/2;<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp;&nbsp; glVertex3fv(p);<br />
+&nbsp; }<br />
+&nbsp; glEnd();<br />
+&nbsp; glFlush();<br />
+}</p>
+<p>int main (int argc, char *argv[]) {</p>
+<p>&nbsp; glutInit(&amp;argc, argv);<br />
+&nbsp; glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);<br />
+&nbsp; glutInitWindowSize(640, 480);<br />
+&nbsp; glutInitWindowPosition(200, 200);<br />
+&nbsp; glutCreateWindow(&quot;sierpinski gasket&quot;);<br />
+&nbsp; init();<br />
+&nbsp; glutDisplayFunc(display);<br />
+&nbsp; glutMainLoop();<br />
+&nbsp; <br />
+&nbsp; return 0;<br />
+}</p>
+<p>这个例子是看到比较前面一部分就自己写完了，所以可能与作者源代码有些出入，display是一样的。显示效果：</p>
+<div id="b535" style="text-align: left;"><img src="http://hi.csdn.net/attachment/201010/12/0_1286905100hnV4.gif" alt="" /><br />
+
+</div>
+<div style="text-align: left;">
+</div>
+<p>感觉还不错，通过双缓冲，修改成动态生成版本。<br />
+#include &lt;time.h&gt;<br />
+#include &lt;stdlib.h&gt;<br />
+#include &lt;GLUT/GLUT.h&gt;<br />
+#include &lt;unistd.h&gt;</p>
+<p>int gCount = 1;<br />
+time_t gRandSeed;<br />
+void init() {<br />
+&nbsp; glClearColor(0.0, 0.0, 0.0, 0.0);</p>
+<p>&nbsp; glColor3f(1.0, 0.0, 0.0);<br />
+&nbsp; glMatrixMode(GL_PROJECTION);<br />
+&nbsp; glLoadIdentity();<br />
+&nbsp; glOrtho(0.0, 50.0, 0.0, 50.0, -1.0, 1.0);<br />
+}</p>
+<p>void increaseDisplay() {<br />
+&nbsp; gCount++;<br />
+&nbsp; usleep(10000);<br />
+&nbsp; glutPostRedisplay();<br />
+}</p>
+<p>
+void display() {<br />
+&nbsp; // just a rand seed hack for stably display<br />
+&nbsp; srand(gRandSeed);<br />
+&nbsp; <br />
+&nbsp; glClear(GL_COLOR_BUFFER_BIT);<br />
+&nbsp; GLfloat vertices[3][3] = { {0.0,0.0,0.0}, {25.0, 50.0, 0.0}, {50.0, 0.0, 0.0}};<br />
+&nbsp; GLfloat p[3] = {7.5,5.0,0.0};<br />
+&nbsp; <br />
+&nbsp; glBegin(GL_POINTS);<br />
+&nbsp; for (int i=0; i&lt;gCount; ++i) {<br />
+&nbsp;&nbsp;&nbsp; int x = rand()%3;<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp;&nbsp; p[0] = (p[0] + vertices[x][0])/2;<br />
+&nbsp;&nbsp;&nbsp; p[1] = (p[1] + vertices[x][1])/2;<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp;&nbsp; glVertex3fv(p);<br />
+&nbsp; }<br />
+&nbsp; glEnd();<br />
+&nbsp; glutSwapBuffers();<br />
+}</p>
+<p>int main (int argc, char *argv[]) {<br />
+&nbsp; gRandSeed = time(NULL);<br />
+&nbsp; glutInit(&amp;argc, argv);<br />
+&nbsp; glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DOUBLE);<br />
+&nbsp; glutInitWindowSize(640, 480);<br />
+&nbsp; glutInitWindowPosition(200, 200);<br />
+&nbsp; glutCreateWindow(&quot;sierpinski gasket&quot;);<br />
+&nbsp; init();<br />
+&nbsp; glutDisplayFunc(display);<br />
+&nbsp; glutIdleFunc(increaseDisplay);<br />
+&nbsp; glutMainLoop();<br />
+&nbsp; <br />
+&nbsp; return 0;<br />
+}</p>
+<p>最终实现的时候发现并没有开始想的那么简单，因为随机出来的数值每次都不一样，相当于每次display都生成了完全新的图形，导致图形变换不定，达不到我<br />
+想要的效果，于是乎，通过保存原始的随机种子，并且在每次随机的时候重新设定种子，(gRandSeed)以此来得到稳定的图形，效果非常好^^</p>
+<p>
+第二个例子，通过三角形的递归分割来获取图形：<br />
+作者原例子，可能因为原例子是C语言程序，当我将其当作C++编译时会有编译错误，所以我进行了少许的修改以正常编译运行。（添加stdlib.h的include，并且直接将n赋值为15）<br />
+/* recursive subdivision of triangle to form Sierpinski gasket */<br />
+/* number of recursive steps given on command line */</p>
+<p>#ifdef __APPLE__<br />
+#include &lt;GLUT/glut.h&gt;<br />
+#else<br />
+#include &lt;GL/glut.h&gt;<br />
+#endif</p>
+<p>#include &lt;stdlib.h&gt;</p>
+<p>/* initial triangle */<br />
+GLfloat v[3][2]={ {-1.0, -0.58}, {1.0, -0.58}, {0.0, 1.15} };</p>
+<p>int n = 15;</p>
+<p>void triangle( GLfloat *a, GLfloat *b, GLfloat *c)</p>
+<p>/* specify one triangle */<br />
+{<br />
+&nbsp; glVertex2fv(a);<br />
+&nbsp; glVertex2fv(b);<br />
+&nbsp; glVertex2fv(c);<br />
+}</p>
+<p>void divide_triangle(GLfloat *a, GLfloat *b, GLfloat *c, int m)<br />
+{<br />
+&nbsp; <br />
+&nbsp; /* triangle subdivision using vertex numbers */<br />
+&nbsp; <br />
+&nbsp; GLfloat v0[2], v1[2], v2[2];<br />
+&nbsp; int j;<br />
+&nbsp; if(m&gt;0)<br />
+&nbsp; {<br />
+&nbsp;&nbsp;&nbsp; for(j=0; j&lt;2; j++) v0[j]=(a[j]+b[j])/2;<br />
+&nbsp;&nbsp;&nbsp; for(j=0; j&lt;2; j++) v1[j]=(a[j]+c[j])/2;<br />
+&nbsp;&nbsp;&nbsp; for(j=0; j&lt;2; j++) v2[j]=(b[j]+c[j])/2;<br />
+&nbsp;&nbsp;&nbsp; divide_triangle(a, v0, v1, m-1);<br />
+&nbsp;&nbsp;&nbsp; divide_triangle(c, v1, v2, m-1);<br />
+&nbsp;&nbsp;&nbsp; divide_triangle(b, v2, v0, m-1);<br />
+&nbsp; }<br />
+&nbsp; else triangle(a,b,c); /* draw triangle at end of recursion */<br />
+}</p>
+<p>
+void display()<br />
+{<br />
+&nbsp; glClear(GL_COLOR_BUFFER_BIT);<br />
+&nbsp; glBegin(GL_TRIANGLES);<br />
+&nbsp; divide_triangle(v[0], v[1], v[2], n);<br />
+&nbsp; glEnd();<br />
+&nbsp; glFlush();<br />
+}</p>
+<p>void myinit()<br />
+{<br />
+&nbsp; glMatrixMode(GL_PROJECTION);<br />
+&nbsp; glLoadIdentity();<br />
+&nbsp; gluOrtho2D(-2.0, 2.0, -2.0, 2.0);<br />
+&nbsp; glMatrixMode(GL_MODELVIEW);<br />
+&nbsp; glClearColor (1.0, 1.0, 1.0, 1.0);<br />
+&nbsp; glColor3f(0.0,0.0,0.0);<br />
+}</p>
+<p>int main(int argc, char **argv)<br />
+{<br />
+&nbsp; glutInit(&amp;argc, argv);<br />
+&nbsp; glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);<br />
+&nbsp; glutInitWindowSize(500, 500);<br />
+&nbsp; glutCreateWindow(&quot;Sierpinski Gasket&quot;);<br />
+&nbsp; glutDisplayFunc(display);<br />
+&nbsp; myinit();<br />
+&nbsp; glutMainLoop();<br />
+}</p>
+<p>因<br />
+为使用了递归，在我的机器上n最多也就到10多，超过后程序会长时间无响应（顾及时堆栈溢出了），但是这个程序的渐变过程就更加好看了，相对于前面点随机<br />
+的图形逐渐变厚实，这个例子中可以清晰的看到图形一步一步分割生成的过程，很有趣味。为了慢慢显示，所以这里直接sleep了一秒。<br />
+#include &lt;time.h&gt;<br />
+#include &lt;stdlib.h&gt;<br />
+#include &lt;GLUT/GLUT.h&gt;<br />
+#include &lt;unistd.h&gt;</p>
+<p>/* initial triangle */<br />
+GLfloat v[3][2]={ {-1.0, -0.58}, {1.0, -0.58}, {0.0, 1.15} };</p>
+<p>int gCount = 1;</p>
+<p>/* specify one triangle */<br />
+void triangle( GLfloat *a, GLfloat *b, GLfloat *c) {<br />
+&nbsp; glVertex2fv(a);<br />
+&nbsp; glVertex2fv(b);<br />
+&nbsp; glVertex2fv(c);<br />
+}</p>
+<p>/* triangle subdivision using vertex numbers */<br />
+void divide_triangle(GLfloat *a, GLfloat *b, GLfloat *c, int m) {</p>
+<p>&nbsp; GLfloat v0[2], v1[2], v2[2];<br />
+&nbsp; int j;<br />
+&nbsp; <br />
+&nbsp; if( m &gt; 0 )<br />
+&nbsp; {<br />
+&nbsp;&nbsp;&nbsp; for(j=0; j&lt;2; j++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v0[j]=(a[j]+b[j])/2;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp;&nbsp; for(j=0; j&lt;2; j++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v1[j]=(a[j]+c[j])/2;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp;&nbsp; for(j=0; j&lt;2; j++) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v2[j]=(b[j]+c[j])/2;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp;<br />
+&nbsp;&nbsp;&nbsp; divide_triangle(a, v0, v1, m-1);<br />
+&nbsp;&nbsp;&nbsp; divide_triangle(c, v1, v2, m-1);<br />
+&nbsp;&nbsp;&nbsp; divide_triangle(b, v2, v0, m-1);<br />
+&nbsp; }<br />
+&nbsp; else {<br />
+&nbsp;&nbsp;&nbsp; triangle(a,b,c); /* draw triangle at end of recursion */<br />
+&nbsp; }<br />
+}</p>
+<p>
+void init() {<br />
+&nbsp; /* attributes */<br />
+&nbsp; glClearColor(1.0, 1.0, 1.0, 1.0); /* white background */<br />
+&nbsp; glColor3f(1.0, 0.0, 0.0); /* draw in red */<br />
+&nbsp; <br />
+&nbsp; glMatrixMode(GL_PROJECTION);<br />
+&nbsp; glLoadIdentity();<br />
+&nbsp; gluOrtho2D(-2.0, 2.0, -2.0, 2.0);<br />
+&nbsp; glMatrixMode(GL_MODELVIEW);<br />
+}</p>
+<p>void increaseDisplay() {<br />
+&nbsp; if (gCount &lt;= 15) {<br />
+&nbsp;&nbsp;&nbsp; gCount++;<br />
+&nbsp; }</p>
+<p>&nbsp; sleep(1);<br />
+&nbsp; glutPostRedisplay();<br />
+}</p>
+<p>
+void display() {</p>
+<p>&nbsp; glClear(GL_COLOR_BUFFER_BIT);<br />
+&nbsp; glBegin(GL_TRIANGLES);<br />
+&nbsp; divide_triangle(v[0], v[1], v[2], gCount);<br />
+&nbsp; glEnd();<br />
+&nbsp; <br />
+&nbsp; glutSwapBuffers();<br />
+}</p>
+<p>int main (int argc, char *argv[]) {<br />
+&nbsp; glutInit(&amp;argc, argv);<br />
+&nbsp; glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DOUBLE);<br />
+&nbsp; glutInitWindowSize(640, 480);<br />
+&nbsp; glutInitWindowPosition(200, 200);<br />
+&nbsp; glutCreateWindow(&quot;sierpinski gasket&quot;);<br />
+&nbsp; init();<br />
+&nbsp; glutDisplayFunc(display);<br />
+&nbsp; glutIdleFunc(increaseDisplay);<br />
+&nbsp; glutMainLoop();<br />
+&nbsp; <br />
+&nbsp; return 0;<br />
+}</p>
+<p>这是某个中间过程的截图：</p>
+<div id="rn3b" style="text-align: left;"><img src="http://hi.csdn.net/attachment/201010/12/0_1286905116uEUE.gif" alt="" /><br />
+
+</div>
+<p>
+其<br />
+实后面还有更加有趣的3维Sierpinski<br />
+triangle的例子，但是因为没有任何新的东西，本文也就不展示了。以上所有源代码在https://blog-sample-<br />
+code.jtianling.googlecode.com/hg/2010-10-12目录下可以找到。</p>
+<p align="left">&nbsp;</p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接</p>
+<p align="right"><strong><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p></p>

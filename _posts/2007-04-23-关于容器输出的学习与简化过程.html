@@ -1,0 +1,36 @@
+---
+layout: post
+title: "关于容器输出的学习与简化过程"
+categories:
+- C++
+tags:
+- C++
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '10'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p>在学习C++标准库的过程中，各种容器是很大一块，每次验证自己的结果输出容器的时候除了string 可以简单的cout&lt;&lt;输出以外，其他的都要for()循环用迭代器遍历，比如输出vector&lt;int&gt; vec容器就要这样</p>
+<p>for(vector&lt;int&gt;::iterator it = vec.begin(); it != vec.end(),++it)</p>
+<p>&nbsp;&nbsp;&nbsp; cout&lt;&lt;*it&lt;&lt;&quot; :;</p>
+<p>cout&lt;&lt;endl;</p>
+<p>很不方便，所以以前就自己编了个重载函数printCon以输出常用的容器</p>
+<p>void printCon(list&lt;int&gt;::const_iterator,list&lt;int&gt;::const_iterator);<br />void printCon(deque&lt;int&gt;::const_iterator,deque&lt;int&gt;::const_iterator);<br />void printCon(vector&lt;int&gt;::const_iterator,vector&lt;int&gt;::const_iterator);<br />void printCon(vector&lt;string&gt;::const_iterator,vector&lt;string&gt;::const_iterator);</p>
+<p>main()</p>
+<p>{return 0;}</p>
+<p>void printCon(list&lt;int&gt;::const_iterator first,list&lt;int&gt;::const_iterator last)<br />{<br />&nbsp;cout&lt;&lt;endl;<br />&nbsp;for(;first != last;++first)<br />&nbsp;{<br />&nbsp;&nbsp;cout &lt;&lt;*first&lt;&lt;&quot; &quot;;<br />&nbsp;}<br />&nbsp;cout&lt;&lt;endl;<br />}<br />void printCon(deque&lt;int&gt;::const_iterator first,deque&lt;int&gt;::const_iterator last)<br />{<br />&nbsp;cout&lt;&lt;endl;<br />&nbsp;for(;first != last;++first)<br />&nbsp;{<br />&nbsp;&nbsp;cout &lt;&lt;*first&lt;&lt;&quot; &quot;;<br />&nbsp;}<br />&nbsp;cout&lt;&lt;endl;<br />}<br />void printCon(vector&lt;int&gt;::const_iterator first,vector&lt;int&gt;::const_iterator last)<br />{<br />&nbsp;cout&lt;&lt;endl;<br />&nbsp;for(;first != last;++first)<br />&nbsp;{<br />&nbsp;&nbsp;cout &lt;&lt;*first&lt;&lt;&quot; &quot;;<br />&nbsp;}<br />&nbsp;cout&lt;&lt;endl;<br />}<br />void printCon(vector&lt;string&gt;::const_iterator first,vector&lt;string&gt;::const_iterator last)<br />{<br />&nbsp;cout&lt;&lt;endl;<br />&nbsp;for(;first != last;++first)<br />&nbsp;{<br />&nbsp;&nbsp;cout &lt;&lt;*first&lt;&lt;&quot; &quot;;<br />&nbsp;}<br />&nbsp;cout&lt;&lt;endl;<br />}</p>
+<p>&nbsp;</p>
+<p>使用起来还算方便，也简洁，只要两个迭代器就可以遍历输出容器，而且输出范围内的容器也可以。就是代码比较复杂，假如要适应全部的容器，代码将会复杂的吓人，但我没有学过模版，不知道那样是不是可以使这个函数简单一些，不过学了流迭代器以后，问题得到了解决，上面那个问题，只需要</p>
+<p>std::ostream_iterator&lt;int&gt; ost_iter(cout,&quot; &quot;);&nbsp;<br />std::copy(vec.begin(),.vec.end(),ost_iter);</p>
+<p>就可以得到解决了，真是简单多了啊，终于知道为什么C++要定义输出流迭代器这乍一看没有什么用的东西了。</p>

@@ -1,0 +1,342 @@
+---
+layout: post
+title: "现代软件构建系统的使用   CMake简介"
+categories:
+- "未分类"
+tags:
+- CMake
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '18'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<br />
+<h1 align="center"><font color="#0080c0" size="5" face="新宋体">现代软件构建系统的使用 CMake简介</font></h1>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="right"><b><a style="color: rgb(0,107,173); text-decoration: none" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b><b></b><b><u></u></b></p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="right"><a style="color: rgb(119,0,0); text-decoration: none" href="http://groups.google.com/group/jiutianfile/"><b>讨论新闻组及文件</b></a></p>
+<h2>前言</h2>
+<p>第一次见到<a href="http://www.cmake.org" target="_blank">CMake</a>应该是在Eclipse中的编译工具链选项，但是一直没有太过在意，然后再次认识CMake与许多人一样，是通过KDE的源代码，当我上次查看KDE中右键菜单编辑时，接触了KDE的源代码时，很自然的需要KDE的构建系统，CMake，但是光是用用，也没有在意，直到我看到《通向KDE4之路》系列文章《<a href="http://www.linuxeden.com/doc/26757.html">通向KDE4之路（八）：CMake，新的KDE构建系统</a>》时，（KDE使用者推荐阅读，写的实在是太精彩了！<a href="http://www.linuxeden.com/doc/26608.html">Linux伊甸园的转载版本</a>是比较好的，但是不全，其他很多版本都不带图，少了很多阅读乐趣，<a href="http://www.kdecn.org/kdesoft/kde4/" target="_blank">KDECN的版本</a>文章较全，就是没有图）对KDE4从autotools工具链转向CMake有了深刻印象，有了一探究竟的想法，毕竟，当年我学习autotools系列工具的时候，压根就没有用心，在公司也没有类似工具的使用氛围，一般都是通过一个简单的模板手工编写makefile，然后整个工程的先后顺序依赖等事情通过bash脚本来管理-_-!呵呵，虽然说实话，因为毕竟公司的工程的改动并不大，而且当时以移植Windows的服务器程序为主，所以还算够用。。。。。另外，要是不是现在没有工作比较清闲，还真没有闲工夫去学习这些东西。</p>
+<p>&#160;</p>
+<h3>CMake的主要优点：</h3>
+<p>1.容易使用：KDE作为开源世界最大的项目之一那是常吃螃蟹，体验先进技术的先锋力量（因为项目管理需求嘛），svn的使用就是以其带头（《通向KDE4之路》文中有所描述），并且非常成功，然后其他开源项目才开始跟进的，目前svn基本就是开源世界的标准装备嘛。（虽然也有其他迁移趋势了，见我原来的文章《<a href="http://www.jtianling.com/archive/2009/09/26/4593687.aspx">分布式的,新一代版本控制系统mercurial的介绍及简要入门</a>》）。现在开源世界的标准构建系统是autotools，也是KDE3使用的构建系统，但是随着KDE项目的扩大，慢慢不敷使用，按 《通向KDE4之路》作者的说法就是“仅有极少数所谓“编译专家”才能通彻地熟悉整个KDE构建系统”，当然，使用CMake的目的就是改变这种现象，改变后的效果是“事实可以表明，各位KDE编译专家以后可以少死些脑细胞了，每个人都可以较轻松地构建他们的项目并让其运行起来”，这样的评价让我不得不心动。</p>
+<p>2.效率高：以下是《<a href="http://www.linuxeden.com/doc/26757.html">通向KDE4之路（八）：CMake，新的KDE构建系统</a>》原文“CMake搜索依赖对象的速度比“./configure”快了好几倍，用CMake构建kdelibs4比用autotools构建KDE 3.5.6的kdelibs所花的时间少了40%，大概是拜CMake不使用libtool组织工具链所致吧。在UNIX平台上，CMake使用的工具链是这样的：cmake+make，然后您再看看KDE 3.5.6的构建工具链：automake+autoconf+libtool+make+sh+perl+m4……伙计，对比一下吧。”</p>
+<p>这里有</p>
+<p>《<a href="https://lwn.net/Articles/188693/" target="_blank">Why the KDE project switched to CMake -- and how (continued)</a>》给大家参考KDE4迁移到CMake的经验。优点提了一大片。</p>
+<p>每一次学习新东西都是很有乐趣的，虽然刚开始会花费时间用来学习，但是实践证明，因为它们不同于老事物的优点，最后能为我省下的时间会更多，Python,bash,vim,mercurial,AutoHotkey等一大批工具的学习经验都是这样告诉我的。这也是我一次一次学习新东西的动力。</p>
+<p>&#160;</p>
+<h2>CMake安装</h2>
+<p>CMake作为跨平台的开源构建系统，有Windows,Linux下的版本。</p>
+<p>Windows下的版本一如既往的有自动安装包。见右边的链接<a title="http://www.cmake.org/cmake/resources/software.html" href="http://www.cmake.org/cmake/resources/software.html">http://www.cmake.org/cmake/resources/software.html</a></p>
+<p>但是因为我使用的是Kubuntu 9.04，安装Linux版本也是如此的容易，apt-get install cmake嘛，不过，因为是kubuntu嘛，一般而言都已经装好了，不劳我们费神再次安装。</p>
+<p>&#160;</p>
+<h2>没有用CMake之前</h2>
+<p>比如说，以前我在Linux编写程序时，常常自己手工创建一个Makefile，（虽然我利用bash自动生成了原始的Makefile及cpp文件）如下例Test工程中所示：</p>
+<p> <font face="monospace"><font color="#008080">obj </font>= test.o     </p>
+<p><font color="#008080">test :</font>&#160;<font color="#008080">$(obj)</font> <br /><font color="#ff00ff">&#160;&#160;&#160; g++ -g -o test </font><font color="#008080">$(obj)</font> <br /><font color="#ff00ff">&#160;&#160;&#160; </font> <br /><font color="#008080">$(obj) :</font> test.cpp test.h     <br /><font color="#ff00ff">&#160;&#160;&#160; g++ -g -c test.cpp</font> </p>
+<p><font color="#804040"><b>.PHONY :</b></font> clean     <br /><font color="#008080">clean :</font> <br /><font color="#6a5acd">&#160;&#160;&#160; -</font><font color="#ff00ff">rm test </font><font color="#008080">$(obj)</font> <br /></font>
+<p>通过这样的Makefile来使的 test.cpp,test.h可以正常被编译，编译时我只需要使用make命令即可。举个例子，比如test.cpp,test.h的内容如下：</p>
+<p>test.cpp:</p>
+<div id="codeSnippetWrapper">
+<div style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px" id="codeSnippet">
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum1">   1:</span> <span style="color: #cc6633">#include</span> &lt;stdlib.h&gt;</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum2">   2:</span> <span style="color: #cc6633">#include</span> &lt;stdio.h&gt;</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum3">   3:</span>&#160; </pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum4">   4:</span> <span style="color: #0000ff">int</span> main(<span style="color: #0000ff">int</span> argc, <span style="color: #0000ff">char</span>* argv[] )</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum5">   5:</span> {</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum6">   6:</span>     printf(<span style="color: #006080">&quot;Hello World!/n&quot;</span>);</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum7">   7:</span>&#160; </pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum8">   8:</span>     getchar();</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum9">   9:</span>     exit(0);</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum10">  10:</span> }</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum11">  11:</span>&#160; </pre>
+<p><!--CRLF--></div>
+</div>
+<div id="codeSnippetWrapper">
+<br />test.h:(目前无意义，纯为演示）</div>
+<div id="codeSnippetWrapper">
+<div style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px" id="codeSnippet">
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum1">   1:</span> <span style="color: #cc6633">#include</span> &lt;iostream&gt;</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum2">   2:</span> <span style="color: #0000ff">using</span> <span style="color: #0000ff">namespace</span> std;</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum3">   3:</span>&#160; </pre>
+<p><!--CRLF--></div>
+</div>
+<p>这样，我只需要make，然后就能生成test程序，然后就可以调试或看运行结果了，并且能够通过make clean清理环境，这基本就算一个和那简单的Makefile文件示例了。但是这样的过程有个问题，那就是我每添加一个文件总是需要手工再次编辑Makefile文件，比如，下例中我添加了一个类，然后Makefile文件需要做相应的更改。</p>
+<p>添加一个类，2个文件：</p>
+<p>Out.cpp:</p>
+<p><font face="monospace"><font color="#a020f0">#include </font><font color="#ff00ff">&quot;Out.h&quot;</font></p>
+<p><font color="#2e8b57"><b>void</b></font> COut::print() </p>
+<p>{ </p>
+<p>&#160;&#160;&#160; printf(<font color="#ff00ff">&quot;Hello World!&quot;</font>); </p>
+<p>}</font></p>
+<p>Out.h:</p>
+<p><font face="monospace"><font color="#a020f0">#ifndef __OUT_H__</font><br />
+<br /><font color="#a020f0">#define __OUT_H__</font></p>
+<p><font color="#a020f0">#include </font><font color="#ff00ff">&lt;stdio.h&gt;</font><br />
+<br /><font color="#804040"><b>using</b></font>&#160;<font color="#2e8b57"><b>namespace</b></font> std; </p>
+<p><font color="#2e8b57"><b>class</b></font> COut </p>
+<p>{ </p>
+<p><font color="#804040"><b>public</b></font>: </p>
+<p>&#160;&#160;&#160; <font color="#2e8b57"><b>static</b></font>&#160;<font color="#2e8b57"><b>void</b></font> print(); </p>
+<p>}; </p>
+<p><font color="#a020f0">#endif</font>&#160; <br /></font><font face="monospace"><br />
+</font>
+<p></p>
+<p>test.cpp:</p>
+<p><font face="monospace"><font color="#a020f0">#include </font><font color="#ff00ff">&lt;stdlib.h&gt;</font><br />
+<br /><font color="#a020f0">#include </font><font color="#ff00ff">&lt;stdio.h&gt;</font><br />
+<br /><font color="#a020f0">#include </font><font color="#ff00ff">&quot;Out.h&quot;</font></p>
+<p><font color="#2e8b57"><b>int</b></font> main(<font color="#2e8b57"><b>int</b></font> argc, <font color="#2e8b57"><b>char</b></font>* argv[] ) </p>
+<p>{ </p>
+<p>&#160;&#160;&#160; COut::print(); </p>
+<p>&#160;&#160;&#160; getchar(); </p>
+<p>&#160;&#160;&#160; exit(<font color="#ff00ff">0</font>); </p>
+<p>}</font></p>
+<p><font face="monospace"><br />
+<br /></font>此时的Makefile就需要手动改变，变成如下形式：</p>
+<p>makefile:</p>
+<p><font face="monospace"><font color="#008080">obj </font>= test.o </p>
+<p><font color="#008080">objOut </font>= Out.o </p>
+<p><font color="#008080">test :</font>&#160;<font color="#008080">$(obj)</font>&#160;<font color="#008080">$(objOut)</font><br />
+<br /><font color="#ff00ff">&#160;&#160;&#160; g++ -g -o test </font><font color="#008080">$(obj)</font><font color="#ff00ff">&#160;</font><font color="#008080">$(objOut)</font><br />
+<br /><font color="#ff00ff">&#160;&#160;&#160; </font><br />
+<br /><font color="#008080">$(obj) :</font> test.cpp test.h </p>
+<p><font color="#ff00ff">&#160;&#160;&#160; g++ -g -c test.cpp</font></p>
+<p><font color="#008080">$(objOut) :</font> Out.cpp Out.h </p>
+<p><font color="#ff00ff">&#160;&#160;&#160; g++ -g -c Out.cpp</font></p>
+<p><font color="#804040"><b>.PHONY :</b></font> clean </p>
+<p><font color="#008080">clean :</font><br />
+<br /><font color="#6a5acd">&#160;&#160;&#160; -</font><font color="#ff00ff">rm test </font><font color="#008080">$(obj)</font><font color="#ff00ff">&#160;</font><font color="#008080">$(objOut)</font><br />
+<br /></font></p>
+<p>并且，每次的文件变动都需要手工改动，事实上，手工改动还有更好点的办法，makefile提供了一些简便的通过%.,$&lt;,$@自动通过后缀匹配的方法，（参看Makefile编写的相关教程）但是事实上，每次的文件变动手工对Makefile的改动还是少不了，更重要的是，文件间的依赖无法简单的人工判断，比如上面这个简单的例子，事实上，test.cpp对Out.o的依赖我就没有加上，这种情况下，重新链接或者编译时常常会出现问题，导致最简单的办法就是直接全部重新编译链接，在我以前的公司基本上也就靠这样的办法，事实上，这些弊端，通过CMake，甚至autotools都是可以解决的。另外，上述仅仅是最最简单的情况，事实上，现实规模的程序起码要包含一大堆的库，库的依赖等事情在手工编写makefile的时候也不得不自己考虑，常常会出现一大堆的函数未实现，有的还好说，自己编写的库的函数未实现大概还知道在哪，常常有系统函数的未实现连具体漏了哪个库都难发现，反复的链接，分析也是的确烦人，这种重复枯燥的工作自然不应该由程序员来做，浪费生命，再更进一步的讲，分发源代码的时候怎么保证别人的机器配置与你的一样啊？gcc所在的目录，各种库所在的目录，这些都没有办法强制指定-_-！这就不是简单复杂的问题了，而是实现上的问题。更甚者，一样的源代码也允许不一样的编辑工具啊，有人习惯vim,有人习惯emacs，有人喜欢eclipse，怎么协调统一啊？当然，同一公司可以统一规定，但是开源的世界还那么多规矩那就不现实了，下面我们对比一下CMake使用时的解决方案。</p>
+<p>&#160;</p>
+<h2>CMake入门</h2>
+<p>CMake靠的是CMakeLists.txt文件来生成工程的，事实上，CMakeList.txt的编写就如使用make时编写Makefile，只不过，相对来说CMake站的高度更高一些，所以虽然还是要编写一个配置文件，但是CMakefile的编写比makefile轻松简单很多，而CMake最后其实还是通过生成makefile的方式来管理工程的（事实上，CMake可以生成多种工程文件，甚至支持eclipse和VC-_-!）</p>
+<p>比如，在上面那个简单的HelloWorld例子中，我们只需要编写一个如下面所示的CMakeLists.txt文件即可：</p>
+<p><font face="monospace"><font color="#804040"><b>project</b></font><font color="#008080">(test)</font><br />
+<br /><font color="#804040"><b>set</b></font><font color="#008080">(CMAKE_CXX_FLAGS </font><font color="#ff00ff">&quot;-g -Wall&quot;</font><font color="#008080">)</font><br />
+<br /><font color="#804040"><b>set</b></font><font color="#008080">(SRC_LIST test.cpp)</font><br />
+<br /><font color="#804040"><b>add_executable</b></font><font color="#008080">(test </font><font color="#2e8b57"><b>${SRC_LIST}</b></font><font color="#008080">)</font><br />
+<br /></font></p>
+<p>保存文件，然后可以通过在原工程中添加子目录的（也可以是另外的目录）方式隔离CMakefile及以后编译生成的中间文件对源程序的干扰（这点非常出彩），深受VS自动创建文件导致源代码管理的时候老是要去处理的我那是尤为感叹。（当然，假如用VSS管理就好一点，我用mercurial就烦了）</p>
+<p>原来我们常用的autotools构建编译软件的步骤就是众所周知的</p>
+<p>./configure &amp;&amp; make &amp;&amp; make install</p>
+<p>语句了，当年redhat9时代，不会用yum的时候，没有少使用过，我甚至将其直接设了ml的别名。</p>
+<p>现在我们使用CMake的方式是</p>
+<p>cmake ../ &amp;&amp; make &amp;&amp; make install</p>
+<p>当然，这个命令差别都不算太大，另外这里我们还没有install-_-!</p>
+<p>在子目录中（我将其命名为build）中，运行cmake ../，</p>
+<p>然后出现一大堆的信息：</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>jtianling@jtianling-laptop:~/test/cmakeTest2/build$ cmake ../
+-- The C compiler identification is GNU
+-- The CXX compiler identification is GNU
+-- Check for working C compiler: /usr/bin/gcc
+-- Check for working C compiler: /usr/bin/gcc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/jtianling/test/cmakeTest2/build
+jtianling@jtianling-laptop:~/test/cmakeTest2/build$ </pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>此时，Makefile文件就生成完了，我们可以看看，一大堆的东西，看不懂也没有关系，直接make就好了，如下所示：</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>jtianling@jtianling-laptop:~/test/cmakeTest2/build$ make
+Scanning dependencies of target test
+[100%] Building CXX object CMakeFiles/test.dir/test.cpp.o
+Linking CXX executable test
+[100%] Built target test
+jtianling@jtianling-laptop:~/test/cmakeTest2/build$ ls
+CMakeCache.txt  CMakeFiles  cmake_install.cmake  Makefile  test
+jtianling@jtianling-laptop:~/test/cmakeTest2/build$ </pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>假如不是通过putty远程的话，还能看到一些颜色信息。此时我们可以看到test程序已经生成出来了，运行看看，没有什么问题。</p>
+<p>对比一下，在编写Makefile时，我们编写了8，9行，而CMakeLists.txt我们仅仅用了4行，呵呵，这里虽然少了一倍，但是我们增加了Makefile生成的过程，也不能仅仅说这样就说CMake多么好。下面慢慢看。这里先解释一下CMakeList.txt各句的含义：</p>
+<p><b>project</b>(test)</p>
+<p>设定工程名</p>
+<p><b>set</b>(CMAKE_CXX_FLAGS &quot;-g -Wall&quot;) </p>
+<p><b>set</b>(SRC_LIST test.cpp)</p>
+<p>set用于指定变量，这里指定了CMAKE_CXX_FLAGS为”-g -Wall”，CMAKE_CXX_FLAGS为CMake内置的变量，我们通过修改此变量，达到生成的Makefile文件编译时添加调试和警告信息（这是g++编译选项的知识了），后一个set指定SRC_LIST变量的值为test.cpp，这是我们的用户变量</p>
+<p><b>add_executable</b>(test <b>${SRC_LIST}</b>)</p>
+<p>指定添加生成一个名为test的程序，依赖于SRC_LIST变量，${SRC_LIST}的变量引用方式与makefile,bash中的类似。</p>
+<p>以上4句，确认了test工程的生成规则。</p>
+<p>当我们添加了文件后，我们还需要对CMakeLists.txt进行更进一步的更改，比如上例添加Out.cpp的情况。</p>
+<p>我们在上述第3行添加Out.cpp文件，如下面的形式：</p>
+<p>set(SRC_LIST test.cpp Out.cpp)</p>
+<p>然后才能正确的生成Makefile，比上述Makefile的手工编写时节省的时间不是一点两点，但是，作为世界上最懒惰群体之一的程序员（不是说以懒惰为美德嘛，那估计是够懒的了），觉得这样也是教麻烦的，不然怎么大家都喜欢IDE呢-_-!事实上，CMake的编写者自然也就是程序员，自然也就是很懒，自然也提供了更简单的办法，只需要将上面的CMakeLists.txt改成目录依赖的形式，一切就简单了。将上述CMakeLists.txt的第3行改成下面这样：</p>
+<p>aux_source_directory(./ SRC_LIST)</p>
+<p>这样，CMake会自动搜寻./中的源文件，然后自动赋予SRC_LIST变量，这样，你添加成千上万个文件也没有关系，只需要重新运行CMake，就好了，呵呵，一切的简单程度是不是超乎想象啊？学习了以后，你会惊呼，这就是我想要的东西！（当然，假如你以前手工编写过makefile或者使用的是autotools的话，使用IDE的到目前为止当我没有说过此话）</p>
+<p>使用此CMakeFiles.txt后，我们不再需要为源代码的添加额外改动任何东西，见下面的执行过程：（警告信息是告诉我们去指定最小需要的cmake版本，对于此演示来说管不管都无所谓，以后都不管了）</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>jtianling@jtianling-laptop:~/test/cmakeTest/build$ cmake ../
+CMake Warning (dev) in CMakeLists.txt:
+  No cmake_minimum_required command is present.  A line of code such as
+
+    cmake_minimum_required(VERSION 2.6)
+
+  should be added at the top of the file.  The version specified may be lower
+  if you wish to support older CMake versions for this project.  For more
+  information run &quot;cmake --help-policy CMP0000&quot;.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/jtianling/test/cmakeTest/build
+jtianling@jtianling-laptop:~/test/cmakeTest/build$ make
+Scanning dependencies of target test
+[ 50%] Building CXX object CMakeFiles/test.dir/Out.o
+[100%] Building CXX object CMakeFiles/test.dir/test.o
+Linking CXX executable test
+[100%] Built target test
+jtianling@jtianling-laptop:~/test/cmakeTest/build$ </pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>自动的完成了编译，并且自动的添加了Out.cpp的依赖，呵呵，这种过程比起手工编写makefile就像是从手洗衣服到使用全自动洗衣机一样愉快。（当然，工程文件的目录管理那就得用心了，再乱七八糟估计是不能用这种方式来简化了）</p>
+<p>&#160;</p>
+<h2>库依赖处理</h2>
+<p>手工编写makefile时，你的知道gcc,g++的语法，添加一堆的-I,-l之类的东西，具体在哪个目录还的自己去找，这个也太不人性了（事实上还是推荐学会gcc,g++的语法，makefiley也推荐学会，毕竟不是每个地方都有CMake可用，毕竟还是有需要处理这种原始依赖和编译选项的时候），CMake对其进行了一定的简化。</p>
+<p>此处以《Unix/Linux编程实践教程》中的一个curses例子为例，原代码如下：</p>
+<p>hello3.c:</p>
+<div id="codeSnippetWrapper">
+<div style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px" id="codeSnippet">
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum1">   1:</span> <span style="color: #008000">/* hello3.c</span></pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum2">   2:</span> <span style="color: #008000"> *      purpose  using refresh and sleep for animated effects</span></pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum3">   3:</span> <span style="color: #008000"> *      outline  initialize, draw stuff, wrap up</span></pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum4">   4:</span> <span style="color: #008000"> */</span></pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum5">   5:</span> <span style="color: #cc6633">#include</span>        &lt;stdio.h&gt;</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum6">   6:</span> <span style="color: #cc6633">#include</span>        &lt;curses.h&gt;</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum7">   7:</span>&#160; </pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum8">   8:</span> main()</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum9">   9:</span> {</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum10">  10:</span>         <span style="color: #0000ff">int</span>     i;</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum11">  11:</span>&#160; </pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum12">  12:</span>         initscr();</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum13">  13:</span>            clear();</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum14">  14:</span>            <span style="color: #0000ff">for</span>(i=0; i&lt;LINES; i++ ){</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum15">  15:</span>                 move( i, i+i );</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum16">  16:</span>                 <span style="color: #0000ff">if</span> ( i%2 == 1 ) </pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum17">  17:</span>                         standout();</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum18">  18:</span>                 addstr(<span style="color: #006080">&quot;Hello, world&quot;</span>);</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum19">  19:</span>                 <span style="color: #0000ff">if</span> ( i%2 == 1 ) </pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum20">  20:</span>                         standend();</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum21">  21:</span>                 sleep(1);</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum22">  22:</span>                 refresh();</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum23">  23:</span>            }</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum24">  24:</span>         endwin();</pre>
+<p><!--CRLF--></p>
+<pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: white; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: 'Courier New', courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px"><span style="color: #606060" id="lnum25">  25:</span> }</pre>
+<p><!--CRLF--></div>
+</div>
+<p>此例需要使用curses库，我们只需要在CMakeLists.txt中添加一句话就够了。如下：</p>
+<p>link_libraries(curses)</p>
+<p>剩下的就交给CMake了。</p>
+<p>&#160;</p>
+<h2>静态库构建</h2>
+<p>上面是说怎么链接系统的库的，CMake还为我们自己编译库提供了方便，了解了上述知识后，会发现编译一个库也是如此简单哪。</p>
+<p>比如将上例中的out类给独立出一个库来，在原来的目录下面单独建立一个out目录，编写如下CMakeLists.txt文件:</p>
+<p>project(out)<br />
+  <br />set(CMAKE_CXX_FLAGS &quot;-g -Wall&quot;) </p>
+<p>aux_source_directory(./ SRC_LIST) </p>
+<p>add_library(out ${SRC_LIST})</p>
+<p>会发现，其实编写一个静态库需要的做的仅仅是最后一行从add_excuteable到add_library的区别-_-!简单到让人无语。编译后，一个名为libout.a的文件就生成了，名字也按Linux的惯例取好了。</p>
+<h2>&#160;</h2>
+<h2>程序+库的构建</h2>
+<p>用系统的库很简单，我们已经看到了，上面我们得到一个自己的库了，怎么和程序一起构建呢？也是很容易的。比如，保持上述目录结构，我们利用以下的CMakeLists.txt就可以自动生成自己的库，并完成test到库的依赖：</p>
+<p>project(test)<br />
+  <br />set(CMAKE_CXX_FLAGS &quot;-g -Wall&quot;) </p>
+<p>aux_source_directory(out/ LIB_SRC_LIST) </p>
+<p>add_library(out ${LIB_SRC_LIST}) </p>
+<p>link_libraries(out) </p>
+<p>aux_source_directory(./ SRC_LIST)<br />
+  <br />add_executable(test ${SRC_LIST})</p>
+<p>呵呵，没有任何新内容，就是设定目录的时候注意一点，so easy？YES! </p>
+<p>&#160;</p>
+<h2>小结</h2>
+<p>事实上CMake比我上面讲述的功能要强大的多，甚至可以直接帮助生成安装文件及完成自动化测试，也有很多复杂的语法，这些功能就只能靠大家自己慢慢学习和挖掘了，无法尽述。上面仅仅是对CMake进行简单工程管理时有多么简单进行了一些描述。基本可以适应小规模的工程管理使用，相对来说比手工编写makefile要简单的多，更适于平时使用，并且到了源代码发布哪天，更加会轻松不少。其语法也比gcc/g++的命令行参数要直观易记的多。并且，随着KDE4的吃螃蟹，并且非常成功，不久的将来，开源世界的构建工具可能会如同当年从cvs到svn一样，从autotools改成CMake的世界^^事实上，从我学习的感受来说，CMake的学习难度也比autotools工具链要简单的多，期待着那一天的到来吧:)</p>
+<p>&#160;</p>
+<h2>参考资料：</h2>
+<p>《<a href="http://www.linuxeden.com/doc/26757.html">通向KDE4之路（八）：CMake，新的KDE构建系统</a>》-- 我学习CMake的原因</p>
+<p>《<a href="http://sewm.pku.edu.cn/src/paradise/reference/CMake%20Practice.pdf"><em>Cmake</em> 实践</a>》 -- 非常好的教程</p>
+<p>《<a href="http://www.cs.swarthmore.edu/~adanner/tips/cmake.php" target="_blank">CMake How To</a>》-- 较好的CMake教程，E文</p>
+<p>&#160; </p>
+<h2 style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px">完整源代码获取说明</h2>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px">由于篇幅限制，本文一般仅贴出代码的主要关心的部分，代码带工程（或者makefile）完整版（如果有的话）都能用Mercurial在Google Code中下载。文章以博文发表的日期分目录存放，请直接使用Mercurial克隆下库：</p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px"><a style="color: rgb(119,0,0); text-decoration: none" href="https://blog-sample-code.jtianling.googlecode.com/hg/">https://blog-sample-code.jtianling.googlecode.com/hg/</a></p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px">Mercurial使用方法见《<a style="color: rgb(0,107,173); text-decoration: none" href="http://www.jtianling.com/archive/2009/09/25/4593687.aspx">分布式的，新一代版本控制系统Mercurial的介绍及简要入门</a>》</p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px">要是仅仅想浏览全部代码也可以直接到google code上去看，在下面的地址：</p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px"><a style="color: rgb(0,107,173); text-decoration: none" href="http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code">http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code</a></p>
+<p align="left">&#160;</p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接<b></b></p>
+<p align="right"><b><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b></p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p><script type="text/javascript">var sitebro_tracker_atc_kw = {u:'http://www.sitebot.com.cn/754892/',w:'NzU0ODky',bt:'#804000',bg:'#EEEEDD',fs:1,ca:'#770000',bh:'#f4f4c6',cp:'',l:10,s:1,lang:'zh_CN'};</script><script type="text/javascript" src="http://www.sitebot.com.cn/js/widget_track2/tracker_atc_kw.js"></script><script type="text/javascript">&lt;!--<br />
+var sitebro_tracker_atc={u:'http://www.sitebot.com.cn/754892/',w:'NzU0ODky',bt:'#804000',bg:'#EEEEDD',cf:'#ffffff',ca:'#770000',bh:'#DDDDCC',cp:'%E6%9C%AC%E7%AB%99%E7%83%AD%E9%97%A8%E6%96%87%E7%AB%A0',l:10,s:0,lang:'zh_CN'};<br />
+// --&gt;</script><script src="http://www.sitebot.com.cn/js/widget_track2/tracker_atc.js" type="text/javascript"></script></p>

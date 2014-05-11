@@ -1,0 +1,138 @@
+---
+layout: post
+title: "从C++到JAVA，C++程序员学习JAVA的指南(2)"
+categories:
+- "未分类"
+tags:
+- C++
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '39'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="right"><b><a style="color: rgb(0,107,173); text-decoration: none" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b><b></b><b><u></u></b></p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="right"><a style="color: rgb(119,0,0); text-decoration: none" href="http://groups.google.com/group/jiutianfile/"><b>讨论新闻组及文件</b></a></p>
+<div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:0767317B-992E-4b12-91E0-4F059A8CECA8:70b2bcad-d11e-4db3-887f-8d394a435a7a" class="wlWriterEditableSmartContent">Technorati 标签: <a href="http://technorati.com/tags/JAVA" rel="tag">JAVA</a>,<a href="http://technorati.com/tags/C%2b%2b" rel="tag">C++</a>,<a href="http://technorati.com/tags/Python" rel="tag">Python</a></div>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="left">JAVA is not just another programming language. -- 匿名</p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="left">学习更新的语言，有助于了解别人对旧语言有哪些不满。 -- 匿名</p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="left"> </p>
+<h2>前言</h2>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="left">先说明本文的行文习惯，文章写作流程以本人阅读《Java Programming Language》为顺序，一般以一个本人认为值得讲的JAVA与C++不同的特性为一个小节，每小节尽量以JAVA的新特性为标题，首先对比C++,JAVA，Python三者在此上的区别，然后展开讨论。因为没有人能够在每个领域都成为专家，本人也是Python知识浅薄，并且新学JAVA，C++也不过学了2，3年，以此学习方式纯粹为了对比学习，没有厚此薄彼之意。虽然本人常常几书在手，时常查阅，但是文中技术的硬伤因为本人的水平也就这样，估计难以避免，也请大家指正。</p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="left"> </p>
+<h2>1.原生整数类型的大小确定</h2>
+<p>C++ -- 类型大小一般规定最小值，整数类型丰富</p>
+<p>JAVA -- 完全由标准定死原生整数类型的大小，整数类型丰富</p>
+<p>Python -- 整数仅分标准整形和长整形，标准整形长度不确定，长整形</p>
+<p>JAVA的这个特点不算是太大的改动，但是比起C++来说实在是更为方便。C++继承了C的传统，标准中原生类型都仅仅是建议最小的大小，具体多大的权利留给了编译器，因为这种特性，流行着一句"一百家编译器厂商就有一百种C++”的话。所以在C++中，我们通过typedef来获取自己一般想要的大小，（到时候想要改也方便）减少int的使用转而使用长度更加确定的short,long，去减少整数类型大小不确定带给我们可移植性的问题。</p>
+<p>事实上，这种特性可能是考虑到不同硬件对不同大小的值执行速度上的差异，比如16位机器一次处理16位整数的效率最高，32位的机器是32位，而64位则是64位，C++作为一门没有完全脱离硬件并且不放弃底层开发市场的语言，无法不考虑这一点，所以才有int的出现，用此类型来自适应当前机器最适合的类型，其他类型也没有强行的规定死，导致了sizeof的使用常常难以避免，特别是在数组等长度的计算时，sizeof的使用简直就是标准用法，JAVA抛弃了这种用法，确定了所有原生类型的大小，在一定程度上简化了程序代码。</p>
+<p>Python的原生整数类型基本上完全使用标准整形，并且与支持无限长度的长整形可以默认转换，比JAVA的做法更加激进，事实上使用更加方便，最最重要的是解决了C++,JAVA都存在的数值溢出问题。但是提供给程序员的选择少了，方便是方便了，对于内存的精打细算的歪脑筋也没有办法打了。。。。</p>
+<p>数值溢出问题就更是一个大问题了，多少不正常的歪门邪道就由此而来啊，在定义数值的时候因为没有预计到原来可能的规模，最后不得已需要扩大，在大规模程序中也实在是噩梦一场。（我在工作中就碰到过不止一次）而程序员数量较多时，对同一个意义的值使用了不同整数类型，相互之间传递时的溢出Bug，也是相当难以调试，也会使得明明经过自己单元测试的模块最后出现问题，这些，也许就只能放在Python的激进中，通过割舍了节省内存的手段才能解决了。在C++和JAVA中，可能需要更多对程序员的规定才能稍微缓解此情况。</p>
+<p> </p>
+<h2>2.去掉了无符号整数的使用</h2>
+<p>C++ -- 整数类型可选择有无符号</p>
+<p>JAVA -- 完全由标准定死原生整数类型全部为有符号</p>
+<p>Python -- 全部有符号</p>
+<p>C++中可以由unsigned选择某个整数类型是否是无符号，默认为有符号。虽然遵循着整形提升的原则，但是有无符号可以在计算中自动转换，常常导致问题，这一点在《C专家编程》1.10中Peter Van Der Linden有过描述，并且推荐大家不要在代码中使用无符号类型，以免增加不必要的复杂性，但是事实上，在我的工作经历中，公司对无符号的使用还是较多，特别是对于那些不存在负数的值，甚至还偏向于使用无符号整数。但是，也不能将无符号整数说的一无是处，在位运算时，特别是位的偏移运算，无符号整数可以让我们减少对多情况的考虑，简化代码，在《C专家编程中》也是推荐只有在使用位段和二进制掩码时，才可以使用无符号数。</p>
+<p>对于符号的问题，本人使用C++中最为印象深刻的是另外的问题。（也不能全部定性为有无符号带来的问题）工作中，很多遗留的代码喜欢用-1来表示一个无符号数的最大值，事实上，这样做仅仅当类型是int时才是安全的，其他情况下的确能够获取到最大的无符号数，但是比较的时候却会带来问题，不知道的话也常常会在调试时陷入郁闷当中，当时开发的程序常常通过网络通信（服务器端的程序嘛），更加加大了问题的严重性，我甚至还帮同事调试过几个这样的问题。</p>
+<p>比如下面这个例子：</p>
+<pre class="code"><span style="color: blue">#include </span><span style="color: #a31515"><iostream>
+</iostream></span><span style="color: blue">using namespace </span><span style="color: #050005">std</span>;
+
+<span style="color: blue">int </span><span style="color: #050005">main</span>()
+{
+    <span style="color: blue">unsigned int </span><span style="color: #050005">d </span>= -1;
+    <span style="color: #050005">cout </span>&lt;&lt;<span style="color: #050005">d </span>&lt;&lt;<span style="color: #050005">endl</span>;
+
+    <span style="color: blue">if</span>(<span style="color: #050005">d </span>== -1)
+    {
+        <span style="color: #050005">cout </span>&lt;&lt;<span style="color: #a31515">" d == -1" </span>&lt;&lt;<span style="color: #050005">endl</span>;
+    }
+    <span style="color: blue">else
+    </span>{
+        <span style="color: #050005">cout </span>&lt;&lt;<span style="color: #a31515">" d != -1" </span>&lt;&lt;<span style="color: #050005">endl</span>;
+    }
+
+    <span style="color: blue">unsigned short </span><span style="color: #050005">s </span>= -1;
+    <span style="color: #050005">cout </span>&lt;&lt;<span style="color: #050005">s </span>&lt;&lt;<span style="color: #050005">endl</span>;
+
+    <span style="color: blue">if</span>(<span style="color: #050005">s </span>== -1)
+    {
+        <span style="color: #050005">cout </span>&lt;&lt;<span style="color: #a31515">" s == -1" </span>&lt;&lt;<span style="color: #050005">endl</span>;
+    }
+    <span style="color: blue">else
+    </span>{
+        <span style="color: #050005">cout </span>&lt;&lt;<span style="color: #a31515">" s != -1" </span>&lt;&lt;<span style="color: #050005">endl</span>;
+
+        <span style="color: blue">if</span>(<span style="color: #050005">s </span>== (<span style="color: blue">unsigned short</span>)-1)
+        {
+            <span style="color: #050005">cout </span>&lt;&lt;<span style="color: #a31515">" s == (unsigned short)-1" </span>&lt;&lt;<span style="color: #050005">endl</span>;
+        }
+        <span style="color: blue">else
+        </span>{
+            <span style="color: #050005">cout </span>&lt;&lt;<span style="color: #a31515">" s != (unsigned short)-1" </span>&lt;&lt;<span style="color: #050005">endl</span>;
+        }
+    }
+
+    <span style="color: blue">return </span>0;
+}</pre>
+<p><a href="http://11011.net/software/vspaste"></a></p>
+<p>会输出：</p>
+<p>4294967295<br />
+  <br />d == -1 </p>
+<p>65535 </p>
+<p>s != -1 </p>
+<p>s == (unsigned short)-1</p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="left">注意了，在C++中，unsigned short用-1赋值后，在与-1的比较中是不为真，这种情况的避免一般可以通过两种方式，一种是在所有的-1使用中全部加上确定的类型，如上面示例中所示，另一种就是全部弃用-1，而是使用0xFFFF…..的形式代替。</p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="left">统一了符号后，这些问题自然不会存在了。</p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="left"> </p>
+<h2>3.类成员变量默认初始化+使用栈上未初始化的变量无法通过编译</h2>
+<p>C++ -- 使用未初始化的变量时，此变量值不确定，实际使用内存中的残留数据，类及栈上的使用一样</p>
+<p>JAVA -- 类成员变量默认初始化+使用栈上未初始化的变量无法通过编译</p>
+<p>Python -- 动态类型语言，变量不需声明，使用未定义的变量一律抛出运行时异常，NameError</p>
+<p>C++的行为简直人神共愤。。。。。。。呵呵，当然，事实上，公司和C++使用者们就多出了很多规定了避免此事，比如使用变量时一律先初始化，哪怕马上就要用到了，比如分配了内存一律先memset，使用了数组一律先={0}，使用指针，一律先=NULL，并且，推迟变量的定义，直到使用时然后才定义变量，以防忘记初始化。</p>
+<p>事实上，个人认为还是效率上的考虑让Ｃ++如此，（也许因为继承了C）假如都能像JAVA这样不把效率作为己任，C++要更好的多，C++的设计哲学里，可以不初始化的变量，为啥一定要先初始化？呵呵，在C语言所有变量必须在块的前面定义时，给每个变量一个无意义的初始值，也的确是有消耗的。</p>
+<p>不用多说了，又是一例方便了程序员（但是耽误了效率）的改进。</p>
+<p> </p>
+<h2>4.数组本身包含长度信息</h2>
+<p>C++ -- 原生数组本身无长度信息，但是Vector等容器有</p>
+<p>JAVA -- 数组本身包含长度信息</p>
+<p>Python -- 数组本身包含长度信息</p>
+<p>C++中的原生数组不包含除本身元素外的任何信息，这种方式与C兼容，但是说实话，并不是太好用，使得使用数组的时候有诸多不便，比如传递参数时就需要额外指定一个方式来表示结束方式，要么传长度，要么传结束指针，要么如字符串以零结尾，都不算太好，虽然在STL中提供了Vector作为替换方案，但是使用中，常常因为各种因素（与C兼容，节省内存等），还是常常使用原生数组，但是，说实话，习惯了这种思维，其实也不是什么问题了，当然，对于初学者来说，JAVA，Python这种万物皆对象，数组本身就是一个类对象的方式会更容易接受一些，事实上，最简单的来说，传递参数的时候参数数量会少一些，使用也简单，难以出错一些。</p>
+<p> </p>
+<h2>5.数组访问范围检测</h2>
+<p>C++ -- 数组访问范围不检测，部分实现可提供可选检测</p>
+<p>JAVA -- 数组访问范围检测，越界时，抛出ArrayIndexOutOfBoundsException异常</p>
+<p>Python -- 数组访问范围检测，越界时抛出IndexError: tuple index out of range</p>
+<p>数组访问范围检测不会让C++中常见的越界访问问题得到彻底解决，仅仅是运行时碰到时会抛出异常，方便了调试和发现问题。因为此类问题虽然可以通过良好的习惯尽量避免，但是一旦出现非常难以调试，难到出现莫名其妙的Bug时，公司的资深程序员第一反应就是数组访问越界导致的问题（其实相对来说比率还是比较小的），所以我很还是比较支持这种运行时检测的，但是面试时现在公司的程序员老大说当我用了JAVA后就知道JAVA的数组访问有多么慢了，并且认为很大的原因就是因为运行时的范围检测，因为刚接触JAVA，是对是错，我暂时也不敢肯定，但是此话应该有参考价值。</p>
+<p> </p>
+<h2>后记：</h2>
+<p>此文是当时刚刚通过新公司的面试还没有进入公司的时候写的，因为还没有完善，一直没有发布，当时以为自己在新公司会使用JAVA，所以趁还没有进入公司现巩固一下（对JAVA的了解很少，仅大概看过《Thinking in JAVA》一书），但是事实进入公司以后，还是做C++的工作。。。。。。。所以，此系列，未完善的文章也先发布了，无意外的话，此系列还就此终结了。。。。。。。。。。。。（假如以后有闲工夫或者工作真的换的时候再开始也未必可知）</p>
+<h2 style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px"> </h2>
+<h2 style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px"> </h2>
+<h2 style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px"> </h2>
+<h2>参考资料</h2>
+<p>1.《Thinking In JAVA》，英文版，第4版，Bruce Eckel著，机械工业出版社</p>
+<p>2.《JAVA Programming Language》，英文版，第4版，Ken Arnold,James Gosling,David Holmes著，人民邮电出版社</p>
+<p>3.《<a href="http://java.sun.com/javase/6/docs/">JDK 6 Documentation</a>》，JAVA在线文档集合</p>
+<p>4.《<a href="http://java.sun.com/docs/books/jls/third_edition/html/j3TOC.html">The Java Language Specification, Third Edition</a>》</p>
+<p>5.《<a href="http://java.sun.com/javase/6/docs/api/index.html">Java™ Platform, Standard Edition 6 API Specification</a>》</p>
+<p>6.《C专家编程》，Peter Van Der LinDen著，徐波译，人民邮电出版社</p>
+<p>7. 《Python核心编程》，Wesley J. Chun著，宋吉广译，人民邮电出版社</p>
+<h2 style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px"> </h2>
+<h2 style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; padding-top: 0px"> </h2>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接<b></b></p>
+<p align="right"><b><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b></p>
+<p><script type="text/javascript">var sitebro_tracker_atc_kw = {u:'http://www.sitebot.com.cn/754892/',w:'NzU0ODky',bt:'#804000',bg:'#EEEEDD',fs:1,ca:'#770000',bh:'#f4f4c6',cp:'',l:10,s:1,lang:'zh_CN'};</script><script type="text/javascript" src="http://www.sitebot.com.cn/js/widget_track2/tracker_atc_kw.js"></script><script type="text/javascript">&lt;!--<br />
+var sitebro_tracker_atc={u:'http://www.sitebot.com.cn/754892/',w:'NzU0ODky',bt:'#804000',bg:'#EEEEDD',cf:'#ffffff',ca:'#770000',bh:'#DDDDCC',cp:'%E6%9C%AC%E7%AB%99%E7%83%AD%E9%97%A8%E6%96%87%E7%AB%A0',l:10,s:0,lang:'zh_CN'};<br />
+// --&gt;</script><script src="http://www.sitebot.com.cn/js/widget_track2/tracker_atc.js" type="text/javascript"></script></p>

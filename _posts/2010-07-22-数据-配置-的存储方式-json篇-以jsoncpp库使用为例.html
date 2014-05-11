@@ -1,0 +1,865 @@
+---
+layout: post
+title: "数据/配置 的存储方式 Json篇 以JsonCpp库使用为例"
+categories:
+- "游戏开发"
+tags:
+- Json
+- JsonCpp
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '29'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="margin: 1em 0px 0.5em;" align="right"><strong><a style="color: #006bad; text-decoration: none;" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p style="margin: 1em 0px 0.5em;" align="right"><a style="color: #770000; text-decoration: none;" href="http://groups.google.com/group/jiutianfile/"><strong>讨论新闻组及文件</strong><br />
+</a></p>
+<h2>配置的好处</h2>
+<p>
+&nbsp;&nbsp;&nbsp; 我不知道我需不需要用一节内容来向大家讲解这个公认的事实。现在公认的事实实际上比单纯所谓的配置还要走的远，一般的看法，游戏中最好的用法是数据驱动而不是代码驱动。那样才能满足游戏需要灵活改变的特点，并且易于编辑。在开发期可以使用文本配置，以易于调试，XML是大多时候的选择。发布时通过资源处理，将文本配置转换为二进制配置以加快读取速度，减少解析时间。（假如效率可以接受的话，这一步甚至可以省略）配置对于C++这样编译时间超长的语言更加是非常必要（偏偏游戏编程大部分是用C++），当某个属性需要修改的时候只需要改动配置而不是文件，可以极大的减少开发期在编译中消耗的时间，特别是原来的宏定义的方式，假如很多地方需要而被放在了头文件中，每次的更改对于大型工程来说简直就是程序员休息上网的好时间。。。。。。。</p>
+<h2><strong>JSon介绍</strong><br />
+</h2>
+<p><strong>JSON</strong><br />
+(JavaScript Object Notation) 是一种轻量级的数据交换格式。 易于人阅读和编写。同时也易于机器解析和生成。 它基于<a href="http://www.crockford.com/javascript">JavaScript Programming Language</a><br />
+, <a href="http://www.ecma-international.org/publications/files/ecma-st/ECMA-262.pdf">Standard ECMA-262 3rd Edition - December 1999</a><br />
+的一个子集。 JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C, C++, C#, Java, JavaScript, Perl, Python等）。 这些特性使JSON成为理想的数据交换语言。</p>
+<p>JSON建构于两种结构：</p>
+<ul>
+<li>&ldquo;名称/值&rdquo;对的集合（A collection of name/value pairs）。不同的语言中，它被理解为<em>对象 （object）</em><br />
+，纪录（record），结构（struct），字典（dictionary），哈希表（hash table），有键列表（keyed list），或者关联数组 （associative array）。 </li>
+<li>值的有序列表（An ordered list of values）。在大部分语言中，它被理解为数组（array）。 </li>
+</ul>
+<p>这些都是常见的数据结构。事实上大部分现代计算机语言都以某种形式支持它们。这使得一种数据格式在同样基于这些结构的编程语言之间交换成为可能。</p>
+<p>JSON具有以下这些形式：</p>
+<p>对象是一个无序的&ldquo;&lsquo;名称/值&rsquo;对&rdquo;集合。一个对象以&ldquo;{&rdquo;（左括号）开始，&ldquo;}&rdquo;（右括号）结束。每个&ldquo;名称&rdquo;后跟一个&ldquo;:&rdquo;（冒号）；&ldquo;&lsquo;名称 /值&rsquo; 对&rdquo;之间使用&ldquo;,&rdquo;（逗号）分隔。 </p>
+<p><img src="http://www.json.org/object.gif" alt="" width="598" height="113" /></p>
+<p>数组是值（value）的有序集合。一个数组以&ldquo;[&rdquo;（左中括号）开始，&ldquo;]&rdquo;（右中括号）结束。值之间使用&ldquo;,&rdquo;（逗号）分隔。 </p>
+<p><img src="http://www.json.org/array.gif" alt="" width="598" height="113" /></p>
+<p>值（<em>value</em><br />
+）可以是双引号括起来的字符串（<em>string</em><br />
+）、数值(number)、<span style="font-family: Courier New;">true</span><br />
+、<span style="font-family: Courier New;">false</span><br />
+、 <span style="font-family: Courier New;">null</span><br />
+、对象（object）或者数组（array）。这些结构可以嵌套。 </p>
+<p><img src="http://www.json.org/value.gif" alt="" width="598" height="278" /></p>
+<p>字符串（<em>string</em><br />
+）是由双引号包围的任意数量Unicode字符的集合，使用反斜线转义。一个字符（character）即 一个单独的字符串（character string）。 </p>
+<p>字符串（<em>string</em><br />
+）与C或者Java的字符串非常相似。 </p>
+<p><img src="http://www.json.org/string.gif" alt="" width="598" height="413" /></p>
+<p>数值（<em>number</em><br />
+）也与C或者Java的数值非常相似。除去未曾使用的八进制与十六进制格式。除去一些编码细节。</p>
+<p><img src="http://www.json.org/number.gif" alt="" width="598" height="266" /></p>
+<p>空白可以加入到任何符号之间。 以下描述了完整的语言。</p>
+<p></p>
+<p>介绍部分完全完全copy自Json的中文网页(http://www.json.org/json-zh.html)。</p>
+<p>下面才是我自己的内容：</p>
+<h3>为什么要使用Json</h3>
+<p>
+&nbsp;&nbsp;&nbsp; Json的格式更加简单，同样的内容，用Json来表示比用XML表示时字符少的多，没有一大堆的标记及尖括号，决定了Json更加容易手写。同样的，字符少，信息量大，所以我认为也更加易读。而且，不常进行网页开发的我，非常讨厌尖括号！我不想去写那些重复的尖括号标记。。。。。。。。。。让人手写太多重复的东西简直就是犯罪。</p>
+<p>&nbsp;&nbsp;&nbsp; 在使用Json以前其实我都不是太喜欢配置，因为使用太麻烦，写起来浪费时间，虽然说配置可以节省编译时间，但是有那功夫写读写配置的代码，都编译N次了。特别是以前用Excel或者SQL的时候，读写数据/配置，都是非常非常麻烦的事情。此时我想起一句LUA之父说的话,只有当配置的使用足够简单灵活,人们才会使用它。</p>
+<p>Json的格式到底有多简单，其实上面的介绍很多其实归根于两句话：</p>
+<ul>
+<li>&ldquo;名称/值&rdquo;对的集合（A collection of name/value pairs）。</li>
+<li>值的有序列表（An ordered list of values）。</li>
+</ul>
+<p>
+仅此而已。</p>
+<p>一种就是</p>
+<p>{x : y}</p>
+<p>形式的名称/值对，说成key-value对可能更多人更好理解。</p>
+<p>一种就是</p>
+<p>{x : [1,2,3,4] }</p>
+<p>或者 [1,2,3,4]</p>
+<p>形式的有序列表。也就是数组。第二个例子说明数组也可以作为根对象。</p>
+<p>另加上明白一个{}构成一个json对象，然后，因为上面的3种形式，可以任意嵌套，也就可以满足任意复杂的需求了。</p>
+<p>缺点：</p>
+<p>&nbsp;&nbsp;&nbsp; 简单有简单的优势，但是也有简单带来的缺点，那就是缺乏高级特性，比如继承，引用这些很好用的特性在Json中就都没有，相对应的，XML中有类似的概念。另外，作为手工编写的配置，常常会需要用到运算，特别是引用+运算，当然，这些XML都很难做到，那得指望Lua了。事实上，我的确准备在以后尝试使用Lua做配置，因为以一个完整的语言来做配置的吸引力实在是太大了。。。。。。。。。。。另外，Json最后不支持可有可无的逗号（如C++ enum的语法格式那样），有的就必须有，没有的地方坚决不能没有，这个导致很容易出现问题，（主要是手写Json的时候），需要特别注意，一般可以通过工具验证一下自己的Json文件。比如<a id="mj_3" title="Jslint" href="http://www.jslint.com/" title="Jslint">Jslint</a><br />
+,<a id="s0su" title="jsonlint" href="http://www.jsonlint.com/" title="jsonlint">jsonlint</a><br />
+.我个人常用jslint，报错非常详细，甚至有对不良语法的警告</p>
+<h2>Json有多流行？</h2>
+<p>
+看看有多少语言的<a id="huwx" title="解析库" href="http://www.json.org/" title="解析库">解析库</a><br />
+，有多少语言有多个解析库就能一窥一二。对于JS来说，使用多方便就不用说了，像php,python事实上都已经原生支持Json的解析了。（通过函数或者标准库）</p>
+<h2>实例说明</h2>
+<p>
+&nbsp;&nbsp;&nbsp; 得益于简单的格式,所以解析及创建都可以做的很简单的,特别是JSONCPP这个库,在使用的时候简直就像获取到JS中的Object一样,直接通过 [] 操作完成索引及建立操作,使用起来非常简单。这里以JsonCPP + SDL + OpenGL 为例，来记录一下Json的使用。之所以选用SDL ，仅仅是因为我了解并知道怎么它们，作为了解Json来说，下面的例子中，假如对SDL不熟悉的话，知道那些大量冗余的部分都是用来实际绘图和控制程序流程的，只关心与Json相关的部分即可。本例实现的功能与图像有关，需要用图形想关的东西属于迫不得已。至于为啥举与图像有关的例子，仅仅因为那样更酷^^难道我以读取配置然后正常printf读取的配置为例子吗？</p>
+<h3>JsonCPP + SDL + OpenGL</h3>
+<p>
+<a id="cb1x" title="JsonCPP" href="http://jsoncpp.sourceforge.net/" title="JsonCPP">JsonCPP</a><br />
+介绍</p>
+<p>JsonCpp是我本人非常喜欢的一个Json解析库，有读写模块，实现具有很强的移植性，当时在公司项目中嵌入JsonCpp时，仅仅通过修改了一个读文件的接口就完美的集成了进去，无论是在Windows平台还是在IPhone平台上都运行良好，当时我还当心在IPhone上会碰到什么问题，但是结果是没有碰到任何问题。。。。。。。。。对此，我印象非常深刻。JsonCpp中带有完整的测试套件，对于这样一个底层库，有测试套件存在，让人使用的时候心里放心很多。另外，JsonCpp使用C++的Map特性，（得益于Json语法的简单）可以非常方便的查找需要的任何Json数据，并且效率不低，当然，因为JsonCpp使用了一种DOM方式解析Json文档（参考XML的描述），一次将全部文档都解析了以后，然后再查询使用，使用虽然方便，但是效率上还是逊于SAX方式，但是，对于小规模应用，这应该不是问题。jsoncpp的文件比较少，其实全部拷贝进自己的工程都完全没有问题。jsoncpp的协议是公有领域，也就是说作者完全放弃了版权，你可以随便使用，连版权协议都不用带。需要include的头文件就是json.h，但是需要将include/json下的头文件都拷贝到需要的地方。例子中我为了方便还是用了静态库，将json附带的VS工程的Runtime library改成Multi-threaded Debug DLL (/MDd)，（个人习惯使用dll方式进行开发，这个需要和正在进行的工程一致）编译后，生成静态库。</p>
+<p>这里我以某些参数显示某个图片为例，介绍json/jsoncpp的用法。</p>
+<p>首先，原来的例子：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #c000c0;">#include </span><br />
+<span style="color: #008080;">&lt;stdlib.h&gt;</span><br />
+<br />
+<span style="color: #c000c0;">#include </span><br />
+<span style="color: #008080;">&lt;stdio.h&gt;</span><br />
+<br />
+<span style="color: #c000c0;">#include </span><br />
+<span style="color: #008080;">&lt;tchar.h&gt;</span><br />
+<br />
+<span style="color: #c000c0;">#include </span><br />
+<span style="color: #008080;">&quot;SDL.h&quot;</span><br />
+<br />
+<span style="color: #c000c0;">#include </span><br />
+<span style="color: #008080;">&quot;SDL_opengl.h&quot;</span><br />
+<br />
+<span style="color: #c000c0;">#include </span><br />
+<span style="color: #008080;">&quot;SDL_image.h&quot;</span></p>
+<p><span style="color: #c000c0;">#define WINDOW_WIDTH </span><br />
+<span style="color: #008080;">300</span><br />
+<br />
+<span style="color: #c000c0;">#define WINDOW_HEIGHT </span><br />
+<span style="color: #008080;">300</span></p>
+<p> GLuint gTexName;<br />
+<span style="color: #804000;">//OpenGL初始化开始</span><br />
+<br />
+<span style="color: #008000;">void</span><br />
+&nbsp;SceneInit(<span style="color: #008000;">int</span><br />
+&nbsp;&nbsp;w,<span style="color: #008000;">int</span><br />
+&nbsp;&nbsp;h)</p>
+<p> {</p>
+<p> &nbsp;&nbsp;gluOrtho2D(-<span style="color: #008080;">1.0</span><br />
+, <span style="color: #008080;">1.0</span><br />
+, -<span style="color: #008080;">1.0</span><br />
+, <span style="color: #008080;">1.0</span><br />
+);</p>
+<p> &nbsp;&nbsp;glShadeModel(GL_FLAT);</p>
+<p> &nbsp;&nbsp;SDL_Surface *surface = IMG_Load(<span style="color: #008080;">&quot;dragon.png&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(!surface)</p>
+<p> &nbsp;&nbsp;{</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: #008080;">&quot;Load the picture failed.&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: #008080;">1</span><br />
+);</p>
+<p> &nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;GLenum texture_format;</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">// get the number of channels in the SDL surface</span><br /></p>
+<p> &nbsp;&nbsp;GLint nOfColors = surface-&gt;format-&gt;BytesPerPixel;</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(nOfColors == <span style="color: #008080;">4</span><br />
+)&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">// contains an alpha channel</span><br /></p>
+<p> &nbsp;&nbsp;{</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(surface-&gt;format-&gt;Rmask == <span style="color: #008080;">0x000000ff</span><br />
+)</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texture_format = GL_RGBA;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">else</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texture_format = GL_BGRA;</p>
+<p> &nbsp;&nbsp;} <span style="color: #804000;">else</span><br />
+&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(nOfColors == <span style="color: #008080;">3</span><br />
+)&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">// no alpha channel</span><br /></p>
+<p> &nbsp;&nbsp;{</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(surface-&gt;format-&gt;Rmask == <span style="color: #008080;">0x000000ff</span><br />
+)</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texture_format = GL_RGB;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">else</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texture_format = GL_BGR;</p>
+<p> &nbsp;&nbsp;} <span style="color: #804000;">else</span><br />
+&nbsp;{</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: #008080;">&quot;warning: the image is not truecolor..&nbsp; this will probably break</span><br />
+<span style="color: #c000c0;">/n</span><br />
+<span style="color: #008080;">&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: #008080;">1</span><br />
+);</p>
+<p> &nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;glGenTextures(<span style="color: #008080;">1</span><br />
+&nbsp;&nbsp;, &amp;gTexName);</p>
+<p> &nbsp;&nbsp;glBindTexture(GL_TEXTURE_2D, gTexName);</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">// Specify filtering and edge actions</span><br /></p>
+<p> &nbsp;&nbsp;glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);</p>
+<p> &nbsp;&nbsp;glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);</p>
+<p> &nbsp;&nbsp;glTexImage2D( GL_TEXTURE_2D, <span style="color: #008080;">0</span><br />
+, nOfColors, surface-&gt;w, surface-&gt;h, <span style="color: #008080;">0</span><br />
+,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;texture_format, GL_UNSIGNED_BYTE, surface-&gt;pixels );</p>
+<p> &nbsp;&nbsp;glEnable(GL_DEPTH_TEST);</p>
+<p> &nbsp;&nbsp;glEnable( GL_TEXTURE_2D );</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">//Free the loaded image</span><br /></p>
+<p> &nbsp;&nbsp;SDL_FreeSurface( surface ); </p>
+<p> }</p>
+<p><span style="color: #804000;">// display</span><br />
+<br />
+<span style="color: #008000;">void</span><br />
+&nbsp;&nbsp;SceneShow(GLvoid) {</p>
+<p> &nbsp;&nbsp;glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</p>
+<p> &nbsp;&nbsp;glBindTexture(GL_TEXTURE_2D, gTexName);</p>
+<p> &nbsp;&nbsp;glBegin(GL_QUADS);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">0.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;); glVertex3f(-<span style="color: #008080;">1.0</span><br />
+&nbsp;, -<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;); glVertex3f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, -<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;); glVertex3f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">0.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;); glVertex3f(-<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glEnd();</p>
+<p> }&nbsp;&nbsp;</p>
+<p><span style="color: #008000;">int</span><br />
+&nbsp;_tmain(<span style="color: #008000;">int</span><br />
+&nbsp;argc, _TCHAR* argv[])</p>
+<p> {</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;( SDL_Init(SDL_INIT_VIDEO) &lt; <span style="color: #008080;">0</span><br />
+&nbsp;) </p>
+<p> &nbsp;&nbsp;{</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: #008080;">&quot;Unable to initialize SDL: </span><br />
+<span style="color: #c000c0;">%s</span><br />
+<span style="color: #c000c0;">/n</span><br />
+<span style="color: #008080;">&quot;</span><br />
+, SDL_GetError());</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: #008080;">1</span><br />
+);</p>
+<p> &nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;atexit(SDL_Quit);</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;&nbsp;(IMG_Init(IMG_INIT_PNG) == <span style="color: #008080;">0</span><br />
+&nbsp;&nbsp;) {</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: #008080;">&quot;Unable to initialize SDL_image&quot;</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: #008080;">1</span><br />
+);</p>
+<p> &nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">// use these two lines instead of the commented one</span><br /></p>
+<p> &nbsp;&nbsp;SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, <span style="color: #008080;">1</span><br />
+&nbsp;); <span style="color: #804000;">// *new*</span><br /></p>
+<p> &nbsp;&nbsp;SDL_Surface* screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, <span style="color: #008080;">16</span><br />
+, SDL_OPENGL); <span style="color: #804000;">// *changed* </span></p>
+<p> &nbsp;&nbsp;SceneInit(WINDOW_WIDTH, WINDOW_HEIGHT);</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">// main loop</span><br /></p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">bool</span><br />
+&nbsp;running = <span style="color: #008080;">true</span><br />
+;</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">while</span><br />
+&nbsp;(running) {</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">//While there's an event to handle </span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;SDL_Event event; </p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">while</span><br />
+( SDL_PollEvent( &amp;event ) ) { </p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(event.type == SDL_QUIT) {</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;running = <span style="color: #008080;">false</span><br />
+;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;SceneShow();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">//Update Screen </span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;SDL_GL_SwapBuffers();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">// delay, 50 for simple</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;SDL_Delay( <span style="color: #008080;">50</span><br />
+&nbsp;); </p>
+<p> &nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">return</span><br />
+&nbsp;<span style="color: #008080;">1</span><br />
+;</p>
+<p> }<br />
+</span><br /></p>
+<p>代码主要就是SDL+OpenGL，很浅显易懂，可以参考原来的文章。《<a href="http://www.jtianling.com/archive/2010/07/15/5738421.aspx">GLFW 简单入门学习</a><br />
+》，《<a href="http://www.jtianling.com/archive/2010/07/15/5735979.aspx">SDL 简单入门学习</a><br />
+》，《<a href="http://www.jtianling.com/archive/2010/07/17/5740993.aspx">在SDL 中使用OpenGL</a><br />
+》。</p>
+<p>显示如下的图片：（为了减少截图提及，上面我特意将窗口创建成300*300这样比较小的体积了）</p>
+<div id="yfvj" style="text-align: left;"><img src="http://hi.csdn.net/attachment/201007/21/0_1279740306T213.gif" alt="" /><br />
+
+</div>
+<div style="text-align: left;">&nbsp;</p>
+<p>这是原图，现在我希望将其显示加入一定的属性配置，以达到我的显示要求， 这里将配置放到Json中完成。</p>
+<p>构建一段最简单的Json文件：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #008080;"><strong>{</strong><br />
+</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;name&quot;</span><br />
+&nbsp;: <span style="color: #008080;">&quot;dragon.png&quot;</span><br />
+,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;rotation&quot;</span><br />
+&nbsp;: 180<br />
+<span style="color: #008080;"><strong>}</strong><br />
+</span><br />
+<br />
+</span><br /></p>
+<p>里面只有图片名字和旋转度数。顺面以此例解释下Json的语法，前面提到过Json的格式总的来说就是Key : value.如上所示，所有的key都是字符串，value可以是各种值，包括整数，boolean，字符串，数组，甚至是一个{ }表示的object。上例中，name表示图片的名字，rotation表示图片旋转的度数，这里的度数按照OpenGL的规范，以逆时针为正。</p>
+<p>JsonCpp的使用就非常简单了。比如我用下列代码来解析上述Json文件：<span style="font-family: monospace;"><br />
+<span style="font-family: monospace;"><br />
+<span style="color: #008000;">struct</span><br />
+&nbsp;PictureInfo {</p>
+<p> &nbsp;&nbsp;string name;</p>
+<p> &nbsp; <span style="color: #008000;">float</span><br />
+ rotation;</p>
+<p> }gPictureInfo;</p>
+<p><span style="color: #008000;">void</span><br />
+&nbsp;PictureInit()</p>
+<p> {</p>
+<p> &nbsp;&nbsp;Json::Reader reader;</p>
+<p> &nbsp;&nbsp;ifstream file(<span style="color: #008080;">&quot;picture.json&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;assert(file.is_open());</p>
+<p> &nbsp;&nbsp;Json::Value root;</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(!reader.parse(file, root, <span style="color: #008080;">false</span><br />
+)) {</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: #008080;">&quot;Parse error&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: #008080;">1</span><br />
+);</p>
+<p> &nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;gPictureInfo.name = root[<span style="color: #008080;">&quot;name&quot;</span><br />
+].asString();</p>
+<p> &nbsp;&nbsp;gPictureInfo.rotation = root[<span style="color: #008080;">&quot;rotation&quot;</span><br />
+].asDouble();</p>
+<p> }<br />
+</span><br /></p>
+<p>虽然已经如此简单，但还是解释一下：</p>
+<p>reader是用于parse Json文件的jsoncpp类，传入打开的ifstream文件对象即可完成parse。Json::Value是一个包罗万象的类，可以存储一个Json 对象，如上所示，整个Json文件就是一个Json对象,（以{}表示）在JsonCpp中表示为root，在parse函数中传入，打开的文件，根Value，parse后，root就包含了解析后的Json文件信息。对value的检索都是使用类似于C++中map的方式，直接以字符串为key索引，索引返回的还是一个Json::Value的对象，同样也可以有包罗万象的内容。（与Json文件格式本身对应）从Json::Value到C++的静态类型的转换在JsonCpp中通过Json::Value对象的asXXX函数来完成。上例中，asStrint表示返回一个C++的String对象，asDouble表示返回一个浮点数，以此类推。</span><br /></p>
+<p>通过上述方式，获得了图片名字，图片的rotation。以此来完成新的图片的显示。</p>
+<p>将SceneShow部分改成如下代码：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">// display</span><br />
+<br />
+<span style="color: #008000;">void</span><br />
+&nbsp;&nbsp;SceneShow(GLvoid) {</p>
+<p> &nbsp;&nbsp;glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</p>
+<p> &nbsp;&nbsp;glBindTexture(GL_TEXTURE_2D, gTexName);</p>
+<p>&nbsp; glMatrixMode(GL_MODELVIEW);</p>
+<p> &nbsp;&nbsp;glPushMatrix();</p>
+<p> &nbsp;&nbsp;glRotatef(gPictureInfo.rotation, <span style="color: #008080;">0.0</span><br />
+, <span style="color: #008080;">0.0</span><br />
+, <span style="color: #008080;">1.0</span><br />
+);</p>
+<p> &nbsp;&nbsp;glBegin(GL_QUADS);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">0.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;); glVertex3f(-<span style="color: #008080;">1.0</span><br />
+&nbsp;, -<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;); glVertex3f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, -<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;); glVertex3f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">0.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;); glVertex3f(-<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glEnd();</p>
+<p> &nbsp;&nbsp;glPopMatrix();</p>
+<p> }&nbsp;&nbsp;<br />
+</span><br /></p>
+<p>添加了<span style="font-family: monospace;">&nbsp; </p>
+<p>glPushMatrix();</p>
+<p>glRotatef(gPictureInfo.rotation, <span style="color: #008080;">0.0</span><br />
+, <span style="color: #008080;">0.0</span><br />
+, <span style="color: #008080;">1.0</span><br />
+);</span><br />
+<br />
+<span style="font-family: monospace;">glPopMatrix();</span><br /></p>
+<p>3句来进行模型矩阵变换，来完成旋转。</p>
+<p>因为上面是180度，所以显示效果如下：</p>
+<div id="gf:o" style="text-align: left;">
+</div>
+</div>
+<div style="text-align: left;"><img src="http://hi.csdn.net/attachment/201007/21/0_1279740334KTTF.gif" alt="" /><br />
+
+</div>
+<div style="text-align: left;">
+</div>
+<div style="text-align: left;">
+</div>
+<div style="text-align: left;">
+在游戏编程古老的岁月中，大家都全靠图片来堆积游戏，仅仅是一个这样的旋转，都不会使用。下图是某游戏同一个武器不同方向的图片。事实上，完全没有必要。
+</div>
+<div style="text-align: left;"><img src="http://hi.csdn.net/attachment/201007/21/0_1279740355iGiP.gif" alt="" /><br />
+
+</div>
+<div style="text-align: left;">
+</div>
+<div style="text-align: left;">
+</div>
+<div style="text-align: left;">
+</div>
+<div style="text-align: left;">
+即使在今天，人物的4向行走用4组图片也不是什么稀罕事。。。。虽然其实是那么的没有必要。</p>
+<p>这里再添加一些其他的要素，比如scale,position。（这里没有使用一般2D引擎中用的屏幕坐标，还是用OpenGL坐标）</p>
+<p>Json配置：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #008080;"><strong>{</strong><br />
+</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;name&quot;</span><br />
+&nbsp;: <span style="color: #008080;">&quot;dragon.png&quot;</span><br />
+,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;rotation&quot;</span><br />
+&nbsp;: 0,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;positionX&quot;</span><br />
+&nbsp;: -0.5,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;positionY&quot;</span><br />
+&nbsp;: 0.0,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;scaleX&quot;</span><br />
+&nbsp;: 0.3,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;scaleY&quot;</span><br />
+&nbsp;: 1.0<br />
+<span style="color: #008080;"><strong>}</strong><br />
+</span><br />
+<br />
+</span><br /></p>
+<p>代码改动部分：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #008000;">struct</span><br />
+&nbsp;PictureInfo {</p>
+<p> &nbsp;&nbsp;string name;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;rotation;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;positionX;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;positionY;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;scaleX;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;scaleY;</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">// can't read from config,read from surface</span><br /></p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">int</span><br />
+&nbsp;width;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">int</span><br />
+&nbsp;height;</p>
+<p> }gPictureInfo;</p>
+<p><span style="color: #008000;">void</span><br />
+&nbsp;ReadPictureInfo() {</p>
+<p> &nbsp;&nbsp;Json::Reader reader;</p>
+<p> &nbsp;&nbsp;ifstream file(<span style="color: #008080;">&quot;picture.json&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;assert(file.is_open());</p>
+<p> &nbsp;&nbsp;Json::Value root;</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(!reader.parse(file, root, <span style="color: #008080;">false</span><br />
+)) {</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: #008080;">&quot;Parse error&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: #008080;">1</span><br />
+);</p>
+<p> &nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;gPictureInfo.name = root[<span style="color: #008080;">&quot;name&quot;</span><br />
+].asString();</p>
+<p> &nbsp;&nbsp;gPictureInfo.rotation = (<span style="color: #008000;">float</span><br />
+)root[<span style="color: #008080;">&quot;rotation&quot;</span><br />
+].asDouble();</p>
+<p> &nbsp;&nbsp;gPictureInfo.positionX = (<span style="color: #008000;">float</span><br />
+)root[<span style="color: #008080;">&quot;positionX&quot;</span><br />
+].asDouble();</p>
+<p> &nbsp;&nbsp;gPictureInfo.positionY = (<span style="color: #008000;">float</span><br />
+)root[<span style="color: #008080;">&quot;positionY&quot;</span><br />
+].asDouble();</p>
+<p> &nbsp;&nbsp;gPictureInfo.scaleX = (<span style="color: #008000;">float</span><br />
+)root[<span style="color: #008080;">&quot;scaleX&quot;</span><br />
+].asDouble();</p>
+<p> &nbsp;&nbsp;gPictureInfo.scaleY = (<span style="color: #008000;">float</span><br />
+)root[<span style="color: #008080;">&quot;scaleY&quot;</span><br />
+].asDouble();</p>
+<p> }</p>
+<p><span style="color: #008000;">void</span><br />
+&nbsp;PictureInit() {</p>
+<p> &nbsp;&nbsp;ReadPictureInfo();</p>
+<p> }<br />
+</span><br />
+<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">// display</span><br />
+<br />
+<span style="color: #008000;">void</span><br />
+&nbsp;&nbsp;SceneShow(GLvoid) {</p>
+<p> &nbsp;&nbsp;glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</p>
+<p> &nbsp;&nbsp;glBindTexture(GL_TEXTURE_2D, gTexName);</p>
+<p> &nbsp;&nbsp;glPushMatrix();</p>
+<p> &nbsp;&nbsp;glMatrixMode(GL_MODELVIEW);</p>
+<p> &nbsp;&nbsp;glTranslatef(gPictureInfo.positionX, gPictureInfo.positionY, <span style="color: #008080;">0</span><br />
+);</p>
+<p> &nbsp;&nbsp;glScalef(gPictureInfo.scaleX, gPictureInfo.scaleY, <span style="color: #008080;">0.0</span><br />
+);</p>
+<p> &nbsp;&nbsp;glRotatef(gPictureInfo.rotation, <span style="color: #008080;">0</span><br />
+, <span style="color: #008080;">0</span><br />
+, <span style="color: #008080;">1.0</span><br />
+);</p>
+<p> &nbsp;&nbsp;glBegin(GL_QUADS);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">0.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;); glVertex3f(-<span style="color: #008080;">1.0</span><br />
+&nbsp;, -<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;); glVertex3f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, -<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;); glVertex3f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">0.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;); glVertex3f(-<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glEnd();</p>
+<p> &nbsp;&nbsp;glPopMatrix();</p>
+<p> }&nbsp;&nbsp;<br />
+</span><br /></p>
+<p>添加了相应的读取代码而已，并在模型矩阵变换的时候添加了scale和rotate相关的代码，其实都没有什么新鲜的。
+</div>
+<div style="text-align: left;"><img src="http://hi.csdn.net/attachment/201007/21/0_1279740380maVy.gif" alt="" /><br />
+
+</div>
+<div style="text-align: left;"></p>
+<p>这里的乐趣在于，你可以不改变任何代码，通过配置实现很多改变了，虽然仅仅是这么一幅图。比如：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #008080;"><strong>{</strong><br />
+</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;name&quot;</span><br />
+&nbsp;: <span style="color: #008080;">&quot;dragon.png&quot;</span><br />
+,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;rotation&quot;</span><br />
+&nbsp;: 0,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;positionX&quot;</span><br />
+&nbsp;: 0.5,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;positionY&quot;</span><br />
+&nbsp;: 0.0,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;scaleX&quot;</span><br />
+&nbsp;: -0.3,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;scaleY&quot;</span><br />
+&nbsp;: 1.0<br />
+<span style="color: #008080;"><strong>}</strong><br />
+</span><br />
+<br />
+</span><br /></p>
+<p>会得到如下的图：</p>
+<div id="wzmk" style="text-align: left;">
+</div>
+<p>
+<img src="http://hi.csdn.net/attachment/201007/21/0_1279740455gRLr.gif" alt="" /><br /></p>
+<h3>Json数组</h3>
+<div style="text-align: left;">
+&nbsp;&nbsp;&nbsp; 其实讲了上面的两个例子，我是想说明怎么样同时显示上述两幅图，都通过配置。这需要用到Json中的数组的概念，当然，懂一点编程的人对此都不会太陌生。配置如下：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #008080;"><strong>[</strong><br />
+</span><br />
+<br />
+<span style="color: #008080;"><strong>{</strong><br />
+</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;name&quot;</span><br />
+&nbsp;: <span style="color: #008080;">&quot;dragon.png&quot;</span><br />
+,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;rotation&quot;</span><br />
+&nbsp;: 0,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;positionX&quot;</span><br />
+&nbsp;: -0.5,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;positionY&quot;</span><br />
+&nbsp;: 0.0,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;scaleX&quot;</span><br />
+&nbsp;: 0.3,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;scaleY&quot;</span><br />
+&nbsp;: 1.0<br />
+<span style="color: #008080;"><strong>}</strong><br />
+</span><br />
+,<br />
+<span style="color: #008080;"><strong>{</strong><br />
+</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;name&quot;</span><br />
+&nbsp;: <span style="color: #008080;">&quot;dragon.png&quot;</span><br />
+,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;rotation&quot;</span><br />
+&nbsp;: 0,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;positionX&quot;</span><br />
+&nbsp;: 0.5,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;positionY&quot;</span><br />
+&nbsp;: 0.0,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;scaleX&quot;</span><br />
+&nbsp;: -0.3,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008080;">&quot;scaleY&quot;</span><br />
+&nbsp;: 1.0<br />
+<span style="color: #008080;"><strong>}</strong><br />
+</span><br />
+<br />
+<span style="color: #008080;"><strong>]</strong><br />
+</span></p>
+<p>同时，代码的改动可能有些大，因为需要在任意地方都将原来的全局对象改为全局vector.实际的新内容除了解析Json那一部分，倒是几乎完全没有<span style="font-family: courier new;">。解析Json数组时，与用普通的字符串key来索引value的差别仅仅在于此时只需要用整数来索引即可。</p>
+<p>如下：<br />
+</span><br />
+</span><br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">using</span><br />
+&nbsp;<span style="color: #008000;">namespace</span><br />
+&nbsp;std;<br />
+<span style="color: #008000;">struct</span><br />
+&nbsp;PictureInfo {</p>
+<p> &nbsp;&nbsp;string name;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;rotation;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;positionX;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;positionY;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;scaleX;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;scaleY;</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">// can't read from config,read from surface</span><br /></p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">int</span><br />
+&nbsp;width;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">int</span><br />
+&nbsp;height;</p>
+<p> &nbsp;&nbsp;GLuint texName;</p>
+<p> };</p>
+<p><span style="color: #804000;">// didn't care about efficiency too much as a demo</span><br /></p>
+<p> vector&lt;PictureInfo&gt; gPictureInfoVec;</p>
+<p><span style="color: #008000;">void</span><br />
+&nbsp;ReadPictureInfo() {</p>
+<p> &nbsp;&nbsp;Json::Reader reader;</p>
+<p> &nbsp;&nbsp;ifstream file(<span style="color: #008080;">&quot;picture.json&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;assert(file.is_open());</p>
+<p> &nbsp;&nbsp;Json::Value root;</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(!reader.parse(file, root, <span style="color: #008080;">false</span><br />
+)) {</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: #008080;">&quot;Parse error&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: #008080;">1</span><br />
+);</p>
+<p> &nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;assert(root.isArray());</p>
+<p> &nbsp;&nbsp;PictureInfo info;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">int</span><br />
+&nbsp;size = root.size();</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">for</span><br />
+&nbsp;(<span style="color: #008000;">int</span><br />
+&nbsp;i = <span style="color: #008080;">0</span><br />
+; i &lt; size; ++i) {</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;Json::Value &amp;current = root[i];</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;info.name = current[<span style="color: #008080;">&quot;name&quot;</span><br />
+].asString();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;info.rotation = (<span style="color: #008000;">float</span><br />
+)current[<span style="color: #008080;">&quot;rotation&quot;</span><br />
+].asDouble();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;info.positionX = (<span style="color: #008000;">float</span><br />
+)current[<span style="color: #008080;">&quot;positionX&quot;</span><br />
+].asDouble();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;info.positionY = (<span style="color: #008000;">float</span><br />
+)current[<span style="color: #008080;">&quot;positionY&quot;</span><br />
+].asDouble();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;info.scaleX = (<span style="color: #008000;">float</span><br />
+)current[<span style="color: #008080;">&quot;scaleX&quot;</span><br />
+].asDouble();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;info.scaleY = (<span style="color: #008000;">float</span><br />
+)current[<span style="color: #008080;">&quot;scaleY&quot;</span><br />
+].asDouble();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;gPictureInfoVec.push_back(info);</p>
+<p> &nbsp;&nbsp;}</p>
+<p> }</p>
+<p>上面这段for循环中的内容，root[i]的使用方式就是JsonCpp中索引Json数组的方式，很简单是吧？</p>
+<p>于是，添加相应的显示代码后（其实也没有新内容，就是原来的东西变成数组）<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">//OpenGL初始化开始</span><br />
+<br />
+<span style="color: #008000;">void</span><br />
+&nbsp;SceneInit(<span style="color: #008000;">int</span><br />
+&nbsp;&nbsp;w,<span style="color: #008000;">int</span><br />
+&nbsp;&nbsp;h)</p>
+<p> {</p>
+<p> &nbsp;&nbsp;glClearColor (<span style="color: #008080;">1.0f</span><br />
+&nbsp;, <span style="color: #008080;">1.0f</span><br />
+&nbsp;, <span style="color: #008080;">1.0f</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;glViewport(<span style="color: #008080;">0</span><br />
+, <span style="color: #008080;">0</span><br />
+, w, h);</p>
+<p> &nbsp;&nbsp;glShadeModel(GL_FLAT);</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">for</span><br />
+&nbsp;(vector&lt;PictureInfo&gt;::iterator it = gPictureInfoVec.begin();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;it != gPictureInfoVec.end();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;++it) {</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PictureInfo&amp; info = *it;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SDL_Surface *surface = IMG_Load(info.name.c_str());</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(!surface)</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: #008080;">&quot;Load the picture failed:</span><br />
+<span style="color: #c000c0;">%s</span><br />
+<span style="color: #008080;">&quot;</span><br />
+,info.name.c_str());</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: #008080;">1</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;info.width = surface-&gt;w;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;info.height = surface-&gt;h;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GLenum texture_format;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">// get the number of channels in the SDL surface</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GLint nOfColors = surface-&gt;format-&gt;BytesPerPixel;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(nOfColors == <span style="color: #008080;">4</span><br />
+)&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">// contains an alpha channel</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(surface-&gt;format-&gt;Rmask == <span style="color: #008080;">0x000000ff</span><br />
+)</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texture_format = GL_RGBA;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">else</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texture_format = GL_BGRA;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <span style="color: #804000;">else</span><br />
+&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(nOfColors == <span style="color: #008080;">3</span><br />
+)&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">// no alpha channel</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span><br />
+&nbsp;(surface-&gt;format-&gt;Rmask == <span style="color: #008080;">0x000000ff</span><br />
+)</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texture_format = GL_RGB;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">else</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texture_format = GL_BGR;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <span style="color: #804000;">else</span><br />
+&nbsp;{</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(<span style="color: #008080;">&quot;warning: the image is not truecolor..&nbsp; this will probably break</span><br />
+<span style="color: #c000c0;">/n</span><br />
+<span style="color: #008080;">&quot;</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: #008080;">1</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glGenTextures(<span style="color: #008080;">1</span><br />
+&nbsp;&nbsp;, &amp;info.texName);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glBindTexture(GL_TEXTURE_2D, info.texName);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glTexImage2D( GL_TEXTURE_2D, <span style="color: #008080;">0</span><br />
+, nOfColors, surface-&gt;w, surface-&gt;h, <span style="color: #008080;">0</span><br />
+,</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;texture_format, GL_UNSIGNED_BYTE, surface-&gt;pixels );</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">// Specify filtering and edge actions</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">//Free the loaded image</span><br /></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SDL_FreeSurface( surface ); </p>
+<p> &nbsp;&nbsp;}</p>
+<p></p>
+<p> &nbsp;&nbsp;glEnable(GL_DEPTH_TEST);</p>
+<p> &nbsp;&nbsp;glEnable( GL_TEXTURE_2D );</p>
+<p> }</p>
+<p><span style="color: #804000;">// display</span><br />
+<br />
+<span style="color: #008000;">void</span><br />
+&nbsp;&nbsp;SceneShow(GLvoid) {</p>
+<p> &nbsp;&nbsp;glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">for</span><br />
+&nbsp;(vector&lt;PictureInfo&gt;::const_iterator it = gPictureInfoVec.begin();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;it != gPictureInfoVec.end();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;++it) {</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;PictureInfo&amp; info = *it;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glBindTexture(GL_TEXTURE_2D, info.texName);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glPushMatrix();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glMatrixMode(GL_MODELVIEW);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glTranslatef(info.positionX, info.positionY, <span style="color: #008080;">0</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glScalef(info.scaleX, info.scaleY, <span style="color: #008080;">0.0</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glRotatef(info.rotation, <span style="color: #008080;">0</span><br />
+, <span style="color: #008080;">0</span><br />
+, <span style="color: #008080;">1.0</span><br />
+);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glBegin(GL_QUADS);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">0.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;); glVertex3f(-<span style="color: #008080;">1.0</span><br />
+&nbsp;, -<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;); glVertex3f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, -<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;); glVertex3f(<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glTexCoord2f(<span style="color: #008080;">0.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;); glVertex3f(-<span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">1.0</span><br />
+&nbsp;, <span style="color: #008080;">0.0</span><br />
+&nbsp;);</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glEnd();</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;glPopMatrix();</p>
+<p> &nbsp;&nbsp;}</p>
+<p> }&nbsp;&nbsp;</p>
+<p>可以看到一个很有意思的图^^当然，中间要是再加个球那就更好了。</span><br />
+</span>
+</div>
+<div style="text-align: left;"><img src="http://hi.csdn.net/attachment/201007/21/0_1279740473hy3n.gif" alt="" /><br />
+
+</div>
+<div style="text-align: left;"><span style="font-family: monospace;"><span style="font-family: monospace;"><br />
+</span><br />
+</span>
+</div>
+<div id="qjx9" style="text-align: left;">
+</div>
+<p>因为此时已经有点数据驱动的意思了，需要添加新龙的时候改改配置就好了。</p>
+<p>其实这个例子还可以进一步发挥，在每个数组值之间进行插值，实现类似flash的关键帧动画^^让上图中左边的龙渐变成右边的龙，其实本例已经与此相差不远了。。。。。。限于精力有限，暂时就不进一步发挥了。
+</div>
+<p align="left">&nbsp;</p>
+<p>&nbsp;</p>
+<p align="right">&nbsp;</p>
+<p align="right">&nbsp;</p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接</p>
+<p align="right"><strong><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p></p>

@@ -1,0 +1,89 @@
+---
+layout: post
+title: MacOS中的剪贴板操作 With Objective C
+categories:
+- "未分类"
+tags:
+- MacOS
+- Objective C
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '22'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<br />
+<h1 style="text-align: center; margin: 1em 0px 0.5em"><b>MacOS中的剪贴板操作 With Objective C</b></h1>
+<p style="margin: 1em 0px 0.5em" align="right"><b><a style="color: rgb(0,107,173); text-decoration: none" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b></p>
+<p style="margin: 1em 0px 0.5em" align="right"><a style="color: rgb(119,0,0); text-decoration: none" href="http://groups.google.com/group/jiutianfile/"><b>讨论新闻组及文件</b></a></p>
+<h2>每日废话</h2>
+<p>     从《<a href="http://www.jtianling.com/archive/2010/02/28/5334380.aspx" target="_blank">Macos中的Mercurial GUI工具Murky试用</a>》一文的访问量基本可以看出，国内使用MacOS 的程序员毕竟还是少数…………就如当年关于Linux的文章没啥人看一样。。。。。  <br />    呵呵，但是读者再少，工作还得继续，学习还得继续，我写我的，没人看就当自言自语了。（其实有人看的时候也常常自言自语-_-!）  </p>
+<h2>前言</h2>
+<p>     对于常发博客的我，以前很明智的放弃了Windows Live Writer来写博客，而是转向了Google Document，所以现在即使在MacOS平台，对写博客都没有太大影响，唯一有个问题，对于技术博客，难免会发一些代码，WLW有很多代码高亮插件可用，Google Docs却没有，因此，转向Google Docs写博客后，深度依赖自己写的代码高亮工具（见《<a href="http://www.jtianling.com/archive/2010/01/23/5249656.aspx" target="_blank">一键在剪贴板中进行语法高亮的工具发布</a>》，此工具竟然还有人提Win7总是会出行号的Bug，因为我家的 Win7删了，所以没法试了，起码说明除了我还真有人用^^，其实，说实话，实在太好用了，最新的源码连弹出窗口的问题都解决了）当时为了方便，使用了一些平台相关特性，并且是用PyQt完成的，所以现在在MacOS中没得用了。。。。。郁闷啊，首先解决这个问题吧。  <br />     本来还是可以使用Qt的，会省很多事，一些东西也不用学了，在Windows，Linux平台我就这样做了，但是我刚接触MacOS,出于学习的目的，我还是使用Objective C With Cocoa来完成，鉴于国内MacOS玩家本来就不多，Objective C玩家就更少了，对本文不做太高期待了…………  <br />    因为上述原因，本文自然还无法实现语法高亮了，见谅，还好发现XCode中的代码复制过来使用RTF格式的，虽然无法实现高亮（Google Docs不知道以RTF格式读取）缩进格式还在，不幸中的万幸了。  </p>
+<h2>真的开始</h2>
+<p>     参考2指出，MacOS中粘贴板服务是一个独立的进程，名为/usr/bin/pboard，验证一下：  <br />$ ps -A | grep pboard  <br />   81 ??         0:00.00 /usr/sbin/pboard  <br />  408 ttys000    0:00.00 grep pboard  </p>
+<p>看来没有错。  <br />先看看基本的使用：  <br />因为没有发现命令行下编程使用MacOS剪贴板的办法，所以再简单的测试也使用窗口程序了，先用XCode建立一个Cocoa程序，我这里命名为MacPasteboardTest，  <br />然后用 Interface Builder拖入一个多行的Text Filed用于显示剪贴板的内容。（Windows下叫clipboard，MacOS下叫Pasteboard。）嫌麻烦，按钮都省了，直接通过菜单绑定action，这样还能使用快捷键：）  <br />另外，为了简化程序，我直接使用自动生成的程序的委托类了，不建立自己的类了  </p>
+<h3>MacPasteboardTestAppDelegate.h：</h3>
+<p> #import <cocoa>Cocoa.h&gt;  &lt;br  </cocoa>&gt;  <br />@interface MacPasteboardTestAppDelegate : NSObject <nsapplicationdelegate> {  <br />    NSWindow *window;  <br />    NSTextField *textField;  <br />}  </p>
+<p>@property (assign) IBOutlet NSWindow *window;  <br />@property (nonatomic, retain) IBOutlet NSTextField *textField;  </p>
+<p>- (IBAction) cut:(id)sender;  <br />- (IBAction) copy:(id)sender;  <br />- (IBAction) paste:(id)sender;  </p>
+<p>@end  </p>
+<h3>MacPasteboardTestAppDelegate.m</h3>
+<p> #import "MacPasteboardTestAppDelegate.h"  </p>
+<p>@implementation MacPasteboardTestAppDelegate  </p>
+<p>@synthesize window;  <br />@synthesize textField;  </p>
+<p>- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {  <br />    // Insert code here to initialize your application   <br />}  </p>
+<p>- (void)writeToPasteboard:(NSPasteboard *)pb withString:string{  <br />    [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType]  <br />               owner:self];  <br />    [pb setString:string forType:NSStringPboardType];  <br />}  </p>
+<p>- (BOOL)readFromPasteboard:(NSPasteboard *)pb {  <br />    NSArray *types = [pb types];  <br />    if ([types containsObject:NSStringPboardType]) {  <br />        NSString *value = [pb stringForType:NSStringPboardType];  <br />         <br />        [[self textField] setStringValue:value];  <br />        return YES;  <br />    }  <br />     <br />    return NO;  <br />}  </p>
+<p>- (IBAction)cut:(id)sender {  <br />    [self copy:sender];  <br />    [[self textField] setStringValue:@""];  <br />}  </p>
+<p>- (IBAction)copy:(id)sender {  <br />    NSPasteboard *pb = [NSPasteboard generalPasteboard];  <br />    [self writeToPasteboard:pb withString:[textField stringValue]];  <br />}  </p>
+<p>- (IBAction)paste:(id)sender {  <br />    NSPasteboard *pb = [NSPasteboard generalPasteboard];  <br />    if( ![self readFromPasteboard:pb] ) {  <br />        NSBeep();  <br />    }  <br />}  </p>
+<p>@end  </p>
+<p>    然后，将菜单对应的cut,copy,paste的action都与此委托类的相应action绑定就好了。（类似的话都是对知道的人太多了，对于不知道的人这样说估计还是不懂，推荐不懂的可以去看看某个Hello World教程，那样都会了。）  <br />    这里，最最主要的就是使用NSPasteboard这个系统类了，所有的剪贴板操作都依赖于它。这样实现后，基本与参考2中21章的程序差不多了，此例中因为觉得考虑Selected字符串等情况较为麻烦，所有的操作都是直接针对控件的整个字符串，所以有点不符合操作习惯，需要注意一下，因为现在的主题是剪贴板，这些就算了。  </p>
+<h2>剪贴板内容的类型</h2>
+<p>     可惜的是原书也仅仅这样点到为止了。我的需要更多，所以我需要进一步的挖掘剪贴板的功能，我的目标是直接复制HTML内容到Google Docs中，并且可以正常识别，因为以前的学习经验，知道这牵涉到剪贴板的内容类型，比如上例中都是NSStringPboardType类型。参考2一共列出了17种各种各样的类型，可惜没有HTML类型，我很惊讶，查了查文档，参考2太老了，MacOS 10.5就有HTML类型了，但是剪贴板的类型字符串在MacOS 10.6有了较大的改变，应该仅仅是从非常量改成常量了，使用应该差不多，为了兼容性，我还是使用MacOS 10.5那种非常量的吧。  <br />文档：  <br />Types for Standard Data (Mac OS X 10.5 and earlier)  <br />The NSPasteboard class uses the following common pasteboard data types.  </p>
+<p>NSString *NSStringPboardType;  <br />NSString *NSFilenamesPboardType;  <br />NSString *NSPostScriptPboardType;  <br />NSString *NSTIFFPboardType;  <br />NSString *NSRTFPboardType;  <br />NSString *NSTabularTextPboardType;  <br />NSString *NSFontPboardType;  <br />NSString *NSRulerPboardType;  <br />NSString *NSFileContentsPboardType;  <br />NSString *NSColorPboardType;  <br />NSString *NSRTFDPboardType;  <br />NSString *NSHTMLPboardType;  <br />NSString *NSPICTPboardType;  <br />NSString *NSURLPboardType;  <br />NSString *NSPDFPboardType;  <br />NSString *NSVCardPboardType;  <br />NSString *NSFilesPromisePboardType;  <br />NSString *NSMultipleTextSelectionPboardType;  </p>
+<p>Types for Standard Data (Mac OS X 10.6 and later)  <br />The NSPasteboard class uses the following constants to define UTIs for common pasteboard data types.  </p>
+<p>NSString *const NSPasteboardTypeString;  <br />NSString *const NSPasteboardTypePDF;  <br />NSString *const NSPasteboardTypeTIFF;  <br />NSString *const NSPasteboardTypePNG;  <br />NSString *const NSPasteboardTypeRTF;  <br />NSString *const NSPasteboardTypeRTFD;  <br />NSString *const NSPasteboardTypeHTML;  <br />NSString *const NSPasteboardTypeTabularText;  <br />NSString *const NSPasteboardTypeFont;  <br />NSString *const NSPasteboardTypeRuler;  <br />NSString *const NSPasteboardTypeColor;  <br />NSString *const NSPasteboardTypeSound;  <br />NSString *const NSPasteboardTypeMultipleTextSelection;  <br />NSString *const NSPasteboardTypeFindPanelSearchOptions;  </p>
+<p>需要注意的是，NSSring本身就是常量，这里所谓从非常量到常量其实是对该指针值而言的，从NSString *到NSString *const的区别在于，NSString *值的指针可以改变指向（虽然不能改变内容，但是对于系统常量来说还是非常危险啊，这应该算是设计缺陷了，所以MacOS 10.6修改过来了），NSString *const的就是无论内容，指向都不能改了。类似于C++中const *及 const * const的区别。这里展示一下这个危险性（勿学），同时使用HTML类型试试，看能不能达到我想要的与Google Docs兼容的效果。  <br />- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {  <br />    // Insert code here to initialize your application  <br />     <br />    // notice!It's ugly but legality.  <br />    NSStringPboardType = NSHTMLPboardType;  <br />}  </p>
+<p>这样的代码竟然是合法的，你说苹果不改能行吗？  <br /> 
+<div style="text-align: left" id="mknw"><img style="width: 648px; height: 40px" src="http://docs.google.com/File?id=dhn3dw87_67ds9tvjdg_b" /></div>
+<p> 如上图所示，NSStringPboardType类型的值已经变了。。。。。。当然，我就需要这个类型，所以我诡异的这样使用了。（勿效仿）可以看出，就算是苹果公司的框架设计者也会犯一些非常低级的错误的。  </p>
+<h2>看看HTML剪贴板的效果</h2>
+<div style="text-align: left" id="vqtr"><img style="width: 648px; height: 326px" src="http://docs.google.com/File?id=dhn3dw87_68dbz4f7cg_b" /></div>
+<p> 输入上述内容，注意，上面可是带HTML的了啊：）复制，然后在Google Docs中粘贴，如下：  <br /> <br />
+<h3>我是从MacPasteboardTest复制过来的 </h3>
+<p> 看到了吗？Google Docs识别出来了，就如同我以前在Windows中用Qt实现的一样，HTML内容的剪贴板复制到Google Docs是直接识别的，而不是作为文字常量给输出，那么，事实上，我可以给大家看看将来我的MacOS的语法高亮软件实现的效果了：）  <br /><font face="monospace"><font color="#0000ee"><i>//</i></font> <br /><font color="#0000ee"><i>//  MacPasteboardTestAppDelegate.m</i></font> <br /><font color="#0000ee"><i>//  MacPasteboardTest</i></font> <br /><font color="#0000ee"><i>//</i></font> <br /><font color="#0000ee"><i>//  Created by JTianLing on 3/3/10.</i></font> <br /><font color="#0000ee"><i>//  Copyright 2010 JTianLing. All rights reserved.</i></font> <br /><font color="#0000ee"><i>//</i></font> </p>
+<p><font color="#1874cd">#import </font><font color="#4a708b">"MacPasteboardTestAppDelegate.h"</font> </p>
+<p><font color="#b03060"><b>@implementation</b></font> MacPasteboardTestAppDelegate    </p>
+<p>@synthesize window;    <br />@synthesize textField;    </p>
+<p><font color="#458b74">- </font>(<font color="#008b00"><b>void</b></font>)applicationDidFinishLaunching:(NSNotification *)aNotification {    <br />        <font color="#0000ee"><i>// Insert code here to initialize your application</i></font> <br />         <br />        <font color="#0000ee"><i>// notice!It's ugly but legality.</i></font> <br />        NSStringPboardType = NSHTMLPboardType;    <br />}    </p>
+<p><font color="#458b74">- </font>(<font color="#008b00"><b>void</b></font>)writeToPasteboard:(NSPasteboard *)pb withString:string{    <br />        [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType]    <br />                           owner:<font color="#b03060"><b>self</b></font>];    <br />        [pb setString:string forType:NSStringPboardType];    <br />}    </p>
+<p><font color="#458b74">- </font>(<font color="#008b00"><b>BOOL</b></font>)readFromPasteboard:(NSPasteboard *)pb {    <br />        NSArray *types = [pb types];    <br />        <font color="#b03060"><b>if</b></font> ([types containsObject:NSStringPboardType]) {    <br />                NSString *value = [pb stringForType:NSStringPboardType];    <br />                 <br />                [[<font color="#b03060"><b>self</b></font> textField] setStringValue:value];    <br />                <font color="#b03060"><b>return</b></font> YES;    <br />        }    <br />         <br />        <font color="#b03060"><b>return</b></font> NO;    <br />}    </p>
+<p><font color="#458b74">- </font>(IBAction)cut:(<font color="#008b00"><b>id</b></font>)sender {    <br />        [<font color="#b03060"><b>self</b></font> copy:sender];    <br />        [[<font color="#b03060"><b>self</b></font> textField] setStringValue:<font color="#4a708b">@""</font>];    <br />}    </p>
+<p><font color="#458b74">- </font>(IBAction)copy:(<font color="#008b00"><b>id</b></font>)sender {    <br />        NSPasteboard *pb = [NSPasteboard generalPasteboard];    <br />        [<font color="#b03060"><b>self</b></font> writeToPasteboard:pb withString:[textField stringValue]];    <br />}    </p>
+<p><font color="#458b74">- </font>(IBAction)paste:(<font color="#008b00"><b>id</b></font>)sender {    <br />        NSPasteboard *pb = [NSPasteboard generalPasteboard];    <br />        <font color="#b03060"><b>if</b></font>( ![<font color="#b03060"><b>self</b></font> readFromPasteboard:pb] ) {    <br />                NSBeep();    <br />        }    <br />}    </p>
+<p><font color="#b03060"><b>@end</b></font></font> </p>
+<p>    效果不错吧：）MacOS版本的Code Highlighter已经不远了。。。。。。。呵呵，别流口水啊。  <br /> <br />
+<h2> </h2>
+<h2>不足之处</h2>
+<p>     做了3个版本的语法高亮软件了，也试用了不少别的Code Highlighter，甚至还有在线版的，其实还是我自己以前做的那个最符合我自己的需求，毕竟，我就是针对Google Docs，我也就只需要HTML格式的剪贴板就可以了。但是，一直以来其实有个地方很不完美，我的语法高亮完全依赖Vim，（当然，依赖也没有什么不好），这是其一，另外，Vim的语法高亮的确是漂亮，但是已经无法复原VS/XCode/Eclipse本身的效果了，但是其实无论从上述哪个IDE中拷贝代码，其实原来的高亮信息其实是在的，只是Google Docs比较蠢(Google Docs is silliness）,仅能识别HTML格式的剪贴板内容不能识别其他内容（比如RTF)。  <br />    举个例子，看看XCode本身的语法高亮内容在剪贴板中的显示：（利用了MacOS 10.6中Finder的Show Clipboard功能，啊？怎么到了这里变成clipboard啊？类的命名全叫pasteboard。。。。唉，估计MacOS与XCode的开发者不是同一批。。。。）  <br /> 
+<div style="text-align: left" id="op9k"><img style="width: 648px; height: 277px" src="http://docs.google.com/File?id=dhn3dw87_69htdf2pd4_b" /></div>
+<p> 其实语法识别内容是比VIM要多的多的。。。。。注意 cilpboard窗口下面的文字，Clipboard contents: rich text(RTF)，多么笨的Google Docs啊，连RTF都识别不了。。。。。。。。。。其实，最最好的解决方案应该是为Google Docs开发插件，以直接识别RTF格式，再次一点的，就是制作一个RTF-&gt;HTML的软件然后再到Google Docs中了。。。。。有时间我尝试一下吧。  </p>
+<h2>最后</h2>
+<p>     第一次在Mac Book上写技术博客，这么点的东西花了我一个晚上。。。。。。。。悲哀。。。。。。毕竟对XCode和Objective C还是不太熟悉啊，当然，MacOS下的输入也不算太好，苹果的笔记本键盘嘛。。。。其实我感觉有点硬，达不到运指如飞的境界。。。。呵呵，扯远了。  </p>
+<h2>参考</h2>
+<p> 1.《Objective-C 2.0 程序设计》Stephen G. Kochan著  <br />2.《苹果开发之Cocoa编程》第三版 Aaron Hillegass著  <br />3. 苹果在线文档  <br />     </p>
+<p> </nsapplicationdelegate>
+<p align="left"> </p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接</p>
+<p align="right"><b><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b></p>

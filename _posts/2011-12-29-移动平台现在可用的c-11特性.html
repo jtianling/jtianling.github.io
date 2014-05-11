@@ -1,0 +1,74 @@
+---
+layout: post
+title: "移动平台现在可用的C++ 11特性"
+categories:
+- C++
+tags:
+- C++ 11
+- Mobile
+status: publish
+type: post
+published: true
+meta:
+  views: '1623'
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  _aioseop_title: "移动平台现在可用的C++ 11特性"
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>移动平台特指iOS和Android，并且Android使用的是NDK,因为开发的时候是在Win32平台下，所以还需要考虑VS的支持。</p>
+<p>当前(2011-12-21)最新的版本：</p>
+<p>Win32： Visual Studio 2010</p>
+<p>Android NDK： GCC 4.4.3</p>
+<p>iOS: Apple LLVM compiler 3.0（Clang)</p>
+<p><span style="color: #000000;"><span style="font-size: small;"><br />
+</span></span></p>
+<p>本文所描述的C++ 11特性仅在上述三个平台，所写的版本号中有效，请先确认这点。</p>
+<p>在<a href="http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport">apache的WIKI</a>上有个较为详细的列表。可以看到，现在能用的特性其实不怎么多：</p>
+<div>
+<ol>
+<li>auto</li>
+<li>decltype</li>
+<li>extern template</li>
+<li>long long</li>
+<li>New function declaration syntax for deduced return types</li>
+<li>Right Angle Brackets</li>
+<li>R-Value References</li>
+<li>static_assert</li>
+<li>Built-in Type Traits</li>
+</ol>
+<p>如下图：</p>
+<div><a href="http://www.jtianling.com/wp-content/uploads/2011/12/C++0xCompilerSupport.png"><img class="alignnone size-large wp-image-116" title="C++0xCompilerSupport" src="http://www.jtianling.com/wp-content/uploads/2011/12/C++0xCompilerSupport-759x1024.png" alt="" width="759" height="1024" /></a></div>
+</div>
+<p>上面是整体的描述，具体的各个编译器对C++ 11的支持情况见下面的链接：</p>
+<div>Win32：</div>
+<div>Visual Studio 2010支持情况：<a href="http://blogs.msdn.com/b/vcblog/archive/2010/04/06/c-0x-core-language-features-in-vc10-the-table.aspx">C++0x Core Language Features In VC10: The Table</a></div>
+<div><a href="http://blogs.msdn.com/b/vcblog/archive/2008/10/28/lambdas-auto-and-static-assert-c-0x-features-in-vc10-part-1.aspx" target="_blank">Lambdas, auto, and static_assert: C++0x Features in VC10, Part 1</a></div>
+<div><a href="http://blogs.msdn.com/b/vcblog/archive/2009/02/03/rvalue-references-c-0x-features-in-vc10-part-2.aspx" target="_blank">Rvalue References: C++0x Features in VC10, Part 2</a></div>
+<div><a href="http://blogs.msdn.com/b/vcblog/archive/2009/04/22/decltype-c-0x-features-in-vc10-part-3.aspx">decltype: C++0x Features in VC10, Part 3</a></div>
+<div>Visual Studio 2011支持情况：<a href="http://blogs.msdn.com/b/vcblog/archive/2011/09/12/10209291.aspx">C++11 Features in Visual C++ 11</a></div>
+<div>Android NDK： GCC 4.4.3</div>
+<p><a href="http://gcc.gnu.org/gcc-4.4/cxx0x_status.html">Status of Experimental C++0x Support in GCC 4.4</a></p>
+<p><a href="http://gcc.gnu.org/projects/cxx0x.html" target="_blank">C++0x/C++11 Support in GCC</a></p>
+<p>iOS:</p>
+<p>Apple LLVM compiler 3.0（Clang)：<a href="http://clang.llvm.org/cxx_status.html">C++ and C++'11 Support in Clang</a></p>
+<p><a href="http://llvm.org/Users.html">The LLVM Compiler Infrastructure</a></p>
+<p>&nbsp;</p>
+<p>使用方式：</p>
+<p>1.Build Options选择Apple LLVM compiler 3.0</p>
+<p>2."Apple LLVM compiler 3.0 - Language"中"C++ Language Dialect"选择“C++0x" (</p>
+<p>3.”C++ Standard Library"选择libc++(LLVM C++ standard library with C++ '0X support)" (默认为"Compiler Default")</p>
+<p>其他有意思的东西：</p>
+<p><a href="http://libcxx.llvm.org/">"libc++" C++ Standard Library</a></p>
+<p><a href="http://llvm.org/demo/">在线试用LLVM编译器</a></p>
+<p>最新修改的原文<a title="移动平台现在可用的C++ 11特性" href="http://www.evernote.com/shard/s16/sh/e2a8b580-3ce0-4be6-96b8-8cee9e607468/566be76682b8d26f1d06946c61332708" target="_blank">所在地址</a>。</p>
+<div><span style="font-family: 'courier new';"><span style="color: #000000;"><span style="font-size: small;"><br />
+</span></span></span></div>
+<div style="text-align: right;">原创文章作者保留版权 转载请注明原作者 并给出链接</div>
+<p style="text-align: right;" dir="ltr"><a title="write by 九天雁翎(JTianLing) -- www.jtianling.com" href="http://www.jtianling.com/"><span style="font-family: 'courier new';"><span style="color: #000099;"><span style="text-decoration: underline;"><strong><span style="font-size: small;">九天雁翎(JTianLing) -- www.jtianling.com</span></strong></span></span></span></a></p>

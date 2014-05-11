@@ -1,0 +1,80 @@
+---
+layout: post
+title: "【转】【翻译】Orx官方教程：1. object"
+categories:
+- "翻译"
+- "转载"
+tags:
+- Orx
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '6'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p>本文译自<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/main"><br />
+ orx tutorials </a></p>
+<p>的<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/en/orx/tutorials/object">对<br />
+象(object)</a></p>
+<p>。<a href="http://blog.feihoo.com/">phpxer</a></p>
+<p> 译，九天雁翎 （<a onclick="javascript:pageTracker._trackPageview('/outbound/article/blog.csdn.net');" href="http://www.jtianling.com">博<br />
+客</a></p>
+<p>）修订。最新版本见<a onclick="javascript:pageTracker._trackPageview('/outbound/article/orx-project.org');" href="http://orx-project.org/wiki/cn/orx/main">Orx<br />
+官方中文Wiki</a></p>
+<p>。</p>
+<p>本文转自phpxer的<a href="http://blog.feihoo.com/">博客</a></p>
+<p>。原文链接在：<a href="http://blog.feihoo.com/2010/07/orx_tutorial_cn_object.html">http://blog.feihoo.com/2010/07/orx_tutorial_cn_object.html</a></p>
+<p>&nbsp;</p>
+<p>望有新人能够加入这个翻译者的队伍，早日将Orx的WIKI页中文化。有兴趣的请加入qq群73063577，并与我取得联系，防止重复翻译。</p>
+<h3>
+</h3>
+<h1>Object （对象）教程</h1>
+<h2>总结</h2>
+<p>由于orx是数据驱动的，我们只需要两行代码创建一个viewport（视口）和一个object。它们的所有属性都定义在配置文件<br />
+（01_Object.ini）中。</p>
+<p>Viewport关联到一个按照配置文件中的信息隐含创建的camera(摄像头)。在配置文件里，你还可以设置它们的大小，坐标，对象的颜色，缩<br />
+放，旋转，动画，物理属性等等。你甚至无需增加一行代码就可以让任何的配置获得随机值。</p>
+<p>在后面的一个示例中我们将看到如何使用一行代码生成复杂的object体系甚至整个 scene（场景）（所有的背景对象和普通对象）。</p>
+<p>现在，你可以尝试取消01_Object.ini中某些行的注释，自己尝试一下，然后再继续学习这个教程。完整的选项列表请查看<br />
+CreationTemplate.ini。</p>
+<h2>详细说明</h2>
+<p>创建一个object是相当简单的。不过，我们首先需确保已经加载了定义了所有object(对象)的属性的配置文件。我们还要通过<br />
+viewport/camera组合显示创建好的object(对象)。</p>
+<p>不要慌张！所有这些都很容易。</p>
+<p>在这篇教程中，我们将加载一个位于父目录中的配置文件。正如你可能想到的，在所有的可执行程序都根据其构建类别（mingw, msvs2005,<br />
+ msvs2008, 等）位于各自的子目录的情况下，我们不打算在每个地方重复同样的配置文件。1)</p>
+<p>在我们的例子中，加载配置文件使用类似下面这行代码的方式实现：</p>
+<p>    orxConfig_Load(&rdquo;../01_Object.ini&rdquo;);</p>
+<p>然后我们创建viewport(视口)。注意 camera的创建是按照为这个viewport预置的配置信息自动完成的。</p>
+<p>    orxViewport_CreateFromConfig(&rdquo;Viewport&rdquo;);</p>
+<p>我们差不多完成了。现在我们只需要创建 object！</p>
+<p>    orxObject_CreateFromConfig(&rdquo;Object&rdquo;);</p>
+<p>就这样了！object(对象)已经创建，并且由于在camera的视觉平截体（frustum）内，将会被显示出来。</p>
+<p>现在，因为我们使用Orx默认的启动器，我们需要申明我们的插件入口点（这里是我们的Init函数）。这可以使用一个宏很容易地实现。</p>
+<p>orxSTATUS Init(){...}</p>
+<p>orxPLUGIN_DECLARE_ENTRY_POINT(Init);</p>
+<p>因为orx是数据驱动的，我们不需要手动加载任何数据，例如一个sprite（精灵）。一切都由数据管理器为我们搞定，它会确保sprites不在<br />
+内存中重复并在其不再使用时自动释放的</p>
+<p>如果你查看配置文件，在[Object]这一节，你将看到你可以设定所有的对象属性，例如 graphic<br />
+(sprite)，锚点，颜色，透明度，物理属性，坐标，旋转，缩放，tiling(平铺)（重复），动画，视觉特效，等等。</p>
+<p>不要担心，这一切都将在后面的教程中讲到。</p>
+<p>现在我们拥有了一个object（对象），我们需要学习如何与之交互。这将我们带入第二个教程：clock.</p>
+<h2>资源</h2>
+<ul>
+<li>
+源代码: 01_Object.c</li>
+<li>配置文件: 01_Object.ini</li>
+</ul>
+<hr />
+<p>
+1) 不过，如果你的配置文件名字与可执行文件匹配并且在同一个文件夹下，它将被自动加载。</p>

@@ -1,0 +1,630 @@
+---
+layout: post
+title: "堆栈的简单C++实现"
+categories:
+- "算法"
+tags:
+- C++
+- "堆栈"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '7'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>
+&nbsp;<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="ProgId" content="Word.Document" /><meta name="Generator" content="Microsoft Word 12" /><meta name="Originator" content="Microsoft Word 12" />
+<link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_filelist.xml" />
+<link rel="themeData" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_themedata.thmx" />
+<link rel="colorSchemeMapping" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_colorschememapping.xml" /><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:WordDocument&gt;<br />
+  &lt;w:View&gt;Normal&lt;/w:View&gt;<br />
+  &lt;w:Zoom&gt;0&lt;/w:Zoom&gt;<br />
+  &lt;w:TrackMoves /&gt;<br />
+  &lt;w:TrackFormatting /&gt;<br />
+  &lt;w:PunctuationKerning /&gt;<br />
+  &lt;w:DrawingGridVerticalSpacing&gt;7.8 磅&lt;/w:DrawingGridVerticalSpacing&gt;<br />
+  &lt;w:DisplayHorizontalDrawingGridEvery&gt;0&lt;/w:DisplayHorizontalDrawingGridEvery&gt;<br />
+  &lt;w:DisplayVerticalDrawingGridEvery&gt;2&lt;/w:DisplayVerticalDrawingGridEvery&gt;<br />
+  &lt;w:ValidateAgainstSchemas /&gt;<br />
+  &lt;w:SaveIfXMLInvalid&gt;false&lt;/w:SaveIfXMLInvalid&gt;<br />
+  &lt;w:IgnoreMixedContent&gt;false&lt;/w:IgnoreMixedContent&gt;<br />
+  &lt;w:AlwaysShowPlaceholderText&gt;false&lt;/w:AlwaysShowPlaceholderText&gt;<br />
+  &lt;w:DoNotPromoteQF /&gt;<br />
+  &lt;w:LidThemeOther&gt;EN-US&lt;/w:LidThemeOther&gt;<br />
+  &lt;w:LidThemeAsian&gt;ZH-CN&lt;/w:LidThemeAsian&gt;<br />
+  &lt;w:LidThemeComplexScript&gt;X-NONE&lt;/w:LidThemeComplexScript&gt;<br />
+  &lt;w:Compatibility&gt;<br />
+   &lt;w:SpaceForUL /&gt;<br />
+   &lt;w:BalanceSingleByteDoubleByteWidth /&gt;<br />
+   &lt;w:DoNotLeaveBackslashAlone /&gt;<br />
+   &lt;w:ULTrailSpace /&gt;<br />
+   &lt;w:DoNotExpandShiftReturn /&gt;<br />
+   &lt;w:AdjustLineHeightInTable /&gt;<br />
+   &lt;w:BreakWrappedTables /&gt;<br />
+   &lt;w:SnapToGridInCell /&gt;<br />
+   &lt;w:WrapTextWithPunct /&gt;<br />
+   &lt;w:UseAsianBreakRules /&gt;<br />
+   &lt;w:DontGrowAutofit /&gt;<br />
+   &lt;w:SplitPgBreakAndParaMark /&gt;<br />
+   &lt;w:DontVertAlignCellWithSp /&gt;<br />
+   &lt;w:DontBreakConstrainedForcedTables /&gt;<br />
+   &lt;w:DontVertAlignInTxbx /&gt;<br />
+   &lt;w:Word11KerningPairs /&gt;<br />
+   &lt;w:CachedColBalance /&gt;<br />
+   &lt;w:UseFELayout /&gt;<br />
+  &lt;/w:Compatibility&gt;<br />
+  &lt;m:mathPr&gt;<br />
+   &lt;m:mathFont m:val="Cambria Math" /&gt;<br />
+   &lt;m:brkBin m:val="before" /&gt;<br />
+   &lt;m:brkBinSub m:val="&#45;-" /&gt;<br />
+   &lt;m:smallFrac m:val="off" /&gt;<br />
+   &lt;m:dispDef /&gt;<br />
+   &lt;m:lMargin m:val="0" /&gt;<br />
+   &lt;m:rMargin m:val="0" /&gt;<br />
+   &lt;m:defJc m:val="centerGroup" /&gt;<br />
+   &lt;m:wrapIndent m:val="1440" /&gt;<br />
+   &lt;m:intLim m:val="subSup" /&gt;<br />
+   &lt;m:naryLim m:val="undOvr" /&gt;<br />
+  &lt;/m:mathPr&gt;&lt;/w:WordDocument&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="true"<br />
+  DefSemiHidden="true" DefQFormat="false" DefPriority="99"<br />
+  LatentStyleCount="267"&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="0" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Normal" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="heading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="35" QFormat="true" Name="caption" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="10" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" Name="Default Paragraph Font" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="11" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtitle" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="22" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Strong" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="20" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="59" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Table Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Placeholder Text" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="No Spacing" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Revision" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="34" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="List Paragraph" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="29" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="30" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="19" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="21" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="31" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="32" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="33" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Book Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="37" Name="Bibliography" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" QFormat="true" Name="TOC Heading" /&gt;<br />
+ &lt;/w:LatentStyles&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><br />
+<style>
+<!--<br />
+ /* Font Definitions */<br />
+ @font-face<br />
+	{font-family:宋体;<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-alt:SimSun;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"Cambria Math";<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1107304683 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Cambria;<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073741899 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Calibri;<br />
+	panose-1:2 15 5 2 2 2 4 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:swiss;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073750139 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:"/@宋体";<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+ /* Style Definitions */<br />
+ p.MsoNormal, li.MsoNormal, div.MsoNormal<br />
+	{mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+h1<br />
+	{mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-link:"标题 1 Char";<br />
+	mso-style-next:正文;<br />
+	margin-top:24.0pt;<br />
+	margin-right:0cm;<br />
+	margin-bottom:0cm;<br />
+	margin-left:0cm;<br />
+	margin-bottom:.0001pt;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan lines-together;<br />
+	page-break-after:avoid;<br />
+	mso-outline-level:1;<br />
+	font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	mso-font-kerning:1.0pt;}<br />
+span.1Char<br />
+	{mso-style-name:"标题 1 Char";<br />
+	mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:"标题 1";<br />
+	mso-ansi-font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	font-weight:bold;}<br />
+.MsoChpDefault<br />
+	{mso-style-type:export-only;<br />
+	mso-default-props:yes;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+ /* Page Definitions */<br />
+ @page<br />
+	{mso-page-border-surround-header:no;<br />
+	mso-page-border-surround-footer:no;}<br />
+@page Section1<br />
+	{size:595.3pt 841.9pt;<br />
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;<br />
+	mso-header-margin:42.55pt;<br />
+	mso-footer-margin:49.6pt;<br />
+	mso-paper-source:0;<br />
+	layout-grid:15.6pt;}<br />
+div.Section1<br />
+	{page:Section1;}<br />
+--><br />
+</style>
+<p><!--[if gte mso 10]&gt;<br />
+&lt;style&gt;<br />
+ /* Style Definitions */<br />
+ table.MsoNormalTable<br />
+	{mso-style-name:普通表格;<br />
+	mso-tstyle-rowband-size:0;<br />
+	mso-tstyle-colband-size:0;<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;<br />
+	mso-para-margin:0cm;<br />
+	mso-para-margin-bottom:.0001pt;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:10.5pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-font-kerning:1.0pt;}<br />
+&lt;/style&gt;<br />
+&lt;![endif]--></p>
+<h1 style="text-align: center;" align="center"><span style="font-family: 宋体;">堆栈的简单</span><span lang="EN-US">C++</span><span style="font-family: 宋体;">实现</span></h1>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">九天雁翎</span><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b></p>
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span><span style="font-family: 宋体;">头文件：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;1 </span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">#ifndef __STACK_H__</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 </span><span style="color: rgb(160, 32, 240);">#define<br />
+__STACK_H__</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;iostream&gt;</span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;vector&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 <b>using</b></span>&nbsp;<b><span style="color: seagreen;">namespace</span></b>&nbsp;std;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span><b><span style="color: seagreen;">template</span></b>&lt;<b><span style="color: seagreen;">typename</span></b>&nbsp;T&gt;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 </span><b><span style="color: seagreen;">class</span></b>&nbsp;CStack<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span>{<br />
+<span style="color: rgb(128, 64, 64);">10 <b>public</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">11 </span>&nbsp;&nbsp;&nbsp;&nbsp;CStack() { }<br />
+<span style="color: rgb(128, 64, 64);">12 </span>&nbsp;&nbsp;&nbsp;&nbsp;~CStack() { }<br />
+<span style="color: rgb(128, 64, 64);">13 </span><br />
+<span style="color: rgb(128, 64, 64);">14 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">size_t</span></b>&nbsp;empty()<br />
+<span style="color: rgb(128, 64, 64);">15 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">16 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;miDataVec.empty();<br />
+<span style="color: rgb(128, 64, 64);">17 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">18 </span><br />
+<span style="color: rgb(128, 64, 64);">19 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">size_t</span></b>&nbsp;size()<br />
+<span style="color: rgb(128, 64, 64);">20 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">21 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;miDataVec.size();<br />
+<span style="color: rgb(128, 64, 64);">22 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">23 </span><br />
+<span style="color: rgb(128, 64, 64);">24 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;pop()<br />
+<span style="color: rgb(128, 64, 64);">25 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">26 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miDataVec.pop_back();<br />
+<span style="color: rgb(128, 64, 64);">27 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">28 </span><br />
+<span style="color: rgb(128, 64, 64);">29 </span>&nbsp;&nbsp;&nbsp;&nbsp;T&amp; top()<br />
+<span style="color: rgb(128, 64, 64);">30 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">31 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;miDataVec.back();<br />
+<span style="color: rgb(128, 64, 64);">32 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">33 </span><br />
+<span style="color: rgb(128, 64, 64);">34 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">const</span></b>&nbsp;T&amp; top() <b><span style="color: seagreen;">const</span></b><br />
+<span style="color: rgb(128, 64, 64);">35 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">36 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;miDataVec.back();<br />
+<span style="color: rgb(128, 64, 64);">37 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">38 </span><br />
+<span style="color: rgb(128, 64, 64);">39 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;push(<b><span style="color: seagreen;">const</span></b>&nbsp;T&amp;<br />
+aItem)<br />
+<span style="color: rgb(128, 64, 64);">40 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">41 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miDataVec.push_back(aItem);<br />
+<span style="color: rgb(128, 64, 64);">42 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">43 <b>private</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">44 </span>&nbsp;&nbsp;&nbsp;&nbsp;vector&lt;T&gt;<br />
+miDataVec;<br />
+<span style="color: rgb(128, 64, 64);">45 </span><br />
+<span style="color: rgb(128, 64, 64);">46 </span>};<br />
+<span style="color: rgb(128, 64, 64);">47 </span><br />
+<span style="color: rgb(128, 64, 64);">48 </span><br />
+<span style="color: rgb(128, 64, 64);">49 </span><br />
+<span style="color: rgb(128, 64, 64);">50 </span><br />
+<span style="color: rgb(128, 64, 64);">51 </span><br />
+<span style="color: rgb(128, 64, 64);">52 </span><br />
+<span style="color: rgb(128, 64, 64);">53 </span><span style="color: rgb(160, 32, 240);">#endif</span><br />
+<span style="color: rgb(128, 64, 64);">54</span></span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体; color: rgb(128, 64, 64);">测试程序：</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;1 </span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">#include </span><span style='font-family: "Courier New"; color: fuchsia;' lang="EN-US">&lt;stdio.h&gt;</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;stdlib.h&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;iostream&gt;</span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">"stack.h"</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 <b>using</b></span>&nbsp;<b><span style="color: seagreen;">namespace</span></b>&nbsp;std; <br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 </span><b><span style="color: seagreen;">int</span></b>&nbsp;main(<b><span style="color: seagreen;">int</span></b>&nbsp;argc, <b><span style="color: seagreen;">char</span></b>*<br />
+argv[])<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span>{<br />
+<span style="color: rgb(128, 64, 64);">10 </span>&nbsp;&nbsp;&nbsp;&nbsp;CStack&lt;<b><span style="color: seagreen;">int</span></b>&gt; loStack;<br />
+<span style="color: rgb(128, 64, 64);">11 </span><br />
+<span style="color: rgb(128, 64, 64);">12 </span>&nbsp;&nbsp;&nbsp;&nbsp;loStack.push(<span style="color: fuchsia;">1</span>);<br />
+<span style="color: rgb(128, 64, 64);">13 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loStack.top() &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">14 </span><br />
+<span style="color: rgb(128, 64, 64);">15 </span>&nbsp;&nbsp;&nbsp;&nbsp;loStack.push(<span style="color: fuchsia;">2</span>);<br />
+<span style="color: rgb(128, 64, 64);">16 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loStack.top() &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">17 </span><br />
+<span style="color: rgb(128, 64, 64);">18 </span>&nbsp;&nbsp;&nbsp;&nbsp;loStack.push(<span style="color: fuchsia;">1</span>);<br />
+<span style="color: rgb(128, 64, 64);">19 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loStack.top() &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">20 </span><br />
+<span style="color: rgb(128, 64, 64);">21 </span>&nbsp;&nbsp;&nbsp;&nbsp;loStack.push(<span style="color: fuchsia;">2</span>);<br />
+<span style="color: rgb(128, 64, 64);">22 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loStack.top() &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">23 </span><br />
+<span style="color: rgb(128, 64, 64);">24 </span>&nbsp;&nbsp;&nbsp;&nbsp;loStack.push(<span style="color: fuchsia;">3</span>);<br />
+<span style="color: rgb(128, 64, 64);">25 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loStack.top() &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">26 </span>&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">27 </span>&nbsp;&nbsp;&nbsp;&nbsp;loStack.push(<span style="color: fuchsia;">4</span>);<br />
+<span style="color: rgb(128, 64, 64);">28 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loStack.top() &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">29 </span><br />
+<span style="color: rgb(128, 64, 64);">30 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">31 </span><br />
+<span style="color: rgb(128, 64, 64);">32 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>(loStack.size() != <span style="color: fuchsia;">0</span>)<br />
+<span style="color: rgb(128, 64, 64);">33 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">34 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loStack.top() &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">35 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loStack.pop();<br />
+<span style="color: rgb(128, 64, 64);">36 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">37 </span><br />
+<span style="color: rgb(128, 64, 64);">38 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">39 </span><br />
+<span style="color: rgb(128, 64, 64);">40 </span>&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: fuchsia;">0</span>);<br />
+<span style="color: rgb(128, 64, 64);">41 </span>}<br />
+<span style="color: rgb(128, 64, 64);">42</span></span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体; color: rgb(128, 64, 64);">这里顺面说明一下，这个实现仅仅是为了说明问题。</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体; color: rgb(128, 64, 64);">在</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">C++</span><span style="font-family: 宋体; color: rgb(128, 64, 64);">中标准的</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">stack</span><span style="font-family: 宋体; color: rgb(128, 64, 64);">实现是通过</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">adaptor</span><span style="font-family: 宋体; color: rgb(128, 64, 64);">设计模式来实现的，并将用于实现的容器放入了模板的参数，以方便你用</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">vector</span><span style="font-family: 宋体; color: rgb(128, 64, 64);">和</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">list,</span><span style="font-family: 宋体; color: rgb(128, 64, 64);">来替代默认的</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">deque</span><span style="font-family: 宋体; color: rgb(128, 64, 64);">。</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US"><span style="">&nbsp;</span></span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">九天雁翎</span><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b></p>
+<p class="MsoNormal"><span lang="EN-US"><o:p>&nbsp;</o:p></span></p>

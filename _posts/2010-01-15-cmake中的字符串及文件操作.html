@@ -1,0 +1,532 @@
+---
+layout: post
+title: CMake中的字符串及文件操作
+categories:
+- "未分类"
+tags:
+- CMake
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '55'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p align="right" style="MARGIN:1em 0px 0.5em">
+<b><a href="http://www.jtianling.com" style="COLOR:#006bad; TEXT-DECORATION:none">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b></p>
+<p align="right" style="MARGIN:1em 0px 0.5em">
+<a href="http://groups.google.com/group/jiutianfile/" style="COLOR:#770000; TEXT-DECORATION:none"><b>讨论新闻组及文件</b></a></p>
+<p style="MARGIN:0px">
+   以前写过一篇关于CMake的基本用法的文章(<font size="3"><a href="http://www.jtianling.com/archive/2009/10/30/4743484.aspx" target="_blank">现代软件构建系统的使用 <font color="#c60a00">cmake</font>简介...</a></font>),在最近的使用中,发现一些更复杂情况的使用还有待学习,并且相关的资料也比较少,真正可以依赖的也就(CMake 实践)一文.所以,最近准备将一些非常重要,但是网上资料较少的用法--字符串,文件操作,好好整理一下.目标是,实现一个目录下的多个工程的一次性工程文件生成,而不是为每个工程都建立一个CMake文件,这个需求在我下载一些图书的配套源码时经常碰到,可能大部分的图书作者都习惯于仅仅提供原始源代码文件而不提供工程文件.</p>
+<p style="MARGIN:0px">
+</p>
+<p style="MARGIN:0px">
+      特别声明的是,本文并不是一个完备3的CMake教程(以前写的简介也不是),需要相关入门教程的应该去寻找(CMake 实践),那才是你想要的.本文仅仅是作为一些缺失资料的收集,也包括我自己对CMake字符串,文件处理的探索.(真是纯个人探索,网上即使是英文的相关资料也不多,可能毕竟CMake还是不怎么流行吧),仅适合需要的人搜索到这里查看相关信息.</p>
+<p style="MARGIN:0px">
+</p>
+<h2 style="MARGIN:0px">
+  本文内容:<br />
+</h2>
+<p style="MARGIN:0px">
+</p>
+<p style="MARGIN:0px">
+      实际上,本文研究的仅仅包括CMake的以下两部分,已经一些if,else中对字符串的判断.在本文中,由于目的不同,主要将会把CMake作为一种普通的编程语言来对待,(其实它本来就是)甚至很多地方根本不建工程,请注意.</p>
+<p style="MARGIN:0px">
+<a href="http://www.cmake.org/cmake/help/cmake2.6docs.html#command:string" id="sgqu" title="string">string</a>: String operations.<br />
+<font face="Courier New"> string(REGEX MATCH (regular_expression)<br />
+  (output variable) (input) [(input)...])<br />
+  string(REGEX MATCHALL (regular_expression)<br />
+  (output variable) (input) [(input)...])<br />
+  string(REGEX REPLACE (regular_expression)<br />
+  (replace_expression) (output variable)<br />
+  (input) [(input)...])<br />
+  string(REPLACE (match_string)<br />
+  (replace_string) (output variable)<br />
+  (input) [(input)...])<br />
+  string(COMPARE EQUAL (string1) (string2) (output variable))<br />
+  string(COMPARE NOTEQUAL (string1) (string2) (output variable))<br />
+  string(COMPARE LESS (string1) (string2) (output variable))<br />
+  string(COMPARE GREATER (string1) (string2) (output variable))<br />
+  string(ASCII (number) [(number) ...] (output variable))<br />
+  string(CONFIGURE (string1) (output variable)<br />
+  [@ONLY] [ESCAPE_QUOTES])<br />
+  string(TOUPPER (string1) (output variable))<br />
+  string(TOLOWER (string1) (output variable))<br />
+  string(LENGTH (string) (output variable))<br />
+  string(SUBSTRING (string) (begin) (length) (output variable))<br />
+  string(STRIP (string) (output variable))<br />
+  string(RANDOM [LENGTH (length)] [ALPHABET (alphabet)]<br />
+  (output variable))</font></p>
+<div>
+<br />
+   </p>
+<p style="MARGIN:0px">
+<a href="http://www.cmake.org/cmake/help/cmake2.6docs.html#command:file" id="edbh" title="file">file</a>: File manipulation command.<br />
+<font face="Courier New"> file(WRITE filename "message to write"... )<br />
+    file(APPEND filename "message to write"... )<br />
+    file(READ filename variable [LIMIT numBytes] [OFFSET offset] [HEX])<br />
+    file(STRINGS filename variable [LIMIT_COUNT num]<br />
+    [LIMIT_INPUT numBytes] [LIMIT_OUTPUT numBytes]<br />
+    [LENGTH_MINIMUM numBytes] [LENGTH_MAXIMUM numBytes]<br />
+    [NEWLINE_CONSUME] [REGEX regex]<br />
+    [NO_HEX_CONVERSION])<br />
+    file(GLOB variable [RELATIVE path] [globbing expressions]...)<br />
+    file(GLOB_RECURSE variable [RELATIVE path]<br />
+    [FOLLOW_SYMLINKS] [globbing expressions]...)<br />
+    file(REMOVE [file1 ...])<br />
+    file(REMOVE_RECURSE [file1 ...])<br />
+    file(MAKE_DIRECTORY [directory1 directory2 ...])<br />
+    file(RELATIVE_PATH variable directory file)<br />
+    file(TO_CMAKE_PATH path result)<br />
+    file(TO_NATIVE_PATH path result)<br />
+    file(DOWNLOAD url file [TIMEOUT timeout] [STATUS status] [LOG log])</font></p>
+<h2 style="MARGIN:0px">
+     <br />
+  </h2>
+<p>  以上列表来自于CMake最新的文档:http://www.cmake.org/cmake/help/cmake2.6docs.html</p>
+<h2>
+    实验方式:<br />
+  </h2>
+<p>      完全依靠CMake的GUI工具,通过configure的输出来获取实验结果.最终的结果就是为我的博客所有源代码重建工程,以后在博客源代码中仅保留CMake的配置文件,不再保留工程, 保留工程很有局限性,比如Linux下没有makefile是很有问题的,个人建工程的时候用的是VS2008,这样VS2005的使用者也会很郁闷(虽然改个版本号就可以用),再加上以前刚开始学习OpenGL的时候非常短视,为了方便自己,将GLUT等库都装在系统目录下,这样的确是方便了自己,但是任何人clone的源代码都无法顺利运行,必须首先装一套配套的库才行,这可不是太好的工程管理方法,这次顺面解决.原来的源代码目录完全按照日期分目录,每天又分很多示例,很有典型意义.
+</p></div>
+<div>
+
+</div>
+<div>
+      比如说(<a href="http://www.amazon.cn/mn/detailApp/ref=sr_1_2?_encoding=UTF8&amp;s=books&amp;qid=1263556171&amp;asin=B0011F2D26&amp;sr=8-2"> DirectX 9.0 3D游戏开发编程基础</a>)--(<a href="http://www.amazon.cn/mn/detailApp/ref=sr_1_1?_encoding=UTF8&amp;s=books&amp;qid=1263171144&amp;asin=B0011F2D26&amp;sr=8-1" id="ly14" title="d3d龙书">d3d龙书</a>)(英文名:(Introduction to 3D Game Programming with DirectX 9.0))的附带源码仅有源代码文件,分散在N个目录(每章一个目录+每章每个示例一个目录),也与我的博客中源代码的分配很类似,事实上,很多书籍配套的源代码都有这样的问题,通过这样的方法可以一次解决.没有CMake的时候,想OpenGL红宝书,D3d龙书,3D游戏编程大师这样的书的源代码你得分别建几十个工程才能很好的在Windows下使用,这是非常让人郁闷的事情,你郁闷吗?我想,我可以通过这中方法搞定这些源代码,弄一个配套的project放在google code上,方便大家;),辛苦我一人,方便千万家的工作,那是责无旁贷的完成啊:)</div>
+<div class="productImage"><a href="http://www.amazon.cn/mn/detailApp/ref=sr_1_2?_encoding=UTF8&amp;s=books&amp;qid=1263556171&amp;asin=B0011F2D26&amp;sr=8-2"> </a></div>
+<div>
+
+</div>
+<div>
+      本文顺面用于介绍CMake的强大及其推广,按照开源的理念,即使我没有真的参与某个开源产品的研发,我实际的使用了它,这是第一层次的支持,使用后感觉不错,向大家推广,这是第二层次的支持,我决定将我对CMake的支持上升一个层次(以前写简介的时候就上升过了)
+</div>
+<div>
+<h2 style="MARGIN:0px">
+<br />
+</h2>
+<h2>
+    实验过程<br />
+  </h2>
+<div>
+    我的HelloWord:
+  </div>
+<div>
+    获取某个源代码目录下的所有源代码,而不需要单个的列举,这是个很大的进步,在(<font size="3"><a href="http://www.jtianling.com/archive/2009/10/30/4743484.aspx" target="_blank">现代软件构建系统的使用 <font color="#c60a00">cmake</font>简介...</a></font>)中介绍过,这是从
+  </div>
+<div>
+<font face="monospace"><font color="#804040"><b>set</b></font><font color="#008080">(SRC_LIST test.cpp)</font><br />
+<font class="Apple-style-span" color="#008080"><font class="Apple-style-span" color="#804040"><b><br />
+</b></font></font></font>
+</div>
+<p>
+    到
+  </p>
+<p>
+    aux_source_directory(./ SRC_LIST)</p>
+<p>
+</p>
+<p>
+    的进步.通过aux_source_directory来实现.
+  </p>
+<p>
+</p>
+<p>
+    现在的问题是,单个工程这个函数很好用了,对于多个工程多级目录的情况呢?答案是file()一族的函数.
+  </p></p>
+<div>
+    cmake_minimum_required(VERSION 2.8)
+  </div>
+<div>
+    FILE(GLOB_RECURSE SRC_LIST "*.cpp")
+  </div>
+<div>
+    FOREACH(src ${SRC_LIST})
+  </div>
+<div>
+    MESSAGE( ${src} )
+  </div>
+<div>
+    ENDFOREACH()
+  </div>
+<div>
+
+</div>
+<div>
+    上面的代码,放在我的博客的根目录下,会找到所有的.cpp文件并输出
+  </div>
+<div>
+    关键在于两个地方FILE(GLOB_RECURSE .......
+  </div>
+<div>
+    及FOREACH的使用
+  </div>
+<div>
+    FILE(GLOB_RECURSE .......用于循环递归遍历目录并且使用GLOB匹配,GLOB是我们熟悉的文件匹配语法,(类似正则的简化版)
+  </div>
+<div>
+    *用于表示任意长度的任意文字,?用于匹配任意的一个字符.这里*.cpp用于匹配所有的.cpp后缀的文件.
+  </div>
+<div>
+    同时还有FILE(GLOB....用于非递归式的寻找,(即只寻找当前目录)
+  </div>
+<div>
+
+</div>
+<div>
+    FOREACH就是我在使用C++时一直梦寐以求的循环语法,这里很明白,就是遍历${SRC_LIST}的值,然后用MESSAGE输出,所以有了以下的输出.
+  </div>
+<div>
+
+</div>
+<div>
+    在CMake的GUI中,确认正确的CMakeLists.txt的位置及工程准备在的位置,Configure后,
+  </div>
+<div>
+    输出一下信息:
+  </div>
+<div>
+    Check for working C compiler: cl</p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+      Check for working C compiler: cl -- works
+    </p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+      Detecting C compiler ABI info
+    </p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+      Detecting C compiler ABI info - done
+    </p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+      Check for working CXX compiler: cl
+    </p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+      Check for working CXX compiler: cl -- works
+    </p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+      Detecting CXX compiler ABI info
+    </p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+      Detecting CXX compiler ABI info - done
+    </p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-12/SimpleRectangle/SimpleRectangle.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-14/GLDrawCircle/GLDrawCircle.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-14/GLDrawFourCircle/GLDrawFourCircle.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-14/GLFourCircleAnimation/GLFourCircleAnimation.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-14/GLShadeAnimation/GLShadeAnimation.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-14/WinDrawCircle/WinDrawCircle.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-18/glInterleavedArrays/glInterleavedArrays.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-18/glRectWithArrayDraw/glRectWithArrayDraw.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-18/glRectWithDrawElements/glRectWithDrawElements.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-18/glRectWithMultiDrawElements/glRectWithMultiDrawElements.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-18/glVertexArray/glVertexArray.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-18/glVertexArrayWithColor/glVertexArrayWithColor.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-20/OpenGL/debug/moc_opengl.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-20/OpenGL/main.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-20/OpenGL/opengl.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-21/gl3DCoordinate/gl3DCoordinate.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-21/glSmoothColorPyramid/glSmoothColorPyramid.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-21/glWirePyramid/glWirePyramid.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-25/glCullFace/glCullFace.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-25/glPolygonFace/glPolygonFace.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-25/glViewingTrans/glViewingTrans.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-26/glComposModelTrans/glComposModelTrans.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-26/glComposModelTrans2/glComposModelTrans2.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-26/glScaleSample/glScaleSample.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-28/glOrthoSample/glOrthoSample.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-28/glPerspective/glPerspective.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-10-29/JTFourTangram/JTTangram.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-11-11/glHalfTrans/glHalfTrans.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-11-12/glDepthTest/glDepthTest.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-11-12/glFogSample/glFogSample.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-11-9/glSimpleColorPyramid/glSimpleColorPyramid.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-11-9/LightSimple/LightSimple.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-9-27/Win32OpenGLTemplate/Win32OpenGLTemplate.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-9-28/RotateRect/RotateRect.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/2009-9-29/TestOpenGL/mvarray.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+<span style=" COLOR:#ff0000">F:/MySrc/blog/JTTangram/JTTangram.cpp</span></p>
+<p style="MARGIN-LEFT:0px; MARGIN-RIGHT:0px">
+      Configuring done
+    </p>
+</div>
+<h2 style="MARGIN:0px">
+<br />
+</h2>
+<p>
+    获取了SRC_LIST后,就可以开始处理了
+  </p>
+<div>
+<div>
+      FOREACH(src ${SRC_LIST})
+    </div>
+<div>
+          IF(NOT (src MATCHES ".*2009-10-20.*")) 
+    </div>
+<div>
+              MESSAGE( ${src} Finded)
+    </div>
+<div>
+              STRING( REGEX REPLACE ".*/(.*)/.cpp$" "/1" prjName ${src} )
+    </div>
+<div>
+              MESSAGE( ${prjName} Added)
+    </div>
+<div>
+              ADD_EXECUTABLE( ${prjName} ${src} )
+    </div>
+<div>
+
+</div>
+<div>
+              IF (NOT (prjName STREQUAL mvarray) )
+    </div>
+<div>
+                  SET_TARGET_PROPERTIES(${prjName} PROPERTIES WIN32_EXECUTABLE "true")
+    </div>
+<div>
+              ENDIF(NOT (prjName STREQUAL mvarray) )
+    </div>
+<div>
+
+</div>
+<div>
+          ENDIF(NOT (src MATCHES ".*2009-10-20.*"))
+    </div>
+<div>
+      ENDFOREACH(src)
+    </div>
+<div>
+
+</div>
+<div>
+
+</div>
+<div>
+      一下是关键点的解释:
+    </div>
+</div>
+<p>
+    通过STRING( REGEX REPLACE命令来获取到所有的.cpp后缀的文件,因为我的工程中所有的工程都仅包含一个cpp,所以可以这样做
+  </p>
+<p>
+<span style="FONT-FAMILY:'Courier New'">string(REGEX REPLACE (regular_expression)<br />
+    (replace_expression) (output variable)</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'">的语法不算太好用,学会以后,就主要靠你的正则表达式理解能力了,几乎无所不能.CMake的语法中用()来表示正则表达式的匹配捕获,</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'">用"1"的方式在替换中表示捕获到的字符串(会正则的理解起来应该不难).但是,特别需要注意的是,CMake中需要用/1的形式来传递参数,就像你在C++中需要做的那样.</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'"><br />
+</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'">ADD_EXECUTABLE( ${prjName} ${src} )</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'">以每个cpp的文件名来作为工程名,每个源文件作为此工程需要的文件.</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'"><br />
+</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'">SET_TARGET_PROPERTIES(${prjName} PROPERTIES WIN32_EXECUTABLE "true")</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'">用于指定我的这些工程都是Win32的工程(调用WinMain),默认时时命令行的工程.</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'"><br />
+</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'">上面这么几句就完成了为我10多个工程的一次工程文件生成</span></p>
+<p>
+<span style="FONT-FAMILY:'Courier New'"><br />
+</span></p>
+<p>
+<font class="Apple-style-span" face="'Courier New'">此代码中有几个特别点:</font></p>
+<p>
+<font class="Apple-style-span" face="'Courier New'">2009-10-20那个工程是一个Linux的工程,不要生成VS下Win32的工程,我通过</font></p>
+<p>
+<font class="Apple-style-span" face="'Courier New'">IF(NOT (src MATCHES ".*2009-10-20.*")) 的形式过滤掉了</font></p>
+<p>
+<font class="Apple-style-span" face="'Courier New'"><br />
+</font></p>
+<p>
+<font class="Apple-style-span" face="'Courier New'">IF (NOT (prjName STREQUAL mvarray) )语句用于过滤mvarray所在的工程,因为它是一个命令行的工程(使用Glut管理窗口)</font></p>
+<p>
+<font class="Apple-style-span" face="'Courier New'"><br />
+</font></p>
+<p>
+<font class="Apple-style-span" face="'Courier New'">以下是完整的文件(CMake的高亮很漂亮吧:)见我以前fachc2c),完成文件也可在我博客的示例代码中获取.</font></p>
+<p>
+<font class="Apple-style-span" face="'Courier New'"><font face="monospace"><font color="#804040"><b>PROJECT</b></font><font color="#008080">( JTianLingBLog )</font><br />
+<font color="#804040"><b>CMAKE_MINIMUM_REQUIRED</b></font><font color="#008080">(VERSION 2.8)</font><br />
+<font color="#804040"><b>INCLUDE_DIRECTORIES</b></font><font color="#008080">(./dependes/windows/</font><font color="#804040"><b>include</b></font><font color="#008080">/)</font><br />
+<font color="#804040"><b>LINK_DIRECTORIES</b></font><font color="#008080">(../dependes/windows/lib/)</font><br />
+<font color="#804040"><b>FILE</b></font><font color="#008080">(GLOB_RECURSE SRC_LIST </font><font color="#ff00ff">"*.cpp"</font><font color="#008080">)</font><br />
+<font color="#804040"><b>FOREACH</b></font><font color="#008080">(src </font><font color="#2e8b57"><b>${SRC_LIST}</b></font><font color="#008080">)</font><br />
+        <font color="#804040"><b>IF</b></font><font color="#008080">(</font><font color="#804040"><b>NOT</b></font><font color="#008080"> (src </font><font color="#804040"><b>MATCHES</b></font><font color="#008080"> </font><font color="#ff00ff">".*2009-10-20.*"</font><font color="#008080">)</font>)<br />
+            <font color="#804040"><b>MESSAGE</b></font><font color="#008080">( </font><font color="#2e8b57"><b>${src}</b></font><font color="#008080"> Finded)</font><br />
+            <font color="#804040"><b>STRING</b></font><font color="#008080">( REGEX REPLACE </font><font color="#ff00ff">".*/</font><font color="#008080">(.*)</font><font color="#ff00ff">/.cpp$"</font><font color="#008080"> </font><font color="#ff00ff">"/1"</font><font color="#008080"> prjName </font><font color="#2e8b57"><b>${src}</b></font><font color="#008080"> )</font><br />
+            <font color="#804040"><b>MESSAGE</b></font><font color="#008080">( </font><font color="#2e8b57"><b>${prjName}</b></font><font color="#008080"> Added)</font><br />
+            <font color="#804040"><b>ADD_EXECUTABLE</b></font><font color="#008080">( </font><font color="#2e8b57"><b>${prjName}</b></font><font color="#008080"> </font><font color="#2e8b57"><b>${src}</b></font><font color="#008080"> )</font></p>
+<p>            <font color="#804040"><b>IF</b></font><font color="#008080"> (</font><font color="#804040"><b>NOT</b></font><font color="#008080"> (prjName </font><font color="#804040"><b>STREQUAL</b></font><font color="#008080"> mvarray)</font> )<br />
+                <font color="#804040"><b>SET_TARGET_PROPERTIES</b></font><font color="#008080">(</font><font color="#2e8b57"><b>${prjName}</b></font><font color="#008080"> PROPERTIES WIN32_EXECUTABLE </font><font color="#ff00ff">"</font><font color="#804040"><b>true</b></font><font color="#ff00ff">"</font><font color="#008080">)</font><br />
+            <font color="#804040"><b>ENDIF</b></font><font color="#008080">(</font><font color="#804040"><b>NOT</b></font><font color="#008080"> (prjName </font><font color="#804040"><b>STREQUAL</b></font><font color="#008080"> mvarray)</font> )</p>
+<p>        <font color="#804040"><b>ENDIF</b></font><font color="#008080">(</font><font color="#804040"><b>NOT</b></font><font color="#008080"> (src </font><font color="#804040"><b>MATCHES</b></font><font color="#008080"> </font><font color="#ff00ff">".*2009-10-20.*"</font><font color="#008080">)</font>)<br />
+<font color="#804040"><b>ENDFOREACH</b></font><font color="#008080">(src)</font></font></font></p>
+<h2 style="MARGIN:0px">
+<br />
+</h2>
+<h2>
+    进一步的应用<br />
+  </h2>
+<div>
+    有了以上的经验后,我再为<font size="2">(</font><a href="http://www.amazon.cn/mn/detailApp/ref=sr_1_1?_encoding=UTF8&amp;s=books&amp;qid=1263171144&amp;asin=B0011F2D26&amp;sr=8-1" id="m8fz" title="d3d龙书"><font size="2">d3d龙书</font></a><font size="2">)的源代码生成工程,以方便大家.</font>
+</div>
+<div><font size="2">原来源代码的目录结构前面已经讲过了,直接先看全部CMake文件的代码:</font></div>
+<div><font size="2"><font face="monospace"><br />
+<font color="#804040"><b>PROJECT</b></font><font color="#008080">( IntroToD3D9 )</font><br />
+<font color="#804040"><b>CMAKE_MINIMUM_REQUIRED</b></font><font color="#008080">(VERSION 2.8)</font></p>
+<p><font color="#804040"><b>FILE</b></font><font color="#008080">(GLOB_RECURSE srcList </font><font color="#ff00ff">"*.cpp"</font><font color="#008080">)</font></p>
+<p><font color="#0000ff"># fliter duplicates projects</font><br />
+<font color="#804040"><b>FOREACH</b></font><font color="#008080">(src </font><font color="#2e8b57"><b>${srcList}</b></font><font color="#008080">)</font><br />
+        <font color="#804040"><b>MESSAGE</b></font><font color="#008080">(</font><font color="#ff00ff">"finded: "</font><font color="#008080"> </font><font color="#2e8b57"><b>${src}</b></font><font color="#008080">)</font><br />
+        <font color="#804040"><b>STRING</b></font><font color="#008080">( REGEX REPLACE </font><font color="#ff00ff">"</font><font color="#008080">(.*/.*)</font><font color="#ff00ff">/.*/.cpp$"</font><font color="#008080"> </font><font color="#ff00ff">"/1"</font><font color="#008080"> dirName </font><font color="#2e8b57"><b>${src}</b></font><font color="#008080"> )</font><br />
+        <font color="#804040"><b>LIST</b></font><font color="#008080">(APPEND dirNameList </font><font color="#2e8b57"><b>${dirName}</b></font><font color="#008080">)</font><br />
+        <font color="#804040"><b>MESSAGE</b></font><font color="#008080">(</font><font color="#ff00ff">"directory Finded: "</font><font color="#008080"> </font><font color="#2e8b57"><b>${dirName}</b></font><font color="#008080"> )</font><br />
+<font color="#804040"><b>ENDFOREACH</b></font><font color="#008080">(src </font><font color="#2e8b57"><b>${srcList}</b></font><font color="#008080">)</font></p>
+<p><font color="#804040"><b>MESSAGE</b></font><font color="#008080">(</font><font color="#ff00ff">".................................................................."</font><font color="#008080">)</font></p>
+<p><font color="#804040"><b>LIST</b></font><font color="#008080">(REMOVE_DUPLICATES dirNameList)</font></p>
+<p><font color="#804040"><b>FOREACH</b></font><font color="#008080">(dir </font><font color="#2e8b57"><b>${dirNameList}</b></font><font color="#008080">)</font><br />
+        <font color="#804040"><b>MESSAGE</b></font><font color="#008080">( </font><font color="#2e8b57"><b>${dir}</b></font><font color="#008080"> </font><font color="#ff00ff">" Process begin....."</font><font color="#008080">)</font><br />
+        <font color="#804040"><b>STRING</b></font><font color="#008080">( REGEX REPLACE </font><font color="#ff00ff">".*/</font><font color="#008080">(.*)</font><font color="#ff00ff">"</font><font color="#008080"> </font><font color="#ff00ff">"/1"</font><font color="#008080"> prjName </font><font color="#2e8b57"><b>${dir}</b></font><font color="#008080"> )</font><br />
+        <font color="#804040"><b>FILE</b></font><font color="#008080">(GLOB prjSrcList </font><font color="#ff00ff">"</font><font color="#2e8b57"><b>${dir}</b></font><font color="#ff00ff">/*.cpp"</font><font color="#008080"> </font><font color="#ff00ff">"</font><font color="#2e8b57"><b>${dir}</b></font><font color="#ff00ff">/*.h"</font><font color="#008080">)</font></p>
+<p>        <font color="#804040"><b>FOREACH</b></font><font color="#008080">(prjSrc </font><font color="#2e8b57"><b>${prjSrcList}</b></font><font color="#008080">)</font><br />
+                <font color="#804040"><b>MESSAGE</b></font><font color="#008080">(</font><font color="#ff00ff">"src glob: "</font><font color="#008080"> </font><font color="#2e8b57"><b>${prjSrc}</b></font><font color="#008080">)</font><br />
+        <font color="#804040"><b>ENDFOREACH</b></font><font color="#008080">(prjSrc)</font></p>
+<p>        <font color="#804040"><b>MESSAGE</b></font><font color="#008080">(</font><font color="#ff00ff">"before replace </font><font color="#804040"><b>Project</b></font><font color="#ff00ff">: "</font><font color="#008080"> </font><font color="#2e8b57"><b>${prjName}</b></font><font color="#008080"> )</font><br />
+        <font color="#804040"><b>STRING</b></font><font color="#008080">( REPLACE </font><font color="#ff00ff">" "</font><font color="#008080"> </font><font color="#ff00ff">""</font><font color="#008080"> prj </font><font color="#2e8b57"><b>${prjName}</b></font><font color="#008080">)</font><br />
+        <font color="#804040"><b>ADD_EXECUTABLE</b></font><font color="#008080">( </font><font color="#2e8b57"><b>${prj}</b></font><font color="#008080"> </font><font color="#2e8b57"><b>${prjSrcList}</b></font><font color="#008080"> )</font></p>
+<p>        <font color="#804040"><b>MESSAGE</b></font><font color="#008080">(</font><font color="#ff00ff">"Added </font><font color="#804040"><b>Project</b></font><font color="#ff00ff">: "</font><font color="#008080"> </font><font color="#2e8b57"><b>${prj}</b></font><font color="#008080"> )</font><br />
+        <font color="#804040"><b>SET_TARGET_PROPERTIES</b></font><font color="#008080">(</font><font color="#2e8b57"><b>${prj}</b></font><font color="#008080"> PROPERTIES WIN32_EXECUTABLE </font><font color="#ff00ff">"</font><font color="#804040"><b>true</b></font><font color="#ff00ff">"</font><font color="#008080">)</font><br />
+        <font color="#804040"><b>TARGET_LINK_LIBRARIES</b></font><font color="#008080">(</font><font color="#2e8b57"><b>${prj}</b></font><font color="#008080"> d3d9 d3dx9 winmm)</font></p>
+<p><font color="#804040"><b>ENDFOREACH</b></font><font color="#008080">(dir </font><font color="#2e8b57"><b>${dirName}</b></font><font color="#008080">)</font></font></font></div>
+<div><font size="2"><font face="monospace"><font color="#008080"><br />
+</font></font></font></div>
+<p>已经比较复杂了,基本上,看到这里,你会认可其实CMake就是一个专门用于管理工程的脚本语言-_-!</p>
+<p>这里讲一下代码中的几个要点,就不多说了:</p>
+<p>用<span style="font-family: monospace"><font color="#804040"><b>FILE</b></font><font color="#008080">(GLOB_RECURSE srcList </font><font color="#ff00ff">"*.cpp" </font></span>遍历所有.cpp文件(带完整路径)</p>
+<p>用STRING( REGEX REPLACE "(.*/.*)/.*/.cpp$" "/1" dirName ${src} )获取到目录名</p>
+<p>用<span style="font-family: monospace"><font color="#804040"><b>LIST</b></font><font color="#008080">(APPEND dirNameList </font><font color="#2e8b57"><b>${dirName}</b></font><font color="#008080">)</font></span></p>
+<div>保存所有的目录名,此时因为可能每个目录中有多个源代码导致重复,然后通过</div>
+<div><span style="font-family: monospace"><font color="#804040"><b>LIST</b></font><font color="#008080">(REMOVE_DUPLICATES dirNameList)</font></span></div>
+<div>将重复去掉</div>
+<div>再通过</div>
+<div><span style="font-family: monospace"><font color="#804040"><b>STRING</b></font><font color="#008080">( REGEX REPLACE </font><font color="#ff00ff">".*/</font><font color="#008080">(.*)</font><font color="#ff00ff">"</font><font color="#008080"> </font><font color="#ff00ff">"/1"</font><font color="#008080"> prjName </font><font color="#2e8b57"><b>${dir}</b></font><font color="#008080"> )</font></span></div>
+<div>获取目录最后的名字作为每个工程的名字</div>
+<div><span style="font-family: monospace"><font color="#804040"><b>FILE</b></font><font color="#008080">(GLOB prjSrcList </font><font color="#ff00ff">"</font><font color="#2e8b57"><b>${dir}</b></font><font color="#ff00ff">/*.cpp"</font><font color="#008080"> </font><font color="#ff00ff">"</font><font color="#2e8b57"><b>${dir}</b></font><font color="#ff00ff">/*.h"</font><font color="#008080">)</font></span></div>
+<div>再反过来,获取每个目录下的源代码(此时已经获得了每个工程及其对应的源代码了</div>
+<div>剩下的就简单了</div>
+<div><span style="font-family: monospace"><font color="#804040"><b>STRING</b></font><font color="#008080">( REPLACE </font><font color="#ff00ff">" "</font><font color="#008080"> </font><font color="#ff00ff">""</font><font color="#008080"> prj </font><font color="#2e8b57"><b>${prjName}</b></font><font color="#008080">)</font></span></div>
+<div>是唯一有意思的,去掉所有的空格后再建立工程(原来的目录中有空格,所以获取的工程名也有空格,并且导致建立的目录及一些文件会出现问题)</div>
+<div><span style="font-family: monospace"><font color="#804040"><b>TARGET_LINK_LIBRARIES</b></font><font color="#008080">(</font><font color="#2e8b57"><b>${prj}</b></font><font color="#008080"> d3d9 d3dx9 winmm)</font></span></div>
+<div>链接上需要的库,OK,一下子生成几十个工程,还带ALL_BUILD选项,爽</div>
+<div></div>
+<div>为了方便大家,我将所有的(<a href="http://www.amazon.cn/mn/detailApp/ref=sr_1_2?_encoding=UTF8&amp;s=books&amp;qid=1263556171&amp;asin=B0011F2D26&amp;sr=8-2"> DirectX 9.0 3D游戏开发编程基础</a>)(英文名:(Introduction to 3D Game Programming with DirectX 9.0)源代码托管在Google Code上了,并且建立好了VS2008的工程(不需要的用CMake换吧),大家各取所需吧.
+<div class="productImage"><a href="http://www.amazon.cn/mn/detailApp/ref=sr_1_2?_encoding=UTF8&amp;s=books&amp;qid=1263556171&amp;asin=B0011F2D26&amp;sr=8-2"> </a></div>
+</div>
+<div>浏览地址:</div>
+<div>http://code.google.com/p/jtianling/source/browse/?repo=introd3d9</div>
+<div>CheckOut地址:</div>
+<div>hg clone https://introd3d9.jtianling.googlecode.com/hg/ jtianling-introd3d9</div>
+<div>下载地址:</div>
+<div><a href="http://jtianling.googlecode.com/files/introd3d9.zip">introd3d9.zip</a></div>
+<div>呵呵独家出品带工程的源代码:)</div>
+<div></div>
+<div>最后其实还有个问题,原来的源代码资源全部在各自的目录中,运行时的默认工作路径与工程一直,这样会全部找不到资源.但是我没有找到CMake怎么改变工作路径.</div>
+<div>在网上找到一个CMake 的 <a id="vlkk" href="http://www.itk.org/Wiki/CMake_FAQ#Can_CMake_set_the_Debugging.2FWorking_Directory_property_in_Visual_Studio_projects.3F" title="FAQ">FAQ</a>()是这样解释的:</div>
+<div>
+<h3> <span class="mw-headline"> Can CMake set the Debugging/Working Directory property in Visual Studio projects? </span></h3>
+<p>No. The value of this property is not stored in the project files.<br />
+It is stored in extra files created by the IDE when a solution is<br />
+loaded (VS .NET 2003 uses a hidden .suo file next to the .sln solution<br />
+file). The format of these files is not known to CMake and cannot be<br />
+generated. In some versions of VS the files are binary and not human<br />
+readable. </p>
+<p></p>
+<p>事实上,我一直以为VS中将工作路径放在suo文件中而不是工程文件是MS干过的最愚蠢的事情之一,导致工作中的使用从来没有达到过从</p>
+<p>源代码库中获取源代码及工程后,直接正常编译运行的情况,工作路径必须的额外设置,并且,要知道,是每个工程的工作路径!也因为这个原因,还因为suo是一个只有MS才懂的二进制文件,CMake无法自动改变此值,也就是说,虽然我已经通过CMake为你生成了几十个工程,但是凡事需要用到资源的地方,你都得手动改变工作路径,真无聊啊!!!!还好资源文件都不一样,我将其全部移到projects目录下,这样,只要你在projects目录下生成工程,默认的运行工作路径就是当前工作路径,省去了这样的操作,但是带来的资源及projects混合的情况,那就没有办法了.你们去骂MS吧,我已经尽力了.</p>
+<p></p>
+<p>事实上,虽然用CMake完成上述工作后,一次就建立了所有需要的工程,几十个几十个的生成,会感觉很爽,其实,花去的时间(主要用于学习CMake诡异特别的语法)要远超过自己一个一个手动生成工程.但是,实在无法忍受手动生成几十个工程的枯燥,习惯重复的工作只能使人越来越懒,没有任何收获...................</p>
+<p></p>
+<p>enjoy them all!</p>
+</div>
+<h2 style="MARGIN:0px">
+</h2>
+<h2 style="MARGIN:0px">    </h2>
+<h2 style="MARGIN:0px">博客本身完整源代码获取说明<br />
+  </h2>
+<p style="MARGIN:1em 0px 0.5em">
+    由于篇幅限制，本文一般仅贴出代码的主要关心的部分，代码带工程（或者makefile）完整版（如果有的话）都能用Mercurial在Google Code中下载。文章以博文发表的日期分目录存放，请直接使用Mercurial克隆下库：
+  </p>
+<p style="MARGIN:1em 0px 0.5em">
+<a href="https://blog-sample-code.jtianling.googlecode.com/hg/" style="COLOR:#770000; TEXT-DECORATION:none">https://blog-sample-code.jtianling.googlecode.com/hg/</a></p>
+<p style="MARGIN:1em 0px 0.5em">
+    Mercurial使用方法见《<a href="http://www.jtianling.com/archive/2009/09/25/4593687.aspx" style="COLOR:#006bad; TEXT-DECORATION:none">分布式的，新一代版本控制系统Mercurial的介绍及简要入门</a>》
+  </p>
+<p style="MARGIN:1em 0px 0.5em">
+    要是仅仅想浏览全部代码也可以直接到google code上去看，在下面的地址：
+  </p>
+<p style="MARGIN:1em 0px 0.5em">
+<a href="http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code" style="COLOR:#006bad; TEXT-DECORATION:none">http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code</a></p>
+<p align="left">
+     
+  </p>
+<p align="right">
+    原创文章作者保留版权 转载请注明原作者 并给出链接
+  </p>
+<p align="right">
+<b><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b></p>
+<p>
+</div>
+<p></p>

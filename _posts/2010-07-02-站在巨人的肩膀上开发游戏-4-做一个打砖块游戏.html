@@ -1,0 +1,94 @@
+---
+layout: post
+title: "站在巨人的肩膀上开发游戏(4) -- 做一个打砖块游戏"
+categories:
+- "游戏开发"
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '9'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="margin: 1em 0px 0.5em;" align="right"><strong><a style="color: #006bad; text-decoration: none;" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></strong></p>
+<p style="margin: 1em 0px 0.5em;" align="right"><a style="color: #770000; text-decoration: none;" href="http://groups.google.com/group/jiutianfile/"><strong>讨论新闻组及文件</strong></a></p>
+<p>&nbsp;&nbsp;&nbsp; 虽然很早就想用做一个完整游戏来完成此教程，但是在做什么游戏的问题上很纠结，太大太好的游戏太费精力，太小的游戏又不足以展示Orx的特点，选来选去也没有自己感觉最合适的，最后还是选择打砖块吧，此游戏虽然不能展示Orx的全部特点，但是很好的展示了其内嵌物理引擎的特点。因为Orx内嵌Box2D物理引擎，所以在游戏中使用物理，从来没有这么方便过，也许，哪天我该写一篇用Cocos2D+Box2D的类似文章来做比较。</p>
+<h2>Orx 中的Object概述</h2>
+<p>&nbsp;&nbsp;&nbsp; 在Orx中一个Object到底表示什么？简单的说，表示一切。一切有形的无形的，可见的不可见的东西。在Orx中，所有所有的概念全部归结于 Object。所有其他的东西，都是Object的属性。包括通常概念里面的sprite,animation等等，在Orx中还包括特效(fx)，物理属性等。在几乎所有的2D游戏引擎中，几乎都是是Sprite为基础的，而在Orx中，是以Object为基础的。</p>
+<h2>显示一个 Object</h2>
+<p>&nbsp;&nbsp;&nbsp; 在几乎所有的2D游戏引擎中，几乎都是是Sprite为基础的，所以最基本的操作都是显示一个Sprite，那么，换到Orx中，最基础的那就是显示一个 Object了。<br />&nbsp;&nbsp;&nbsp; 其实，在原来《<a href="http://www.jtianling.com/archive/2010/06/18/5679217.aspx" target="_blank">站在巨人的肩膀上开发游戏(2) -- Orx入门引导及Hello World</a>》中，我们已经显示过一个 Object了，没错，那个Hello World的文字就是一个Object.........只不过其图形是显示文字而已。所以，我们创建Hello World的时候，调用的接口是<span style="font-family: monospace;">orxObject_CreateFromConfig</span>。<br />&nbsp;&nbsp;&nbsp; 要将其换成显示图形，只需要改配置，将其显示成一个图形即可，因为是做打砖块游戏，这里，我显示一个球。（这里的资源全部来自于《<a id="d.9r" title="How To Create A Breakout Game with Box2D and Cocos2D<br />
+Tutorial" href="http://www.raywenderlich.com/475/how-to-create-a-simple-breakout-game-with-box2d-and-cocos2d-tutorial-part-12">How To Create A Breakout Game with Box2D and Cocos2D Tutorial</a>》）顺面可以将Orx版本的程序与Cocos2D + Box2D（另外一个我非常喜欢的组合）做比较。<br />&nbsp;&nbsp;&nbsp; 原代码的改动仅出于代码可读性考虑，将HelloWorld改为Ball，Orx的特点之一，不改代码，你甚至可以使用原来编译好的Hello World程序（必须是教程1老的那个，教程2新的那个我做了特殊处理），只需要将新的配置中的Ball改为HelloWorld即可。当然，出于可读性，这样做不自然，但是我还是提及这样做的可能性。<br />新添加配置如下：<br /><span style="font-family: monospace;"><span style="color: #c000c0;">[Ball]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BallGraphic<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(0.0, 0.0, 0.0)&nbsp;&nbsp;&nbsp; ;球所在的位置</p>
+<p><span style="color: #c000c0;">[BallGraphic]</span><br /><span style="color: #008000;">Texture =</span>&nbsp;data/ball.png&nbsp;&nbsp;&nbsp; ;球图形的png文件的位置<br /><span style="color: #008000;">Pivot&nbsp;&nbsp; =</span>&nbsp;center&nbsp;&nbsp;&nbsp; <br /></span><br />原来的代码如下：<br /><span style="font-family: monospace;"><br /><span style="color: #804000;">// Init game function</span><br />orxSTATUS GameApp::InitGame()<br />{<br />&nbsp;&nbsp;orxSTATUS result = orxSTATUS_SUCCESS;</p>
+<p>&nbsp;&nbsp;<span style="color: #804000;">// Creates viewport</span><br />&nbsp;&nbsp;<span style="color: #804000;">if</span>&nbsp;( orxViewport_CreateFromConfig(<span style="color: #008080;">"Viewport"</span>) == <span style="color: #008080;">NULL</span>&nbsp;) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = orxSTATUS_FAILURE;<br />&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;<span style="color: #804000;">if</span>&nbsp;(orxObject_CreateFromConfig(<span style="color: #008080;">"Ball"</span>) == <span style="color: #008080;">NULL</span>) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = orxSTATUS_FAILURE;<br />&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;<span style="color: #804000;">// Done!</span><br />&nbsp;&nbsp;<span style="color: #804000;">return</span>&nbsp;result;<br />}</p>
+<p>然后，就能显示出个球了。（显示个球-_-!）</span></p>
+<div id="d51e" style="text-align: left;"><img src="http://hi.csdn.net/attachment/201007/2/0_1278047688qJJ4.gif" alt="" /></div>
+<p>就这么一个Object显示出来以后，就可以继续自由发挥了，很多的想象空间。<br />比如Scale&nbsp;&nbsp;&nbsp;&nbsp; = XXX调整球的大小。<br />比如Speed&nbsp;&nbsp;&nbsp;&nbsp; = (xxx, xxx, xxx) 给球初始速度，<br />(上面的属性都添加到 <span style="font-family: monospace;"><span style="color: #c000c0;">[Ball]</span></span>段）</p>
+<p>按照上面的方法，按打砖块游戏的特点，添加砖块及paddle。<br /><span style="font-family: monospace;">配置：<br /><span style="color: #c000c0;">[Ball]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BallGraphic<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(0.0, 180.0, 0.0)</p>
+<p><span style="color: #c000c0;">[BallGraphic]</span><br /><span style="color: #008000;">Texture =</span>&nbsp;data/ball.png<br /><span style="color: #008000;">Pivot&nbsp;&nbsp; =</span>&nbsp;center</p>
+<p><span style="color: #c000c0;">[Paddle]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;PaddleGraphic<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(0.0, 230.0, 0.0)</p>
+<p><span style="color: #c000c0;">[PaddleGraphic]</span><br /><span style="color: #008000;">Texture =</span>&nbsp;data/paddle.png<br /><span style="color: #008000;">Pivot&nbsp;&nbsp; =</span>&nbsp;center</p>
+<p><span style="color: #c000c0;">[Blocks]</span><br /><span style="color: #008000;">ChildList =</span>&nbsp;Block1 # Block2 # Block3 # Block4</p>
+<p><span style="color: #c000c0;">[Block1]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BlockGraphic<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(-50.0, -30.0, 0.0)</p>
+<p><span style="color: #c000c0;">[Block2]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BlockGraphic<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(50.0, -30.0, 0.0)</p>
+<p><span style="color: #c000c0;">[Block3]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BlockGraphic<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(-50.0, 30.0, 0.0)</p>
+<p><span style="color: #c000c0;">[Block4]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BlockGraphic<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(50.0, 30.0, 0.0)</p>
+<p><span style="color: #c000c0;">[BlockGraphic]</span><br /><span style="color: #008000;">Texture =</span>&nbsp;data/block.png<br /><span style="color: #008000;">Pivot&nbsp;&nbsp; =</span>&nbsp;center<br /></span><br />代码：<br /><span style="font-family: monospace;"><br /><span style="color: #804000;">// Init game function</span><br />orxSTATUS GameApp::InitGame()<br />{<br />&nbsp;&nbsp;orxSTATUS result = orxSTATUS_SUCCESS;</p>
+<p>&nbsp;&nbsp;<span style="color: #804000;">// Creates viewport</span><br />&nbsp;&nbsp;<span style="color: #804000;">if</span>&nbsp;( orxViewport_CreateFromConfig(<span style="color: #008080;">"Viewport"</span>) == <span style="color: #008080;">NULL</span>&nbsp;) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = orxSTATUS_FAILURE;<br />&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;<span style="color: #804000;">if</span>&nbsp;(orxObject_CreateFromConfig(<span style="color: #008080;">"Ball"</span>) == <span style="color: #008080;">NULL</span>) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = orxSTATUS_FAILURE;<br />&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;<span style="color: #804000;">if</span>&nbsp;(orxObject_CreateFromConfig(<span style="color: #008080;">"Paddle"</span>) == <span style="color: #008080;">NULL</span>) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = orxSTATUS_FAILURE;<br />&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;<span style="color: #804000;">if</span>&nbsp;(orxObject_CreateFromConfig(<span style="color: #008080;">"Blocks"</span>) == <span style="color: #008080;">NULL</span>) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = orxSTATUS_FAILURE;<br />&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;<span style="color: #804000;">// Done!</span><br />&nbsp;&nbsp;<span style="color: #804000;">return</span>&nbsp;result;<br />}<br /></span><br />代码实在就是没有太多好说的了，在Orx中，永远是配置复杂，代码简单。说说配置中的新东西，我在这里用<br /><span style="font-family: monospace;"><span style="color: #c000c0;">[Blocks]</span><br /><span style="color: #008000;">ChildList =</span>&nbsp;Block1 # Block2 # Block3 # Block4</span><br />的形式+一行创建Blocks的代码，来完成了4个砖块的创建。这是Orx中使用子列表的一种方式。<br />效果如下：（我把窗口大小也改了）</p>
+<p><img src="http://hi.csdn.net/attachment/201007/2/0_1278047723mgJz.gif" alt="" /></p>
+<p>是不是有那么一点意思了？<br />到目前为止，我们学到什么了？4行配置。。。。。。。。。。<span style="font-family: monospace;">且只有Graphic加</span><span style="font-family: monospace;">Texture算是新内容。</span>只要这些，你通过position就可以完成你想要的任何图形布局了。<br />当然，其实远远不止这些，请参考Orx的WIKI获取更多的信息：</p>
+<ul>
+<li class="level1">
+<div class="li"><a class="wikilink1" title="en:orx:config:settings_structure:orxgraphic" href="http://orx-project.org/wiki/en/orx/config/settings_structure/orxgraphic">Graphic</a></div>
+</li>
+<li class="level1">
+<div class="li"><a class="wikilink1" title="en:orx:config:settings_structure:orxobject" href="http://orx-project.org/wiki/en/orx/config/settings_structure/orxobject">Object</a></div>
+</li>
+</ul>
+<h2>物理的加入</h2>
+<p>&nbsp;&nbsp; &nbsp;好了，现在是添加真的游戏内容的时候了。光是静态图形可做不了游戏。<br />&nbsp;&nbsp; &nbsp;在打砖块的游戏中，很重要的就是球的碰撞，反弹，以及碰撞的检测了。由于Orx中内嵌了Box2D引擎，我们能够很方便的使用，我多次提到是内嵌，而不是外挂，不是如Cocos2D那种仅仅包含一个Box2D，然后需要你调用Box2D的API去完成的那种，事实上，你可以根本不知道Box2D是啥。（其实个人感觉，了解Box2D的相关概念是必要的，不然怎么知道各个属性应该怎么配置啊）</p>
+<p>首先，物理世界的加入：<br /><span style="font-family: monospace;"><span style="color: #c000c0;">[Physics]</span><br /><span style="color: #008000;">DimensionRatio&nbsp;&nbsp;&nbsp; =</span>&nbsp;0.1<br /><span style="color: #008000;">WorldLowerBound&nbsp;&nbsp; =</span>&nbsp;(-300.0, -300.0, 0.0)<br /><span style="color: #008000;">WorldUpperBound&nbsp;&nbsp; =</span>&nbsp;(300.0, 300.0, 0.0)<br /></span><br />这是必须的，似乎属于Box2D为了优化而添加的，Orx为了灵活，没有自动的去配置这些属性，一般而言，将其设为包含整个游戏屏幕即可。（稍微大一点点）配置的是一个矩形的左上角和右下角。（注意Orx的坐标系啊）</p>
+<p>然后，为各个物体添加物理属性，最主要的是Body段的属性：<br /><span style="font-family: monospace;"><span style="color: #c000c0;">[Ball]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BallGraphic<br /><span style="color: #008000;">Body&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =</span>&nbsp;BallBody<br /><span style="color: #008000;">Speed&nbsp;&nbsp;&nbsp;&nbsp; =</span>&nbsp;(0, -40, 0)<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(0.0, 180.0, 0.0)</p>
+<p><span style="color: #c000c0;">[BallGraphic]</span><br /><span style="color: #008000;">Texture =</span>&nbsp;data/ball.png<br /><span style="color: #008000;">Pivot&nbsp;&nbsp; =</span>&nbsp;center</p>
+<p><span style="color: #c000c0;">[BallBody]</span><br /><span style="color: #008000;">Dynamic&nbsp;&nbsp; =</span>&nbsp;true<br /><span style="color: #008000;">PartList&nbsp; =</span>&nbsp;BallPartTemplate</p>
+<p><span style="color: #c000c0;">[BallPartTemplate]</span><br /><span style="color: #008000;">Type =</span>&nbsp;sphere;<br /><span style="color: #008000;">Friction =</span>&nbsp;0.0;<br /><span style="color: #008000;">Restitution =</span>&nbsp;1.0;<br /><span style="color: #008000;">Density =</span>&nbsp;1.0;<br /><span style="color: #008000;">SelfFlags =</span>&nbsp;0x0001;<br /><span style="color: #008000;">CheckMask =</span>&nbsp;0x0001;<br /><span style="color: #008000;">Solid =</span>&nbsp;true;<br /></span><br />注意Ball的中添加了一个<span style="font-family: monospace;"><span style="color: #008000;">Body&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =</span>&nbsp;BallBody</span>，然后所有的物理部分都写在了BallBody和BallPartTemplate中。先说明一下，之所以我把part叫template，而且Orx的作者添加了这样一个新的段来表示物理部分，包括命名为part，是因为Orx允许一个body有多个part组合成一个object的物理。这在某些时候也极为有用。比如希望有个组合图形，一个part无法表示的时候。<br />至于各个物理的属性的含义，推荐先去了解一下<a id="d-3f" title="Box2D的各个定义" href="http://www.box2d.org/manual.html">Box2D 的各个定义</a>。要图省事，看看<a id="sg6." title="Orx的说明" href="http://orx-project.org/wiki/en/orx/config/settings_structure/orxbody">Orx的说明</a>也行。</p>
+<p>然后，如法炮制，基本的意思就有了。<br /><span style="font-family: monospace;"><span style="color: #c000c0;">[Paddle]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;PaddleGraphic<br /><span style="color: #008000;">Body&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =</span>&nbsp;PaddleBody<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(0.0, 230.0, 0.0)</p>
+<p><span style="color: #c000c0;">[PaddleGraphic]</span><br /><span style="color: #008000;">Texture =</span>&nbsp;data/paddle.png<br /><span style="color: #008000;">Pivot&nbsp;&nbsp; =</span>&nbsp;center</p>
+<p><span style="color: #c000c0;">[PaddleBody]</span><br /><span style="color: #008000;">Dynamic&nbsp;&nbsp; =</span>&nbsp;false<br /><span style="color: #008000;">PartList&nbsp; =</span>&nbsp;PaddlePartTemplate</p>
+<p><span style="color: #c000c0;">[PaddlePartTemplate]</span><br /><span style="color: #008000;">Type =</span>&nbsp;box;<br /><span style="color: #008000;">Friction =</span>&nbsp;0.0;<br /><span style="color: #008000;">Restitution =</span>&nbsp;1.0;<br /><span style="color: #008000;">Density =</span>&nbsp;1.0;<br /><span style="color: #008000;">SelfFlags =</span>&nbsp;0x0001;<br /><span style="color: #008000;">CheckMask =</span>&nbsp;0x0001;<br /><span style="color: #008000;">Solid =</span>&nbsp;true;</p>
+<p><span style="color: #c000c0;">[Blocks]</span><br /><span style="color: #008000;">ChildList =</span>&nbsp;Block1 # Block2 # Block3 # Block4</p>
+<p><span style="color: #c000c0;">[Block1]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BlockGraphic<br /><span style="color: #008000;">Body&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =</span>&nbsp;BlockBody<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(-50.0, -30.0, 0.0)</p>
+<p><span style="color: #c000c0;">[Block2]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BlockGraphic<br /><span style="color: #008000;">Body&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =</span>&nbsp;BlockBody<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(50.0, -30.0, 0.0)</p>
+<p><span style="color: #c000c0;">[Block3]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BlockGraphic<br /><span style="color: #008000;">Body&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =</span>&nbsp;BlockBody<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(-50.0, 30.0, 0.0)</p>
+<p><span style="color: #c000c0;">[Block4]</span><br /><span style="color: #008000;">Graphic&nbsp;&nbsp; =</span>&nbsp;BlockGraphic<br /><span style="color: #008000;">Body&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =</span>&nbsp;BlockBody<br /><span style="color: #008000;">Position&nbsp; =</span>&nbsp;(50.0, 30.0, 0.0)</p>
+<p><span style="color: #c000c0;">[BlockGraphic]</span><br /><span style="color: #008000;">Texture =</span>&nbsp;data/block.png<br /><span style="color: #008000;">Pivot&nbsp;&nbsp; =</span>&nbsp;center</p>
+<p><span style="color: #c000c0;">[BlockBody]</span><br /><span style="color: #008000;">Dynamic&nbsp;&nbsp; =</span>&nbsp;false<br /><span style="color: #008000;">PartList&nbsp; =</span>&nbsp;BlockPartTemplate</p>
+<p><span style="color: #c000c0;">[BlockPartTemplate]</span><br /><span style="color: #008000;">Type =</span>&nbsp;box;<br /><span style="color: #008000;">Friction =</span>&nbsp;0.0;<br /><span style="color: #008000;">Restitution =</span>&nbsp;1.0;<br /><span style="color: #008000;">Density =</span>&nbsp;1.0;<br /><span style="color: #008000;">SelfFlags =</span>&nbsp;0x0001;<br /><span style="color: #008000;">CheckMask =</span>&nbsp;0x0001;<br /><span style="color: #008000;">Solid =</span>&nbsp;true;</p>
+<p></span>特别需要注意的是，Orx的设计上常常会让人感觉很多时候一个段的东西拆了几个段，写起来很麻烦，但是每个段都是可以复用的，比如此例中，所有的Block都共用一个Body。所以作者从长远考虑才这样做。</p>
+<p>然后，再给Ball 一个速度。你就能够看到物理的作用了。球从paddle反弹到block再反弹到paddle。带角度。。。。。。。。。</p>
+<h2>碰撞检测</h2>
+<p>&nbsp;&nbsp;&nbsp; 打砖块的游戏要求球碰到砖块时砖块消失的，这个需要做碰撞检测，这在Orx中也是很简单的，需要进行物理的Event响应，这是个新内容。<br />首先，初始化的时候，添加关注的事件。<br />&nbsp; orxEvent_AddHandler(orxEVENT_TYPE_PHYSICS, GameApp::EventHandler);<br />这个没有什么好说的，别忘了就行。</p>
+<p>然后，就是在注册函数中物理的响应了，此例中是GameApp::EventHandler。<br /><span style="font-family: monospace;"><br /><span style="color: #804000;">// Event handler</span><br />orxSTATUS orxFASTCALL GameApp::EventHandler(<span style="color: #008000;">const</span>&nbsp;orxEVENT *_pstEvent)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;orxSTATUS eResult = orxSTATUS_SUCCESS;<br />&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span>(_pstEvent-&gt;eType == orxEVENT_TYPE_PHYSICS) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span>( _pstEvent-&gt;eID == orxPHYSICS_EVENT_CONTACT_ADD ) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">/*</span><span style="color: #804000;">&nbsp;Gets colliding objects </span><span style="color: #804000;">*/</span><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxOBJECT *object_recipient = orxOBJECT(_pstEvent-&gt;hRecipient);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxOBJECT *object_sender = orxOBJECT(_pstEvent-&gt;hSender);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string recipient_name(orxObject_GetName(object_recipient));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string sender_name(orxObject_GetName(object_sender));<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">if</span>(recipient_name == <span style="color: #008080;">"Ball"</span>&nbsp;&amp;&amp; sender_name != <span style="color: #008080;">"Paddle"</span>) {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxObject_Delete(object_sender);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;<span style="color: #804000;">// Done!</span><br />&nbsp;&nbsp;<span style="color: #804000;">return</span>&nbsp;orxSTATUS_SUCCESS;<br />}<br /></span>有了代码后，其实基本上意思都很明显了，先判断事件的类型，然后判断事件的ID（其实相当于某类型事件中的子类型），这里判断的是物理的contact_add，表示有碰撞（外国人喜欢说有接触？）产生的时候。然后通过名字去判断两个物体是什么。这里没有考虑效率，直接用名字来判断了（事实上可以通过设定 userdate，然后通过ID判断），再进一步，为了方面直接用std::string而没有通过strcmp了。<br />判断被推开的物体是球，而且还不是paddle推开的，那么就肯定是block了，此时用<span style="font-family: monospace;">orxObject_Delete</span>将其删除，实现打砖块的消除效果。</p>
+<div id="vvze" style="text-align: left;"><img src="http://hi.csdn.net/attachment/201007/2/0_1278047707UMkM.gif" alt="" /></div>
+<p>&nbsp;</p>
+<h2>需要完善的部分</h2>
+<p>&nbsp;&nbsp;&nbsp; 游戏其实基本成型了，剩下的，就是给游戏加个边框，（这个都不需要我额外讲方法了）不然球飞出去了，然后就是操作部分了，下一节再讲。</p>
+<p align="left">&nbsp;</p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接</p>
+<p align="right"><strong><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></strong></p>

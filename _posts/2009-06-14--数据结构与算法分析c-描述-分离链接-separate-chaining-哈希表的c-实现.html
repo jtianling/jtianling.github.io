@@ -1,0 +1,554 @@
+---
+layout: post
+title: "《数据结构与算法分析C++描述》 分离链接(separate chaining)哈希表的C++实现"
+categories:
+- "算法"
+tags:
+- C++
+- HashTable
+- "《数据结构与算法分析C++描述》"
+- "哈希表"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '8'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<br />
+<h1>《数据结构与算法分析C++描述》 分离链接(separate chaining)哈希表的C++实现<br />
+</h1>
+<p style="text-align: right"><span style="color:#c0504d; text-decoration:underline"><strong>write by <span style="font-family:宋体">九天雁翎</span>(JTianLing) -- www.jtianling.com</strong></span></p>
+<p> <br />
+ </p>
+<p><span style="font-family:宋体">《数据结构与算法分析</span>c++<span style="font-family:宋体">描述》</span> Mark Allen Weiss<span style="font-family:宋体">著</span><br />
+<span style="font-family:宋体">人民邮电大学出版</span><br />
+<span style="font-family:宋体">中文版第</span>138-142<span style="font-family:宋体">面，分离链接</span>(separate chaining)哈希表,侯捷将其翻译成开链<span style="font-family:宋体"><br />
+</span></p>
+<p><span style="font-family:宋体">这应该是最容易实现的哈希表方法了,次容易的应该是线性搜索.<br />
+</span></p>
+<p><span style="font-family:宋体">想起我到目前公司干的第二件事情，就是实现了一个文件系统，其核心模块就是一个类似MPQ的打包文件格式.而这个打包格式的核心模块就是一个线性哈希表的实现。只不过这次的实现不是在内存中，而是在文件上。这里顺面想说明是MPQ的实现是个很有意思的东西，感兴趣的可以去看看<br />
+</span></p>
+<p><a href="http://shadowflare.samods.org/inside_mopaq/"><span style="font-family:宋体">http://shadowflare.samods.org/inside_mopaq/</span></a><span style="font-family:宋体"><br />
+</span></p>
+<p><span style="font-family:宋体">inside mopaq是我见过最详细也最有用的资料，至于我刚开始工作的一些原始的资料记录就是非常凌乱了，但是希望有人在做同样工作的时候还能有一些参考价值吧。<br />
+</span></p>
+<p><a href="http://www.jtianling.com/archive/2008/06/02/2504503.aspx"><span style="font-family:宋体">http://www.jtianling.com/archive/2008/06/02/2504503.aspx</span></a><span style="font-family:宋体"><br />
+</span></p>
+<p><a href="http://www.jtianling.com/archive/2008/06/02/2504515.aspx"><span style="font-family:宋体">http://www.jtianling.com/archive/2008/06/02/2504515.aspx</span></a><span style="font-family:宋体"><br />
+</span></p>
+<p><span style="font-family:宋体">并且，因为我以前已经实现了这么一个线性搜索的哈希表了，所以此次也不准备再实现一次了。<br />
+</span></p>
+<p><span style="font-family:宋体">最后。。。。暴雪那个哈希算法的确是很不错，要求和一般的哈希算法不一样，一般的要求是哈希表总数为质数，其要求为2的幂。我在一次测试中发现，2万个文件的冲突次数大概在2千次,即1/10,远远低于书中低于1.5次的预期.<br />
+</span></p>
+<p><span style="font-family:宋体">这一次是在VS中实现的,直接拷贝过来了,没有用vim了.<br />
+</span></p>
+<p>
+ </p>
+<h2>分离链接(separate chaining)哈希表<span style="font-family:宋体">的实现：<br />
+</span></h2>
+<p><span style="font-family:新宋体"><span style="color:blue">#ifndef</span><br />
+<span style="color:#010001">__SL_HASH_TABLE_H__<br />
+</span></span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">#define</span><br />
+<span style="color:#010001">__SL_HASH_TABLE_H__<br />
+</span></span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">#include</span><br />
+<span style="color:#a31515"><algorithm><br />
+</algorithm></span></span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">#include</span><br />
+<span style="color:#a31515"><vector><br />
+</vector></span></span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">#include</span><br />
+<span style="color:#a31515">
+<list>
+</list></span></span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">using</span><br />
+<span style="color:blue">namespace</span><br />
+<span style="color:#010001">std</span>;<br />
+</span></p>
+<p>
+ </p>
+<p><span style="color:green; font-family:新宋体">// 两个Hash函数,第一个由书上的例子提供，散列效果不明<br />
+</span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">int</span><br />
+<span style="color:#010001">hash</span>( <span style="color:blue">const</span><br />
+<span style="color:#010001">string</span>&amp; <span style="color:#010001">key</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">{<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:blue">int</span><br />
+<span style="color:#010001">liHashVal</span> = 0;<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:blue">for</span>( <span style="color:blue">int</span><br />
+<span style="color:#010001">i</span> = 0; <span style="color:#010001">i</span> &lt; <span style="color:#010001">key</span>.<span style="color:#010001">length</span>(); ++<span style="color:#010001">i</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">liHashVal</span> = 37 * <span style="color:#010001">liHashVal</span> + <span style="color:#010001">key</span>[<span style="color:#010001">i</span>];<br />
+</span></p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:blue">return</span><br />
+<span style="color:#010001">liHashVal</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">}<br />
+</span></p>
+<p>
+ </p>
+<p><span style="color:green; font-family:新宋体">// 书中没有提供这个散列函数的实现。。。。。郁闷了,随便写一个了。。。。<br />
+</span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">int</span><br />
+<span style="color:#010001">hash</span>( <span style="color:blue">int</span><br />
+<span style="color:#010001">key</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">{<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:blue">return</span><br />
+<span style="color:#010001">key</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">}<br />
+</span></p>
+<p>
+ </p>
+<p><span style="color:green; font-family:新宋体">// 参考了&lt;<stl>&gt;<br />
+</stl></span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">static</span><br />
+<span style="color:blue">const</span><br />
+<span style="color:blue">int</span><br />
+<span style="color:#010001">gPrimesCount</span> = 10;<br />
+</span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">static</span><br />
+<span style="color:blue">unsigned</span><br />
+<span style="color:blue">long</span><br />
+<span style="color:#010001">gPrimesArray</span>[<span style="color:#010001">gPrimesCount</span>] =<br />
+</span></p>
+<p><span style="font-family:新宋体">{<br />
+</span></p>
+<p><span style="font-family:新宋体">    53, 97, 193, 389, 769,<br />
+</span></p>
+<p><span style="font-family:新宋体">    1543, 3079, 6151, 12289, 24593<br />
+</span></p>
+<p><span style="font-family:新宋体">};<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体"><span style="color:blue">inline</span><br />
+<span style="color:blue">unsigned</span><br />
+<span style="color:blue">long</span><br />
+<span style="color:#010001">NextPrime</span>(<span style="color:blue">unsigned</span><br />
+<span style="color:blue">long</span><br />
+<span style="color:#010001">n</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">{<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:blue">const</span><br />
+<span style="color:blue">unsigned</span><br />
+<span style="color:blue">long</span>* <span style="color:#010001">first</span> = <span style="color:#010001">gPrimesArray</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:blue">const</span><br />
+<span style="color:blue">unsigned</span><br />
+<span style="color:blue">long</span>* <span style="color:#010001">last</span> = <span style="color:#010001">gPrimesArray</span> + <span style="color:#010001">gPrimesCount</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:blue">const</span><br />
+<span style="color:blue">unsigned</span><br />
+<span style="color:blue">long</span>* <span style="color:#010001">pos</span> = <span style="color:#010001">lower_bound</span>(<span style="color:#010001">first</span>, <span style="color:#010001">last</span>, <span style="color:#010001">n</span>);<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:blue">return</span><br />
+<span style="color:#010001">pos</span> == <span style="color:#010001">last</span> ? *(<span style="color:#010001">last</span> - 1) : *<span style="color:#010001">pos</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">}<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体"><span style="color:blue">template</span> &lt;<span style="color:blue">typename</span><br />
+<span style="color:#010001">HashedObj</span>&gt;<br />
+</span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">class</span><br />
+<span style="color:#010001">CSLHashTable<br />
+</span></span></p>
+<p><span style="font-family:新宋体">{<br />
+</span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">public</span>:<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:green">// 书中无实现，无提示,我第一次编译才发现。。。。。<br />
+</span></span></p>
+<p><span style="font-family:新宋体">    <span style="color:blue">explicit</span><br />
+<span style="color:#010001">CSLHashTable</span>(<span style="color:#010001">size_t</span><br />
+<span style="color:#010001">aiSize</span> = 101) : <span style="color:#010001">miCurrentSize</span>(<span style="color:#010001">aiSize</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">moLists</span>.<span style="color:#010001">resize</span>(<span style="color:#010001">aiSize</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:blue">bool</span><br />
+<span style="color:#010001">Contains</span>( <span style="color:blue">const</span><br />
+<span style="color:#010001">HashedObj</span>&amp; <span style="color:#010001">x</span> ) <span style="color:blue">const<br />
+</span></span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:blue">const</span><br />
+<span style="color:#010001">list</span>&lt;<span style="color:#010001">HashedObj</span>&gt; &amp; <span style="color:#010001">liListFinded</span> = <span style="color:#010001">moLists</span>[ <span style="color:#010001">MyHash</span>(<span style="color:#010001">x</span>)];<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:blue">return</span><br />
+<span style="color:#010001">find</span>( <span style="color:#010001">liListFinded</span>.<span style="color:#010001">begin</span>(), <span style="color:#010001">liListFinded</span>.<span style="color:#010001">end</span>(), <span style="color:#010001">x</span>) != <span style="color:#010001">liListFinded</span>.<span style="color:#010001">end</span>();<br />
+</span></p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:blue">void</span><br />
+<span style="color:#010001">MakeEmpty</span>()<br />
+</span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:blue">for</span>( <span style="color:blue">int</span><br />
+<span style="color:#010001">i</span>=0; <span style="color:#010001">i</span>&lt;<span style="color:#010001">moLists</span>.<span style="color:#010001">size</span>(); ++<span style="color:#010001">i</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">        {<br />
+</span></p>
+<p><span style="font-family:新宋体">            <span style="color:#010001">moLists</span>[<span style="color:#010001">i</span>].<span style="color:#010001">clear</span>();<br />
+</span></p>
+<p><span style="font-family:新宋体">        }<br />
+</span></p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:blue">bool</span><br />
+<span style="color:#010001">Insert</span>( <span style="color:blue">const</span><br />
+<span style="color:#010001">HashedObj</span>&amp; <span style="color:#010001">x</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">list</span>&lt;<span style="color:#010001">HashedObj</span>&gt; &amp; <span style="color:#010001">liListFinded</span> = <span style="color:#010001">moLists</span>[ <span style="color:#010001">MyHash</span>(<span style="color:#010001">x</span>)];<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:blue">if</span>( <span style="color:#010001">find</span>( <span style="color:#010001">liListFinded</span>.<span style="color:#010001">begin</span>(), <span style="color:#010001">liListFinded</span>.<span style="color:#010001">end</span>(), <span style="color:#010001">x</span>) != <span style="color:#010001">liListFinded</span>.<span style="color:#010001">end</span>() )<br />
+</span></p>
+<p><span style="font-family:新宋体">        {<br />
+</span></p>
+<p><span style="font-family:新宋体">            <span style="color:blue">return</span><br />
+<span style="color:blue">false</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">        }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">liListFinded</span>.<span style="color:#010001">push_back</span>(<span style="color:#010001">x</span>);<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:blue">if</span>(++<span style="color:#010001">miCurrentSize</span> &gt; <span style="color:#010001">moLists</span>.<span style="color:#010001">size</span>())<br />
+</span></p>
+<p><span style="font-family:新宋体">        {<br />
+</span></p>
+<p><span style="font-family:新宋体">            <span style="color:#010001">ReHash</span>();<br />
+</span></p>
+<p><span style="font-family:新宋体">        }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:blue">return</span><br />
+<span style="color:blue">true</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:blue">bool</span><br />
+<span style="color:#010001">Remove</span>( <span style="color:blue">const</span><br />
+<span style="color:#010001">HashedObj</span>&amp; <span style="color:#010001">x</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">list</span>&lt;<span style="color:#010001">HashedObj</span>&gt;&amp; <span style="color:#010001">liListFinded</span> = <span style="color:#010001">moLists</span>[ <span style="color:#010001">MyHash</span>(<span style="color:#010001">x</span>)];<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">list</span>&lt;<span style="color:#010001">HashedObj</span>&gt;::<span style="color:#010001">iterator</span><br />
+<span style="color:#010001">lit</span> = <span style="color:#010001">find</span>(<span style="color:#010001">liListFinded</span>.<span style="color:#010001">begin</span>(), <span style="color:#010001">liListFinded</span>.<span style="color:#010001">end</span>(), <span style="color:#010001">x</span>);<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:blue">if</span>(<span style="color:#010001">lit</span> == <span style="color:#010001">liListFinded</span>.<span style="color:#010001">end</span>())<br />
+</span></p>
+<p><span style="font-family:新宋体">        {<br />
+</span></p>
+<p><span style="font-family:新宋体">            <span style="color:blue">return</span><br />
+<span style="color:blue">false</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">        }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">liListFinded</span>.<span style="color:#010001">erase</span>(<span style="color:#010001">lit</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">        --<span style="color:#010001">miCurrentSize</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:blue">return</span><br />
+<span style="color:blue">true</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体"><span style="color:blue">private</span>:<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">vector</span>&lt;<span style="color:#010001">list</span>&lt;<span style="color:#010001">HashedObj</span>&gt; &gt; <span style="color:#010001">moLists</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">size_t</span><br />
+<span style="color:#010001">miCurrentSize</span>;<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:blue">void</span><br />
+<span style="color:#010001">ReHash</span>()<br />
+</span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">vector</span>&lt;<span style="color:#010001">list</span>&lt;<span style="color:#010001">HashedObj</span>&gt; &gt; <span style="color:#010001">loOldLists</span> = <span style="color:#010001">moLists</span>;<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:green">// 书中又一次的没有提供相关关键函数的实现,而且没有一点提示，NextPrime的含义自然是移到下一个素数上<br />
+</span></span></p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">moLists</span>.<span style="color:#010001">resize</span>( <span style="color:#010001">NextPrime</span>( 2 * <span style="color:#010001">moLists</span>.<span style="color:#010001">size</span>()));<br />
+</span></p>
+<p><span style="font-family:新宋体">        <br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:blue">for</span>( <span style="color:blue">int</span><br />
+<span style="color:#010001">j</span>=0; <span style="color:#010001">j</span>&lt;<span style="color:#010001">moLists</span>.<span style="color:#010001">size</span>(); ++<span style="color:#010001">j</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">        {<br />
+</span></p>
+<p><span style="font-family:新宋体">            <span style="color:#010001">moLists</span>[<span style="color:#010001">j</span>].<span style="color:#010001">clear</span>();<br />
+</span></p>
+<p><span style="font-family:新宋体">        }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">miCurrentSize</span> = 0;<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:blue">for</span>(<span style="color:blue">int</span><br />
+<span style="color:#010001">i</span>=0; <span style="color:#010001">i</span>&lt;<span style="color:#010001">loOldLists</span>.<span style="color:#010001">size</span>(); ++<span style="color:#010001">i</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">        {<br />
+</span></p>
+<p><span style="font-family:新宋体">            <span style="color:#010001">list</span>&lt;<span style="color:#010001">HashedObj</span>&gt;::<span style="color:#010001">iterator</span><br />
+<span style="color:#010001">lit</span> = <span style="color:#010001">loOldLists</span>[<span style="color:#010001">i</span>].<span style="color:#010001">begin</span>();<br />
+</span></p>
+<p><span style="font-family:新宋体">            <span style="color:blue">while</span>(<span style="color:#010001">lit</span> != <span style="color:#010001">loOldLists</span>[<span style="color:#010001">i</span>].<span style="color:#010001">end</span>())<br />
+</span></p>
+<p><span style="font-family:新宋体">            {<br />
+</span></p>
+<p><span style="font-family:新宋体">                <span style="color:#010001">Insert</span>(*<span style="color:#010001">lit</span>++);<br />
+</span></p>
+<p><span style="font-family:新宋体">            }<br />
+</span></p>
+<p><span style="font-family:新宋体">        }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:blue">int</span><br />
+<span style="color:#010001">MyHash</span>( <span style="color:blue">const</span><br />
+<span style="color:#010001">HashedObj</span>&amp; <span style="color:#010001">x</span>) <span style="color:blue">const<br />
+</span></span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:blue">int</span><br />
+<span style="color:#010001">liHashVal</span> = <span style="color:#010001">hash</span>(<span style="color:#010001">x</span>);<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">liHashVal</span> %= <span style="color:#010001">moLists</span>.<span style="color:#010001">size</span>();<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:blue">if</span>(<span style="color:#010001">liHashVal</span> &lt; 0)<br />
+</span></p>
+<p><span style="font-family:新宋体">        {<br />
+</span></p>
+<p><span style="font-family:新宋体">            <span style="color:#010001">liHashVal</span> += <span style="color:#010001">moLists</span>.<span style="color:#010001">size</span>();<br />
+</span></p>
+<p><span style="font-family:新宋体">        }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">        <span style="color:blue">return</span><br />
+<span style="color:#010001">liHashVal</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">};<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体"><span style="color:blue">#endif</span><br />
+<span style="color:green">// __SL_HASH_TABLE_H__<br />
+</span></span></p>
+<p>
+ </p>
+<h2>测试代码<br />
+</h2>
+<p>
+ </p>
+<p><span style="font-family:新宋体"><span style="color:blue">#include</span><br />
+<span style="color:#a31515">"SLHashTable.h"<br />
+</span></span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">#include</span><br />
+<span style="color:#a31515"><iostream><br />
+</iostream></span></span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">#include</span><br />
+<span style="color:#a31515"><string><br />
+</string></span></span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">using</span><br />
+<span style="color:blue">namespace</span><br />
+<span style="color:#010001">std</span>;<br />
+</span></p>
+<p>
+ </p>
+<p><span style="color:green; font-family:新宋体">// 这里为了稍微纠正我最近用宏上瘾的问题。。。。强制自己使用了模板<br />
+</span></p>
+<p><span style="color:green; font-family:新宋体">// 其实还是有个问题。。。呵呵，具体的名字没有办法输出来了，当然，每次调用函数<br />
+</span></p>
+<p><span style="color:green; font-family:新宋体">// 输入字符串永远不在考虑的范围内<br />
+</span></p>
+<p><span style="color:green; font-family:新宋体">// 另外.....看到最后标准库的类型全名的时候,总是会感叹一下...实在是太长了,记得<br />
+</span></p>
+<p><span style="color:green; font-family:新宋体">// 有一次,一个复杂的带string的map,我根本没有办法从鼠标下面看到即时显示的调试信息<br />
+</span></p>
+<p><span style="color:green; font-family:新宋体">// 原因是类型太长了,加起来超出了一个屏幕!!!,所以实际的调试数值被挤到了屏幕以外!<br />
+</span></p>
+<p><span style="color:green; font-family:新宋体">// 所以只能通过添加watch的方式才能看到值-_-!!<br />
+</span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">template</span> &lt;<span style="color:blue">typename</span><br />
+<span style="color:#010001">HashedObj</span>, <span style="color:blue">typename</span><br />
+<span style="color:#010001">Table</span> &gt;<br />
+</span></p>
+<p><span style="font-family:新宋体"><span style="color:blue">void</span><br />
+<span style="color:#010001">Test</span>(<span style="color:#010001">HashedObj</span><br />
+<span style="color:#010001">x</span>, <span style="color:#010001">Table</span>&amp; <span style="color:#010001">table</span>)<br />
+</span></p>
+<p><span style="font-family:新宋体">{<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:blue">if</span>(<span style="color:#010001">table</span>.<span style="color:#010001">Contains</span>(<span style="color:#010001">x</span>))<br />
+</span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">cout</span> &lt;&lt;<span style="color:blue">typeid</span>(<span style="color:#010001">table</span>).<span style="color:#010001">name</span>() &lt;&lt;<span style="color:#a31515">" Constains "</span> &lt;&lt;<span style="color:#010001">x</span> &lt;&lt;<span style="color:#010001">endl</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:blue">else<br />
+</span></span></p>
+<p><span style="font-family:新宋体">    {<br />
+</span></p>
+<p><span style="font-family:新宋体">        <span style="color:#010001">cout</span> &lt;&lt;<span style="color:blue">typeid</span>(<span style="color:#010001">table</span>).<span style="color:#010001">name</span>() &lt;&lt;<span style="color:#a31515">" don't Constains "</span> &lt;&lt;<span style="color:#010001">x</span> &lt;&lt;<span style="color:#010001">endl</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    }<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">}<br />
+</span></p>
+<p>
+ </p>
+<p>
+ </p>
+<p><span style="font-family:新宋体"><span style="color:blue">int</span><br />
+<span style="color:#010001">main</span>()<br />
+</span></p>
+<p><span style="font-family:新宋体">{<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:green">// test Int<br />
+</span></span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">CSLHashTable</span>&lt;<span style="color:blue">int</span>&gt; <span style="color:#010001">loIntTable</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loIntTable</span>.<span style="color:#010001">Insert</span>(10);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loIntTable</span>.<span style="color:#010001">Insert</span>(20);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loIntTable</span>.<span style="color:#010001">Insert</span>(30);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loIntTable</span>.<span style="color:#010001">Insert</span>(40);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loIntTable</span>.<span style="color:#010001">Insert</span>(50);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(20, <span style="color:#010001">loIntTable</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(30, <span style="color:#010001">loIntTable</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(40, <span style="color:#010001">loIntTable</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(60, <span style="color:#010001">loIntTable</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(70, <span style="color:#010001">loIntTable</span>);<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">CSLHashTable</span>&lt;<span style="color:#010001">string</span>&gt; <span style="color:#010001">loStrTable</span>;<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loStrTable</span>.<span style="color:#010001">Insert</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"10"</span>));<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loStrTable</span>.<span style="color:#010001">Insert</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"20"</span>));<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loStrTable</span>.<span style="color:#010001">Insert</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"30"</span>));<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loStrTable</span>.<span style="color:#010001">Insert</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"40"</span>));<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">loStrTable</span>.<span style="color:#010001">Insert</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"50"</span>));<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"20"</span>), <span style="color:#010001">loStrTable</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"30"</span>), <span style="color:#010001">loStrTable</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"40"</span>), <span style="color:#010001">loStrTable</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"60"</span>), <span style="color:#010001">loStrTable</span>);<br />
+</span></p>
+<p><span style="font-family:新宋体">    <span style="color:#010001">Test</span>(<span style="color:#010001">string</span>(<span style="color:#a31515">"70"</span>), <span style="color:#010001">loStrTable</span>);<br />
+</span></p>
+<p>
+ </p>
+<p><span style="font-family:新宋体">    <span style="color:blue">return</span> 0;<br />
+</span></p>
+<p><span style="font-family:新宋体">}</span></p>
+<p>
+ </p>
+<p style="text-align: right">
+ </p>
+<p style="text-align: right">
+ </p>
+<p style="text-align: right">
+ </p>
+<p style="text-align: right">
+ </p>
+<p style="text-align: right">
+ </p>
+<p style="text-align: right">
+ </p>
+<p style="text-align: right"><span style="color:#c0504d; text-decoration:underline"><strong>write by <span style="font-family:宋体">九天雁翎</span>(JTianLing) -- www.jtianling.com</strong></span></p>

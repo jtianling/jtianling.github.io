@@ -1,0 +1,32 @@
+---
+layout: post
+title: lua table输出函数(可以输出嵌套表格)
+categories:
+- Lua
+tags:
+- Lua
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '16'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>
+function PrintTable(o, f, b)<br />&nbsp;&nbsp; &nbsp;if type(f) ~= "function" and f ~= nil then<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;error("expected second argument %s is a function", tostring(f))<br />&nbsp;&nbsp; &nbsp;end<br />&nbsp;&nbsp; &nbsp;if type(b) ~= "boolean" and b ~= nil then<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;error("expected third argument %s is a boolean", tostring(b))<br />&nbsp;&nbsp; &nbsp;end<br />&nbsp;&nbsp; &nbsp;p = f or io.write<br />&nbsp;&nbsp; &nbsp;b = b or false<br />&nbsp;&nbsp; &nbsp;if type(o) == "number" or <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;type(o) == "function" or<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;type(o) == "boolean" or<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;type(o) == "nil" then<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;p(tostring(o))<br />&nbsp;&nbsp; &nbsp;elseif type(o) == "string" then<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;p(string.format("%q",o))<br />&nbsp;&nbsp; &nbsp;elseif type(o) == "table" then<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;p("{/n")<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;for k,v in pairs(o) do<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if b then<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;p("[")<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;end</p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;PrintTable(k, p, b)</p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if b then<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;p("]")<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;end</p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;p(" = ")<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;PrintTable(v, p, b)<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;p(",/n")<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;end<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;p("}")</p>
+<p>&nbsp;&nbsp; &nbsp;end<br />end</p>
+<p>最近因为工作需要,学习了lua,呵呵,挺有意思了,甚至让我萌生了回去继续学习以前学过一下的python.<br />因为常用vim编写lua,调试不是太方便,所以根据programming in lua写了上面这个函数,用起来还算方便,当<br />需要输出到文件的时候就指定第二参数,或者通过io.output改变io.write的行为.第三参数是指定需要输出<br />到文件并能重新读出来时的[]号的,具体原因就不多讲了,看看programming in lua 就知道了.</p>
+<p>下面是个示例:<br />a = {[{100, 200}] = { 300, 400}, 200, { 300, 500}, abc = "abc"}<br />PrintTable(a, io.write, true)</p>
+<p>输出结果如下:<br />{<br />[1] = 200,<br />[2] = {<br />[1] = 300,<br />[2] = 500,<br />},<br />[{<br />[1] = 100,<br />[2] = 200,<br />}] = {<br />[1] = 300,<br />[2] = 400,<br />},<br />["abc"] = "abc",<br />}</p>
+<p>其实还是合法的lua语句,可以用来作为序列化语句,或者配置文件.没有经过严格测试,仅作为抛砖引玉.<br />对于新手,提示一下,可以通过在此函数前加上module("PrintTable", package.seeall),并将此文件保存在<br />类似lualibs的库目录,然后就可以通过在你自己的程序中用require "PrintTable"来使用此函数了.</p>

@@ -1,0 +1,60 @@
+---
+layout: post
+title: "浅谈C++类（5）--友元"
+categories:
+- C++
+tags:
+- C++
+- "友元"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '15'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p>欢迎转载，但请标明作者 &ldquo;九天雁翎&rdquo;，当然，你给出这个帖子的链接更好。</p>
+<p>呵呵，又来了，自从我开始尝试描述类以来，我发现我自己是开始真的了解类了，虽然还不到就明白什么叫oo的高深境界，起码对于类的使用方法了解的更多了，希望你看了以后也能有所进步啊：）</p>
+<p>现在开始讲一个有利有弊的东西，友元(friend),我以前讲过了private的数据和函数别人是不能直接调用的，这一点对于封装起到了很重要的作用。但是有的时候总是有调用一个类private成员这样需要的，那怎么办呢？C++给了我们友元这个家伙，按我的习惯，首先看个例子。当然，还是我们的水果类：）</p>
+<p>例5.1：</p>
+<p><span class="Code"><br />
+</span>
+<p>&nbsp;#include &lt;string&gt;<br />#include &lt;iostream&gt;<br />using namespace std;<br />class Fruit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个类，名字叫Fruit<br />{<br />&nbsp;string name;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个name成员&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;string colour;&nbsp;&nbsp; //定义一个colour成员<br />&nbsp;friend bool isSame(Fruit &amp;,Fruit &amp;);&nbsp;&nbsp; //在这里声明friend友元函数<br />public:<br />&nbsp;void print()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个输出名字的成员print()<br />&nbsp;{<br />&nbsp;&nbsp;cout&lt;&lt;colour&lt;&lt;&quot; &quot;&lt;&lt;name&lt;&lt;endl;<br />&nbsp;}<br />&nbsp;Fruit(const string &amp;nst = &quot;apple&quot;,const string &amp;cst = &quot;green&quot;):name(nst),colour(cst){}&nbsp; //构造函数<br />&nbsp;<br />&nbsp;Fruit(){}<br />};<br />bool isSame(Fruit &amp;aF,Fruit &amp;bF)<br />{<br />&nbsp;return aF.name == bF.name;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //注意，这个函数调用了Fruit的private数据，本来可是不允许的．<br />}<br />int main()<br />{<br />&nbsp;Fruit apple;<br />&nbsp;Fruit apple2(apple);<br />&nbsp;Fruit orange(&quot;orange&quot;,&quot;yellow&quot;);<br />&nbsp;cout&lt;&lt;&quot;apple = orange ?: &quot;&lt;&lt;isSame(apple,orange)&lt;&lt;endl;&nbsp;</p>
+<p>&nbsp;cout&lt;&lt;&quot;apple = apple2 ?: &quot;&lt;&lt;isSame(apple,apple2)&lt;&lt;endl;<br />&nbsp;<br />&nbsp;&nbsp; &nbsp;return 0;<br />}</p>
+<p>&nbsp;这里，我们声明了一个isSame（）检测是否同名的函数，而且这不是Fruit类的一个函数，虽然他在类里面声明了，怎么看出来？假如是类的成员函数，在外部定义必须要Fruit::这样定义，不是吗？isSame()没有这样，他是个独立的函数，但是他可以调用Fruit类的私有成员，因为在类里声明了他是Friend的，这就像你告诉保安（编译器）某某（isSame)是你的朋友（friend)，然后让他可以进入你的家（调用私有成员）一样，别人就不允许（非友元函数不允许），这样说，够明白吗？你可以尝试去掉friend声明看看编译错误。证明friend的作用：）我这里的得出的编译错误是这样（error C2248: 'Fruit::name' : cannot access private member declared in class 'Fruit'），也就是name是私有成员，不能调用。不仅可以声明友元函数，还可以声明友元类。效果类似。看下面的例子。</p>
+<p>例5.2：</p>
+<p><span class="Code"><br />
+</span>
+<p>#include &lt;string&gt;<br />#include &lt;iostream&gt;<br />using namespace std;<br />class Fruit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个类，名字叫Fruit<br />{<br />&nbsp;string name;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个name成员&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;string colour;&nbsp;&nbsp; //定义一个colour成员<br />&nbsp;friend class Person;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //声明一个友元类Person<br />public:<br />&nbsp;void print()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个输出名字的成员print()<br />&nbsp;{<br />&nbsp;&nbsp;cout&lt;&lt;colour&lt;&lt;&quot; &quot;&lt;&lt;name;<br />&nbsp;}<br />&nbsp;Fruit(const string &amp;nst = &quot;apple&quot;,const string &amp;cst = &quot;green&quot;):name(nst),colour(cst){}&nbsp; //构造函数<br />&nbsp;<br />};<br />class Person&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //定义类Person<br />{<br />string likedFruit;<br />public:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;string name;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;bool isLike(Fruit &amp;aF)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;{<br />&nbsp;&nbsp;return likedFruit == aF.name;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //注意，他调用了Fruit类的私有成员，这本来是不允许的<br />&nbsp;}<br />&nbsp;Person(const string &amp;npe = &quot;jim&quot;,const string &amp;lF = &quot;apple&quot;):name(npe),likedFruit(lF){}<br />};<br />int main()<br />{<br />&nbsp;Fruit apple;<br />&nbsp;Fruit orange(&quot;orange&quot;,&quot;yellow&quot;);<br />&nbsp;Person jim;<br />&nbsp;cout&lt;&lt;&quot;Is &quot;&lt;&lt;jim.name&lt;&lt;&quot;like &quot;;<br />&nbsp;apple.print();<br />&nbsp;cout&lt;&lt;&quot;? : &quot;&lt;&lt; jim.isLike(apple)&lt;&lt;endl;&nbsp;&nbsp;&nbsp;&nbsp; //看看这个函数的调用</p>
+<p>&nbsp;<br />&nbsp;&nbsp; &nbsp;return 0;<br />}</p>
+<p>&nbsp;</p>
+<p><span class="Code"><br />
+</span>
+<p>bool isSame(Fruit &amp;aF,Fruit &amp;bF,Fruit &amp;cF)<br />{<br />&nbsp;return (aF.name == bF.name)&amp;&amp;(bF.name == cF.name);<br />}</p>
+<p>&nbsp;具体Person类和程序到底是什么意思，我想只要你看了我以前写得东西，应该很明白了，就不多注释和讲了，我现在主要是讲友元(friend)的用途。另外一点重载函数的话，你想让几个成为友元就让几个，其他的将不是友元函数，这里提醒一下，重载函数其实可是各自独立的函数，只不过在C++中为了调用方便，让他们叫同一个名字而已。你不相信，可以自己试试。比如说在例5.1中，假如你重载一个但是却不声明为友元，编译是通不过的。你必须这样各自声明。见下例。</p>
+<p>例5.3：</p>
+<p><span class="Code"><br />
+</span>
+<p>#include &lt;string&gt;<br />#include &lt;iostream&gt;<br />using namespace std;<br />class Fruit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个类，名字叫Fruit<br />{<br />&nbsp;string name;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个name成员&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;string colour;&nbsp;&nbsp; //定义一个colour成员<br />&nbsp;friend bool isSame(Fruit &amp;aF,Fruit &amp;bF);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //声明为友元<br />&nbsp;friend bool isSame(Fruit &amp;aF,Fruit &amp;bF,Fruit &amp;cF);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //再次声明为友元</p>
+<p>public:<br />&nbsp;void print()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个输出名字的成员print()<br />&nbsp;{<br />&nbsp;&nbsp;cout&lt;&lt;colour&lt;&lt;&quot; &quot;&lt;&lt;name;<br />&nbsp;}<br />&nbsp;Fruit(const string &amp;nst = &quot;apple&quot;,const string &amp;cst = &quot;green&quot;):name(nst),colour(cst){}&nbsp; //构造函数<br />&nbsp;<br />};<br />bool isSame(Fruit &amp;aF,Fruit &amp;bF)<br />{<br />&nbsp;return aF.name == bF.name;<br />}<br />bool isSame(Fruit &amp;aF,Fruit &amp;bF,Fruit &amp;cF)<br />{<br />&nbsp;return (aF.name == bF.name)&amp;&amp;(bF.name == cF.name);<br />}</p>
+<p>int main()<br />{<br />&nbsp;Fruit apple;<br />&nbsp;Fruit apple2;<br />&nbsp;Fruit apple3;<br />&nbsp;Fruit orange(&quot;orange&quot;,&quot;yellow&quot;);<br />&nbsp;cout&lt;&lt;isSame(apple,apple2)&lt;&lt;isSame(apple,apple2,orange)&lt;&lt;endl;</p>
+<p>&nbsp;return 0;<br />}</p>
+<p>&nbsp;</p>
+<p>现在再回过来看例4.0。</p>
+<p><span class="Code"><br />
+</span>
+<p>#include &lt;string&gt;<br />#include &lt;iostream&gt;<br />using namespace std;<br />class Fruit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个类，名字叫Fruit<br />{<br />&nbsp;string name;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个name成员&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;string colour;&nbsp;&nbsp; //定义一个colour成员<br />&nbsp;<br />public:<br />&nbsp;bool isSame(const Fruit &amp;otherFruit)&nbsp;&nbsp; //期待的形参是另一个Fruit类对象，测试是否同名<br />&nbsp;{<br />&nbsp;&nbsp;return name == otherFruit.name;<br />&nbsp;}<br />&nbsp;void print()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //定义一个输出名字的成员print()<br />&nbsp;{<br />&nbsp;&nbsp;cout&lt;&lt;colour&lt;&lt;&quot; &quot;&lt;&lt;name&lt;&lt;endl;<br />&nbsp;}<br />&nbsp;Fruit(const string &amp;nst,const string &amp;cst = &quot;green&quot;):name(nst),colour(cst){}&nbsp; //构造函数<br />&nbsp;<br />&nbsp;Fruit(){}<br />};</p>
+<p>int main()<br />{<br />&nbsp;Fruit apple(&quot;apple&quot;);<br />&nbsp;Fruit orange(&quot;orange&quot;);<br />&nbsp;cout&lt;&lt;&quot;apple = orange ?: &quot;&lt;&lt;apple.isSame(orange)&lt;&lt;endl;&nbsp; //没有问题，肯定不同<br />&nbsp;cout&lt;&lt;&quot;apple = /&quot;apple/&quot; ?:&quot;&lt;&lt;apple.isSame(string(&quot;apple&quot;)); //用一个string做形参？<br />&nbsp;<br />&nbsp;&nbsp; &nbsp;return 0;<br />}</p>
+<p>除了隐式类类型转换外你还发现什么没有？恩，就是isSame（）函数他直接调用了另一个引用的Fruit对象的私有成员name，这个按道理是不允许的啊，不过，注意的是，他本身就是Fruit类，所以，我个人看法（纯粹个人看法），这里可以认为一个类，自动声明为自己类的友元。呵呵，不知道对不对。假如你想这样定义，</p>
+<p>bool Fruit::isSame(const string &amp;otherName)&nbsp;</p>
+<p>{<br />&nbsp;&nbsp;return name == otherName;<br />&nbsp;}</p>
+<p>&nbsp;<span class="Code"></span>然后这样调用，&nbsp;cout&lt;&lt;apple.isSame(apple2.name)&lt;&lt;endl;结果是通不过编译的，道理还是不能调用一个类的私有成员。最后要说的是，我以前以为友元虽然为我们带来了一定的方便，但是友元的破坏性也是巨大的，他破坏了类的封装，不小心使用的话，会打击你对C++类安全使用的信心，就像强制类型转换一样，能不用就不用。但是当我看了Bjarne Stroustrup 的书后，才理解了一些东西，他的意思就是友元是没有人们说的那样的破坏性的，因为友元的声明权完全在类设计者手里，他能很好控制，而不会让友元的特性泛滥，而且在我学的更多一些后，发现友元在一些应用中必须得用到，比如一些操作符的重载，不用友元就不行，虽然个人感觉，类中成员函数省略的This形参假如没有友元作补充支撑，根本就不敢用，因为会限制很多功能，当然有了友元就没有关系了，可以在外面定义嘛。友元就讲了这么多，不知道是不是复杂化了。&nbsp;</p>

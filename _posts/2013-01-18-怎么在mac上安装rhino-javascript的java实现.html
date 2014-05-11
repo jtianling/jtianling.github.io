@@ -1,0 +1,64 @@
+---
+layout: post
+title: "怎么在Mac上安装Rhino(JavaScript的JAVA实现)"
+categories:
+- JavaScript
+tags:
+- JavaScript
+- Rhino
+status: publish
+type: post
+published: true
+meta:
+  mkd_text: "[Rhino](https://github.com/mozilla/rhino)是JavaScript的一个Java实现, 可以直接使用REPL的方式来使用JavaScript,
+    光是研究语言特性的话, 会比在浏览器里面方便很多.  当然, 现在还有一个新的选择, 那就是[node.js](http://nodejs.org/).  Rhino是Mozilla的实现,
+    node.js用的V8引擎是Google的实现.  \n\n# 下载\n目前最新版本是[1.7R4版本](https://developer.mozilla.org/en-US/docs/Rhino/Download_Rhino?redirectlocale=en-US&redirectslug=RhinoDownload).\n\n
+    \   :::Bash\n    $ curl ftp://ftp.mozilla.org/pub/mozilla.org/js/rhino1_7R1.zip
+    > /tmp/rhino.zip\n    $ cd /tmp\n    $ unzip rhino.zip\n\n# 移动到Java能找到的位置\n\n
+    \   :::Bash\n    $ mv /tmp/rhino1_7R1/js.jar ~/Library/Java/Extensions/\n\n假如上面的目录不存在的话,
+    需要你自己建一个  \n\n# 简化运行\n此时已经可以直接通过下面代码运行Rhino了.  \n\n    :::Bash\n    $ java org.mozilla.javascript.tools.shell.Main\n\n因为太过复杂,
+    可以考虑修改`.bash_profile`加个别名.  \n\n    :::Bash\n    $ echo 'alias js=\"java org.mozilla.javascript.tools.shell.Main\"'
+    >> ~/.bash_profile\n    $ source ~/.bash_profile\n\n这样直接用`js`就能使用Rhino了.  \n\n#
+    参考\n[Installing Rhino on Mac](http://www.phpied.com/installing-rhino-on-mac/)"
+  views: '91'
+  _wp_old_slug: "%e6%80%8e%e4%b9%88%e5%9c%a8mac%e4%b8%8a%e5%ae%89%e8%a3%85rhinojavascript%e7%9a%84java%e5%ae%9e%e7%8e%b0"
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p><a href="https://github.com/mozilla/rhino">Rhino</a>是JavaScript的一个Java实现, 可以直接使用REPL的方式来使用JavaScript, 光是研究语言特性的话, 会比在浏览器里面方便很多.  当然, 现在还有一个新的选择, 那就是<a href="http://nodejs.org/">node.js</a>.  Rhino是Mozilla的实现, node.js用的V8引擎是Google的实现.  </p>
+<h1 id="_1">下载</h1>
+<p>目前最新版本是<a href="https://developer.mozilla.org/en-US/docs/Rhino/Download_Rhino?redirectlocale=en-US&amp;redirectslug=RhinoDownload">1.7R4版本</a>.</p>
+<div class="codehilite">
+<pre><span class="nv">$ </span>curl ftp://ftp.mozilla.org/pub/mozilla.org/js/rhino1_7R1.zip &gt; /tmp/rhino.zip
+<span class="nv">$ </span><span class="nb">cd</span> /tmp
+<span class="nv">$ </span>unzip rhino.zip
+</pre>
+</div>
+<h1 id="java">移动到Java能找到的位置</h1>
+<div class="codehilite">
+<pre><span class="nv">$ </span>mv /tmp/rhino1_7R1/js.jar ~/Library/Java/Extensions/
+</pre>
+</div>
+<p>假如上面的目录不存在的话, 需要你自己建一个  </p>
+<h1 id="_2">简化运行</h1>
+<p>此时已经可以直接通过下面代码运行Rhino了.  </p>
+<div class="codehilite">
+<pre><span class="nv">$ </span>java org.mozilla.javascript.tools.shell.Main
+</pre>
+</div>
+<p>因为太过复杂, 可以考虑修改<code>.bash_profile</code>加个别名.  </p>
+<div class="codehilite">
+<pre><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;alias js=&quot;java org.mozilla.javascript.tools.shell.Main&quot;&#39;</span> &gt;&gt; ~/.bash_profile
+<span class="nv">$ </span><span class="nb">source</span> ~/.bash_profile
+</pre>
+</div>
+<p>这样直接用<code>js</code>就能使用Rhino了.  </p>
+<h1 id="_3">参考</h1>
+<p><a href="http://www.phpied.com/installing-rhino-on-mac/">Installing Rhino on Mac</a></p>
+<div style="text-align:right">
+  writen&nbsp;by <a href="http://www.jtianling.com" target="_blank">九天雁翎(JTianLing) -- www.jtianling.com</a>
+</div>

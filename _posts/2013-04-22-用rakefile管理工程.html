@@ -1,0 +1,196 @@
+---
+layout: post
+title: "用Rakefile管理工程"
+categories:
+- "通用编程技术"
+tags:
+- makefile
+- Rakefile
+- "工程管理"
+status: publish
+type: post
+published: true
+meta:
+  mkd_text: "$TOC$\n  \n# 游戏项目的资源管理问题\n游戏项目可能是所有软件项目中需要在编译时处理资源最多的项目, 一般的项目都有下面几种常见需求:
+    \ \n\n1. 将文本格式的Json, XML等配置换成二进制\n2. 将Json, XML等配置加密\n3. 将tga, png的图压缩成压 缩比更高的pvr,
+    webp等格式\n4. 用texturepacker等工具打包小图\n5. 将UI编辑器, 动画编辑器的编辑时格式(往往是文本格式)编译成二进制的发布格式.\n
+    \ \n特别是图片相关的的资源生成, 时间消耗较多, 需要尽量减少重复生成.  此时像makefile这种东西就很有价值了.  \n\n# makefile的利弊\nmakefile最大的好处自然是依赖关系的作用,
+    在正确设置后, 能做到当原始文件(源文件, 原始的资源等)没有更改时, 不生成目标文件, 更改时才生成, 并且可以自定义生成的规则.  \n缺点也很明显,
+    makefile太难写了, 传统的makefile格式独特, 甚至tab敏感, 而功能相对单一(功能强大基本靠shell).  所以很多人都弄了一套别的东西,
+    比如传统的Unix/Linux开发环境的Automake和Autoconf, 可以跨平台生成工程的CMake, Qt的qmake, Java的ant等, 而Ruby则提供了[Rake](https://github.com/jimweirich/rake).
+    \ \n\n\n# Rakefile使用\n简单的说Rakefile就是使用Ruby语法的makefile, 对应make的工具就是rake.  在Ruby
+    on Rails里面, 不管是数据库的初始化, 内容初始化, 删除, 还是测试, 都是用rake来完成的.  \n\n## 优点\n官方说明有如下优点:  \n\n1.
+    Ruby语法\n2. 可以设定task的依赖\n3. 支持patterns的规则\n4. 灵活的FileList类, 行为像array, 但是可以方便的操作文件名和路径\n5.
+    有一个预先包装好的库, 可以方便的实现类似build tarball和发布到ssh网站等功能.\n6. 支持并行task.\n\n其实想像一下, 在makefile文件中能使用完整的ruby功能,
+    不仅仅是ruby的语法, 还支持ruby现有的所有库, gems, 光听听就让人高兴.  \n碰到复杂工程时, 不管逻辑需要多复杂, 你都有一个完整, 强大的语言可以使用,
+    不再需要借助其他的东西就能够完全hold住.  \n假如有缺点的话, 那就是ruby逼近还是需要学习的....并且, 总体的内容比一般的makefile要复杂一些.
+    \ \n\n## 说明\nRakefile分几个基本的build规则, 用\"=>\"来表示依赖关系.  \n\n\n### file\n\n\n# 参考\n[Rakefile
+    Readme](http://rake.rubyforge.org/README_rdoc.html)\n[Rakefile Format](http://rake.rubyforge.org/doc/rakefile_rdoc.html)"
+  views: '213'
+  _aioseop_title: "用Rakefile管理工程"
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<div class="toc">
+<ul>
+<li><a href="#_1">游戏项目的资源管理问题</a></li>
+<li><a href="#makefile">makefile的利弊</a></li>
+<li><a href="#rakefile">Rakefile使用</a>
+<ul>
+<li><a href="#_2">优点</a></li>
+<li><a href="#_3">使用说明</a></li>
+<li><a href="#_4">实例</a></li>
+</ul>
+</li>
+<li><a href="#_5">总结</a></li>
+<li><a href="#_6">参考</a></li>
+</ul>
+</div>
+<h1 id="_1">游戏项目的资源管理问题</h1>
+<p>游戏项目可能是所有软件项目中需要在编译时处理资源最多的项目, 一般的项目都有下面几种常见需求:  </p>
+<ol>
+<li>将文本格式的Json, XML等配置换成二进制</li>
+<li>将Json, XML等配置加密</li>
+<li>将tga, png的图压缩成压 缩比更高的pvr, webp等格式</li>
+<li>用texturepacker等工具打包小图</li>
+<li>将UI编辑器, 动画编辑器的编辑时格式(往往是文本格式)编译成二进制的发布格式.</li>
+</ol>
+<p>特别是图片相关的的资源生成, 时间消耗较多, 需要尽量减少重复生成.  此时像makefile这种东西就很有价值了.  </p>
+<h1 id="makefile">makefile的利弊</h1>
+<p>makefile最大的好处自然是依赖关系的作用, 在正确设置后, 能做到当原始文件(源文件, 原始的资源等)没有更改时, 不生成目标文件, 更改时才生成, 并且可以自定义生成的规则.<br />
+缺点也很明显, makefile太难写了, 传统的makefile格式独特, 甚至tab敏感, 而功能相对单一(功能强大基本靠shell).  所以很多人都弄了一套别的东西, 比如传统的Unix/Linux开发环境的Automake和Autoconf, 可以跨平台生成工程的CMake, Qt的qmake, Java的ant等, 而Ruby则提供了<a href="https://github.com/jimweirich/rake">Rake</a>.  </p>
+<h1 id="rakefile">Rakefile使用</h1>
+<p>简单的说Rakefile就是使用Ruby语法的makefile, 对应make的工具就是rake.  在Ruby on Rails里面, 不管是数据库的初始化, 内容初始化, 删除, 还是测试, 都是用rake来完成的.  </p>
+<h2 id="_2">优点</h2>
+<p>官方说明有如下优点:  </p>
+<ol>
+<li>Ruby语法</li>
+<li>可以设定task的依赖</li>
+<li>支持patterns的规则</li>
+<li>灵活的FileList类, 行为像array, 但是可以方便的操作文件名和路径</li>
+<li>有一个预先包装好的库, 可以方便的实现类似build tarball和发布到ssh网站等功能.</li>
+<li>支持并行task.</li>
+</ol>
+<p>其实想像一下, 在makefile文件中能使用完整的ruby功能, 不仅仅是ruby的语法, 还支持ruby现有的所有库, gems, 光听听就让人高兴.<br />
+碰到复杂工程时, 不管逻辑需要多复杂, 你都有一个完整, 强大的语言可以使用, 不再需要借助其他的东西就能够完全hold住.<br />
+假如有缺点的话, 那就是ruby逼近还是需要学习的....并且, 总体的内容比一般的makefile要复杂一些.  </p>
+<h2 id="_3">使用说明</h2>
+<p>Rakefile分几个基本的build规则, 用"=&gt;"来表示依赖关系.  </p>
+<p>比如常见的helloworld工程, 我们可以输入完整的命令:  </p>
+<div class="codehilite">
+<pre>g++ helloworld.cc -o hello.o
+</pre>
+</div>
+<p>也可以在源代码目录中新建Rakefile文件来管理, Rakefile文件如下:  </p>
+<div class="codehilite">
+<pre><span class="n">file</span> <span class="s2">&quot;helloworld&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;helloworld.cc&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">sh</span> <span class="s2">&quot;g++ </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">prerequisites</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> -o </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">end</span>
+</pre>
+</div>
+<p>然后运行rake helloworld, 来编译, 好处就是当helloworld.cc文件没有改变时, 实际根本不会编译.<br />
+上面的例子中我们是用了一个file task, 当我们要想要直接运行rake, 省略helloworld的话, 可以利用rake的default task.  </p>
+<div class="codehilite">
+<pre><span class="n">task</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="s2">&quot;helloworld&quot;</span>
+
+<span class="n">file</span> <span class="s2">&quot;helloworld&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;helloworld.cc&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">sh</span> <span class="s2">&quot;g++ </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">prerequisites</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> -o </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">end</span>
+</pre>
+</div>
+<p>这个default的task就是一个simple task, 会在直接运行rake的时候运行, 并且, 可以看到, task之间也是可以用"=&gt;"表示依赖的.  </p>
+<p>当文件比较多时, 一个一个的写file task可能会比较类, 于是rake加入了rule特性, 比如, 我们可以用下列的rule来编译所有的".cc"文件.<br />
+比如, 我自建一个my_print函数, 现在就有my_print.cc, helloworld.cc两个源文件了, 可以通过下面这种方式来生成代码:  </p>
+<div class="codehilite">
+<pre><span class="n">task</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="s2">&quot;helloworld&quot;</span>
+
+<span class="n">file</span> <span class="s2">&quot;helloworld&quot;</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s2">&quot;helloworld.o&quot;</span><span class="p">,</span> <span class="s2">&quot;my_print.o&quot;</span><span class="o">]</span>  <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">sh</span> <span class="s2">&quot;g++ </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">prerequisites</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> -o </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">end</span>
+
+<span class="n">rule</span> <span class="s2">&quot;.o&quot;</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s2">&quot;.cc&quot;</span><span class="p">,</span> <span class="s2">&quot;.h&quot;</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">sh</span> <span class="s2">&quot;g++ -c </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2"> -o </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">end</span>
+</pre>
+</div>
+<p>当然, 虽然rake很强大, 但是还是没有强大到能够分析理解C++代码的地步, 所以, 这种规则和以前的makefile文件一样, 设定后, 仅仅是同名文件的头文件, 源文件能够产生依赖关系(更改后能够触发重编译), 但是此例中, helloworld.cc也include了my_print.h, 也是对my_print.h的实际依赖, 但是rake就理解不了了.<br />
+而事实上, 我们几乎不可能都手动的将所有的这种include关系输入到rakefile中, 那简直就是自虐.  我们通常的做法是, 碰到有改头文件的时候, 直接clean项目, 然后再重新编译.  </p>
+<div class="codehilite">
+<pre><span class="n">task</span> <span class="ss">:clean</span> <span class="k">do</span>
+  <span class="n">sh</span> <span class="s2">&quot;rm *.o&quot;</span>
+<span class="k">end</span>
+</pre>
+</div>
+<p>同样的, 我们也能实现makefile中常有的install任务, 这里就不再累述了.  </p>
+<h2 id="_4">实例</h2>
+<p>这里用一个游戏项目的实例来说明:<br />
+首先, 我们一般通过<code>base_dir = File.dirname(__FILE__)</code>的方式来获得当前目录, 以方便解决目录相关的问题, 手动的从相对目录转为绝对目录.  </p>
+<p>然后, 为了从png格式压缩为webp格式, 建立以下规则:  </p>
+<div class="codehilite">
+<pre><span class="n">quality</span> <span class="o">=</span> <span class="mi">90</span> 
+<span class="n">rule</span> <span class="s1">&#39;.webp&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;.png&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="nb">puts</span> <span class="s2">&quot;webp convert begin:&quot;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">to_s</span>
+
+  <span class="k">if</span> <span class="o">!</span><span class="no">File</span><span class="o">.</span><span class="n">exist?</span><span class="p">(</span><span class="n">converted_dir</span><span class="p">)</span>
+    <span class="n">sh</span> <span class="s2">&quot;mkdir </span><span class="si">#{</span><span class="n">converted_dir</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+
+  <span class="n">sh</span> <span class="s2">&quot;/usr/bin/env cwebp -q </span><span class="si">#{</span><span class="n">quality</span><span class="si">}</span><span class="s2"> -quiet </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2"> -o </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="n">sh</span> <span class="s2">&quot;cp </span><span class="si">#{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">converted_dir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+
+  <span class="nb">puts</span> <span class="s2">&quot;webp convert end:&quot;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">to_s</span>
+<span class="k">end</span>
+</pre>
+</div>
+<p>其中converted_dir就是我们实际资源需要移动到的目录.  这里之所以用cp, 而不是用mv来移动, 是为了在源目录保留有转换后的副本, 当图片没有更改的时候, 就不需要重新压缩图片.  这里, 有个疑问, 最佳的方式是直接将converted_dir的资源和源文件形成依赖, 就可以省掉一次拷贝的过程, 但是, 不知道怎样使用跨目录的rule.  </p>
+<p>再比如说, 使用TexturePacker对小图片进行打包, 这个依赖关系本来是一个大图片对需要打包的所有小图片, 特别适合rakefile/makefile, 不过TexturePacker自己就实现了这种机制, 我们也就没有必要重复实现了, 即使其实比较容易.  </p>
+<div class="codehilite">
+<pre><span class="n">desc</span> <span class="s2">&quot;pack texture with texture packer.&quot;</span>
+<span class="n">task</span> <span class="ss">:pack_texture</span> <span class="k">do</span>
+  <span class="nb">puts</span> <span class="s2">&quot;pack texture begin.&quot;</span>
+  <span class="n">tps_files</span> <span class="o">=</span> <span class="no">FileList</span><span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">tps_dir</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;/*.tps&quot;</span><span class="o">]</span>
+  <span class="nb">puts</span> <span class="s2">&quot;tps files:&quot;</span> <span class="o">+</span> <span class="n">tps_files</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="n">tps_files</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+    <span class="n">sh</span> <span class="s2">&quot;/usr/local/bin/TexturePacker --quiet </span><span class="si">#{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="p">}</span>
+<span class="k">end</span>
+</pre>
+</div>
+<p>这里的desc是Rakefile专用的注释, 可以在运行<code>rake -T</code>时, 看到较为友好的命令说明:  </p>
+<div class="codehilite">
+<pre><span class="nv">$rake</span> -T
+rake clean         <span class="c"># clean the all generated resource</span>
+rake clean_packed  <span class="c"># clean the packed resource.</span>
+rake default       <span class="c"># generate all the resouce neeed.</span>
+rake pack_texture  <span class="c"># pack texture with texture packer.</span>
+rake png2webp      <span class="c"># convert all the png to webp format.</span>
+</pre>
+</div>
+<p>这里又有另外一个较为不好的地方, 我们首先用TexturePacker把小图都打包成大图了(见前面pack_texture task的例子), 我们可以完全用FileList动态生成需要打包的tps文件, 而只有打包后才能有我们想要转换为webp的png图文件, 但是, 当我想要动态的用FileList获取到生成的所有的png作为file task的任务时, 发现rakefile并不支持.  简单的说, 当file task依赖的文件是另一个task的结果时, 我们无法处理这种依赖关系, 如下例:  </p>
+<div class="codehilite">
+<pre><span class="n">generated_texs</span> <span class="o">=</span> <span class="kp">nil</span>
+<span class="n">task</span> <span class="ss">:pack_texture</span> <span class="k">do</span>
+  <span class="sr">//</span> <span class="n">generate</span> <span class="n">the</span> <span class="n">textures</span>
+  <span class="sr">//</span> <span class="n">the</span> <span class="n">code</span>
+
+  <span class="n">generated_texs</span> <span class="o">=</span> <span class="no">FileList</span><span class="o">[.</span><span class="n">.</span><span class="o">.]</span>
+<span class="k">end</span>
+
+<span class="n">task</span> <span class="ss">:png2webp</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:pack_texture</span><span class="o">]</span> <span class="o">+</span> <span class="n">generated_texs</span> <span class="k">do</span>
+
+<span class="k">end</span>
+</pre>
+</div>
+<p>这个例子中, 虽然我们可以肯定的说png2webp task运行时genereated_texs会获得正确的值, 无论我们是通过default task运行, 还是直接运行png2webp这个task(因为png2webp本身依赖pack_texutre task), 但是实际上, 无论你用那种方式运行png2webp, genereated_texs总是为nil, 就算你实际上在pack_texture task中改变了generated_texs的值.  这个挺让人郁闷的.  </p>
+<h1 id="_5">总结</h1>
+<p>总的来说, Rakefile算是那种一劳永逸的工程管理解决方案, 因为ruby语言本身的强大和相关库的丰富, 基本上不会再需要用其他方式来管理你的工程了.  也许, 还要更好的话, 那就是自动的理解代码, 了解诸如include, import等依赖关系的工具了.  </p>
+<h1 id="_6">参考</h1>
+<p><a href="http://rake.rubyforge.org/README_rdoc.html">Rakefile Readme</a><br />
+<a href="http://rake.rubyforge.org/doc/rakefile_rdoc.html">Rakefile Format</a></p>
+<div style="text-align:right">
+  writen&nbsp;by <a href="http://www.jtianling.com" target="_blank">九天雁翎(JTianLing) -- www.jtianling.com</a>
+</div>

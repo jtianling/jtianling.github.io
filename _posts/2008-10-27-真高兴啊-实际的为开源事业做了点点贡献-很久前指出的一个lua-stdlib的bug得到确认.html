@@ -1,0 +1,366 @@
+---
+layout: post
+title: "真高兴啊。。。。实际的为开源事业做了点点贡献：），很久前指出的一个lua stdlib的bug得到确认"
+categories:
+- Lua
+tags:
+- Lua
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '16'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p>呵呵，是关于lua stdlib 库的set模块的bug，其实作者好像确认很久了。。。。但是我这段时间一直没有上gmail，所以没有看到。。。作者说，在新版中已经修改此bug...今天下了最新版，发现真是这样：）呵呵，真高兴啊，吸收了开源社区的那么多营养。。。总算有点报答了。。。当然，这仅仅是起步：）</p>
+<p>实际流程贴一下。。。满足一下虚荣心。。。其实仅仅是一个很小的很容易发现的bug。。。呵呵，我当时学lua才一两周。。也不可能发现多么难的bug....lol</p>
+<p>&nbsp;</p>
+<p>原来的lua stdlib set中某段程序如下：</p>
+<div class="highlighter">
+<ol class="highlighter-py">
+<li><span>--&nbsp;@func&nbsp;propersubset:&nbsp;Find&nbsp;whether&nbsp;one&nbsp;set&nbsp;</span><br />
+<span class="keyword">is</span><br />
+<span>&nbsp;a&nbsp;proper&nbsp;subset&nbsp;of</span>
+</li>
+<li class="alt"><span>--&nbsp;another</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;s,&nbsp;t:&nbsp;sets</span>
+</li>
+<li class="alt"><span>--&nbsp;@returns</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;r:&nbsp;true&nbsp;</span><br />
+<span class="keyword">if</span><br />
+<span>&nbsp;s&nbsp;</span><br />
+<span class="keyword">is</span><br />
+<span>&nbsp;a&nbsp;proper&nbsp;subset&nbsp;of&nbsp;t,&nbsp;false&nbsp;otherwise</span>
+</li>
+<li class="alt"><span>function&nbsp;propersubset&nbsp;(s,&nbsp;t)</span>
+</li>
+<li><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">return</span><br />
+<span>&nbsp;subset&nbsp;(s,&nbsp;t)&nbsp;</span><br />
+<span class="keyword">and</span><br />
+<span>&nbsp;</span><br />
+<span class="keyword">not</span><br />
+<span>&nbsp;subset&nbsp;(t,&nbsp;s)</span>
+</li>
+<li class="alt"><span>end</span>
+</li>
+<li></li>
+<li class="alt"><span>--&nbsp;@func&nbsp;equal:&nbsp;Find&nbsp;whether&nbsp;two&nbsp;sets&nbsp;are&nbsp;equal</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;s,&nbsp;t:&nbsp;sets</span>
+</li>
+<li class="alt"><span>--&nbsp;@returns</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;r:&nbsp;true&nbsp;</span><br />
+<span class="keyword">if</span><br />
+<span>&nbsp;sets&nbsp;are&nbsp;equal,&nbsp;false&nbsp;otherwise</span>
+</li>
+<li class="alt"><span><span style="color: #ff0000;">function&nbsp;equal&nbsp;(s,&nbsp;t)</span><br />
+</span>
+</li>
+<li><span style="color: #ff0000;"><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">return</span><br />
+<span>&nbsp;subset&nbsp;(s,&nbsp;t)&nbsp;</span><br />
+<span class="keyword">and</span><br />
+<span>&nbsp;subset&nbsp;(s,&nbsp;t)</span><br />
+</span>
+</li>
+<li class="alt"><span>end</span>
+</li>
+<li></li>
+<li class="alt"><span>--&nbsp;@head&nbsp;Metamethods&nbsp;</span><br />
+<span class="keyword">for</span><br />
+<span>&nbsp;sets</span>
+</li>
+<li><span>--&nbsp;set&nbsp;+&nbsp;table&nbsp;=&nbsp;union</span>
+</li>
+<li class="alt"><span>metatable.__add&nbsp;=&nbsp;union</span>
+</li>
+<li><span>--&nbsp;set&nbsp;-&nbsp;table&nbsp;=&nbsp;set&nbsp;difference</span>
+</li>
+<li class="alt"><span>metatable.__sub&nbsp;=&nbsp;difference</span>
+</li>
+<li><span><span style="color: #ff0000;">--&nbsp;set&nbsp;/&nbsp;table&nbsp;=&nbsp;intersection</span><br />
+</span>
+</li>
+<li class="alt"><span><span style="color: #ff0000;">metatable.__div&nbsp;=&nbsp;intersection</span><br />
+</span>
+</li>
+<li><span>--&nbsp;set&nbsp;&lt;=&nbsp;table&nbsp;=&nbsp;subset</span>
+</li>
+<li class="alt"><span>metatable.__le&nbsp;=&nbsp;subset</span>
+</li>
+<li></li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p>于是我发邮件给作者</p>
+<p>&nbsp;</p>
+<p>hi all,<br />
+Thank you very much for your hard working with the LuaForWindows,I enjoy it so mush.<br />
+there is a bug to report as my return.<br />
+the set.lua file in the lualibs, 117th line.<br />
+source as this code:&quot;return subset (s, t) and subset (s, t)&quot;<br />
+it obviously should be &quot;return subset (s,t) and subset(t, s)&quot;<br />
+which means they are equal when s is the subset t and t is the subset s.<br />
+I hope I'm right and didn't disturb you.<br />
+BTW,there is a surprising attribute.<br />
+In the set's operations,div(/) mean intersection that is different from custom.<br />
+In the custom mul(*) denotes it,just like the &lt;&lt;programming in Lua&gt;&gt; writes in the 13th captial named &quot;metatable and meatmethod&quot;<br />
+Thank you for reading&nbsp;my poor Chinglish. lol,I'm&nbsp;Chinese.<br />
+Best wishes.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; your honest<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JTianLing from <a href="mailto:jtianling@gmail.com">jtianling{at}gmail.com</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>luaforwindows的作者回信</p>
+<p><span style="color: #333333;">Andrew Wilson to me, rrt, luaforwindows <br />
+show details Sep 3 Reply</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #333333;"><br />
+Thanks for the bug report JTianLing, this particular module comes from<br />
+the stdlib library , I'll copy your report of this issue to the<br />
+administrator of that project <a href="http://luaforge.net/projects/stdlib/">http://luaforge.net/projects/stdlib/</a><br />
+.</span></p>
+<p><span style="color: #333333;">Your English is great,&nbsp; you wouldn't want to even hear my Mandarin.<br />
+关心<br />
+Andrew Wilson</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>呵呵，不知道他这里说关心是什么意思......，惊奇的是。。。。他竟然还真能打中文字。。。。E文系统应该是没有中文输入法的吧。。。。</p>
+<p>&nbsp;</p>
+<p>最后lua stdlib的作者回信：</p>
+<p>Reuben Thomas to Andrew, me, luaforwindows <br />
+show details Sep 4 Reply</p>
+<p>
+Thanks, this is quite correct. I've made a new release with this fix.</p>
+<p>&nbsp;</p>
+<p>I see, I had actually forgotten that * is used in Modula-3 in the same way. I am happy to change this so that * is intersection and / is symmetric difference.</p>
+<p>Thanks, I've made another release with these changes, and coincidentally fixed set.difference, which was also broken.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>呵呵，最新版的set如下，可见已经修复，并且连那个我称为surprising attribute 的&ldquo;/&rdquo;符号表示交集也改了：）</p>
+<p>&nbsp;</p>
+<div class="highlighter">
+<ol class="highlighter-py">
+<li><span>--&nbsp;@func&nbsp;intersection:&nbsp;Find&nbsp;the&nbsp;intersection&nbsp;of&nbsp;two&nbsp;sets</span>
+</li>
+<li class="alt"><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;s,&nbsp;t:&nbsp;sets</span>
+</li>
+<li><span>--&nbsp;@returns</span>
+</li>
+<li class="alt"><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;r:&nbsp;set&nbsp;intersection&nbsp;of&nbsp;s&nbsp;</span><br />
+<span class="keyword">and</span><br />
+<span>&nbsp;t</span>
+</li>
+<li><span>function&nbsp;intersection&nbsp;(s,&nbsp;t)</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;local&nbsp;r&nbsp;=&nbsp;new&nbsp;{}</span>
+</li>
+<li><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">for</span><br />
+<span>&nbsp;e&nbsp;</span><br />
+<span class="keyword">in</span><br />
+<span>&nbsp;elements&nbsp;(s)&nbsp;do</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="keyword">if</span><br />
+<span>&nbsp;member&nbsp;(t,&nbsp;e)&nbsp;then</span>
+</li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;insert&nbsp;(r,&nbsp;e)</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;end</span>
+</li>
+<li><span>&nbsp;&nbsp;end</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">return</span><br />
+<span>&nbsp;r</span>
+</li>
+<li><span>end</span>
+</li>
+<li class="alt"></li>
+<li><span>--&nbsp;@func&nbsp;union:&nbsp;Find&nbsp;the&nbsp;union&nbsp;of&nbsp;two&nbsp;sets</span>
+</li>
+<li class="alt"><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;s,&nbsp;t:&nbsp;sets</span>
+</li>
+<li><span>--&nbsp;@returns</span>
+</li>
+<li class="alt"><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;r:&nbsp;set&nbsp;union&nbsp;of&nbsp;s&nbsp;</span><br />
+<span class="keyword">and</span><br />
+<span>&nbsp;t</span>
+</li>
+<li><span>function&nbsp;union&nbsp;(s,&nbsp;t)</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;local&nbsp;r&nbsp;=&nbsp;new&nbsp;{}</span>
+</li>
+<li><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">for</span><br />
+<span>&nbsp;e&nbsp;</span><br />
+<span class="keyword">in</span><br />
+<span>&nbsp;elements&nbsp;(s)&nbsp;do</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;insert&nbsp;(r,&nbsp;e)</span>
+</li>
+<li><span>&nbsp;&nbsp;end</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">for</span><br />
+<span>&nbsp;e&nbsp;</span><br />
+<span class="keyword">in</span><br />
+<span>&nbsp;elements&nbsp;(t)&nbsp;do</span>
+</li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;insert&nbsp;(r,&nbsp;e)</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;end</span>
+</li>
+<li><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">return</span><br />
+<span>&nbsp;r</span>
+</li>
+<li class="alt"><span>end</span>
+</li>
+<li></li>
+<li class="alt"><span>--&nbsp;@func&nbsp;subset:&nbsp;Find&nbsp;whether&nbsp;one&nbsp;set&nbsp;</span><br />
+<span class="keyword">is</span><br />
+<span>&nbsp;a&nbsp;subset&nbsp;of&nbsp;another</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;s,&nbsp;t:&nbsp;sets</span>
+</li>
+<li class="alt"><span>--&nbsp;@returns</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;r:&nbsp;true&nbsp;</span><br />
+<span class="keyword">if</span><br />
+<span>&nbsp;s&nbsp;</span><br />
+<span class="keyword">is</span><br />
+<span>&nbsp;a&nbsp;subset&nbsp;of&nbsp;t,&nbsp;false&nbsp;otherwise</span>
+</li>
+<li class="alt"><span>function&nbsp;subset&nbsp;(s,&nbsp;t)</span>
+</li>
+<li><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">for</span><br />
+<span>&nbsp;e&nbsp;</span><br />
+<span class="keyword">in</span><br />
+<span>&nbsp;elements&nbsp;(s)&nbsp;do</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="keyword">if</span><br />
+<span>&nbsp;</span><br />
+<span class="keyword">not</span><br />
+<span>&nbsp;member&nbsp;(t,&nbsp;e)&nbsp;then</span>
+</li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="keyword">return</span><br />
+<span>&nbsp;false</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;end</span>
+</li>
+<li><span>&nbsp;&nbsp;end</span>
+</li>
+<li class="alt"><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">return</span><br />
+<span>&nbsp;true</span>
+</li>
+<li><span>end</span>
+</li>
+<li class="alt"></li>
+<li><span>--&nbsp;@func&nbsp;propersubset:&nbsp;Find&nbsp;whether&nbsp;one&nbsp;set&nbsp;</span><br />
+<span class="keyword">is</span><br />
+<span>&nbsp;a&nbsp;proper&nbsp;subset&nbsp;of</span>
+</li>
+<li class="alt"><span>--&nbsp;another</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;s,&nbsp;t:&nbsp;sets</span>
+</li>
+<li class="alt"><span>--&nbsp;@returns</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;r:&nbsp;true&nbsp;</span><br />
+<span class="keyword">if</span><br />
+<span>&nbsp;s&nbsp;</span><br />
+<span class="keyword">is</span><br />
+<span>&nbsp;a&nbsp;proper&nbsp;subset&nbsp;of&nbsp;t,&nbsp;false&nbsp;otherwise</span>
+</li>
+<li class="alt"><span>function&nbsp;propersubset&nbsp;(s,&nbsp;t)</span>
+</li>
+<li><span>&nbsp;&nbsp;</span><br />
+<span class="keyword">return</span><br />
+<span>&nbsp;subset&nbsp;(s,&nbsp;t)&nbsp;</span><br />
+<span class="keyword">and</span><br />
+<span>&nbsp;</span><br />
+<span class="keyword">not</span><br />
+<span>&nbsp;subset&nbsp;(t,&nbsp;s)</span>
+</li>
+<li class="alt"><span>end</span>
+</li>
+<li></li>
+<li class="alt"><span>--&nbsp;@func&nbsp;equal:&nbsp;Find&nbsp;whether&nbsp;two&nbsp;sets&nbsp;are&nbsp;equal</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;s,&nbsp;t:&nbsp;sets</span>
+</li>
+<li class="alt"><span>--&nbsp;@returns</span>
+</li>
+<li><span>--&nbsp;&nbsp;&nbsp;@param&nbsp;r:&nbsp;true&nbsp;</span><br />
+<span class="keyword">if</span><br />
+<span>&nbsp;sets&nbsp;are&nbsp;equal,&nbsp;false&nbsp;otherwise</span>
+</li>
+<li class="alt"><span><span style="color: #ff0000;">function&nbsp;equal&nbsp;(s,&nbsp;t)</span><br />
+</span>
+</li>
+<li><span style="color: #ff0000;"><span>&nbsp;<span style="color: #ff0000;">&nbsp;</span><br />
+</span><br />
+</span><br />
+<span style="color: #ff0000;"><span class="keyword">return</span><br />
+<span>&nbsp;subset&nbsp;(s,&nbsp;t)&nbsp;</span><br />
+<span class="keyword">and</span><br />
+<span>&nbsp;subset&nbsp;(t,&nbsp;s)</span><br />
+</span>
+</li>
+<li class="alt"><span>end</span>
+</li>
+<li></li>
+<li class="alt"><span>--&nbsp;@head&nbsp;Metamethods&nbsp;</span><br />
+<span class="keyword">for</span><br />
+<span>&nbsp;sets</span>
+</li>
+<li><span>--&nbsp;set&nbsp;+&nbsp;table&nbsp;=&nbsp;union</span>
+</li>
+<li class="alt"><span>metatable.__add&nbsp;=&nbsp;union</span>
+</li>
+<li><span>--&nbsp;set&nbsp;-&nbsp;table&nbsp;=&nbsp;set&nbsp;difference</span>
+</li>
+<li class="alt"><span>metatable.__sub&nbsp;=&nbsp;difference</span>
+</li>
+<li><span><span style="color: #ff0000;">--&nbsp;set&nbsp;*&nbsp;table&nbsp;=&nbsp;intersection</span><br />
+</span>
+</li>
+<li class="alt"><span><span style="color: #ff0000;">metatable.__mul&nbsp;=&nbsp;intersection</span><br />
+</span>
+</li>
+<li><span>--&nbsp;set&nbsp;/&nbsp;table&nbsp;=&nbsp;symmetric&nbsp;difference</span>
+</li>
+<li class="alt"><span>metatable.__div&nbsp;=&nbsp;symmetric_difference</span>
+</li>
+<li><span>--&nbsp;set&nbsp;&lt;=&nbsp;table&nbsp;=&nbsp;subset</span>
+</li>
+<li class="alt"><span>metatable.__le&nbsp;=&nbsp;subset</span>
+</li>
+<li><span>--&nbsp;set&nbsp;&lt;&nbsp;table&nbsp;=&nbsp;proper&nbsp;subset</span>
+</li>
+<li class="alt"><span>metatable.__lt&nbsp;=&nbsp;propersubset</span>
+</li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p>这虽然是一件芝麻一样的小事，但却是我个人第一次真正的为开源社区做贡献。。。。虽然仅仅是以bug report的形式：）立此存照：）</p>
+<p>&nbsp;</p>

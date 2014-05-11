@@ -1,0 +1,514 @@
+---
+layout: post
+title: 3D 图形编程的数学基础(2) 矩阵及其运算
+categories:
+- "图形技术"
+tags:
+- "数学"
+- "矩阵变换"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '23'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="right"><b><a style="color: rgb(0,107,173); text-decoration: none" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b><b></b><b><u></u></b></p>
+<p style="padding-bottom: 0px; margin: 1em 0px 0.5em; padding-left: 0px; padding-right: 0px; padding-top: 0px" align="right"><a style="color: rgb(119,0,0); text-decoration: none" href="http://groups.google.com/group/jiutianfile/"><b>讨论新闻组及文件</b></a></p>
+<div style="padding-bottom: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; float: none; padding-top: 0px" id="scid:0767317B-992E-4b12-91E0-4F059A8CECA8:c01f129a-d7fc-4f26-81ac-28433107fd68" class="wlWriterEditableSmartContent">Technorati 标签: <a href="http://technorati.com/tags/3D" rel="tag">3D</a>,<a href="http://technorati.com/tags/matrix" rel="tag">matrix</a>,<a href="http://technorati.com/tags/irrlich" rel="tag">irrlich</a>,<a href="http://technorati.com/tags/D3D" rel="tag">D3D</a>,<a href="http://technorati.com/tags/DirectX" rel="tag">DirectX</a>,<a href="http://technorati.com/tags/math" rel="tag">math</a></div>
+<h3> </h3>
+<h3>矩阵（matrix）的概念</h3>
+<p>由m * n 个数有序地排成m行n列的数表，称为一个m行n列的矩阵，一般用大写表示。全零的称为零矩阵。</p>
+<p>以下是一个 4 × 3 矩阵：</p>
+<dl>
+<dd><img alt="/begin{bmatrix}<br />
+1 &amp; 2 &amp; 3 //<br />
+1 &amp; 2 &amp; 7 //<br />
+4&amp;9&amp;2 //<br />
+6&amp;1&amp;5/end{bmatrix}" src="http://upload.wikimedia.org/math/3/5/9/359422fc4179dde36ca6921f4cd17302.png" /></dd>
+</dl>
+<p>某矩阵 <i>A</i> 的第 <i>i</i> 行第 <i>j</i> 列，或 <i>i,j</i>位，通常记为 <i>A</i>[<i>i,j</i>] 或 <i>A</i><sub>i,j</sub>。在上述例子中 <i>A</i>[2,3]=7。（来自<a href="http://zh.wikipedia.org/zh-cn/%E7%9F%A9%E9%98%B5" target="_blank">wikipedia</a>）</p>
+<p>当一个矩阵仅包含单行或单列时，这样的矩阵就称为行向量或列向量。（参考上一篇《<a href="http://www.jtianling.com/archive/2009/12/08/4960473.aspx">3D 编程的数学基础(1) 向量及其运算</a>》）</p>
+<p>GNU Octave(matlab):</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>A =
+
+   16    2    3   13
+    5   11   10    8
+    9    7    6   12
+    4   14   15    1
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>上面就是用GNU Octave(matlab)生成的一个4*4的矩阵。</p>
+<p>事实上，在Irrlicht与DirectX中，都只有4*4的矩阵，原因以后再讲，在Irrlicht中矩阵用模板类CMatrix4<t>表示，并且有</t></p>
+<p>typedef CMatrix4<f32> matrix4;</f32></p>
+<p>DirectX中的矩阵是用D3DXMATRIX表示，并且功能上设计的比D3D中的矩阵会多很多。</p>
+<p>在DirectX中,此结构继承自以下结构。</p>
+<p>typedef struct _D3DMATRIX {<br />    union {<br />        struct {<br />            float        _11, _12, _13, _14;<br />            float        _21, _22, _23, _24;<br />            float        _31, _32, _33, _34;<br />            float        _41, _42, _43, _44;</p>
+<p>        };<br />        float m[4][4];<br />    };<br />} D3DMATRIX;</p>
+<p>也就是说，在DirectX中以m[4][4]的二维数组来表示4*4的矩阵。与Irrlicht不同，在Irrlicht中是用T M[16];来表示的。但是使用上大致相同，因为都重载了（）操作符，可以以A(i, j）的方式来获取矩阵A的第i行，第j列的值。</p>
+<p>比如，我们有一个如下的矩阵。</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>E =
+
+    1    2    3    4
+    5    6    7    8
+    9   10   11   12
+   13   14   15   16
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>D3D中构造及遍历的代码如下：
+<pre class="code"><span style="color: blue">#include </span><span style="color: #a31515"><stdio.h>
+</stdio.h></span><span style="color: blue">#include </span><span style="color: #a31515"><d3dx9.h>
+
+</d3dx9.h></span><span style="color: blue">int </span><span style="color: #050005">_tmain</span>(<span style="color: blue">int </span><span style="color: #050005">argc</span>, <span style="color: #050005">_TCHAR</span>* <span style="color: #050005">argv</span>[])
+{
+    <span style="color: #050005">D3DXMATRIX A</span>(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
+
+    <span style="color: blue">for</span>(<span style="color: blue">int </span><span style="color: #050005">i </span>= 0; <span style="color: #050005">i </span>&lt; 4; ++<span style="color: #050005">i</span>)
+    {
+        <span style="color: blue">for</span>(<span style="color: blue">int </span><span style="color: #050005">j </span>= 0; <span style="color: #050005">j </span>&lt; 4; ++<span style="color: #050005">j</span>)
+        {
+            <span style="color: #050005">printf</span>(<span style="color: #a31515">"%.2f/t"</span>, <span style="color: #050005">A</span>(<span style="color: #050005">i</span>, <span style="color: #050005">j</span>));
+        }
+        <span style="color: #050005">printf</span>(<span style="color: #a31515">"/n"</span>);
+    }
+
+    <span style="color: blue">return </span>0;
+}</pre>
+<p><a href="http://11011.net/software/vspaste"></a></p>
+<p>结果：</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>1.00    2.00    3.00    4.00
+5.00    6.00    7.00    8.00
+9.00    10.00   11.00   12.00
+13.00   14.00   15.00   16.00
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Irrlicht中 </p>
+<pre class="code"><span style="color: blue">#include </span><span style="color: #a31515"><stdio.h>
+</stdio.h></span><span style="color: blue">#include </span><span style="color: #a31515"><irrlicht.h>
+</irrlicht.h></span><span style="color: blue">using namespace </span><span style="color: #050005">irr</span>::<span style="color: #050005">core</span>;
+
+<span style="color: blue">int </span><span style="color: #050005">_tmain</span>(<span style="color: blue">int </span><span style="color: #050005">argc</span>, <span style="color: #050005">_TCHAR</span>* <span style="color: #050005">argv</span>[])
+{
+    <span style="color: #050005">matrix4 A</span>;
+    <span style="color: blue">float </span><span style="color: #050005">m</span>[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+    <span style="color: #050005">A</span>.<span style="color: #050005">setM</span>(<span style="color: #050005">m</span>);
+
+    <span style="color: blue">for</span>(<span style="color: blue">int </span><span style="color: #050005">i </span>= 0; <span style="color: #050005">i </span>&lt; 4; ++<span style="color: #050005">i</span>)
+    {
+        <span style="color: blue">for</span>(<span style="color: blue">int </span><span style="color: #050005">j </span>= 0; <span style="color: #050005">j </span>&lt; 4; ++<span style="color: #050005">j</span>)
+        {
+            <span style="color: #050005">printf</span>(<span style="color: #a31515">"%.2f/t"</span>, <span style="color: #050005">A</span>(<span style="color: #050005">i</span>, <span style="color: #050005">j</span>));
+        }
+        <span style="color: #050005">printf</span>(<span style="color: #a31515">"/n"</span>);
+    }
+
+    <span style="color: blue">return </span>0;
+}</pre>
+<pre class="code">输出结果一样。</pre>
+<pre class="code"> </pre>
+<h3>行优先及列优先（选读，与数学无关，仅与计算机存储矩阵的物理方式有关）</h3>
+<p>在D3D及Irrlicht中，顺序的输出矩阵，是先遍历行，然后再遍历列，这种方式叫行优先或者行主序（row-major order），这里特意提出来是因为事实上还有先遍历列然后遍历行的存储方式，称为列优先或者列主序(Column-major order)。给大家一个参考资料（<a href="http://en.wikipedia.org/wiki/Row-major_order" target="_blank">Wikipedia的Row-major_order</a>）</p>
+<p>D3D中的遍历：（需要强转成FLOAT数组后然后遍历）</p>
+<pre class="code"><span style="color: blue">for</span>(<span style="color: blue">int </span><span style="color: #050005">i </span>= 0; <span style="color: #050005">i </span>&lt; 16; ++<span style="color: #050005">i</span>)
+{
+    <span style="color: #050005">printf</span>(<span style="color: #a31515">"%.2f/t"</span>, ((<span style="color: #050005">FLOAT</span>*)<span style="color: #050005">A</span>)[<span style="color: #050005">i</span>] );
+}</pre>
+<pre class="code">Irrlicht中的遍历：</pre>
+<pre class="code"><span style="color: blue">for</span>(<span style="color: blue">int </span><span style="color: #050005">i </span>= 0; <span style="color: #050005">i </span>&lt; 16; ++<span style="color: #050005">i</span>)
+{
+    <span style="color: #050005">printf</span>(<span style="color: #a31515">"%.2f/t"</span>, <span style="color: #050005">A</span>[<span style="color: #050005">i</span>]);
+}</pre>
+<p>假如大家全部用行优先的存储方式，那么我就不用再多费口舌讲列优先了，事实上，OpenGL就采用了列优先的存储方式，呵呵，似乎OpenGL生来就是与这个世界相反的的，坐标系D3D,Irrlicht用右手坐标系吧，OpenGL就偏偏用左手坐标系，D3D,Irrlicht用行优先存储矩阵吧，OpenGL就偏偏用列优先方式存储矩阵。。。。。用长沙话来说，这叫逗霸。。。（当然，其实从历史来说，应该是这个世界与OpenGL唱反调才对）</p>
+<p>在OpenGL中，没有为矩阵设计结构，仅用数组表示（也体现了OpenGL的底层和原始），假如用glLoadMatrix*来加载一个矩阵的话，此矩阵应该是这样排列的：</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre> 1    5    9   13
+ 2    6   10   14
+ 3    7   11   15
+ 4    8   12   16
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><a href="http://11011.net/software/vspaste"></a>郁闷了吧。。。。。。。。。<a href="http://11011.net/software/vspaste"></a></p>
+<h3> </h3>
+<h3>矩阵加减，数乘</h3>
+<p>与向量类似，这里也不多描述了。也就是对应元素的简单加减乘操作。概念非常简单，不多描述了。看看实际的操作。</p>
+<p>GNU Octave(matlab):</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>&gt; B = A + A
+B =
+
+   32    4    6   26
+   10   22   20   16
+   18   14   12   24
+    8   28   30    2
+
+octave-3.2.3.exe:7:d:
+&gt; C = B - A
+C =
+
+   16    2    3   13
+    5   11   10    8
+    9    7    6   12
+    4   14   15    1
+
+octave-3.2.3.exe:8:d:
+&gt; D = A * 2
+D =
+
+   32    4    6   26
+   10   22   20   16
+   18   14   12   24
+    8   28   30    2
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到C = A和D = B = A + A = C * 2，对应元素的计算，非常简单。事实上D3D,Irrlicht中的矩阵类都已经重载了相关的运算符，直接使用即可。</p>
+<p> </p>
+<h3>矩阵的转置（Transpose)</h3>
+<p>矩阵的转置可通过交换矩阵的行和列来实现。所以，一个m*n矩阵的转置是一个n*m矩阵。我们用<a href="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_2.gif"><img style="border-bottom: 0px; border-left: 0px; display: inline; margin-left: 0px; border-top: 0px; margin-right: 0px; border-right: 0px" title="yyyy_html_7bb96079" border="0" hspace="8" alt="yyyy_html_7bb96079" src="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_thumb.gif" width="31" height="21" /></a>来表示矩阵M的转置。</p>
+<p>设A为m×n阶矩阵（即m行n列），第i行j列的元素是a_ij，即：A=(a_ij)</p>
+<p>直观来看，将A的所有元素绕着一条从第1行第1列元素出发的右下方45度的射线作镜面反转，即得到A的转置。一个矩阵M, 把它的第一行变成第一列，第二行变成第二列，......,最末一行变为最末一列，从而得到一个新的矩阵N。这一过程称为矩阵的转置。</p>
+<p><a name="1_2"></a>基本性质</p>
+<p>（以下T都是上标）</p>
+<p>(A±B)T=AT±BT</p>
+<p>(A×B)T= BT×AT</p>
+<p>(AT)T=A</p>
+<p>在GNU Octave(matlab)中，有现成的转置函数：</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>&gt; A
+A =
+
+   1   2   3   4
+
+octave-3.2.3.exe
+&gt; transpose(A)
+ans =
+
+   1
+   2
+   3
+   4
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>上面也体现了转置最常用的用法，将行向量转为列向量。再看个矩阵的例子。</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>&gt; E
+E =
+
+    1    2    3    4
+    5    6    7    8
+    9   10   11   12
+   13   14   15   16
+
+octave-3.2.3.exe:67:
+&gt; transpose(E)
+ans =
+
+    1    5    9   13
+    2    6   10   14
+    3    7   11   15
+    4    8   12   16
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>将E的计数增长行列交换了，假如保持获取元素的下标与上述计数增长一致，事实上相当于将行优先转化为列优先，这也是实际中转置的一种用途。</p>
+<p>比如在OpenGL中使用列优先，但是假如我们有的都是行优先数据怎么办？可以通过加载转置矩阵的方式加载，即</p>
+<p>glLoadTransposeMatrix*函数。</p>
+<p>在D3D中由函数<span style="color: #050005">D3DXMatrixTranspose实现转置。</span></p>
+<p><span style="color: #050005">在Irrlicht中实现转置的代码如下：</span></p>
+<pre class="code">    <span style="color: green">// returns transposed matrix
+    </span><span style="color: blue">template </span>&lt;<span style="color: blue">class </span><span style="color: #050005">T</span>&gt;
+    <span style="color: blue">inline </span><span style="color: #050005">CMatrix4</span>&lt;<span style="color: #050005">T</span>&gt; <span style="color: #050005">CMatrix4</span>&lt;<span style="color: #050005">T</span>&gt;::<span style="color: #050005">getTransposed</span>() <span style="color: blue">const
+    </span>{
+        <span style="color: #050005">CMatrix4</span>&lt;<span style="color: #050005">T</span>&gt; <span style="color: #050005">t </span>( <span style="color: #050005">EM4CONST_NOTHING </span>);
+        <span style="color: #050005">getTransposed </span>( <span style="color: #050005">t </span>);
+        <span style="color: blue">return </span><span style="color: #050005">t</span>;
+    }
+
+
+    <span style="color: green">// returns transposed matrix
+    </span><span style="color: blue">template </span>&lt;<span style="color: blue">class </span><span style="color: #050005">T</span>&gt;
+    <span style="color: blue">inline void </span><span style="color: #050005">CMatrix4</span>&lt;<span style="color: #050005">T</span>&gt;::<span style="color: #050005">getTransposed</span>( <span style="color: #050005">CMatrix4</span>&lt;<span style="color: #050005">T</span>&gt;&amp; <span style="color: #050005">o </span>) <span style="color: blue">const
+    </span>{
+        <span style="color: #050005">o</span>[ 0] = <span style="color: #050005">M</span>[ 0];
+        <span style="color: #050005">o</span>[ 1] = <span style="color: #050005">M</span>[ 4];
+        <span style="color: #050005">o</span>[ 2] = <span style="color: #050005">M</span>[ 8];
+        <span style="color: #050005">o</span>[ 3] = <span style="color: #050005">M</span>[12];
+
+        <span style="color: #050005">o</span>[ 4] = <span style="color: #050005">M</span>[ 1];
+        <span style="color: #050005">o</span>[ 5] = <span style="color: #050005">M</span>[ 5];
+        <span style="color: #050005">o</span>[ 6] = <span style="color: #050005">M</span>[ 9];
+        <span style="color: #050005">o</span>[ 7] = <span style="color: #050005">M</span>[13];
+
+        <span style="color: #050005">o</span>[ 8] = <span style="color: #050005">M</span>[ 2];
+        <span style="color: #050005">o</span>[ 9] = <span style="color: #050005">M</span>[ 6];
+        <span style="color: #050005">o</span>[10] = <span style="color: #050005">M</span>[10];
+        <span style="color: #050005">o</span>[11] = <span style="color: #050005">M</span>[14];
+
+        <span style="color: #050005">o</span>[12] = <span style="color: #050005">M</span>[ 3];
+        <span style="color: #050005">o</span>[13] = <span style="color: #050005">M</span>[ 7];
+        <span style="color: #050005">o</span>[14] = <span style="color: #050005">M</span>[11];
+        <span style="color: #050005">o</span>[15] = <span style="color: #050005">M</span>[15];
+<span style="color: blue">#if defined </span>( <span style="color: #050005">USE_MATRIX_TEST </span>)
+        <span style="color: gray">o.definitelyIdentityMatrix=definitelyIdentityMatrix;
+</span><span style="color: blue">#endif
+    </span>}</pre>
+<p><a href="http://11011.net/software/vspaste"></a><font color="#050005"></font></p>
+<p>理解上应该很简单，因为转置本身就很简单。</p>
+<p> </p>
+<h3> </h3>
+<h3>矩阵乘法</h3>
+<p>矩阵乘法被参考1称为3D图形学中最重要的运算，没有之一。</p>
+<p>它只有在第一个矩阵的列数(column)和第二个矩阵的行数(row)相同时才有定义。若<i>A</i>为<i>m×n</i>矩阵，<i>B</i>为<i>n×p</i>矩阵，则他们的乘积<i>AB</i>会是一个<i>m×p</i>矩阵。其乘积矩阵的元素如下面式子得出： </p>
+<dl>
+<dd><img alt=" (AB)_{ij} = /sum_{r=1}^n a_{ir}b_{rj} = a_{i1}b_{1j} + a_{i2}b_{2j} + /cdots + a_{in}b_{nj}. " src="http://upload.wikimedia.org/math/0/3/a/03a587627dac6e73fd867a100c6ca9ee.png" /></dd>
+</dl></p>
+<p>矩阵乘法不符合交换率，所以将 AB 称为矩阵A右乘B ，或B左乘A。</p>
+<p>其实上述的代数方程，已经一些解释都非常难以理解，比如“<a href="http://zh.wikipedia.org/wiki/%E7%9F%A9%E9%99%A3%E4%B9%98%E6%B3%95" target="_blank">Wikipedia矩阵乘法</a>”上的讲解，讲了半天，倒是把我快绕晕了。我见过最易懂的解释来自于参考1，AB的第ij个元素值等于A的第i个行向量与B的第j个列向量的点积。点积的概念参考参考上一篇向量的知识，因为使用了更高一级的名词（更为抽象），所以更好理解，比教你怎么去拼，怎么去记公式要好。</p>
+<p>简单的说：<a href="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image3_633959978945000000.png"><img style="border-bottom: 0px; border-left: 0px; display: inline; margin-left: 0px; border-top: 0px; margin-right: 0px; border-right: 0px" title="image3" border="0" alt="image3" src="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image3_thumb_633959978981093750.png" width="110" height="44" /></a> </p>
+<p>先设定函数dotp以计算行向量A与列向量B之间的点积。</p>
+<p>function  ret  = dotp (A, B)<br />    ret = sum(A .* transpose(B))<br />end</p>
+<p>endfunction</p>
+<p>验证一下我们自己写的函数：</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>&gt; A
+A =
+
+   1   2   3   4
+
+octave-3.2.3.exe
+&gt; B
+B =
+
+    1
+    5
+    9
+   13
+
+octave-3.2.3.exe
+&gt; dotp(A,B)
+ret =  90
+ans =  90
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>此时，用带上点积的定义实现两个向量的矩阵乘法函数，如下：</p>
+<p>function  ret  = mul (A, B)<br />for i = 1 : length(A)<br />    for j = 1 : length(B)<br />        ret(i,j) = dotp(A(i,1:length(A)), B(1:length(B), j))<br />    end<br />end</p>
+<p>endfunction</p>
+<p>同样验证一下：</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>E =
+
+    1    2    3    4
+    5    6    7    8
+    9   10   11   12
+   13   14   15   16
+
+octave-3.2.3.exe:72:d:/Oc
+&gt; F
+F =
+
+   1   1   1   1
+   2   2   2   2
+   3   3   3   3
+   4   4   4   4
+
+octave-3.2.3.exe:73:d:/Oc
+&gt; mul(E,F)
+octave-3.2.3.exe:74:d:/Oc
+&gt; M = mul(E,F)
+octave-3.2.3.exe:75:d:/Oc
+&gt; M
+M =
+
+    30    30    30    30
+    70    70    70    70
+   110   110   110   110
+   150   150   150   150
+
+octave-3.2.3.exe:76:d:/Oc
+&gt; E * F
+ans =
+
+    30    30    30    30
+    70    70    70    70
+   110   110   110   110
+   150   150   150   150
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>这里，我们用我们高层抽象的定义实现了mul函数，并且通过验证，个人感觉，这样的定义更加容易记忆，见仁见智，且当一家之言吧。</p>
+<p>不然，你愿意这样记住公式也行。。。。。见Irrlicht的矩阵乘法实现：（除了数量的乘法，没有牵涉进其他概念，一个一个去对一下，看看头晕不晕。）</p>
+<pre class="code">    <span style="color: green">//! multiply by another matrix
+    // set this matrix to the product of two other matrices
+    // goal is to reduce stack use and copy
+    </span><span style="color: blue">template </span>&lt;<span style="color: blue">class </span><span style="color: #050005">T</span>&gt;
+    <span style="color: blue">inline </span><span style="color: #050005">CMatrix4</span>&lt;<span style="color: #050005">T</span>&gt;&amp; <span style="color: #050005">CMatrix4</span>&lt;<span style="color: #050005">T</span>&gt;::<span style="color: #050005">setbyproduct_nocheck</span>(<span style="color: blue">const </span><span style="color: #050005">CMatrix4</span>&lt;<span style="color: #050005">T</span>&gt;&amp; <span style="color: #050005">other_a</span>,<span style="color: blue">const </span><span style="color: #050005">CMatrix4</span>&lt;<span style="color: #050005">T</span>&gt;&amp; <span style="color: #050005">other_b </span>)
+    {
+        <span style="color: blue">const </span><span style="color: #050005">T </span>*<span style="color: #050005">m1 </span>= <span style="color: #050005">other_a</span>.<span style="color: #050005">M</span>;
+        <span style="color: blue">const </span><span style="color: #050005">T </span>*<span style="color: #050005">m2 </span>= <span style="color: #050005">other_b</span>.<span style="color: #050005">M</span>;
+
+        <span style="color: #050005">M</span>[0] = <span style="color: #050005">m1</span>[0]*<span style="color: #050005">m2</span>[0] + <span style="color: #050005">m1</span>[4]*<span style="color: #050005">m2</span>[1] + <span style="color: #050005">m1</span>[8]*<span style="color: #050005">m2</span>[2] + <span style="color: #050005">m1</span>[12]*<span style="color: #050005">m2</span>[3];
+        <span style="color: #050005">M</span>[1] = <span style="color: #050005">m1</span>[1]*<span style="color: #050005">m2</span>[0] + <span style="color: #050005">m1</span>[5]*<span style="color: #050005">m2</span>[1] + <span style="color: #050005">m1</span>[9]*<span style="color: #050005">m2</span>[2] + <span style="color: #050005">m1</span>[13]*<span style="color: #050005">m2</span>[3];
+        <span style="color: #050005">M</span>[2] = <span style="color: #050005">m1</span>[2]*<span style="color: #050005">m2</span>[0] + <span style="color: #050005">m1</span>[6]*<span style="color: #050005">m2</span>[1] + <span style="color: #050005">m1</span>[10]*<span style="color: #050005">m2</span>[2] + <span style="color: #050005">m1</span>[14]*<span style="color: #050005">m2</span>[3];
+        <span style="color: #050005">M</span>[3] = <span style="color: #050005">m1</span>[3]*<span style="color: #050005">m2</span>[0] + <span style="color: #050005">m1</span>[7]*<span style="color: #050005">m2</span>[1] + <span style="color: #050005">m1</span>[11]*<span style="color: #050005">m2</span>[2] + <span style="color: #050005">m1</span>[15]*<span style="color: #050005">m2</span>[3];
+
+        <span style="color: #050005">M</span>[4] = <span style="color: #050005">m1</span>[0]*<span style="color: #050005">m2</span>[4] + <span style="color: #050005">m1</span>[4]*<span style="color: #050005">m2</span>[5] + <span style="color: #050005">m1</span>[8]*<span style="color: #050005">m2</span>[6] + <span style="color: #050005">m1</span>[12]*<span style="color: #050005">m2</span>[7];
+        <span style="color: #050005">M</span>[5] = <span style="color: #050005">m1</span>[1]*<span style="color: #050005">m2</span>[4] + <span style="color: #050005">m1</span>[5]*<span style="color: #050005">m2</span>[5] + <span style="color: #050005">m1</span>[9]*<span style="color: #050005">m2</span>[6] + <span style="color: #050005">m1</span>[13]*<span style="color: #050005">m2</span>[7];
+        <span style="color: #050005">M</span>[6] = <span style="color: #050005">m1</span>[2]*<span style="color: #050005">m2</span>[4] + <span style="color: #050005">m1</span>[6]*<span style="color: #050005">m2</span>[5] + <span style="color: #050005">m1</span>[10]*<span style="color: #050005">m2</span>[6] + <span style="color: #050005">m1</span>[14]*<span style="color: #050005">m2</span>[7];
+        <span style="color: #050005">M</span>[7] = <span style="color: #050005">m1</span>[3]*<span style="color: #050005">m2</span>[4] + <span style="color: #050005">m1</span>[7]*<span style="color: #050005">m2</span>[5] + <span style="color: #050005">m1</span>[11]*<span style="color: #050005">m2</span>[6] + <span style="color: #050005">m1</span>[15]*<span style="color: #050005">m2</span>[7];
+
+        <span style="color: #050005">M</span>[8] = <span style="color: #050005">m1</span>[0]*<span style="color: #050005">m2</span>[8] + <span style="color: #050005">m1</span>[4]*<span style="color: #050005">m2</span>[9] + <span style="color: #050005">m1</span>[8]*<span style="color: #050005">m2</span>[10] + <span style="color: #050005">m1</span>[12]*<span style="color: #050005">m2</span>[11];
+        <span style="color: #050005">M</span>[9] = <span style="color: #050005">m1</span>[1]*<span style="color: #050005">m2</span>[8] + <span style="color: #050005">m1</span>[5]*<span style="color: #050005">m2</span>[9] + <span style="color: #050005">m1</span>[9]*<span style="color: #050005">m2</span>[10] + <span style="color: #050005">m1</span>[13]*<span style="color: #050005">m2</span>[11];
+        <span style="color: #050005">M</span>[10] = <span style="color: #050005">m1</span>[2]*<span style="color: #050005">m2</span>[8] + <span style="color: #050005">m1</span>[6]*<span style="color: #050005">m2</span>[9] + <span style="color: #050005">m1</span>[10]*<span style="color: #050005">m2</span>[10] + <span style="color: #050005">m1</span>[14]*<span style="color: #050005">m2</span>[11];
+        <span style="color: #050005">M</span>[11] = <span style="color: #050005">m1</span>[3]*<span style="color: #050005">m2</span>[8] + <span style="color: #050005">m1</span>[7]*<span style="color: #050005">m2</span>[9] + <span style="color: #050005">m1</span>[11]*<span style="color: #050005">m2</span>[10] + <span style="color: #050005">m1</span>[15]*<span style="color: #050005">m2</span>[11];
+
+        <span style="color: #050005">M</span>[12] = <span style="color: #050005">m1</span>[0]*<span style="color: #050005">m2</span>[12] + <span style="color: #050005">m1</span>[4]*<span style="color: #050005">m2</span>[13] + <span style="color: #050005">m1</span>[8]*<span style="color: #050005">m2</span>[14] + <span style="color: #050005">m1</span>[12]*<span style="color: #050005">m2</span>[15];
+        <span style="color: #050005">M</span>[13] = <span style="color: #050005">m1</span>[1]*<span style="color: #050005">m2</span>[12] + <span style="color: #050005">m1</span>[5]*<span style="color: #050005">m2</span>[13] + <span style="color: #050005">m1</span>[9]*<span style="color: #050005">m2</span>[14] + <span style="color: #050005">m1</span>[13]*<span style="color: #050005">m2</span>[15];
+        <span style="color: #050005">M</span>[14] = <span style="color: #050005">m1</span>[2]*<span style="color: #050005">m2</span>[12] + <span style="color: #050005">m1</span>[6]*<span style="color: #050005">m2</span>[13] + <span style="color: #050005">m1</span>[10]*<span style="color: #050005">m2</span>[14] + <span style="color: #050005">m1</span>[14]*<span style="color: #050005">m2</span>[15];
+        <span style="color: #050005">M</span>[15] = <span style="color: #050005">m1</span>[3]*<span style="color: #050005">m2</span>[12] + <span style="color: #050005">m1</span>[7]*<span style="color: #050005">m2</span>[13] + <span style="color: #050005">m1</span>[11]*<span style="color: #050005">m2</span>[14] + <span style="color: #050005">m1</span>[15]*<span style="color: #050005">m2</span>[15];
+<span style="color: blue">#if defined </span>( <span style="color: #050005">USE_MATRIX_TEST </span>)
+        <span style="color: gray">definitelyIdentityMatrix=false;
+</span><span style="color: blue">#endif
+        return </span>*<span style="color: blue">this</span>;
+    }</pre>
+<p><a href="http://11011.net/software/vspaste"></a></p>
+<p> </p>
+<h3>方阵</h3>
+<p>行数与列数相同的矩阵称为方阵。比如，上述4*4的矩阵其实都是方阵（就如同矩形是长，宽可以不一样，正方形边长一样），并且，方阵的行数（列数）称为它的阶，上述4*4的矩阵可以被称为4阶方阵，也是3D图形编程中使用的最多的矩阵。</p>
+<p> <br />
+<h3>单位矩阵</h3></p>
+<p>主对角线上元素为1，其他元素为0的方阵，称为单位矩阵。(Identity Matrix)一般以I表示，单位矩阵在矩阵算法中相当于普通数学运算的1。 </p>
+<dl>
+<dd><img alt="I_1 = /begin{bmatrix}<br />
+1 /end{bmatrix}<br />
+,/<br />
+I_2 = /begin{bmatrix}<br />
+1 &amp; 0 //<br />
+0 &amp; 1 /end{bmatrix}<br />
+,/<br />
+I_3 = /begin{bmatrix}<br />
+1 &amp; 0 &amp; 0 //<br />
+0 &amp; 1 &amp; 0 //<br />
+0 &amp; 0 &amp; 1 /end{bmatrix}<br />
+,/ /cdots ,/<br />
+I_n = /begin{bmatrix}<br />
+1 &amp; 0 &amp; /cdots &amp; 0 //<br />
+0 &amp; 1 &amp; /cdots &amp; 0 //<br />
+/vdots &amp; /vdots &amp; /ddots &amp; /vdots //<br />
+0 &amp; 0 &amp; /cdots &amp; 1 /end{bmatrix}" src="http://upload.wikimedia.org/math/a/a/b/aab94f3654099a22bbf9aedfe99324e2.png" /></dd>
+</dl>
+<p>一个单位矩阵与某个矩阵相乘，不改变该矩阵。</p>
+<p>在GNU Octave(matlab)中，也有现成的函数可以获取单位矩阵：</p>
+<table border="1">
+<tbody>
+<tr>
+<td>
+<pre>&gt; eye(4)
+ans =
+
+Diagonal Matrix
+
+   1   0   0   0
+   0   1   0   0
+   0   0   1   0
+   0   0   0   1
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>在Irrlicht中，获取单位矩阵就更简单了，默认的matrix4类，就是单位矩阵。</p>
+<p>在D3D中通过函数：</p>
+<p>D3DXINLINE D3DXMATRIX* D3DXMatrixIdentity<br />    ( D3DXMATRIX *pOut )</p>
+<p>获取</p>
+<p>  </p>
+<h3>逆矩阵</h3>
+<p><font face="宋体"><font face="宋体">设</font></font><font face="宋体"><font face="宋体">A</font></font><font face="宋体"><font face="宋体">是数域上的一个</font></font><font face="宋体"><font face="宋体">n</font></font><font face="宋体"><font face="宋体">阶</font><a href="http://baike.baidu.com/view/404843.htm" target="_blank"><font color="#000000">方阵</font></a><font face="宋体">，若在相同数域上存在另一个</font></font><font face="宋体"><font face="宋体">n</font></font><font face="宋体"><font face="宋体">阶矩阵</font></font><font face="宋体"><font face="宋体">B</font></font><font face="宋体"><font face="宋体">，使得：</font></font><font face="宋体">AB=BA=I，</font><font face="宋体">则我们称</font><font face="宋体">B</font><font face="宋体">是</font><font face="宋体">A</font><font face="宋体">的逆矩阵，而</font><font face="宋体">A</font><font face="宋体">则被称为可逆矩阵，可逆矩阵也被称为非奇异矩阵、非奇异矩阵、满秩矩阵。</font></p>
+<p><font face="宋体">1.可逆矩阵一定是方阵</font></p>
+<p><font face="宋体">2.一个可逆矩阵的逆矩阵是唯一的</font></p>
+<p><font face="宋体">3.两个可逆矩阵的乘积依然可逆</font></p>
+<p><font face="宋体">4.可逆矩阵的转置矩阵也可逆</font></p>
+<p> </p>
+<h3>正交矩阵（我数学书上都没有的概念-_-!）</h3>
+<p><font face="宋体">n阶实矩阵 M称为正交矩阵，如果：M×<a href="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_2.gif"><img title="yyyy_html_7bb96079" border="0" hspace="8" alt="yyyy_html_7bb96079" src="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_thumb.gif" width="31" height="21" /></a>=I （定义<a href="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_2.gif"><img title="yyyy_html_7bb96079" border="0" hspace="8" alt="yyyy_html_7bb96079" src="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_thumb.gif" width="31" height="21" /></a>表示“矩阵M的转置矩阵”。） </font></p>
+<p><font face="宋体">则下列诸条件是等价的:</font></p>
+<p><font face="宋体">1) M 是正交矩阵</font></p>
+<p><font face="宋体">2) M×<a href="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_2.gif"><img title="yyyy_html_7bb96079" border="0" hspace="8" alt="yyyy_html_7bb96079" src="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_thumb.gif" width="31" height="21" /></a>= I 为单位矩阵</font></p>
+<p><font face="宋体">3) <a href="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_2.gif"><img title="yyyy_html_7bb96079" border="0" hspace="8" alt="yyyy_html_7bb96079" src="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_7bb96079_thumb.gif" width="31" height="21" /></a>是正交矩阵</font></p>
+<p><font face="宋体">4) M的各行是单位向量且两两正交</font></p>
+<p><font face="宋体">5) M的各列是单位向量且两两正交</font></p>
+<p><font face="宋体">6) (Mx,My)=(x,y) x,y∈R </font></p>
+<p style="margin-bottom: 0cm" lang="zh-CN"> </p>
+<p>参考资料： </p>
+<p>1.《DirectX 9.0 3D游戏开发编程基础》 ，（美）Frank D.Luna著，段菲译，清华大学出版社 </p>
+<p>2.《大学数学》湖南大学数学与计量经济学院组编，高等教育出版社 </p>
+<p>3.百度百科及wikipedia</p>
+<p align="left"> </p>
+<p align="left">其实这些概念都没有什么难的，大学中的线性代数课程中的基本概念而已，我不过想拿来结合GNU Octave(matlab)及D3D，Irrlicht一起来复习一下而已，下一篇预计讲解矩阵变换，应该也是最后一篇了。</p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接<b></b></p>
+<p align="right"><b><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a></b></p>
+<p><script type="text/javascript">var sitebro_tracker_atc_kw = {u:'http://www.sitebot.com.cn/754892/',w:'NzU0ODky',bt:'#804000',bg:'#EEEEDD',fs:1,ca:'#770000',bh:'#f4f4c6',cp:'',l:10,s:1,lang:'zh_CN'};</script><script type="text/javascript" src="http://www.sitebot.com.cn/js/widget_track2/tracker_atc_kw.js"></script><script type="text/javascript">&lt;!--<br />
+var sitebro_tracker_atc={u:'http://www.sitebot.com.cn/754892/',w:'NzU0ODky',bt:'#804000',bg:'#EEEEDD',cf:'#ffffff',ca:'#770000',bh:'#DDDDCC',cp:'%E6%9C%AC%E7%AB%99%E7%83%AD%E9%97%A8%E6%96%87%E7%AB%A0',l:10,s:0,lang:'zh_CN'};<br />
+// --&gt;</script><script src="http://www.sitebot.com.cn/js/widget_track2/tracker_atc.js" type="text/javascript"></script></p>

@@ -1,0 +1,37 @@
+---
+layout: post
+title: "女朋友用Python实现的猜数字游戏：）"
+categories:
+- Python
+tags:
+- Python
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '15'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p><span style="font-family: monospace;"><span style="color: #804040;">1 </span><span style="color: #a020f0;">from</span>&nbsp;random <span style="color: #a020f0;">import</span>&nbsp;randint<br /><span style="color: #804040;">&nbsp;2 </span><br /><span style="color: #804040;">&nbsp;3 </span><span style="color: #804040;"><strong>def</strong></span>&nbsp;<span style="color: #008080;">ran</span>():<br /><span style="color: #804040;">&nbsp;4 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>return</strong></span>&nbsp;randint(1,100)<br /><span style="color: #804040;">&nbsp;5<br />
+</span><br /><span style="color: #804040;">&nbsp;6 </span>c=ran()<br /><span style="color: #804040;">&nbsp;7<br />
+</span><br /><span style="color: #804040;">&nbsp;8 </span><span style="color: #0000ff;"># Guess<br />
+Number</span><br /><span style="color: #804040;">&nbsp;9 </span><span style="color: #0000ff;"># Writen By<br />
+小乖乖</span><br /><span style="color: #804040;">10 </span>count=0<br /><span style="color: #804040;">11<br />
+</span><span style="color: #804040;"><strong>while</strong></span>(count&lt;5):<br /><span style="color: #804040;">12 </span>&nbsp;&nbsp;&nbsp;&nbsp;<br /><span style="color: #804040;">13<br />
+</span>&nbsp;&nbsp;&nbsp;&nbsp;a=input()<br /><span style="color: #804040;">14 </span><br /><span style="color: #804040;">15<br />
+</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>if</strong></span>&nbsp;a&gt;c:<br /><span style="color: #804040;">16 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>print</strong></span>&nbsp;"<span style="color: #ff00ff;">too large ,try again</span>"<br /><span style="color: #804040;">17<br />
+</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>elif</strong></span>&nbsp;a&lt;c:<br /><span style="color: #804040;">18 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>print</strong></span>&nbsp;"<span style="color: #ff00ff;">too small, again</span>"<br /><span style="color: #804040;">19<br />
+</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>else</strong></span>:&nbsp;&nbsp;&nbsp;&nbsp;<br /><span style="color: #804040;">20<br />
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>print</strong></span>&nbsp;"<span style="color: #ff00ff;">good<br />
+,right</span>"<br /><span style="color: #804040;">21 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>print</strong></span>&nbsp;"<span style="color: #ff00ff;">count number<br />
+times=</span>",count+1<br /><span style="color: #804040;">22 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>break</strong></span><br /><span style="color: #804040;">23<br />
+</span>&nbsp;&nbsp;&nbsp;&nbsp;count=count+1<br /><span style="color: #804040;">24 </span><span style="color: #804040;"><strong>else</strong></span>:<br /><span style="color: #804040;">25 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804040;"><strong>print</strong></span>&nbsp;"<span style="color: #ff00ff;">answer=</span>",c<br /><span style="color: #804040;">26 </span>&nbsp;&nbsp;&nbsp;&nbsp;<br /><span style="color: #804040;">27 </span></span></p>

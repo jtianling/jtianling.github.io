@@ -1,0 +1,28 @@
+---
+layout: post
+title: "关于以前应用程序运行出现配置错误的问题的解决方案"
+categories:
+- "未分类"
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '1'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p>问题很简单,就是因为缺乏支持库,这里给大家几个建议,因为我的程序是在VS2005+sp1编译的,所以需要它特别的支持库,可以在以下地址找到下载,文件名为vcredist_x86.rar,另外,也有可能是因为.NET的支持库问题,目前我没有碰到,因为我的程序好像也没有用到.NET的特性.假如有需要的,可以到微软的网站去下载,另外,当然你可以直接下我的源代码,然后重新编译.</p>
+<p><a href="http://groups.google.com/group/jiutianfile/files">http://groups.google.com/group/jiutianfile/files</a></p>
+<p>最后,本来我可以重新用静态链接的方式编译的......但是,还是推荐你们安装以上文件比较一劳永逸.不然我每个编译出来的程序都要大一块.</p>
+<p>当然,你不想从我给的地址下载,也可以在微软的网站去搜搜,</p>
+<p>全名叫</p>
+<p>Microsoft Visual C++ 2005 SP1 Redistributable Package (x86)</p>

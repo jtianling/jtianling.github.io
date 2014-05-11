@@ -1,0 +1,460 @@
+---
+layout: post
+title: "非典型2D游戏引擎 Orx 源码阅读笔记(2) 基础模块与模块管理模块"
+categories:
+- "游戏开发"
+tags:
+- Orx
+- "游戏引擎"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '20'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="margin: 1em 0px 0.5em;" align="right"><strong><a style="color: #006bad; text-decoration: none;" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p style="margin: 1em 0px 0.5em;" align="right"><a style="color: #770000; text-decoration: none;" href="http://groups.google.com/group/jiutianfile/"><strong>讨论新闻组及文件</strong><br />
+</a></p>
+<p>&nbsp;上一节中对Orx的整体框架及结构进行了梳理，本节开始阅读Orx底层的各个模块。本节的主要内容是基础模块和用于管理模块的部分代码。</p>
+<h2>基础部分</h2>
+<h3>orxDecl.h,orxType.h/orxType.c:</h3>
+<p>
+对于每个跨平台的库总会有些杂事需要处理，比如统一每个长度的变量命名，为各平台的换行符，路径分隔符进行统一命名，大小头等。这两个文件就是做类似的事情。列举一些特别典型的：</p>
+<p><span style="font-family: monospace;">变量：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;Windows </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #c000c0;">#ifdef __orxWINDOWS__</span></p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">void</span><br />
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxHANDLE;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxU32;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">short</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxU16;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">char</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxU8;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">signed</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxS32;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">signed</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">short</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxS16;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">signed</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">char</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxS8;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxBOOL;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxFLOAT;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">double</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxDOUBLE;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">char</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxCHAR;<br />
+<span style="color: #c000c0;">&nbsp;&nbsp;#define orxSTRING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxCHAR *</span></p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;orxU32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxENUM;</p>
+<p><span style="color: #c000c0;">&nbsp;&nbsp;#define orx2F(V)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ((orxFLOAT)(V))</span></p>
+<p><span style="color: #c000c0;">&nbsp;&nbsp;#define orxENUM_NONE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span style="color: #008080;">0xFFFFFFFFL</span></p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;Compiler specific </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #c000c0;">&nbsp;&nbsp;#ifdef __orxGCC__</span></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp; orxU64;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">signed</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp; orxS64;</p>
+<p><span style="color: #c000c0;">&nbsp;&nbsp;#endif</span><br />
+&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;__orxGCC__ </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #c000c0;">&nbsp;&nbsp;#ifdef __orxMSVC__</span></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;__int64&nbsp;&nbsp;&nbsp;&nbsp; orxU64;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">signed</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;__int64&nbsp;&nbsp;&nbsp;&nbsp; orxS64;</p>
+<p><span style="color: #c000c0;">&nbsp;&nbsp;#endif</span><br />
+&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;__orxMSVC__ </span><br />
+<span style="color: #804000;">*/</span></p>
+<p><span style="color: #c000c0;">#else</span><br />
+&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;__orxWINDOWS__ </span><br />
+<span style="color: #804000;">*/</span></p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;Linux / Mac </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #c000c0;">&nbsp;&nbsp;#if defined(__orxLINUX__) || defined(__orxMAC__) || defined(__orxGP2X__) || defined(__orxWII__) || defined(__orxIPHONE__)</span></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">void</span><br />
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxHANDLE;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp; orxU64;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxU32;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">short</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxU16;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">char</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxU8;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">signed</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp; orxS64;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">signed</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxS32;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">signed</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">short</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxS16;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">signed</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">char</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxS8;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">unsigned</span><br />
+&nbsp;&nbsp;<span style="color: #008000;">long</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxBOOL;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">float</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxFLOAT;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">double</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxDOUBLE;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">char</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orxCHAR;<br />
+<span style="color: #c000c0;">&nbsp;&nbsp;&nbsp;&nbsp;#define orxSTRING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxCHAR *</span></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">typedef</span><br />
+&nbsp;orxU32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxENUM;</p>
+<p><span style="color: #c000c0;">&nbsp;&nbsp;&nbsp;&nbsp;#define orx2F(V)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ((orxFLOAT)(V))</span></p>
+<p><span style="color: #c000c0;">&nbsp;&nbsp;&nbsp;&nbsp;#define orxENUM_NONE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span style="color: #008080;">0xFFFFFFFFL</span></p>
+<p><span style="color: #c000c0;">&nbsp;&nbsp;#endif</span><br />
+&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;__orxLINUX__ || __orxMAC__ || __orxGP2X__ || __orxWII__ || __orxIPHONE__ </span><br />
+<span style="color: #804000;">*/</span></p>
+<p><span style="color: #c000c0;">#endif</span><br />
+&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;__orxWINDOWS__ </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+</span><br /></p>
+<p>换行符：<br />
+<span style="color: #c000c0;">#define orxCHAR_CR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span style="color: #c000c0;">'/r'</span><br />
+<br />
+<span style="color: #c000c0;">#define orxCHAR_LF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span style="color: #c000c0;">'/n'</span><br />
+<br />
+</span><br />
+<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #c000c0;">#ifdef __orxWINDOWS__</span></p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxCHAR&nbsp;&nbsp;&nbsp; orxCHAR_EOL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #c000c0;">'/n'</span><br />
+;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxSTRING&nbsp; orxSTRING_EOL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #008080;">&quot;</span><br />
+<span style="color: #c000c0;">/r/n</span><br />
+<span style="color: #008080;">&quot;</span><br />
+;</p>
+<p><span style="color: #c000c0;">#elif defined(__orxLINUX__) || defined(__orxGP2X__) || defined(__orxWII__) || defined(__orxIPHONE__)</span></p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxCHAR&nbsp;&nbsp;&nbsp; orxCHAR_EOL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #c000c0;">'/n'</span><br />
+;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxSTRING&nbsp; orxSTRING_EOL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #008080;">&quot;</span><br />
+<span style="color: #c000c0;">/n</span><br />
+<span style="color: #008080;">&quot;</span><br />
+;</p>
+<p><span style="color: #c000c0;">#elif defined(__orxMAC__)</span></p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxCHAR&nbsp;&nbsp;&nbsp; orxCHAR_EOL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #c000c0;">'/r'</span><br />
+;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxSTRING&nbsp; orxSTRING_EOL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #008080;">&quot;</span><br />
+<span style="color: #c000c0;">/r</span><br />
+<span style="color: #008080;">&quot;</span><br />
+;</p>
+<p><span style="color: #c000c0;">#endif</span><br />
+<br />
+</span><br /></p>
+<p>目录分割符：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;*** Directory separators *** </span><br />
+<span style="color: #804000;">*/</span></p>
+<p><span style="color: #008000;">const</span><br />
+&nbsp;orxCHAR&nbsp;&nbsp;&nbsp;&nbsp; orxCHAR_DIRECTORY_SEPARATOR_WINDOWS&nbsp;&nbsp;&nbsp; = <span style="color: #c000c0;">'//'</span><br />
+;<br />
+<span style="color: #008000;">const</span><br />
+&nbsp;orxCHAR&nbsp;&nbsp;&nbsp;&nbsp; orxCHAR_DIRECTORY_SEPARATOR_LINUX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #008080;">'/'</span><br />
+;<br />
+<span style="color: #008000;">const</span><br />
+&nbsp;orxSTRING&nbsp;&nbsp; orxSTRING_DIRECTORY_SEPARATOR_WINDOWS&nbsp; = <span style="color: #008080;">&quot;</span><br />
+<span style="color: #c000c0;">//</span><br />
+<span style="color: #008080;">&quot;</span><br />
+;<br />
+<span style="color: #008000;">const</span><br />
+&nbsp;orxSTRING&nbsp;&nbsp; orxSTRING_DIRECTORY_SEPARATOR_LINUX&nbsp;&nbsp;&nbsp; = <span style="color: #008080;">&quot;/&quot;</span><br />
+;</p>
+<p><span style="color: #c000c0;">#ifdef __orxWINDOWS__</span></p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxCHAR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxCHAR_DIRECTORY_SEPARATOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #c000c0;">'//'</span><br />
+;</p>
+<p> &nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxSTRING&nbsp;&nbsp;&nbsp; orxSTRING_DIRECTORY_SEPARATOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #008080;">&quot;</span><br />
+<span style="color: #c000c0;">//</span><br />
+<span style="color: #008080;">&quot;</span><br />
+;</p>
+<p><span style="color: #c000c0;">#else</span><br />
+&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;__orxWINDOWS__ </span><br />
+<span style="color: #804000;">*/</span></p>
+<p> &nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;Linux / Mac / GP2X / Wii </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #c000c0;">&nbsp;&nbsp;#if defined(__orxLINUX__) || defined(__orxMAC__) || defined(__orxGP2X__) || defined(__orxWII__) || defined(__orxIPHONE__)</span></p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxCHAR&nbsp;&nbsp;&nbsp; orxCHAR_DIRECTORY_SEPARATOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #008080;">'/'</span><br />
+;</p>
+<p> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000;">const</span><br />
+&nbsp;orxSTRING&nbsp; orxSTRING_DIRECTORY_SEPARATOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <span style="color: #008080;">&quot;/&quot;</span><br />
+;</p>
+<p><span style="color: #c000c0;">&nbsp;&nbsp;#endif</span><br />
+&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;__orxLINUX__ || __orxMAC__ || __orxGP2X__ || __orxWII__ || __orxIPHONE__ </span><br />
+<span style="color: #804000;">*/</span></p>
+<p><span style="color: #c000c0;">#endif</span><br />
+&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">&nbsp;__orxWINDOWS__ </span><br />
+<span style="color: #804000;">*/</span><br />
+<br />
+</span><br /></p>
+<p>做跨平台应用的总会感叹有个标准多好，因为不同厂商在自己系统上定义的东西总是那么的千差万别，甚至感觉故意为了不同而不同，上面这些都不多说了。想起OpenGL和D3D中右手左手坐标系，纵优先行优先矩阵等问题就脑袋疼。</p>
+<h3>orxModule.h/orxModule.c：</h3>
+<p>
+这两个文件算是Orx的模块的基础，因为他们就是管理各个模块的。</p>
+<p>记得有个编程中的话是这么说的，&ldquo;你给我看流程图后，我什么都还不清楚，你给我看你的表结构，我就知道你的流程图会是怎么样了。&rdquo;</p>
+<p>所以这里先看Orx模块管理中的基础结构，看了以后的确不用看具体函数实现了。<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">**************************************************************************</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* Structure declaration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *</span><br />
+<br />
+<span style="color: #804000;">&nbsp;**************************************************************************</span><br />
+<span style="color: #804000;">*/</span></p>
+<p><span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* Internal module info structure</span><br /></p>
+<p>&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">struct</span><br />
+&nbsp;__orxMODULE_INFO_t</p>
+<p> {</p>
+<p> &nbsp;&nbsp;orxU64&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u64DependFlags;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Dependency flags : 8 </span><br />
+<span style="color: #804000;">*/</span><br /></p>
+<p> &nbsp;&nbsp;orxU64&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u64OptionalDependFlags;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Optional dependency flags : 16 </span><br />
+<span style="color: #804000;">*/</span><br /></p>
+<p> &nbsp;&nbsp;orxMODULE_SETUP_FUNCTION&nbsp; pfnSetup;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Setup function : 20 </span><br />
+<span style="color: #804000;">*/</span><br /></p>
+<p> &nbsp;&nbsp;orxMODULE_INIT_FUNCTION&nbsp;&nbsp; pfnInit;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Init function : 24 </span><br />
+<span style="color: #804000;">*/</span><br /></p>
+<p> &nbsp;&nbsp;orxMODULE_EXIT_FUNCTION&nbsp;&nbsp; pfnExit;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Exit function : 28 </span><br />
+<span style="color: #804000;">*/</span><br /></p>
+<p> &nbsp;&nbsp;orxU32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; u32StatusFlags;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">*&lt; Status flags : 32 </span><br />
+<span style="color: #804000;">*/</span></p>
+<p> } orxMODULE_INFO;</p>
+<p><span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* Static structure</span><br /></p>
+<p>&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">typedef</span><br />
+&nbsp;<span style="color: #008000;">struct</span><br />
+&nbsp;__orxMODULE_STATIC_t</p>
+<p> {</p>
+<p> &nbsp;&nbsp;orxMODULE_INFO astModuleInfo[orxMODULE_ID_NUMBER];</p>
+<p> &nbsp;&nbsp;orxU32 u32InitLoopCounter;</p>
+<p> &nbsp;&nbsp;orxU32 u32Flags;</p>
+<p> } orxMODULE_STATIC;</p>
+<p>
+<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">**************************************************************************</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* Static variables&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *</span><br />
+<br />
+<span style="color: #804000;">&nbsp;**************************************************************************</span><br />
+<span style="color: #804000;">*/</span></p>
+<p><span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* static data</span><br /></p>
+<p>&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">static</span><br />
+&nbsp;orxMODULE_STATIC sstModule;<br />
+</span><br /></p>
+<p>所有的相关函数都是操作sstModule这个全局的变量。此变量的主要结构是<span style="font-family: monospace;">orxMODULE_INFO</span><br />
+类型的数组，每个<span style="font-family: monospace;">orxMODULE_INFO</span><br />
+类型的变量都包含自己的依赖标志，可选依赖标志和状态标志，以及3个函数指针变量。3个函数指针变量分别是Init,Setup,Exit。</p>
+<p>结构定义完以后，该怎么操作就和能清晰了。首先为每个模块指定确定的3大函数，指定各模块自己依赖的模块，每次操作后修改状态标志。</p>
+<p>&nbsp;</p>
+<p>各函数实现概述：</p>
+<p>orxModule_Register:指定&quot;三大函数&quot;：</p>
+<p>&nbsp; /* Stores module functions */</p>
+<p>&nbsp; sstModule.astModuleInfo[_eModuleID].pfnSetup&nbsp; = _pfnSetup;</p>
+<p>&nbsp; sstModule.astModuleInfo[_eModuleID].pfnInit&nbsp;&nbsp; = _pfnInit;</p>
+<p>&nbsp; sstModule.astModuleInfo[_eModuleID].pfnExit&nbsp;&nbsp; = _pfnExit;</p>
+<p>Setup函数设置模块依赖的模块，Init用于初始化，Exit用于退出。</p>
+<p>orxModule_RegisterAll：依次用orxModule_Register注册所有的模块：</p>
+<p>并且，orx作者为了方便，使用了一个宏：</p>
+<p>#define orxMODULE_REGISTER(MODULE_ID, MODULE_BASENAME)&nbsp; orxModule_Register(MODULE_ID, MODULE_BASENAME##_Setup, MODULE_BASENAME##_Init, MODULE_BASENAME##_Exit)</p>
+<p>宏的意义很明显，即用MODULE_BASENAME来按对应规则生成对应的Setup,Init,Exit函数。</p>
+<p>比如说，Orx的内存管理模块的ID是orxMODULE_ID_BANK，</p>
+<p>定义的三个函数是：<br />
+<span style="font-family: monospace;"><br />
+<span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* Setups the bank module</span><br /></p>
+<p>&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxBank_Setup();</p>
+<p><span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* Inits the bank Module</span><br />
+<br />
+<span style="color: #804000;">&nbsp;* @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE</span><br /></p>
+<p>&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI orxSTATUS orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxBank_Init();</p>
+<p><span style="color: #804000;">/*</span><br />
+<span style="color: #804000;">* Exits from the bank module</span><br /></p>
+<p>&nbsp;<span style="color: #804000;">*/</span><br />
+<br />
+<span style="color: #008000;">extern</span><br />
+&nbsp;orxDLLAPI <span style="color: #008000;">void</span><br />
+&nbsp;orxFASTCALL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; orxBank_Exit();<br />
+</span><br /></p>
+<p>注册的时候，使用宏就简单的用</p>
+<p align="left"><span style="font-family: monospace;"> orxMODULE_REGISTER(orxMODULE_ID_BANK, orxBank);</p>
+<p>效果相当于</span></p>
+<p align="left">orxModule_Register(<span style="font-family: monospace;">orxMODULE_ID_BANK</span><br />
+, <span style="font-family: monospace;">orxBank_Setup</span><br />
+, <span style="font-family: monospace;">orxBank_Init()</span><br />
+, <span style="font-family: monospace;">orxBank_Exit()</span><br />
+)</p>
+<p align="left">&nbsp;</p>
+<p align="left">其实也没有什么太多好说的，就是个宏扩展的使用而已。</p>
+<p align="left">&nbsp;</p>
+<p align="left">orxModule_AddDependency:</p>
+<p align="left">设定标志位而已。</p>
+<p align="left">sstModule.astModuleInfo[_eModuleID].u64DependFlags |= ((orxU64)1) &lt;&lt; _eDependID;</p>
+<p align="left">可以看到，对于依赖的标志位是以一个无符号64位的整数来指定的，每一位表示对一个模块的支持，所以Orx目前最多支持64个模块。</p>
+<p align="left">&nbsp;</p>
+<p align="left">Setup,SetupAll,InitAll,Exit,ExitAll的函数感觉没有什么太多好说的了，就是调用对应模块/所有模块Register好的3大函数指针指向的函数。</p>
+<p align="left">Init,单独初始化某个模块的部分可以稍微分析一下：</p>
+<p align="left">首先，初始化时，会先通过</p>
+<p align="left">if(!(sstModule.astModuleInfo[_eModuleID].u32StatusFlags &amp; (orxMODULE_KU32_STATUS_FLAG_INITIALIZED|orxMODULE_KU32_STATUS_FLAG_TEMP)))</p>
+<p align="left">来判断当前模块是否已经初始化，已经初始化的话就直接返回了。</p>
+<p align="left">在确认当前模块需要进行初始化时，需要先初始化此模块的依赖的模块，在初始化所有依赖的模块后，为正在初始化模块的状态位或上orxMODULE_KU32_STATUS_FLAG_TEMP标志</p>
+<p align="left">表示开始初始化，然后调用Register过此模块Init的函数指针指向的函数进行实质的初始化，初始化过后，再加置orxMODULE_KU32_STATUS_FLAG_INITIALIZED标志。</p>
+<p align="left">&nbsp;</p>
+<p align="left">&nbsp;</p>
+<p align="left">同时在初始化模块开始时</p>
+<p align="left">&nbsp; /* Increases loop counter */</p>
+<p>&nbsp; sstModule.u32InitLoopCounter++;</p>
+<p align="left">结束时</p>
+<p align="left">&nbsp; /* Decreases loop counter */</p>
+<p>&nbsp; sstModule.u32InitLoopCounter--;</p>
+<p align="left">然后通过</p>
+<p align="left">&nbsp; /* Was external call? */</p>
+<p>&nbsp; if(sstModule.u32InitLoopCounter == 0)</p>
+<p align="left">来判断什么时候一整轮初始化的结束，结束时调用</p>
+<p align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* For all modules */</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for(u32Index = 0; u32Index &lt; orxMODULE_ID_NUMBER; u32Index++)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Cleans temp status */</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sstModule.astModuleInfo[u32Index].u32StatusFlags &amp;= ~orxMODULE_KU32_STATUS_FLAG_TEMP;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p align="left">取消所有本轮初始化的临时状态。</p>
+<p align="left">&nbsp;</p>
+<p align="left">光是讲流程的话可能有些混乱，形象的描述一下初始化单独一个模块的过程。</p>
+<p align="left">因为模块之间的依赖问题，初始化一个模块就相当于需要初始化此模块依赖的所有模块，也需要初始化依赖模块依赖的模块，最后形成的是一个树状结构。只有当依赖关系到达树的叶节点（也就表示此模块是最基础的模块了，没有其他依赖）时才进行叶节点实际的初始化。同时，没初始化一个都置标志位，防止同一个模块初始化两次。当sstModule.u32InitLoopCounter为0时，表示此轮初始化已经又回到了最开始初始化的那个模块(根节点)，此轮初始化结束。</p>
+<p align="left">从这个描述中也说明了一个问题，那就是Orx不允许模块的循环依赖，否则会初始化失败。但是多个模块依赖一个模块和一个模块依赖多个模块都是允许的。</p>
+<p align="left">同时，稍微看一下Orx的模块之间的依赖关系，可以发现相互的依赖非常复杂，我本来想做一个依赖图的，发现难度太大。。。。。。。。。Orx的模块依赖关<br />
+系虽然总体上是个树形结构，但是该树没有太良好的层级结构，大量跨层的依赖，导致显得非常混乱。</p>
+<h2>小结</h2>
+<p align="left">首先，这么一大堆模块管理代码存在的必要性。从作用来看，假如非要讲优点的话，我感觉模块管理的作用有下面几个：</p>
+<p align="left">1。正常初始化，释放各模块，对于C语言来讲，没有构造函数，没有析构函数，对于一个模块只能使用一个结构来完成，初始化和退出都需要手动来做，使用Orx这样的模块管理可以在模块级别实现稍微自动化一些的初始化和退出。</p>
+<p align="left">2。集中管理各模块之间的依赖，使得初始化更加自动化，不易出错。</p>
+<p align="left">3。依赖于第2点，对于完全不需要的模块，可以完全不初始化。</p>
+<p align="left">&nbsp;</p>
+<p align="left">但是，这些作用（其实我也不知道真实目的）都没有太好的完成。</p>
+<p align="left">首先，初始化的依赖问题虽然比较麻烦，但是可以在一个集中的初始化函数中一次完成，没有必要弄这么多代码出来。另外，虽然现在Orx的模块管理代码可以使得不需要的模块不初始化，但是因为每个模块都是用一个相关结构的全局变量来实现的，所以仅仅只能省一些初始化时间而已，内存上并没有节省，另外，对于不想初始化的代码，直接去掉初始化函数的调用就可以了，费不着用这么多代码来实现自动化。即使说初始化什么模块可能是通过配置来决定的，所以自动化有必要，但是仅仅剩下一些初始化时间的必要性并不大，还不如全部都初始化了。</p>
+<p align="left">&nbsp;</p>
+<p align="left">但是，我还是很欣赏这种将模块管理起来的代码，虽然有些冗余，但是将模块统一管理在一个数组之中，比在某些巨大的Init,Exit函数去一一调用各模块的相应函数要来的漂亮。新添加模块的时候，只需要添加对应的3大函数就能自动化的完成一些初始化及收尾工作，也比每添加一个就需要在巨大的Init,Exit函数中添加一条来的方便。</p>
+<p align="left">&nbsp;</p>
+<p>&nbsp;</p>
+<p align="left">&nbsp;</p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接</p>
+<p align="right"><strong><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p></p>

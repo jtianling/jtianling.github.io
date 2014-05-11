@@ -1,0 +1,114 @@
+---
+layout: post
+title: "发布一个开源项目 -- Autohome增强插件(for chrome)"
+categories:
+- "我的程序"
+tags:
+- autohome
+- chrome plugin
+status: publish
+type: post
+published: true
+meta:
+  mkd_text: "汽车之家的网站没有一个收藏功能, 感觉有些不可理解, 前段时间正好学了javascript, 兴趣正浓, 于是摸索着怎么弄chrome插件,
+    为汽车之家写了个chrome的增强插件, 并且开源很久了, 一直没有在博客上提到, 今天在这里把相关的信息也贴一遍吧.  \n\n## 简介\n目前仅有Chrome版本.
+    \ \n目前仅有的功能是实现autohome对车系的收藏.  但是服务器方面已经实现了对收藏的通用实现, 并且客户端的代码已经开源.  \n欢迎大家添加更多的新功能,
+    比如对具体车型, 新闻, 文章等的收藏.  \n项目地址: <https://github.com/jtianling/autohome-boost>\n\n##
+    客户端代码说明\n主要通过chrome插件的[content_scripts](http://developer.chrome.com/extensions/content_scripts.html)功能实现功能添加.
+    \ \n用了web_accessible_resources功能加载了series_fav_clicked.js文件, 主要是方便直接在网站的环境中添加代码,
+    省的一堆转义.  假如不嫌累的话, 直接在series_fav.js的addTheFavFeature函数中也可以完成所有功能.  \n代码本身比较简单,
+    需要说明的不多, 主要的功能都是使用JSONP实现在autohome的环境中运行了我服务器上的脚本而已.  \n\n## 服务端接口说明\n### 增加车系收藏\nhttp://42.121.57.45:10001/add_fav
+    \ \n参数: type(收藏的类型), name(用户名), code(收藏编号) 以及任意想保存的属性.  比如在series的收藏中, 我添加了三个属性:
+    desc(描述), price(价格), url(网址)  \n返回结果: 无  \n  \n### 删除车系收藏  \nhttp://42.121.57.45:10001/del_fav
+    \ \n参数: type(收藏的类型), name(用户名), code(收藏编号)  \n返回结果: 无  \n  \n### 查询车系收藏情况  \nhttp://42.121.57.45:10001/is_fav
+    \ \n参数: type(收藏的类型), name(用户名), code(收藏编号)  \n返回结果: Json对象, 唯一的属性为bool类型的result,
+    true表示已收藏, false表示还未收藏.  \n  \n### 获取所有我的收藏  \nhttp://42.121.57.45:10001/get_favs
+    \ \n参数: type(收藏的类型), name(用户名)  \n返回结果: Json类型, 为add_fav时添加的所有属性的数组, 典型的形式如下:
+    \ \n\n```json\n[{\"name\":\"九天雁翎\",\"type\":\"series\",\"code\":\"364\",\"desc\":\"长安福特-福克斯\",\n
+    \ \"price\":\"9.98～16.99万\",\"url\":\"http://www.autohome.com.cn/364/\"}, \n{\"name\":\"九天雁翎\",\"type\":\"series\",\"code\":\"577\",\"desc\":\"长安福特-蒙迪欧-致胜\",\n
+    \ \"price\":\"16.98～25.68万\",\"url\":\"http://www.autohome.com.cn/577/\"},\n{\"name\":\"九天雁翎\",\"type\":\"series\",\"code\":\"2863\",\"desc\":\"长安福特-翼虎\",\n
+    \ \"price\":\"19.38～27.58万\",\"url\":\"http://www.autohome.com.cn/2863/\"}] \n```\n
+    \ \n目前的type类型是series(车系).  \n推荐将来的收藏类型为 spec(具体车型), new(新闻), article(文章), advice(导购)等,
+    以参考autohome本身网站链接的英文为最佳选择.  \n服务端添加新的类型不需要进行任何修改.  想要增加新的收藏类型的童鞋请按需随意添加^^  \n对看到ip地址不爽的童鞋表示抱歉,
+    因为这是阿里云的服务器, 而我没有备案, 所以虽然有域名, 但是没办法绑定.  \n更为诡异的是, 从国外访问阿里云的这个服务器也会出问题(所以在国外就没法使用这个插件),
+    天知道这是为什么.  \n\n## 问题\n编写Chrome Extension本身并不复杂, 主要就是理解manifes.json, 但是我一直有些很烦人的问题没有解决.
+    \ \n在Google Chrome Extensions中的javascript运行环境分为Extension本身和网页两种.  一种主要用来调用Google开放的Extension
+    API, 一种主要用来操作DOM.  但是我一直没有找到在两种环境中共享代码的方法, 因此连一个简单的全局配置文件都没法写(更不用说想共享一些通用的函数了),
+    更让人恼火的是, 我也没有找到在Extension环境中共享代码的机制, 连Extension环境中的配置文件也没法写.  希望有人能够解答这个问题.  \n\n#
+    Autohome网站增强插件(Autohome boost)使用说明\n## 安装\n安装完插件后, 浏览<www.autohome.com.cn>的时候,
+    在浏览器的地址栏中会出现程序的图标, 此时表示安装成功了.  \n如图:  \n![安装成功后的图标](https://s3-us-west-1.amazonaws.com/jtianling/images/autohome_boost_installed.png)\n\n##
+    车系收藏\n这是该插件目前唯一的功能, 也是我自己最想要的功能.  \n安装完插件后, 登录autohome(必须登录), 进入车系页面, 比如进入福克斯的页面,
+    在车系页面的标题右边会出现收藏链接.  \n如图:  \n![车系收藏链接](https://s3-us-west-1.amazonaws.com/jtianling/images/autohome_boost_fav_link.png)\n\n此时点击即可收藏此车系.
+    \ 点击后, 链接显示为'已收藏', 此时再次点击可取消收藏.  \n如图:  \n![车系已收藏](https://s3-us-west-1.amazonaws.com/jtianling/images/autohome_boost_faved.png)\n\n\n##
+    收藏列表\n登录后(必须要登录), 在网页顶行的位置, 显示用户名字的边上, 会出现新增加的菜单选项'收藏列表'.  此时可以点击进入查看自己的收藏列表(没有收藏的时候是空的).
+    \ \n如图:  \n![收藏列表](https://s3-us-west-1.amazonaws.com/jtianling/images/autohome_boost_favs_list.png)"
+  views: '71'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>汽车之家的网站没有一个收藏功能, 感觉有些不可理解, 前段时间正好学了javascript, 兴趣正浓, 于是摸索着怎么弄chrome插件, 为汽车之家写了个chrome的增强插件, 并且开源很久了, 一直没有在博客上提到, 今天在这里把相关的信息也贴一遍吧.  </p>
+<h2 id="_1">简介</h2>
+<p>目前仅有Chrome版本.<br />
+目前仅有的功能是实现autohome对车系的收藏.  但是服务器方面已经实现了对收藏的通用实现, 并且客户端的代码已经开源.<br />
+欢迎大家添加更多的新功能, 比如对具体车型, 新闻, 文章等的收藏.<br />
+项目地址: <a href="https://github.com/jtianling/autohome-boost">https://github.com/jtianling/autohome-boost</a></p>
+<h2 id="_2">客户端代码说明</h2>
+<p>主要通过chrome插件的<a href="http://developer.chrome.com/extensions/content_scripts.html">content_scripts</a>功能实现功能添加.<br />
+用了web_accessible_resources功能加载了series_fav_clicked.js文件, 主要是方便直接在网站的环境中添加代码, 省的一堆转义.  假如不嫌累的话, 直接在series_fav.js的addTheFavFeature函数中也可以完成所有功能.<br />
+代码本身比较简单, 需要说明的不多, 主要的功能都是使用JSONP实现在autohome的环境中运行了我服务器上的脚本而已.  </p>
+<h2 id="_3">服务端接口说明</h2>
+<h3 id="_4">增加车系收藏</h3>
+<p>http://42.121.57.45:10001/add_fav<br />
+参数: type(收藏的类型), name(用户名), code(收藏编号) 以及任意想保存的属性.  比如在series的收藏中, 我添加了三个属性: desc(描述), price(价格), url(网址)<br />
+返回结果: 无  </p>
+<h3 id="_5">删除车系收藏</h3>
+<p>http://42.121.57.45:10001/del_fav<br />
+参数: type(收藏的类型), name(用户名), code(收藏编号)<br />
+返回结果: 无  </p>
+<h3 id="_6">查询车系收藏情况</h3>
+<p>http://42.121.57.45:10001/is_fav<br />
+参数: type(收藏的类型), name(用户名), code(收藏编号)<br />
+返回结果: Json对象, 唯一的属性为bool类型的result, true表示已收藏, false表示还未收藏.  </p>
+<h3 id="_7">获取所有我的收藏</h3>
+<p>http://42.121.57.45:10001/get_favs<br />
+参数: type(收藏的类型), name(用户名)<br />
+返回结果: Json类型, 为add_fav时添加的所有属性的数组, 典型的形式如下:  </p>
+<p><code>json<br />
+[{"name":"九天雁翎","type":"series","code":"364","desc":"长安福特-福克斯",<br />
+  "price":"9.98～16.99万","url":"http://www.autohome.com.cn/364/"},<br />
+{"name":"九天雁翎","type":"series","code":"577","desc":"长安福特-蒙迪欧-致胜",<br />
+  "price":"16.98～25.68万","url":"http://www.autohome.com.cn/577/"},<br />
+{"name":"九天雁翎","type":"series","code":"2863","desc":"长安福特-翼虎",<br />
+  "price":"19.38～27.58万","url":"http://www.autohome.com.cn/2863/"}]</code></p>
+<p>目前的type类型是series(车系).<br />
+推荐将来的收藏类型为 spec(具体车型), new(新闻), article(文章), advice(导购)等, 以参考autohome本身网站链接的英文为最佳选择.<br />
+服务端添加新的类型不需要进行任何修改.  想要增加新的收藏类型的童鞋请按需随意添加^^<br />
+对看到ip地址不爽的童鞋表示抱歉, 因为这是阿里云的服务器, 而我没有备案, 所以虽然有域名, 但是没办法绑定.<br />
+更为诡异的是, 从国外访问阿里云的这个服务器也会出问题(所以在国外就没法使用这个插件), 天知道这是为什么.  </p>
+<h2 id="_8">问题</h2>
+<p>编写Chrome Extension本身并不复杂, 主要就是理解manifes.json, 但是我一直有些很烦人的问题没有解决.<br />
+在Google Chrome Extensions中的javascript运行环境分为Extension本身和网页两种.  一种主要用来调用Google开放的Extension API, 一种主要用来操作DOM.  但是我一直没有找到在两种环境中共享代码的方法, 因此连一个简单的全局配置文件都没法写(更不用说想共享一些通用的函数了), 更让人恼火的是, 我也没有找到在Extension环境中共享代码的机制, 连Extension环境中的配置文件也没法写.  希望有人能够解答这个问题.  </p>
+<h1 id="autohomeautohome-boost">Autohome网站增强插件(Autohome boost)使用说明</h1>
+<h2 id="_9">安装</h2>
+<p>安装完插件后, 浏览<www .autohome.com.cn>的时候, 在浏览器的地址栏中会出现程序的图标, 此时表示安装成功了.<br />
+如图:<br />
+<img alt="安装成功后的图标" src="https://s3-us-west-1.amazonaws.com/jtianling/images/autohome_boost_installed.png" /></www></p>
+<h2 id="_10">车系收藏</h2>
+<p>这是该插件目前唯一的功能, 也是我自己最想要的功能.<br />
+安装完插件后, 登录autohome(必须登录), 进入车系页面, 比如进入福克斯的页面, 在车系页面的标题右边会出现收藏链接.<br />
+如图:<br />
+<img alt="车系收藏链接" src="https://s3-us-west-1.amazonaws.com/jtianling/images/autohome_boost_fav_link.png" /></p>
+<p>此时点击即可收藏此车系.  点击后, 链接显示为'已收藏', 此时再次点击可取消收藏.<br />
+如图:<br />
+<img alt="车系已收藏" src="https://s3-us-west-1.amazonaws.com/jtianling/images/autohome_boost_faved.png" /></p>
+<h2 id="_11">收藏列表</h2>
+<p>登录后(必须要登录), 在网页顶行的位置, 显示用户名字的边上, 会出现新增加的菜单选项'收藏列表'.  此时可以点击进入查看自己的收藏列表(没有收藏的时候是空的).<br />
+如图:<br />
+<img alt="收藏列表" src="https://s3-us-west-1.amazonaws.com/jtianling/images/autohome_boost_favs_list.png" /></p>
+<div style="text-align:right">
+  writen&nbsp;by <a href="http://www.jtianling.com" target="_blank">九天雁翎(JTianLing) -- www.jtianling.com</a>
+</div>

@@ -1,0 +1,962 @@
+---
+layout: post
+title: "堆栈的应用（2） 中缀算术表达式到后缀（逆波兰记法reverse polish notation）的转换及其计算 C++实现"
+categories:
+- "算法"
+tags:
+- C++
+- reverse polish notation
+- "堆栈"
+- "逆波兰记法"
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '1'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="ProgId" content="Word.Document" /><meta name="Generator" content="Microsoft Word 12" /><meta name="Originator" content="Microsoft Word 12" />
+<link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_filelist.xml" /><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;o:OfficeDocumentSettings&gt;<br />
+  &lt;o:RelyOnVML /&gt;<br />
+  &lt;o:AllowPNG /&gt;<br />
+ &lt;/o:OfficeDocumentSettings&gt;<br />
+&lt;/xml&gt;&lt;![endif]-->
+<link rel="themeData" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_themedata.thmx" />
+<link rel="colorSchemeMapping" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_colorschememapping.xml" /><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:WordDocument&gt;<br />
+  &lt;w:View&gt;Normal&lt;/w:View&gt;<br />
+  &lt;w:Zoom&gt;0&lt;/w:Zoom&gt;<br />
+  &lt;w:TrackMoves /&gt;<br />
+  &lt;w:TrackFormatting /&gt;<br />
+  &lt;w:PunctuationKerning /&gt;<br />
+  &lt;w:DrawingGridVerticalSpacing&gt;7.8 磅&lt;/w:DrawingGridVerticalSpacing&gt;<br />
+  &lt;w:DisplayHorizontalDrawingGridEvery&gt;0&lt;/w:DisplayHorizontalDrawingGridEvery&gt;<br />
+  &lt;w:DisplayVerticalDrawingGridEvery&gt;2&lt;/w:DisplayVerticalDrawingGridEvery&gt;<br />
+  &lt;w:ValidateAgainstSchemas /&gt;<br />
+  &lt;w:SaveIfXMLInvalid&gt;false&lt;/w:SaveIfXMLInvalid&gt;<br />
+  &lt;w:IgnoreMixedContent&gt;false&lt;/w:IgnoreMixedContent&gt;<br />
+  &lt;w:AlwaysShowPlaceholderText&gt;false&lt;/w:AlwaysShowPlaceholderText&gt;<br />
+  &lt;w:DoNotPromoteQF /&gt;<br />
+  &lt;w:LidThemeOther&gt;EN-US&lt;/w:LidThemeOther&gt;<br />
+  &lt;w:LidThemeAsian&gt;ZH-CN&lt;/w:LidThemeAsian&gt;<br />
+  &lt;w:LidThemeComplexScript&gt;X-NONE&lt;/w:LidThemeComplexScript&gt;<br />
+  &lt;w:Compatibility&gt;<br />
+   &lt;w:SpaceForUL /&gt;<br />
+   &lt;w:BalanceSingleByteDoubleByteWidth /&gt;<br />
+   &lt;w:DoNotLeaveBackslashAlone /&gt;<br />
+   &lt;w:ULTrailSpace /&gt;<br />
+   &lt;w:DoNotExpandShiftReturn /&gt;<br />
+   &lt;w:AdjustLineHeightInTable /&gt;<br />
+   &lt;w:BreakWrappedTables /&gt;<br />
+   &lt;w:SnapToGridInCell /&gt;<br />
+   &lt;w:WrapTextWithPunct /&gt;<br />
+   &lt;w:UseAsianBreakRules /&gt;<br />
+   &lt;w:DontGrowAutofit /&gt;<br />
+   &lt;w:SplitPgBreakAndParaMark /&gt;<br />
+   &lt;w:DontVertAlignCellWithSp /&gt;<br />
+   &lt;w:DontBreakConstrainedForcedTables /&gt;<br />
+   &lt;w:DontVertAlignInTxbx /&gt;<br />
+   &lt;w:Word11KerningPairs /&gt;<br />
+   &lt;w:CachedColBalance /&gt;<br />
+   &lt;w:UseFELayout /&gt;<br />
+  &lt;/w:Compatibility&gt;<br />
+  &lt;m:mathPr&gt;<br />
+   &lt;m:mathFont m:val="Cambria Math" /&gt;<br />
+   &lt;m:brkBin m:val="before" /&gt;<br />
+   &lt;m:brkBinSub m:val="&#45;-" /&gt;<br />
+   &lt;m:smallFrac m:val="off" /&gt;<br />
+   &lt;m:dispDef /&gt;<br />
+   &lt;m:lMargin m:val="0" /&gt;<br />
+   &lt;m:rMargin m:val="0" /&gt;<br />
+   &lt;m:defJc m:val="centerGroup" /&gt;<br />
+   &lt;m:wrapIndent m:val="1440" /&gt;<br />
+   &lt;m:intLim m:val="subSup" /&gt;<br />
+   &lt;m:naryLim m:val="undOvr" /&gt;<br />
+  &lt;/m:mathPr&gt;&lt;/w:WordDocument&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="true"<br />
+  DefSemiHidden="true" DefQFormat="false" DefPriority="99"<br />
+  LatentStyleCount="267"&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="0" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Normal" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="heading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="35" QFormat="true" Name="caption" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="10" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" Name="Default Paragraph Font" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="11" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtitle" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="22" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Strong" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="20" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="59" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Table Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Placeholder Text" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="No Spacing" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Revision" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="34" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="List Paragraph" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="29" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="30" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="19" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="21" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="31" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="32" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="33" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Book Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="37" Name="Bibliography" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" QFormat="true" Name="TOC Heading" /&gt;<br />
+ &lt;/w:LatentStyles&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><br />
+<style>
+<!--<br />
+ /* Font Definitions */<br />
+ @font-face<br />
+	{font-family:宋体;<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-alt:SimSun;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"Cambria Math";<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1107304683 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Cambria;<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073741899 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Calibri;<br />
+	panose-1:2 15 5 2 2 2 4 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:swiss;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073750139 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:"/@宋体";<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+ /* Style Definitions */<br />
+ p.MsoNormal, li.MsoNormal, div.MsoNormal<br />
+	{mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+h1<br />
+	{mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-link:"标题 1 Char";<br />
+	mso-style-next:正文;<br />
+	margin-top:24.0pt;<br />
+	margin-right:0cm;<br />
+	margin-bottom:0cm;<br />
+	margin-left:0cm;<br />
+	margin-bottom:.0001pt;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan lines-together;<br />
+	page-break-after:avoid;<br />
+	mso-outline-level:1;<br />
+	font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	mso-font-kerning:1.0pt;}<br />
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph<br />
+	{mso-style-priority:34;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	text-indent:21.0pt;<br />
+	mso-char-indent-count:2.0;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+span.1Char<br />
+	{mso-style-name:"标题 1 Char";<br />
+	mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:"标题 1";<br />
+	mso-ansi-font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	font-weight:bold;}<br />
+.MsoChpDefault<br />
+	{mso-style-type:export-only;<br />
+	mso-default-props:yes;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+ /* Page Definitions */<br />
+ @page<br />
+	{mso-page-border-surround-header:no;<br />
+	mso-page-border-surround-footer:no;}<br />
+@page Section1<br />
+	{size:595.3pt 841.9pt;<br />
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;<br />
+	mso-header-margin:42.55pt;<br />
+	mso-footer-margin:49.6pt;<br />
+	mso-paper-source:0;<br />
+	layout-grid:15.6pt;}<br />
+div.Section1<br />
+	{page:Section1;}<br />
+--><br />
+</style>
+<p><!--[if gte mso 10]&gt;<br />
+&lt;style&gt;<br />
+ /* Style Definitions */<br />
+ table.MsoNormalTable<br />
+	{mso-style-name:普通表格;<br />
+	mso-tstyle-rowband-size:0;<br />
+	mso-tstyle-colband-size:0;<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;<br />
+	mso-para-margin:0cm;<br />
+	mso-para-margin-bottom:.0001pt;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:10.5pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-font-kerning:1.0pt;}<br />
+&lt;/style&gt;<br />
+&lt;![endif]--></p>
+<h1><span lang="EN-US">&nbsp;</span><span style="font-family: 宋体;">堆栈的应用（</span><span lang="EN-US">2</span><span style="font-family: 宋体;">）</span><br />
+<span style="font-family: 宋体;">中缀算术表达式到后缀（逆波兰记法</span><span lang="EN-US">reverse polish notation</span><span style="font-family: 宋体;">）的转换及其计算 C++实现<br /></span></h1>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">九天雁翎</span><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b></p>
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;" lang="EN-US">&lt;&lt;Data Structures and Algorithm Analysis in C++&gt;&gt;<o:p></o:p></span></p>
+<p class="MsoListParagraph" style="margin-left: 18pt; text-indent: 0cm;"><span style="font-family: 宋体;" lang="EN-US">--</span><span style="font-family: 宋体;">《数据结构与算法分析</span><span style="" lang="EN-US">c++</span><span style="font-family: 宋体;">描述》</span><span style="" lang="EN-US"> Mark Allen Weiss</span><span style="font-family: 宋体;">著</span><span style=""> </span><span style="font-family: 宋体;">人民邮电大学出版</span><span style=""> </span><span style="font-family: 宋体;">中文版第<span lang="EN-US">73-77</span>面，</span><span style="font-family: 宋体;" lang="EN-US">中缀算术表达式到后缀（逆波兰记法</span><span lang="EN-US">reverse polish notation</span><span style="font-family: 宋体;" lang="EN-US">）的转换及其计算</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: 宋体;">目前仅仅实现文中说明的功能，目标并不是一个完整的四则运算程序，所以只支持加法，乘法和（）。另外，因为对于</span><span style="" lang="EN-US">C++</span><span style="font-family: 宋体;">流的控制能力比较弱（我下一步就决定好好研究研究），所以对输入的格式要求非常严格。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">必须是</span><span style="" lang="EN-US">1 + 2 * 3 =<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">的格式，每个数字和符号之间都需要空格，一个比较复杂的例子是：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">1 + 2 *<br />
+3 + ( 1 + 2 * 3 ) =<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">转换后：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">1 2 3 *<br />
++ 1 2 3 * + + =<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">先看测试程序，就应该能知道，大概实现了什么效果了，这里唯一的便利在于，用了</span><span style="" lang="EN-US">C++</span><span style="font-family: 宋体;">的输入输出流后，对于</span><span style="" lang="EN-US">iostream,stringstream</span><span style="font-family: 宋体;">都比较一致了，但是还是感觉自己对流的控制能力太弱了。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">test.cpp:<o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;</span><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">1 </span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">#include </span><span style='font-family: "Courier New"; color: fuchsia;' lang="EN-US">&lt;stdio.h&gt;</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;stdlib.h&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;stack&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;string&gt;</span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;iostream&gt;</span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;sstream&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">"ExprComputer.h"</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 <b>using</b></span>&nbsp;<b><span style="color: seagreen;">namespace</span></b>&nbsp;std;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span><br />
+<span style="color: rgb(128, 64, 64);">10 </span><b><span style="color: seagreen;">int</span></b>&nbsp;main(<b><span style="color: seagreen;">int</span></b>&nbsp;argc, <b><span style="color: seagreen;">char</span></b>*<br />
+argv[])<br />
+<span style="color: rgb(128, 64, 64);">11 </span>{<br />
+<span style="color: rgb(128, 64, 64);">12 </span>&nbsp;&nbsp;&nbsp;&nbsp;CExprComputer<br />
+loExprComputer;<br />
+<span style="color: rgb(128, 64, 64);">13 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// all these below can work right,comment is same as the<br />
+content 'couted'.</span><br />
+<span style="color: rgb(128, 64, 64);">14 </span>&nbsp;&nbsp;&nbsp;&nbsp;stringstream lss;<br />
+<span style="color: rgb(128, 64, 64);">15 </span>&nbsp;&nbsp;&nbsp;&nbsp;lss &lt;&lt; <span style="color: fuchsia;">"1 + 2 * 3 ="</span>;<br />
+<span style="color: rgb(128, 64, 64);">16 </span><br />
+<span style="color: rgb(128, 64, 64);">17 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt;<span style="color: fuchsia;">"test trans stringstream in and cout."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">18 </span>&nbsp;&nbsp;&nbsp;&nbsp;loExprComputer.TransInfix2Postfix(lss,<br />
+cout);<br />
+<span style="color: rgb(128, 64, 64);">19 </span><br />
+<span style="color: rgb(128, 64, 64);">20 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt;<span style="color: fuchsia;">"test trans cin and cout."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">21 </span>&nbsp;&nbsp;&nbsp;&nbsp;loExprComputer.TransInfix2Postfix(cin,<br />
+cout);<br />
+<span style="color: rgb(128, 64, 64);">22 </span><br />
+<span style="color: rgb(128, 64, 64);">23 </span>&nbsp;&nbsp;&nbsp;&nbsp;stringstream<br />
+lss2;<br />
+<span style="color: rgb(128, 64, 64);">24 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt;<span style="color: fuchsia;">"test trans cin and stringstream out."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">25 </span>&nbsp;&nbsp;&nbsp;&nbsp;loExprComputer.TransInfix2Postfix(cin,<br />
+lss2);<br />
+<span style="color: rgb(128, 64, 64);">26 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;lss2.str() &lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">27 </span><br />
+<span style="color: rgb(128, 64, 64);">28 </span>&nbsp;&nbsp;&nbsp;&nbsp;lss.seekg(<span style="color: fuchsia;">0</span>);<br />
+<span style="color: rgb(128, 64, 64);">29 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt;<span style="color: fuchsia;">"test stringstream in computeInfix."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">30 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;lss.str();<br />
+<span style="color: rgb(128, 64, 64);">31 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loExprComputer.ComputeInfix(lss) &lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">32 </span><br />
+<span style="color: rgb(128, 64, 64);">33 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt;<span style="color: fuchsia;">"test cin in computeInfix."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">34 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loExprComputer.ComputeInfix(cin) &lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">35 </span><br />
+<span style="color: rgb(128, 64, 64);">36 </span>&nbsp;&nbsp;&nbsp;&nbsp;stringstream<br />
+lssPostfix;<br />
+<span style="color: rgb(128, 64, 64);">37 </span>&nbsp;&nbsp;&nbsp;&nbsp;lssPostfix<br />
+&lt;&lt; <span style="color: fuchsia;">"1 2 3 * + ="</span>;<br />
+<span style="color: rgb(128, 64, 64);">38 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt;<span style="color: fuchsia;">"test stringstream in ComputePostfix."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">39 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;lssPostfix.str();<br />
+<span style="color: rgb(128, 64, 64);">40 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loExprComputer.ComputePostfix(lssPostfix) &lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">41 </span><br />
+<span style="color: rgb(128, 64, 64);">42 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt;<span style="color: fuchsia;">"test cin in ComputePostfix."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">43 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;loExprComputer.ComputePostfix(cin) &lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">44 </span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">45 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt;<span style="color: fuchsia;">"Test completed."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">46 </span>&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: fuchsia;">0</span>);<br />
+<span style="color: rgb(128, 64, 64);">47 </span>}<br />
+<span style="color: rgb(128, 64, 64);">48</span></span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">ExprComputer</span><span style="font-family: 宋体; color: rgb(160, 32, 240);">头文件：</span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">1 </span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">#ifndef __EXPR_COMPUTE_H__</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 </span><span style="color: rgb(160, 32, 240);">#define<br />
+__EXPR_COMPUTE_H__</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;iostream&gt;</span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;sstream&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;stack&gt;</span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 <b>using</b></span>&nbsp;<b><span style="color: seagreen;">namespace</span></b>&nbsp;std; <br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 </span><span style="color: blue;">// argument<br />
+to input</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span><span style="color: rgb(160, 32, 240);">#define<br />
+_IN_</span><br />
+<span style="color: rgb(128, 64, 64);">10 </span><br />
+<span style="color: rgb(128, 64, 64);">11 </span><span style="color: blue;">// argument to<br />
+output</span><br />
+<span style="color: rgb(128, 64, 64);">12 </span><span style="color: rgb(160, 32, 240);">#define _OUT_</span><br />
+<span style="color: rgb(128, 64, 64);">13 </span><br />
+<span style="color: rgb(128, 64, 64);">14 </span><b><span style="color: seagreen;">class</span></b>&nbsp;CExprComputer<br />
+<span style="color: rgb(128, 64, 64);">15 </span>{<br />
+<span style="color: rgb(128, 64, 64);">16 <b>public</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">17 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;ComputeInfix(_IN_ istream&amp;<br />
+aisExpr);<br />
+<span style="color: rgb(128, 64, 64);">18 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;ComputePostfix(_IN_ istream&amp;<br />
+aisExpr);<br />
+<span style="color: rgb(128, 64, 64);">19 </span><br />
+<span style="color: rgb(128, 64, 64);">20 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// Transform a infix expression to Postfix expression</span><br />
+<span style="color: rgb(128, 64, 64);">21 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;TransInfix2Postfix(_IN_ istream&amp;<br />
+aisInfix,<br />
+<span style="color: rgb(128, 64, 64);">22 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_OUT_<br />
+ostream&amp; aosPostfix);<br />
+<span style="color: rgb(128, 64, 64);">23 </span><br />
+<span style="color: rgb(128, 64, 64);">24 <b>private</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">25 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// Stack should be empty,Dump the information still in Stack<br />
+and exit</span><br />
+<span style="color: rgb(128, 64, 64);">26 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;DumpStack();<br />
+<span style="color: rgb(128, 64, 64);">27 </span><br />
+<span style="color: rgb(128, 64, 64);">28 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// Output all information still in Stack</span><br />
+<span style="color: rgb(128, 64, 64);">29 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;OutputStack();<br />
+<span style="color: rgb(128, 64, 64);">30 </span><br />
+<span style="color: rgb(128, 64, 64);">31 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// Make sure Stack is not empty when it should not.</span><br />
+<span style="color: rgb(128, 64, 64);">32 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;CheckStack();<br />
+<span style="color: rgb(128, 64, 64);">33 </span><br />
+<span style="color: rgb(128, 64, 64);">34 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// I don't know why Stack operator is so few.And why I need<br />
+to</span><br />
+<span style="color: rgb(128, 64, 64);">35 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// clear the Stack in this example? GOD knows.</span><br />
+<span style="color: rgb(128, 64, 64);">36 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;ClearStack();<br />
+<span style="color: rgb(128, 64, 64);">37 </span><br />
+<span style="color: rgb(128, 64, 64);">38 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// Read a int or a operator from a stream</span><br />
+<span style="color: rgb(128, 64, 64);">39 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">bool</span></b>&nbsp;ReadStream(_IN_ istream&amp;<br />
+aisExpr, _OUT_ <b><span style="color: seagreen;">int</span></b>&amp;<br />
+aiReaded,&nbsp;&nbsp;_OUT_ <b><span style="color: seagreen;">bool</span></b>&amp;<br />
+abIsChar);<br />
+<span style="color: rgb(128, 64, 64);">40 </span><br />
+<span style="color: rgb(128, 64, 64);">41 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// Process a Operator</span><br />
+<span style="color: rgb(128, 64, 64);">42 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;ProcessOperator(<b><span style="color: seagreen;">char</span></b>&nbsp;ac, _OUT_ ostream&amp; aosPostfix);<br />
+<span style="color: rgb(128, 64, 64);">43 </span><br />
+<span style="color: rgb(128, 64, 64);">44 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;ComputeOperator(<b><span style="color: seagreen;">char</span></b>&nbsp;ac);<br />
+<span style="color: rgb(128, 64, 64);">45 </span><br />
+<span style="color: rgb(128, 64, 64);">46 </span>&nbsp;&nbsp;&nbsp;&nbsp;stack&lt;<b><span style="color: seagreen;">int</span></b>&gt; miSta;<br />
+<span style="color: rgb(128, 64, 64);">47 </span>};<br />
+<span style="color: rgb(128, 64, 64);">48 </span><br />
+<span style="color: rgb(128, 64, 64);">49 </span><br />
+<span style="color: rgb(128, 64, 64);">50 </span><br />
+<span style="color: rgb(128, 64, 64);">51 </span><br />
+<span style="color: rgb(128, 64, 64);">52 </span><br />
+<span style="color: rgb(128, 64, 64);">53 </span><span style="color: rgb(160, 32, 240);">#endif</span><br />
+<span style="color: rgb(128, 64, 64);">54</span></span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">cpp </span><span style="font-family: 宋体; color: rgb(160, 32, 240);">文件：</span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;&nbsp;1 </span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">#include </span><span style='font-family: "Courier New"; color: fuchsia;' lang="EN-US">"ExprComputer.h"</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;2 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;3 </span><b><span style="color: seagreen;">void</span></b>&nbsp;CExprComputer::DumpStack()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;4 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;5 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(!miSta.empty())<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;6 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;7 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;<span style="color: fuchsia;">"stack: "</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;8 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OutputStack();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;9 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;10 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: fuchsia;">1</span>);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;11 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;12 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;13 </span>}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;14 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;15 </span><b><span style="color: seagreen;">void</span></b>&nbsp;CExprComputer::OutputStack()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;16 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;17 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>(!miSta.empty())<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;18 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;19 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;miSta.top() &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;20 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;21 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;22 </span>}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;23 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;24 </span><b><span style="color: seagreen;">void</span></b>&nbsp;CExprComputer::ClearStack()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;25 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;26 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>(!miSta.empty())<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;27 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;28 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;29 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;30 </span>}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;31 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;32 </span><b><span style="color: seagreen;">void</span></b>&nbsp;CExprComputer::CheckStack()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;33 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;34 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(&nbsp;&nbsp;&nbsp;&nbsp;miSta.empty() )<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;35 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;36 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;<span style="color: fuchsia;">"Invalid expression input."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;37 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: fuchsia;">1</span>);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;38 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;39 </span>}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;40 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;41 </span><b><span style="color: seagreen;">bool</span></b>&nbsp;CExprComputer::ReadStream(_IN_<br />
+istream&amp; aisExpr, _OUT_ <b><span style="color: seagreen;">int</span></b>&amp;<br />
+aiReaded,&nbsp;&nbsp;_OUT_ <b><span style="color: seagreen;">bool</span></b>&amp;<br />
+abIsChar)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;42 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;43 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(aisExpr.eof())<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;44 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;45 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;<span style="color: fuchsia;">false</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;46 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;47 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;48 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// try to read stream as a int</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;49 </span>&nbsp;&nbsp;&nbsp;&nbsp;abIsChar = <span style="color: fuchsia;">false</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;50 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;li;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;51 </span>&nbsp;&nbsp;&nbsp;&nbsp;aisExpr<br />
+&gt;&gt; li;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;52 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;53 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// if next thing in stream is not a int, back a char and<br />
+read it</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;54 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(aisExpr.fail())<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;55 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;56 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aisExpr.clear();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;57 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aisExpr.unget();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;58 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">char</span></b>&nbsp;c;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;59 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aisExpr<br />
+&gt;&gt; c;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;60 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(c != <span style="color: fuchsia;">'='</span>)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;61 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;62 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aiReaded<br />
+= c;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;63 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abIsChar<br />
+= <span style="color: fuchsia;">true</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;64 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;<span style="color: fuchsia;">true</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;65 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;66 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">else</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;67 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;68 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;<span style="color: fuchsia;">false</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;69 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;70 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;71 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;72 </span>&nbsp;&nbsp;&nbsp;&nbsp;aiReaded =<br />
+li;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;73 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;<span style="color: fuchsia;">true</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;74 </span>}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;75 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;76 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;77 </span><b><span style="color: seagreen;">void</span></b>&nbsp;CExprComputer::ProcessOperator(<b><span style="color: seagreen;">char</span></b>&nbsp;ac, _OUT_ ostream&amp; aosPostfix)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;78 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;79 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">switch</span></b>(ac)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;80 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;81 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">case</span></b>&nbsp;<span style="color: fuchsia;">'('</span>:<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;82 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;83 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// save the '('</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;84 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.push(ac);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;85 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;86 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;87 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">case</span></b>&nbsp;<span style="color: fuchsia;">')'</span>:<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;88 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;89 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">char</span></b>&nbsp;lc;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;90 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CheckStack();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;91 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;92 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// output all operator until find a '('</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;93 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>( (lc = miSta.top()) != <span style="color: fuchsia;">'('</span>&nbsp;)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;94 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;95 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aosPostfix<br />
+&lt;&lt; lc &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;96 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;97 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CheckStack();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;98 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;99 </span><br />
+<span style="color: rgb(128, 64, 64);">100 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// the first '(' in stack,We just need pop it</span><br />
+<span style="color: rgb(128, 64, 64);">101 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">102 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">103 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">104 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">case</span></b>&nbsp;<span style="color: fuchsia;">'*'</span>:<br />
+<span style="color: rgb(128, 64, 64);">105 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">106 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">char</span></b>&nbsp;lc;<br />
+<span style="color: rgb(128, 64, 64);">107 </span><br />
+<span style="color: rgb(128, 64, 64);">108 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// output all operator until find a lower level operator</span><br />
+<span style="color: rgb(128, 64, 64);">109 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>( !miSta.empty() &amp;&amp; <br />
+<span style="color: rgb(128, 64, 64);">110 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((lc<br />
+= miSta.top()) != <span style="color: fuchsia;">'('</span>) &amp;&amp;<br />
+<span style="color: rgb(128, 64, 64);">111 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<br />
+lc != <span style="color: fuchsia;">'+'</span>) )<br />
+<span style="color: rgb(128, 64, 64);">112 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">113 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aosPostfix<br />
+&lt;&lt;lc &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">114 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">115 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">116 </span><br />
+<span style="color: rgb(128, 64, 64);">117 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.push(ac);<br />
+<span style="color: rgb(128, 64, 64);">118 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">119 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">120 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">case</span></b>&nbsp;<span style="color: fuchsia;">'+'</span>:<br />
+<span style="color: rgb(128, 64, 64);">121 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">122 </span><br />
+<span style="color: rgb(128, 64, 64);">123 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">char</span></b>&nbsp;lc;<br />
+<span style="color: rgb(128, 64, 64);">124 </span><br />
+<span style="color: rgb(128, 64, 64);">125 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// output all operator until find a lower level operator</span><br />
+<span style="color: rgb(128, 64, 64);">126 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>( !miSta.empty() &amp;&amp; <br />
+<span style="color: rgb(128, 64, 64);">127 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((lc<br />
+= miSta.top()) != <span style="color: fuchsia;">'('</span>) )<br />
+<span style="color: rgb(128, 64, 64);">128 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">129 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aosPostfix<br />
+&lt;&lt;lc &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">130 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">131 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">132 </span><br />
+<span style="color: rgb(128, 64, 64);">133 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.push(ac);<br />
+<span style="color: rgb(128, 64, 64);">134 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">135 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">136 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">default</span></b>:<br />
+<span style="color: rgb(128, 64, 64);">137 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">138 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;<span style="color: fuchsia;">"Don't support this operator."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">139 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: fuchsia;">1</span>);<br />
+<span style="color: rgb(128, 64, 64);">140 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">141 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">142 </span><br />
+<span style="color: rgb(128, 64, 64);">143 </span>}<br />
+<span style="color: rgb(128, 64, 64);">144 </span><br />
+<span style="color: rgb(128, 64, 64);">145 </span><b><span style="color: seagreen;">int</span></b>&nbsp;CExprComputer::TransInfix2Postfix(_IN_<br />
+istream&amp; aisInfix,<br />
+<span style="color: rgb(128, 64, 64);">146 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_OUT_<br />
+ostream&amp; aosPostfix)<br />
+<span style="color: rgb(128, 64, 64);">147 </span>{<br />
+<span style="color: rgb(128, 64, 64);">148 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;li = <span style="color: fuchsia;">0</span>;<br />
+<span style="color: rgb(128, 64, 64);">149 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">bool</span></b>&nbsp;lbIsChar = <span style="color: fuchsia;">false</span>;<br />
+<span style="color: rgb(128, 64, 64);">150 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>( ReadStream(aisInfix, li, lbIsChar) )<br />
+<span style="color: rgb(128, 64, 64);">151 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">152 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// number need immediately output</span><br />
+<span style="color: rgb(128, 64, 64);">153 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(!lbIsChar)<br />
+<span style="color: rgb(128, 64, 64);">154 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">155 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aosPostfix<br />
+&lt;&lt;li &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">156 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">157 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">else</span></b><br />
+<span style="color: rgb(128, 64, 64);">158 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">159 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">char</span></b>&nbsp;lc = <b><span style="color: rgb(128, 64, 64);">static_cast</span></b>&lt;<b><span style="color: seagreen;">char</span></b>&gt;(li);<br />
+<span style="color: rgb(128, 64, 64);">160 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ProcessOperator(lc,<br />
+aosPostfix);<br />
+<span style="color: rgb(128, 64, 64);">161 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">162 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">163 </span><br />
+<span style="color: rgb(128, 64, 64);">164 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>(!miSta.empty())<br />
+<span style="color: rgb(128, 64, 64);">165 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">166 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aosPostfix<br />
+&lt;&lt;(<b><span style="color: seagreen;">char</span></b>)miSta.top() &lt;&lt;<span style="color: fuchsia;">" "</span>;<br />
+<span style="color: rgb(128, 64, 64);">167 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">168 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">169 </span>&nbsp;&nbsp;&nbsp;&nbsp;aosPostfix<br />
+&lt;&lt;<span style="color: fuchsia;">'='</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">170 </span><br />
+<span style="color: rgb(128, 64, 64);">171 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;<span style="color: fuchsia;">1</span>;<br />
+<span style="color: rgb(128, 64, 64);">172 </span>}<br />
+<span style="color: rgb(128, 64, 64);">173 </span><br />
+<span style="color: rgb(128, 64, 64);">174 </span><b><span style="color: seagreen;">int</span></b>&nbsp;CExprComputer::ComputePostfix(_IN_<br />
+istream&amp; aisExpr)<br />
+<span style="color: rgb(128, 64, 64);">175 </span>{<br />
+<span style="color: rgb(128, 64, 64);">176 </span>&nbsp;&nbsp;&nbsp;&nbsp;ClearStack();<br />
+<span style="color: rgb(128, 64, 64);">177 </span><br />
+<span style="color: rgb(128, 64, 64);">178 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;li = <span style="color: fuchsia;">0</span>;<br />
+<span style="color: rgb(128, 64, 64);">179 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">bool</span></b>&nbsp;lbIsChar = <span style="color: fuchsia;">false</span>;<br />
+<span style="color: rgb(128, 64, 64);">180 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">while</span></b>( ReadStream(aisExpr, li, lbIsChar) )<br />
+<span style="color: rgb(128, 64, 64);">181 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">182 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// number need immediately output</span><br />
+<span style="color: rgb(128, 64, 64);">183 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(!lbIsChar)<br />
+<span style="color: rgb(128, 64, 64);">184 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">185 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.push(li);<br />
+<span style="color: rgb(128, 64, 64);">186 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">187 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">else</span></b><br />
+<span style="color: rgb(128, 64, 64);">188 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">189 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">char</span></b>&nbsp;lc = <b><span style="color: rgb(128, 64, 64);">static_cast</span></b>&lt;<b><span style="color: seagreen;">char</span></b>&gt;(li);<br />
+<span style="color: rgb(128, 64, 64);">190 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ComputeOperator(lc);<br />
+<span style="color: rgb(128, 64, 64);">191 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">192 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">193 </span><br />
+<span style="color: rgb(128, 64, 64);">194 </span>&nbsp;&nbsp;&nbsp;&nbsp;CheckStack();<br />
+<span style="color: rgb(128, 64, 64);">195 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;liResult = miSta.top();<br />
+<span style="color: rgb(128, 64, 64);">196 </span>&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">197 </span><br />
+<span style="color: rgb(128, 64, 64);">198 </span>&nbsp;&nbsp;&nbsp;&nbsp;DumpStack();<br />
+<span style="color: rgb(128, 64, 64);">199 </span><br />
+<span style="color: rgb(128, 64, 64);">200 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;liResult;<br />
+<span style="color: rgb(128, 64, 64);">201 </span>}<br />
+<span style="color: rgb(128, 64, 64);">202 </span><br />
+<span style="color: rgb(128, 64, 64);">203 </span><b><span style="color: seagreen;">void</span></b>&nbsp;CExprComputer::ComputeOperator(<b><span style="color: seagreen;">char</span></b>&nbsp;ac)<br />
+<span style="color: rgb(128, 64, 64);">204 </span>{<br />
+<span style="color: rgb(128, 64, 64);">205 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// get lhs and rhs</span><br />
+<span style="color: rgb(128, 64, 64);">206 </span>&nbsp;&nbsp;&nbsp;&nbsp;CheckStack();<br />
+<span style="color: rgb(128, 64, 64);">207 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;lilhs = miSta.top();<br />
+<span style="color: rgb(128, 64, 64);">208 </span>&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">209 </span>&nbsp;&nbsp;&nbsp;&nbsp;CheckStack();<br />
+<span style="color: rgb(128, 64, 64);">210 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;lirhs = miSta.top();<br />
+<span style="color: rgb(128, 64, 64);">211 </span>&nbsp;&nbsp;&nbsp;&nbsp;miSta.pop();<br />
+<span style="color: rgb(128, 64, 64);">212 </span><br />
+<span style="color: rgb(128, 64, 64);">213 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">switch</span></b>(ac)<br />
+<span style="color: rgb(128, 64, 64);">214 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">215 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">case</span></b>&nbsp;<span style="color: fuchsia;">'*'</span>:<br />
+<span style="color: rgb(128, 64, 64);">216 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">217 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;liResult = lilhs * lirhs;<br />
+<span style="color: rgb(128, 64, 64);">218 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.push(liResult);<br />
+<span style="color: rgb(128, 64, 64);">219 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">220 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">221 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">case</span></b>&nbsp;<span style="color: fuchsia;">'+'</span>:<br />
+<span style="color: rgb(128, 64, 64);">222 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">223 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">int</span></b>&nbsp;liResult = lilhs + lirhs;<br />
+<span style="color: rgb(128, 64, 64);">224 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;miSta.push(liResult);<br />
+<span style="color: rgb(128, 64, 64);">225 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">break</span></b>;<br />
+<span style="color: rgb(128, 64, 64);">226 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">227 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">default</span></b>:<br />
+<span style="color: rgb(128, 64, 64);">228 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">229 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;<span style="color: fuchsia;">"Don't support this operator."</span>&nbsp;&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">230 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: fuchsia;">1</span>);<br />
+<span style="color: rgb(128, 64, 64);">231 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">232 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">233 </span>}<br />
+<span style="color: rgb(128, 64, 64);">234 </span><br />
+<span style="color: rgb(128, 64, 64);">235 </span><b><span style="color: seagreen;">int</span></b>&nbsp;CExprComputer::ComputeInfix(_IN_<br />
+istream&amp; aisExpr)<br />
+<span style="color: rgb(128, 64, 64);">236 </span>{<br />
+<span style="color: rgb(128, 64, 64);">237 </span>&nbsp;&nbsp;&nbsp;&nbsp;stringstream<br />
+lss;<br />
+<span style="color: rgb(128, 64, 64);">238 </span>&nbsp;&nbsp;&nbsp;&nbsp;TransInfix2Postfix(aisExpr,<br />
+lss);<br />
+<span style="color: rgb(128, 64, 64);">239 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;ComputePostfix(lss);<br />
+<span style="color: rgb(128, 64, 64);">240 </span>}</span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;">九天雁翎</span></u></b><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>

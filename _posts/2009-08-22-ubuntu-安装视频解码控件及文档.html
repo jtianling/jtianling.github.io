@@ -1,0 +1,67 @@
+---
+layout: post
+title: ubuntu 安装视频解码控件及文档
+categories:
+- "未分类"
+tags:
+- Ubuntu
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '9'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p>最近老在折腾ubuntu。。。。。呵呵，学习辛苦了，偶尔放松一下，对工作的环境（其实我主要工作还是在windows的VS中，Linux属于假想工作环境-_0!）</p>
+<p>&nbsp;</p>
+<p>ubuntu由于有apt,deb包管理相当轻松，大部分任务就是sudo apt-get install XXXX，呵呵，实在是奇迹。。。。。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>realplayer装了没有用。。。。原因不明。</p>
+<p>&nbsp;</p>
+<p>国外的这个文章很牛：（<a href="http://www.ubuntugeek.com/install-mplayer-and-multimedia-codecs-libdvdcss2w32codecsw64codecs-in-ubuntu-904-jaunty.html">http://www.ubuntugeek.com/install-mplayer-and-multimedia-codecs-libdvdcss2w32codecsw64codecs-in-ubuntu-904-jaunty.html</a>）</p>
+<p><strong>Install libdvdcss2 and w32 video codecs in Ubuntu 9.04 (Jaunty)</strong></p>
+<p>Support for WMV, RealMedia and other formats has been bundled into the w32codecs package. This package is not available from the Ubuntu repositories due to licensing and legal restrictions.To play encrypted DVDs, the libdvdcss2 package is essential.</p>
+<p>For Ubuntu 9.04 (Jaunty) Users use the following procedures</p>
+<p>sudo wget http://www.medibuntu.org/sources.list.d/jaunty.list <code><span style="background-color: #f5f5f5; font-size: x-small;">--</span></code>output-document=/etc/apt/sources.list.d/medibuntu.list</p>
+<p>Then, add the GPG Key using the following commands<br /><code><br /><span style="background-color: #f5f5f5; font-size: x-small;">sudo apt-get update</span></code><br /><span style="font-family: Tahoma;">For <strong>i386 Users</strong> install Codecs using the following command</span></p>
+<p>sudo apt-get install medibuntu-keyring</p>
+<p>sudo apt-get update</p>
+<blockquote>
+<p>sudo apt-get install w32codecs libdvdcss2</p>
+</blockquote>
+<p>For<strong> amd64 Users</strong> install Codecs using the following command</p>
+<blockquote>
+<p>sudo apt-get install w64codecs libdvdcss2</p>
+</blockquote>
+<p>Using above download locations you can install most of the mutimedia codecs for ubuntu.</p>
+<p><strong>Mplayer Plugin for Firefox</strong></p>
+<p>If you want to install Mplayer with plug-in for Mozilla Firefox run the following command</p>
+<blockquote>
+<p>sudo apt-get install mozilla-mplayer</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>解决了很多问题</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>有个问题很有意思，现在我在windows下用kmplayer，感觉很好，很习惯，比windows下的mplayer还好用，还美观，现在改用了KDE(主要是因为学了QT的原因，其实我以前都是用Gnome），想都没有想，直接上在ubuntu上装kmplayer用，结果完全不好用，再查了查，还有个kplayer,还是不好用，都删掉，换成mplayer..............一切如以前般强大，接近无语。。。。。。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>接着，开发库文档的问题：【转】</p>
+<p>&nbsp;</p>
+<p>添加库函数手册<br />ubuntu默认是没有安装c语言的库函数man手册的，所以你在man perror 和sendto之类的函数时会显示没有相关文档的问题，这个问题让我郁闷了我好久。解决方法：<br />sudo apt-get install manpages-dev</p>
+<p>&nbsp;</p>
+<p>事实上，也有中文版的文档了，只是看起来比较别扭（可能因为ubuntu的控制台下中文字不够美观）</p>
+<p>&nbsp;</p>
+<p>选择man页面的方式是man 页面号 文档，比如我要查sleep的库函数调用，那就是man 3 sleep</p>
+</blockquote>

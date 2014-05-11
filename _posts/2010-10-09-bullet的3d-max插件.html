@@ -1,0 +1,66 @@
+---
+layout: post
+title: Bullet的3D Max插件
+categories:
+- "图形技术"
+- "游戏开发"
+tags:
+- 3Ds Max
+- Bullet
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '15'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="margin: 1em 0px 0.5em;" align="right"><strong><a style="color: #006bad; text-decoration: none;" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p style="margin: 1em 0px 0.5em;" align="right"><a style="color: #770000; text-decoration: none;" href="http://groups.google.com/group/jiutianfile/"><strong>讨论新闻组及文件</strong><br />
+</a></p>
+<h2>准备</h2>
+<p>
+&nbsp;&nbsp;&nbsp; 早就知道Bullet有个比较好的MAYA插件，那是迪斯尼自己的东西，然后开源的，在bullet的网站就有<a id="meme" title="下载" href="http://code.google.com/p/dynamica/downloads/list" title="下载">下载</a><br />
+。但是一直一来都是学习3D Max,接触了一下MAYA，感觉不是太习惯，有人说MAYA的操作方式接近设计师的思维。。。。我果然不是个设计师啊。。。。。我甚至都准备转投Blender了，好歹那也是开源免费的东西，而且与Bullet结合的还不错，还有GameKit这个好玩的东西在。我初步的看了一下，感觉GameKit有点类似LOVE这个Lua的2D游戏引擎，以一个数据包作为输入，然后是一个独立的可执行程序，只不过LOVE中的数据包是zip包，集合了一堆的Lua脚本和资源，而GameKit的数据包是由Blender生成的，也可以包含Lua脚本，正在想呢，这个东西是不是太前卫啊？在Blender中通过一堆的UI去弄逻辑？作为程序员，好像还是比较习惯编写代码。。。。。呵呵，为了Bullet，前段时间刚刚了解了一下Blender的2.4x版本，结果发现GameKit支持的blender的新版（有点想3D Max了）界面差异好大啊。。。也是个打击。。。。。就在此时，无意识的（我也不知道为什么）到Bullet的插件独立网站<a href="http://code.google.com/p/dynamica/downloads/list"><span style="color: #000000; text-decoration: none;">dynamica</span><br />
+</a><br />
+中去逛了一下，才发现，原来Bullet已经有3D Max的插件了，改装自Nvidia开源的PhyX的3D Max插件，（感谢伟大的NVidia公司，虽然它为了自家的Cg对OpenGL的GLSL有些冷遇，导致我需要用AMD的显卡来运行RenderMonkey才方便学习，不过因此我都原谅他了-_-!）甚至还有最新的2011版本的。。。。。天哪，我都在费什么劲啊。。。。晃了那么大一圈，果然，人生在于折腾。。。。。暂时告别下MAYA和Blender了，继续弄弄3D Max先。</p>
+<p>&nbsp;&nbsp;&nbsp; 安装完插件后，发现Bullet的3D Max插件文档也比MAYA的要丰富啊(MAYA的主要文档就是指向几个教学视频)。。。。。太感谢开源社区了。。。。。。安装后的3D Max效果如图：</p>
+<div id="dgpq" style="text-align: left;">
+</div>
+<p>
+<img src="http://hi.csdn.net/attachment/201010/9/0_1286624227mHn0.gif" alt="" /></p>
+<h2>实验</h2>
+<p>
+有些奇怪的是，安装完后虽然有Example目录，文档中也提到过Example，但是实际没有任何Example，文档这么详细，使用这么简单，随便学学就能懂了，自己弄个Example^^</p>
+<p>先用2D Array复制出一些堆起来的盒子，然后弄个球撞之。。。。。。。。。</p>
+<p><img src="http://hi.csdn.net/attachment/201010/9/0_1286624245Rlxl.gif" alt="" /></p>
+<div id="iv7:" style="text-align: left;">
+</div>
+<p>
+呵呵，和文档中的例子截图有些像了^^同时发现复制时是可以带物理属性复制的，但是物理的模拟与3D Max的关键帧动画结合的并不好，不能回滚，导致我想回来截个好图都没有办法-_-!（只能重新再从头模拟一次）</p>
+<p>经过试用，发现使用上还是有些不方便，比如每次修改物理属性后都需要add Selected或者add All Phys，这个不太合理，然后就是，目前完全不支持Joint或者Contrainter，也就是说，几乎也就是只有刚体和软体的支持。还有，初始速度和旋转不知道为啥，在我这里也无效，文档中没有提及。</p>
+<p>说到这里，无法设定初始速度，那上面的例子是怎么做出来的呢？^^现在揭秘答案：</p>
+<p><img src="http://hi.csdn.net/attachment/201010/9/0_1286624257elA9.gif" alt="" /></p>
+<div id="e6su" style="text-align: left;">
+</div>
+<p>
+哈哈...............................</p>
+<h2>小结</h2>
+<p>
+&nbsp;&nbsp; &nbsp;总的来说，bullet的3D Max插件已经比较不错了^^别说别的，就算当一个简单，方便的Bullet文件编辑器用都好啊，比起每个物体通过代码去设置属性，Bullet文件要方便太多了。最重要的是，3D Max对我来说，还是最亲切的。。。。。。暂时聊胜于无了，不够用的时候，再去求助于MAYA插件或者Blender吧。</p>
+<p>&nbsp;</p>
+<p>注意：事实证明，目前的此插件到处的bullet文件无法正常加载，再未更新之前，请直接忽略之。</p>
+<p align="left">&nbsp;</p>
+<p align="right">原创文章作者保留版权 转载请注明原作者 并给出链接</p>
+<p align="right"><strong><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) -- www.jtianling.com</a><br />
+</strong></p>
+<p>&nbsp;</p>

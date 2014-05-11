@@ -1,0 +1,726 @@
+---
+layout: post
+title: "队列(queue)的链表(list)实现及循环数组(circular array)实现 C++实现"
+categories:
+- "算法"
+tags:
+- C++
+- List
+- Queue
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '12'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+<p>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="ProgId" content="Word.Document" /><meta name="Generator" content="Microsoft Word 12" /><meta name="Originator" content="Microsoft Word 12" />
+<link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_filelist.xml" /><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;o:OfficeDocumentSettings&gt;<br />
+  &lt;o:RelyOnVML /&gt;<br />
+  &lt;o:AllowPNG /&gt;<br />
+ &lt;/o:OfficeDocumentSettings&gt;<br />
+&lt;/xml&gt;&lt;![endif]-->
+<link rel="themeData" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_themedata.thmx" />
+<link rel="colorSchemeMapping" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtmlclip1%5C01%5Cclip_colorschememapping.xml" /><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:WordDocument&gt;<br />
+  &lt;w:View&gt;Normal&lt;/w:View&gt;<br />
+  &lt;w:Zoom&gt;0&lt;/w:Zoom&gt;<br />
+  &lt;w:TrackMoves /&gt;<br />
+  &lt;w:TrackFormatting /&gt;<br />
+  &lt;w:PunctuationKerning /&gt;<br />
+  &lt;w:DrawingGridVerticalSpacing&gt;7.8 磅&lt;/w:DrawingGridVerticalSpacing&gt;<br />
+  &lt;w:DisplayHorizontalDrawingGridEvery&gt;0&lt;/w:DisplayHorizontalDrawingGridEvery&gt;<br />
+  &lt;w:DisplayVerticalDrawingGridEvery&gt;2&lt;/w:DisplayVerticalDrawingGridEvery&gt;<br />
+  &lt;w:ValidateAgainstSchemas /&gt;<br />
+  &lt;w:SaveIfXMLInvalid&gt;false&lt;/w:SaveIfXMLInvalid&gt;<br />
+  &lt;w:IgnoreMixedContent&gt;false&lt;/w:IgnoreMixedContent&gt;<br />
+  &lt;w:AlwaysShowPlaceholderText&gt;false&lt;/w:AlwaysShowPlaceholderText&gt;<br />
+  &lt;w:DoNotPromoteQF /&gt;<br />
+  &lt;w:LidThemeOther&gt;EN-US&lt;/w:LidThemeOther&gt;<br />
+  &lt;w:LidThemeAsian&gt;ZH-CN&lt;/w:LidThemeAsian&gt;<br />
+  &lt;w:LidThemeComplexScript&gt;X-NONE&lt;/w:LidThemeComplexScript&gt;<br />
+  &lt;w:Compatibility&gt;<br />
+   &lt;w:SpaceForUL /&gt;<br />
+   &lt;w:BalanceSingleByteDoubleByteWidth /&gt;<br />
+   &lt;w:DoNotLeaveBackslashAlone /&gt;<br />
+   &lt;w:ULTrailSpace /&gt;<br />
+   &lt;w:DoNotExpandShiftReturn /&gt;<br />
+   &lt;w:AdjustLineHeightInTable /&gt;<br />
+   &lt;w:BreakWrappedTables /&gt;<br />
+   &lt;w:SnapToGridInCell /&gt;<br />
+   &lt;w:WrapTextWithPunct /&gt;<br />
+   &lt;w:UseAsianBreakRules /&gt;<br />
+   &lt;w:DontGrowAutofit /&gt;<br />
+   &lt;w:SplitPgBreakAndParaMark /&gt;<br />
+   &lt;w:DontVertAlignCellWithSp /&gt;<br />
+   &lt;w:DontBreakConstrainedForcedTables /&gt;<br />
+   &lt;w:DontVertAlignInTxbx /&gt;<br />
+   &lt;w:Word11KerningPairs /&gt;<br />
+   &lt;w:CachedColBalance /&gt;<br />
+   &lt;w:UseFELayout /&gt;<br />
+  &lt;/w:Compatibility&gt;<br />
+  &lt;m:mathPr&gt;<br />
+   &lt;m:mathFont m:val="Cambria Math" /&gt;<br />
+   &lt;m:brkBin m:val="before" /&gt;<br />
+   &lt;m:brkBinSub m:val="&#45;-" /&gt;<br />
+   &lt;m:smallFrac m:val="off" /&gt;<br />
+   &lt;m:dispDef /&gt;<br />
+   &lt;m:lMargin m:val="0" /&gt;<br />
+   &lt;m:rMargin m:val="0" /&gt;<br />
+   &lt;m:defJc m:val="centerGroup" /&gt;<br />
+   &lt;m:wrapIndent m:val="1440" /&gt;<br />
+   &lt;m:intLim m:val="subSup" /&gt;<br />
+   &lt;m:naryLim m:val="undOvr" /&gt;<br />
+  &lt;/m:mathPr&gt;&lt;/w:WordDocument&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><!--[if gte mso 9]&gt;&lt;xml&gt;<br />
+ &lt;w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="true"<br />
+  DefSemiHidden="true" DefQFormat="false" DefPriority="99"<br />
+  LatentStyleCount="267"&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="0" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Normal" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="heading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 7" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 8" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" Name="toc 9" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="35" QFormat="true" Name="caption" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="10" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" Name="Default Paragraph Font" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="11" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtitle" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="22" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Strong" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="20" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="59" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Table Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Placeholder Text" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="1" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="No Spacing" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" UnhideWhenUsed="false" Name="Revision" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="34" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="List Paragraph" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="29" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="30" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Quote" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 1" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 2" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 3" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 4" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 5" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="60" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="61" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="62" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Light Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="63" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="64" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Shading 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="65" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="66" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium List 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="67" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 1 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="68" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 2 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="69" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Medium Grid 3 Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="70" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Dark List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="71" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Shading Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="72" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful List Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="73" SemiHidden="false"<br />
+   UnhideWhenUsed="false" Name="Colorful Grid Accent 6" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="19" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="21" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Emphasis" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="31" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Subtle Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="32" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Intense Reference" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="33" SemiHidden="false"<br />
+   UnhideWhenUsed="false" QFormat="true" Name="Book Title" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="37" Name="Bibliography" /&gt;<br />
+  &lt;w:LsdException Locked="false" Priority="39" QFormat="true" Name="TOC Heading" /&gt;<br />
+ &lt;/w:LatentStyles&gt;<br />
+&lt;/xml&gt;&lt;![endif]--><br />
+<style>
+<!--<br />
+ /* Font Definitions */<br />
+ @font-face<br />
+	{font-family:宋体;<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-alt:SimSun;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+@font-face<br />
+	{font-family:"Cambria Math";<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1107304683 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Cambria;<br />
+	panose-1:2 4 5 3 5 4 6 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:roman;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073741899 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:Calibri;<br />
+	panose-1:2 15 5 2 2 2 4 3 2 4;<br />
+	mso-font-charset:0;<br />
+	mso-generic-font-family:swiss;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:-1610611985 1073750139 0 0 159 0;}<br />
+@font-face<br />
+	{font-family:"/@宋体";<br />
+	panose-1:2 1 6 0 3 1 1 1 1 1;<br />
+	mso-font-charset:134;<br />
+	mso-generic-font-family:auto;<br />
+	mso-font-pitch:variable;<br />
+	mso-font-signature:3 135135232 16 0 262145 0;}<br />
+ /* Style Definitions */<br />
+ p.MsoNormal, li.MsoNormal, div.MsoNormal<br />
+	{mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	margin-top:0cm;<br />
+	margin-right:0cm;<br />
+	margin-bottom:10.0pt;<br />
+	margin-left:0cm;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:12.0pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:minor-fareast;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;<br />
+	mso-fareast-language:EN-US;<br />
+	mso-bidi-language:EN-US;}<br />
+h1<br />
+	{mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-link:"标题 1 Char";<br />
+	mso-style-next:正文;<br />
+	margin-top:24.0pt;<br />
+	margin-right:0cm;<br />
+	margin-bottom:0cm;<br />
+	margin-left:0cm;<br />
+	margin-bottom:.0001pt;<br />
+	line-height:115%;<br />
+	mso-pagination:widow-orphan lines-together;<br />
+	page-break-after:avoid;<br />
+	mso-outline-level:1;<br />
+	font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	mso-font-kerning:1.0pt;}<br />
+span.1Char<br />
+	{mso-style-name:"标题 1 Char";<br />
+	mso-style-priority:9;<br />
+	mso-style-unhide:no;<br />
+	mso-style-locked:yes;<br />
+	mso-style-link:"标题 1";<br />
+	mso-ansi-font-size:16.0pt;<br />
+	mso-bidi-font-size:14.0pt;<br />
+	font-family:"Cambria","serif";<br />
+	mso-ascii-font-family:Cambria;<br />
+	mso-ascii-theme-font:major-latin;<br />
+	mso-fareast-font-family:宋体;<br />
+	mso-fareast-theme-font:major-fareast;<br />
+	mso-hansi-font-family:Cambria;<br />
+	mso-hansi-theme-font:major-latin;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:major-bidi;<br />
+	color:#365F91;<br />
+	mso-themecolor:accent1;<br />
+	mso-themeshade:191;<br />
+	font-weight:bold;}<br />
+.MsoChpDefault<br />
+	{mso-style-type:export-only;<br />
+	mso-default-props:yes;<br />
+	mso-bidi-font-family:"Times New Roman";<br />
+	mso-bidi-theme-font:minor-bidi;}<br />
+ /* Page Definitions */<br />
+ @page<br />
+	{mso-page-border-surround-header:no;<br />
+	mso-page-border-surround-footer:no;}<br />
+@page Section1<br />
+	{size:595.3pt 841.9pt;<br />
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;<br />
+	mso-header-margin:42.55pt;<br />
+	mso-footer-margin:49.6pt;<br />
+	mso-paper-source:0;<br />
+	layout-grid:15.6pt;}<br />
+div.Section1<br />
+	{page:Section1;}<br />
+--><br />
+</style>
+<p><!--[if gte mso 10]&gt;<br />
+&lt;style&gt;<br />
+ /* Style Definitions */<br />
+ table.MsoNormalTable<br />
+	{mso-style-name:普通表格;<br />
+	mso-tstyle-rowband-size:0;<br />
+	mso-tstyle-colband-size:0;<br />
+	mso-style-noshow:yes;<br />
+	mso-style-priority:99;<br />
+	mso-style-qformat:yes;<br />
+	mso-style-parent:"";<br />
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;<br />
+	mso-para-margin:0cm;<br />
+	mso-para-margin-bottom:.0001pt;<br />
+	mso-pagination:widow-orphan;<br />
+	font-size:10.5pt;<br />
+	mso-bidi-font-size:11.0pt;<br />
+	font-family:"Calibri","sans-serif";<br />
+	mso-ascii-font-family:Calibri;<br />
+	mso-ascii-theme-font:minor-latin;<br />
+	mso-hansi-font-family:Calibri;<br />
+	mso-hansi-theme-font:minor-latin;<br />
+	mso-font-kerning:1.0pt;}<br />
+&lt;/style&gt;<br />
+&lt;![endif]--></p>
+<h1><span style="font-family: 宋体;">队列</span><span lang="EN-US">(queue)</span><span style="font-family: 宋体;">的链表</span><span lang="EN-US">(list)</span><span style="font-family: 宋体;">实现及循环数组</span><span lang="EN-US">(circular array)实现&nbsp; C++</span><span style="font-family: 宋体;">实现</span></h1>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">九天雁翎</span><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b></p>
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;" lang="EN-US">&lt;&lt;Data Structures and Algorithm Analysis in C++&gt;&gt;<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;" lang="EN-US">--</span><span style="font-family: 宋体;">《数据结构<span lang="EN-US">b</span>与算法分析</span><span style="" lang="EN-US">c++</span><span style="font-family: 宋体;">描述》</span><span style="" lang="EN-US"> Mark Allen Weiss</span><span style="font-family: 宋体;">著</span><span style=""> </span><span style="font-family: 宋体;">人民邮电大学出版</span><span style=""> </span><span style="font-family: 宋体;">中文版第<span lang="EN-US">78-81</span>面，</span><span style="font-family: 宋体;">堆栈的应用</span><span style="" lang="EN-US">(1) </span><span style="font-family: 宋体;">队列</span><span style="" lang="EN-US">(queue)</span><span style="font-family: 宋体;">的链表</span><span style="" lang="EN-US">(list)</span><span style="font-family: 宋体;">实现及循环数组</span><span style="" lang="EN-US">(circular array) C++</span><span style="font-family: 宋体;">实现，需要注意的是，仅仅为了说明问题，没有详细探究代码的健壮，比如，我没有加入错误检测，这点在循环数组的实现是非常容易出现的。并且为了说明问题，我用了一个很小的数组来实现，以完成真正的从尾部到头部的跳转。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">另外说明的是，书中队列应用一节我实在想不到有什么可以用代码简单实现的，所以都不写了。</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体;">详细情况见代码：</span><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US">queue.h<o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;&nbsp;1 </span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">#ifndef __QUEUE_H__</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;2 </span><span style="color: rgb(160, 32, 240);">#define<br />
+__QUEUE_H__</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;3 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;list&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;4 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;vector&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;5 <b>using</b></span>&nbsp;<b><span style="color: seagreen;">namespace</span></b>&nbsp;std;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;6 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;7 </span><b><span style="color: seagreen;">template</span></b>&lt;<b><span style="color: seagreen;">typename</span></b>&nbsp;T&gt;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;8 </span><b><span style="color: seagreen;">class</span></b>&nbsp;CQueueSimple<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;&nbsp;9 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;10 <b>public</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;11 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">bool</span></b>&nbsp;empty() <b><span style="color: seagreen;">const</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;12 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;13 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;moList.empty();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;14 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;15 </span>&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;16 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">size_t</span></b>&nbsp;size() <b><span style="color: seagreen;">const</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;17 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;18 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;moList.size();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;19 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;20 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;21 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;pop()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;22 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;23 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(moList.empty())<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;24 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;25 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">throw</span></b>&nbsp;-<span style="color: fuchsia;">1</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;26 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;27 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;28 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moList.pop_front();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;29 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;30 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;31 </span>&nbsp;&nbsp;&nbsp;&nbsp;T&amp;<br />
+front()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;32 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;33 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;moList.front();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;34 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;35 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;36 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">const</span></b>&nbsp;T&amp; front() <b><span style="color: seagreen;">const</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;37 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;38 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;moList.front();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;39 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;40 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;41 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;42 </span>&nbsp;&nbsp;&nbsp;&nbsp;T&amp;<br />
+back()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;43 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;44 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;moList.back();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;45 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;46 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;47 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">const</span></b>&nbsp;T&amp; back() <b><span style="color: seagreen;">const</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;48 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;49 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;moList.back();<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;50 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;51 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;52 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;push(<b><span style="color: seagreen;">const</span></b>&nbsp;T&amp;<br />
+aItem)<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;53 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;54 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moList.push_back(aItem);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;55 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;56 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;57 <b>private</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;58 </span>&nbsp;&nbsp;&nbsp;&nbsp;list&lt;T&gt;<br />
+moList;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;59 </span>};<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;60 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;61 </span><span style="color: blue;">//<br />
+implement a queue with circular array</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;62 </span><span style="color: blue;">// there<br />
+is no error check.</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;63 </span><b><span style="color: seagreen;">template</span></b>&lt;<b><span style="color: seagreen;">typename</span></b>&nbsp;T, <b><span style="color: seagreen;">size_t</span></b>&nbsp;ArraySize&gt;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;64 </span><b><span style="color: seagreen;">class</span></b>&nbsp;CQueueCir<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;65 </span>{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;66 <b>public</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;67 </span>&nbsp;&nbsp;&nbsp;&nbsp;CQueueCir()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;68 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;69 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// init to zero</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;70 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memset(maData,<br />
+<span style="color: fuchsia;">0</span>, ArraySize * <b><span style="color: rgb(128, 64, 64);">sizeof</span></b>(T)<br />
+);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;71 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpFront<br />
+= mpBack = maData + ArraySize/<span style="color: fuchsia;">2</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;72 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;73 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;74 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;75 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">bool</span></b>&nbsp;empty() <b><span style="color: seagreen;">const</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;76 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;77 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;!(mpBack - mpFront);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;78 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;79 </span>&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;80 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">size_t</span></b>&nbsp;size() <b><span style="color: seagreen;">const</span></b><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;81 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;82 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;(mpBack - mpFront);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;83 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;84 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;85 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;pop()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;86 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;87 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(empty())<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;88 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;89 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">throw</span></b>&nbsp;-<span style="color: fuchsia;">1</span>;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;90 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;91 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;92 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++mpFront;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;93 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RollToHead(&amp;mpFront);<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;94 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;95 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;96 </span>&nbsp;&nbsp;&nbsp;&nbsp;T&amp; front()<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;97 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;98 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;*mpFront;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;99 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">100 </span><br />
+<span style="color: rgb(128, 64, 64);">101 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">const</span></b>&nbsp;T&amp; front() <b><span style="color: seagreen;">const</span></b><br />
+<span style="color: rgb(128, 64, 64);">102 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">103 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;*mpFront;<br />
+<span style="color: rgb(128, 64, 64);">104 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">105 </span><br />
+<span style="color: rgb(128, 64, 64);">106 </span><br />
+<span style="color: rgb(128, 64, 64);">107 </span>&nbsp;&nbsp;&nbsp;&nbsp;T&amp; back()<br />
+<span style="color: rgb(128, 64, 64);">108 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">109 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;*(mpBack-<span style="color: fuchsia;">1</span>);<br />
+<span style="color: rgb(128, 64, 64);">110 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">111 </span><br />
+<span style="color: rgb(128, 64, 64);">112 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">const</span></b>&nbsp;T&amp; back() <b><span style="color: seagreen;">const</span></b><br />
+<span style="color: rgb(128, 64, 64);">113 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">114 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">return</span></b>&nbsp;*(mpBack-<span style="color: fuchsia;">1</span>);<br />
+<span style="color: rgb(128, 64, 64);">115 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">116 </span><br />
+<span style="color: rgb(128, 64, 64);">117 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;push(<b><span style="color: seagreen;">const</span></b>&nbsp;T&amp;<br />
+aItem)<br />
+<span style="color: rgb(128, 64, 64);">118 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">119 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*mpBack++<br />
+= aItem;<br />
+<span style="color: rgb(128, 64, 64);">120 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RollToHead(&amp;mpBack);<br />
+<span style="color: rgb(128, 64, 64);">121 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">122 </span><br />
+<span style="color: rgb(128, 64, 64);">123 </span><br />
+<span style="color: rgb(128, 64, 64);">124 <b>private</b></span>:<br />
+<span style="color: rgb(128, 64, 64);">125 </span>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: seagreen;">void</span></b>&nbsp;RollToHead(T** ap)<br />
+<span style="color: rgb(128, 64, 64);">126 </span>&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">127 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><span style="color: rgb(128, 64, 64);">if</span></b>(<b><span style="color: seagreen;">size_t</span></b>(*ap<br />
+- maData) &gt;= ArraySize)<br />
+<span style="color: rgb(128, 64, 64);">128 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+<span style="color: rgb(128, 64, 64);">129 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*ap<br />
+= maData;<br />
+<span style="color: rgb(128, 64, 64);">130 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">131 </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<span style="color: rgb(128, 64, 64);">132 </span><br />
+<span style="color: rgb(128, 64, 64);">133 </span>&nbsp;&nbsp;&nbsp;&nbsp;T<br />
+maData[ArraySize];<br />
+<span style="color: rgb(128, 64, 64);">134 </span>&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">135 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: blue;">// Hold the important position</span><br />
+<span style="color: rgb(128, 64, 64);">136 </span>&nbsp;&nbsp;&nbsp;&nbsp;T* mpFront;<br />
+<span style="color: rgb(128, 64, 64);">137 </span>&nbsp;&nbsp;&nbsp;&nbsp;T* mpBack;<br />
+<span style="color: rgb(128, 64, 64);">138 </span>};<br />
+<span style="color: rgb(128, 64, 64);">139 </span><br />
+<span style="color: rgb(128, 64, 64);">140 </span><span style="color: rgb(160, 32, 240);">#endif</span></span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-family: 宋体; color: rgb(160, 32, 240);">测试代码：</span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(128, 64, 64);' lang="EN-US">&nbsp;1 </span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US">#include </span><span style='font-family: "Courier New"; color: fuchsia;' lang="EN-US">&lt;stdio.h&gt;</span><span style='font-family: "Courier New";' lang="EN-US"><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;2 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;stdlib.h&gt;</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;3 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">&lt;iostream&gt;</span>&nbsp;<br />
+<span style="color: rgb(128, 64, 64);">&nbsp;4 </span><span style="color: rgb(160, 32, 240);">#include<br />
+</span><span style="color: fuchsia;">"Queue.h"</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;5 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;6 </span><span style="color: rgb(160, 32, 240);">#define<br />
+OUT(queue) /</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;7 </span><span style="color: rgb(160, 32, 240);">&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;</span><span style="color: fuchsia;">"front: "</span><span style="color: rgb(160, 32, 240);">&nbsp;&lt;&lt;queue.front() &lt;&lt;</span><span style="color: fuchsia;">",back: "</span><span style="color: rgb(160, 32, 240);">&nbsp;&lt;&lt;queue.back()<br />
+&lt;&lt;</span><span style="color: fuchsia;">",size: "</span><span style="color: rgb(160, 32, 240);">&nbsp;&lt;&lt;queue.size() &lt;&lt;endl</span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;8 </span><br />
+<span style="color: rgb(128, 64, 64);">&nbsp;9 </span><b><span style="color: seagreen;">template</span></b>&lt;<b><span style="color: seagreen;">typename</span></b>&nbsp;Queue&gt;<br />
+<span style="color: rgb(128, 64, 64);">10 </span><b><span style="color: seagreen;">void</span></b>&nbsp;test(Queue&amp;<br />
+aoQueue)<br />
+<span style="color: rgb(128, 64, 64);">11 </span>{<br />
+<span style="color: rgb(128, 64, 64);">12 </span>&nbsp;&nbsp;&nbsp;&nbsp;aoQueue.push(<span style="color: fuchsia;">1</span>);<br />
+<span style="color: rgb(128, 64, 64);">13 </span>&nbsp;&nbsp;&nbsp;&nbsp;OUT(aoQueue);<br />
+<span style="color: rgb(128, 64, 64);">14 </span><br />
+<span style="color: rgb(128, 64, 64);">15 </span>&nbsp;&nbsp;&nbsp;&nbsp;aoQueue.push(<span style="color: fuchsia;">2</span>);<br />
+<span style="color: rgb(128, 64, 64);">16 </span>&nbsp;&nbsp;&nbsp;&nbsp;OUT(aoQueue);<br />
+<span style="color: rgb(128, 64, 64);">17 </span><br />
+<span style="color: rgb(128, 64, 64);">18 </span>&nbsp;&nbsp;&nbsp;&nbsp;aoQueue.push(<span style="color: fuchsia;">3</span>);<br />
+<span style="color: rgb(128, 64, 64);">19 </span>&nbsp;&nbsp;&nbsp;&nbsp;OUT(aoQueue);<br />
+<span style="color: rgb(128, 64, 64);">20 </span><br />
+<span style="color: rgb(128, 64, 64);">21 </span>&nbsp;&nbsp;&nbsp;&nbsp;aoQueue.pop();<br />
+<span style="color: rgb(128, 64, 64);">22 </span>&nbsp;&nbsp;&nbsp;&nbsp;OUT(aoQueue);<br />
+<span style="color: rgb(128, 64, 64);">23 </span><br />
+<span style="color: rgb(128, 64, 64);">24 </span>&nbsp;&nbsp;&nbsp;&nbsp;aoQueue.pop();<br />
+<span style="color: rgb(128, 64, 64);">25 </span>&nbsp;&nbsp;&nbsp;&nbsp;OUT(aoQueue);<br />
+<span style="color: rgb(128, 64, 64);">26 </span><br />
+<span style="color: rgb(128, 64, 64);">27 </span>&nbsp;&nbsp;&nbsp;&nbsp;aoQueue.push(<span style="color: fuchsia;">4</span>);<br />
+<span style="color: rgb(128, 64, 64);">28 </span>&nbsp;&nbsp;&nbsp;&nbsp;OUT(aoQueue);<br />
+<span style="color: rgb(128, 64, 64);">29 </span>}<br />
+<span style="color: rgb(128, 64, 64);">30 </span><br />
+<span style="color: rgb(128, 64, 64);">31 </span><b><span style="color: seagreen;">int</span></b>&nbsp;main(<b><span style="color: seagreen;">int</span></b>&nbsp;argc, <b><span style="color: seagreen;">char</span></b>*<br />
+argv[])<br />
+<span style="color: rgb(128, 64, 64);">32 </span>{<br />
+<span style="color: rgb(128, 64, 64);">33 </span>&nbsp;&nbsp;&nbsp;&nbsp;CQueueSimple&lt;<b><span style="color: seagreen;">int</span></b>&gt; liQ;<br />
+<span style="color: rgb(128, 64, 64);">34 </span>&nbsp;&nbsp;&nbsp;&nbsp;test(liQ);<br />
+<span style="color: rgb(128, 64, 64);">35 </span>&nbsp;&nbsp;&nbsp;&nbsp;cout<br />
+&lt;&lt;endl;<br />
+<span style="color: rgb(128, 64, 64);">36 </span><br />
+<span style="color: rgb(128, 64, 64);">37 </span>&nbsp;&nbsp;&nbsp;&nbsp;CQueueCir&lt;<b><span style="color: seagreen;">int</span></b>, <span style="color: fuchsia;">3</span>&gt;<br />
+liQCir;<br />
+<span style="color: rgb(128, 64, 64);">38 </span>&nbsp;&nbsp;&nbsp;&nbsp;test(liQCir);<br />
+<span style="color: rgb(128, 64, 64);">39 </span><br />
+<span style="color: rgb(128, 64, 64);">40 </span>&nbsp;&nbsp;&nbsp;&nbsp;exit(<span style="color: fuchsia;">0</span>);<br />
+<span style="color: rgb(128, 64, 64);">41 </span>}<br />
+<span style="color: rgb(128, 64, 64);">42</span></span><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style='font-family: "Courier New"; color: rgb(160, 32, 240);' lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" style="text-align: right;" align="right"><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">write by </span></u></b><b><u><span style="font-family: 宋体; font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;">九天雁翎</span></u></b><b><u><span style="font-variant: small-caps; color: rgb(192, 80, 77); letter-spacing: 0.25pt;" lang="EN-US">(JTianLing) --<br />
+blog.csdn.net/vagrxie</span></u></b><span style="" lang="EN-US"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></p>

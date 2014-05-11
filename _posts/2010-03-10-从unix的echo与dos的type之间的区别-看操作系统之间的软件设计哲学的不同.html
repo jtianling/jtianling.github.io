@@ -1,0 +1,191 @@
+---
+layout: post
+title: "从Unix的echo与Dos的type之间的区别，看操作系统之间的软件设计哲学的不同"
+categories:
+- "随笔"
+tags:
+- echo
+- Unix
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '20'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+<p style="margin: 1em 0px 0.5em; text-align: right;"><span style="font-size: small;"><strong><a style="color: #006bad; text-decoration: none;" href="http://www.jtianling.com">write by 九天雁翎(JTianLing) --<br />
+blog.csdn.net/vagrxie</a><br />
+</strong><br />
+</span></p>
+<p style="margin: 1em 0px 0.5em; text-align: right;"><span style="font-size: small;"><a style="color: #770000; text-decoration: none;" href="http://groups.google.com/group/jiutianfile/"><strong>讨论新闻组及文件</strong><br />
+</a><br />
+</span></p>
+<p><span style="font-size: small;">本文其实仅仅是写<br />
+《各种进程创建方式比较总结(MacOS, Win32, Linux, Qt,<br />
+Python&hellip;&hellip;&hellip;&hellip;)》一文时的过度发挥，发现插入大段无关文字有点问题，就给剥离出来了，也算一次文章的重构。。。。。<br />
+从Unix的echo<br />
+命令与Dos的type命令，从基本使用上来说，都是用于显示文件内容的，但是大致的使用一致，却有一些细微的差别，这些细微的差别，让我挺有感触，于是<br />
+借题发挥了，也算无聊一把。但是，毫不夸张的说，两个小命令，展示了两个不同的世界。</p>
+<p></span></p>
+<h2><span style="font-size: small;">比较手段</span><br />
+</h2>
+<p><span style="font-size: small;">&nbsp;&nbsp;&nbsp; 1,<br />
+最简单的创建一个带参数的进程,以显示当前目录下的文件a,文件b的内容为例。<br />
+&nbsp;&nbsp;&nbsp;<br />
+2，展示进程的输出重定向使用，以将当前目录下的文件a,文件b定向到文件c中为例。<br />
+&nbsp;&nbsp;&nbsp;<br />
+3，展示进程间的管道通信技术，以将当前目录下的文件a,文件b通过管道传递给另外一个输出的进程，并且显示。<br />
+&nbsp;&nbsp;<br />
+&nbsp;（以下简称Test1，2，3）。<br />
+以上述三个操作，显示echo及type的不同。</p>
+<p></span></p>
+<h2><span style="font-size: small;">Test1:</span><br />
+</h2>
+<p><span style="font-size: small;">1.<br />
+从最简单的开始吧，先以Unix下的Bash为例了。</span></p>
+<p><span style="font-size: small;">jtianling$ echo &quot;I'm File A.&quot;<br />
+&gt; a<br />
+jtianling$ echo &quot;I'm File B.&quot; &gt; b<br />
+jtianling$ ls<br />
+a&nbsp;&nbsp;<br />
+&nbsp;b<br />
+jtianling$ cat a<br />
+I'm File A.<br />
+jtianling$ cat b<br />
+I'm File B.<br />
+jtianling$<br />
+ cat a b<br />
+I'm File A.<br />
+I'm File B.<br />
+jtianling$ <br />
+好了，cat a<br />
+b，这样简单的调用，进程创建完成，参数输入完成，显示正常。</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<h2><span style="font-size: small;">Test2:</span><br />
+</h2>
+<p><span style="font-size: small;">2.输出重定向，对于<br />
+Shell来说实在是小case，那简直可以说是其原生的。</span></p>
+<p><span style="font-size: small;">TianLings-MacBook:test jtianling$ cat<br />
+ a b &gt; c<br />
+jtianling$ cat c<br />
+I'm File A.<br />
+I'm File B.<br />
+jtianling$<br />
+ <br />
+cat a b &gt; c一句而已。</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<h2><span style="font-size: small;">Test3:</span><br />
+</h2>
+<p><span style="font-size: small;">3.管道，还是Shell饭碗里<br />
+面的内容。</span></p>
+<p><span style="font-size: small;">jtianling$ cat a b | cat<br />
+I'm File A.<br />
+I'm File B.<br />
+cat<br />
+ a b | cat还是一句代码而已。<br />
+</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<h2><span style="font-size: small;">DOS中type的对比：</span><br />
+</h2>
+<h2><span style="font-size: small;">Test1:</span><br />
+</h2>
+<p><span style="font-size: small;"><br />
+</span></p>
+<p><span style="font-size: small;">DOS<br />
+下，type命令也可以完全按照上述方式尝试一次:</span></p>
+<p><span style="font-size: small;">Test1,基本可用，也就是输出嘛，但其实,仔细看看DOS下的<br />
+type命令,会发现其实输出有些许不同:</span></p>
+<p><span style="font-size: small;">F:/MySrc/TestProcess&gt;type a b</p>
+<p>a</p>
+<p>
+I'm<br />
+ File A.</p>
+<p>b</p>
+<p>
+I'm File B.<br />
+</span></p>
+<p><span style="font-size: small;"><br />
+直观来看,type a<br />
+b时自动的将a,b文件按文件名给你排下版,多人性化啊?呵呵,但是,很明显的可以看出DOS开发者的文化(MS特有?)与UNIX社群的文化差<br />
+异.UNIX中提倡命令行程序不要输出废话(比如上面的a,b及排版),这样才能够通过管道或者重定向更多的重复被其他程序使用,DOS似乎提倡给人直接<br />
+看.......</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<h2><span style="font-size: small;">Test2:</span><br />
+</h2>
+<p><span style="font-size: small;">实践发现，虽然直接的输出会有额外输出，但是type命令的对于重<br />
+定向时进行了处理:</span></p>
+<p><span style="font-size: small;">F:/MySrc/TestProcess&gt;type a b &gt; c</p>
+<p>a</p>
+<p>b</p>
+<p>F:/MySrc/TestProcess&gt;type<br />
+ c<br />
+I'm File A.<br />
+I'm File B.<br />
+</span></p>
+<p><span style="font-size: small;">会发现重定向后的结果与cat a b &gt;<br />
+c完全一样.但是a,b的格式还是输出了，说明a,b格式的输出根本走的不是标准输出通道。那剩下什么？标准错误通道。。。我们测试一下。</span></p>
+<p><span style="font-size: small;">&gt;type<br />
+ a b 2&gt;d<br />
+I'm File A<br />
+I'm File B</p>
+<p>&gt;type d</p>
+<p>a</p>
+<p>b</p>
+<p>&gt;<br />
+</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<p><span style="font-size: small;">果<br />
+然如此，当把错误通道重定位到文件d中时，可以看到输出了精简的输出，并且可以看到d中的内容就是附加的输出。用较为复杂的hack手段，（利用错误输出<br />
+来输出正常的信息，总之不是什么好手段）实现其实不算太必要的但是有点用的任务，是好是坏，就看个人意见了。</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<h2><span style="font-size: small;">Test3:</span><br />
+</h2>
+<p><span style="font-size: small;">会<br />
+发现,type其实是无法接受标准输入的,也就是,无法形成 | type的链式调用,就像cat a b | cat一样.</span></p>
+<p><span style="font-size: small;">这样会导致<br />
+Test3无法使用type完成。这也算文化差异吧......因为Unix的Shell使用的习惯，管道及重定位几乎是命令行必备的协作工<br />
+具，DOS/Windows程序没有此传统，所以没有实现，也就可以理解了。更进一步的说，Win32<br />
+API甚至没有对管道及输入输出重定向有任何直接的支持，因为似乎根本就不在意，而POSIX的pipe,popen对于相关使用的支持却能做到非常方便<br />
+快捷。（当然，其实Windows中也有POSIX的函数的一些实现，就包括pipe,popen，但是命名前加下滑线）</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<h2><span style="font-size: small;">小<br />
+结：</span><br />
+</h2>
+<p><span style="font-size: small;">所以,对于type命名来说,描述为:TYPE Displays the contents of a text file.&nbsp;</span></p>
+<p><span style="font-size: small;">对<br />
+于cat命令,man中描述为:Concatenate FILE(s), or standard input, to standard<br />
+output.</span></p>
+<p><span style="font-size: small;">而且,查查cat的参数就会发现,cat其实还有很多定制功能,但是type呢?估计只有/?参数<br />
+吧............</span></p>
+<p><span style="font-size: small;">因为Unix以前相当依赖于Shell，（以前只有Shell)，加上其文化的影响，加上工作需要，每个<br />
+Shell命令都是比较强大，并且协作性非常好（因为那古老的规则），其中最最典型的就是find,grep有意者去尝试一下就知道了。另外，其实说命令<br />
+的话。。。。那perl,python算不算一个命令呢？。。。。。。呵呵，扯远了。</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<p><span style="font-size: small;"><br />
+</span></p>
+<p style="text-align: right;"><span style="font-size: small;">&nbsp;</span></p>
+<p style="text-align: right;"><span style="font-size: small;">原创文章作者保留版<br />
+权 转载请注明原作者 并给出链接</span></p>
+<p style="text-align: right;"><span style="font-size: small;"><strong><a href="http://www.jtianling.com">write by 九天雁翎(JTianLing) --<br />
+blog.csdn.net/vagrxie</a><br />
+</strong><br />
+</span></p>
