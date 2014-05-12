@@ -4,7 +4,12 @@ title: "Cocos2d-x 的内存管理漫谈"
 date: 2013-04-07
 comments: true
 categories: 编程
-tags: Cocos2d-x, Spine, C++, memory manage
+tags: 
+- Cocos2d-x 
+- Spine 
+- C++ 
+- memory manage
+- 内存管理
 ---
  
 既然选择了C++作为游戏开发的语言, 手动的管理内存是难以避免的, 而Cocos2d-x的仿Objctive-C的内存管理方式, 事实上让问题变得更加复杂(仅仅是移植更加方便了), 因为你需要很好的掌握两种语言的内存管理方式, 并且在使用时头脑清晰, 不能混用, 不然等待你的就是无穷的噩梦, 因为引用计数的原因, 问题比起纯粹的C++内存泄漏还要难以定位的多.

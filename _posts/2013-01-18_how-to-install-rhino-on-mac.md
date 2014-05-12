@@ -4,7 +4,7 @@ title: "怎么在Mac上安装Rhino(JavaScript的JAVA实现)"
 date: 2013-01-18
 comments: true
 categories: 编程
-tags: Rhino, JavaScript
+tags: Rhino JavaScript
 ---
 
 [Rhino](https://github.com/mozilla/rhino)是JavaScript的一个Java实现, 可以直接使用REPL的方式来使用JavaScript, 光是研究语言特性的话, 会比在浏览器里面方便很多.  当然, 现在还有一个新的选择, 那就是[node.js](http://nodejs.org/).  Rhino是Mozilla的实现, node.js用的V8引擎是Google的实现.  

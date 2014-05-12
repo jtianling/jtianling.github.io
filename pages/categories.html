@@ -5,35 +5,34 @@ permalink: /categories.html
 description: "九天雁翎博客中所有的文章, 按文章的分类归类列出."
 ---
 
-{% for category in site.categories %}
-  <h1 id="{{ category[0] }}" class="center">{{ category[0] }}</h1>
-  {% assign pages_list = category[1] %}  
-  {% for post in pages_list %}
-    {% if post.title != null %}
-    {% if group == null or group == post.group %}
+<ul class="entry-meta inline-list">
+{% assign category_list = site.categories %}  
+  {% if category_list.first[0] == null %}
+    {% for cate in category_list %} 
+    	<li><a href="#{{ cate }}" class="cate">{{ cate }} <span>{{ site.categories[cate].size }}</span></a></li>
+    {% endfor %}
+  {% else %}
+    {% for cate in category_list %} 
+    	<li><a href="#{{ cate[0] }}" class="tag">{{ cate[0] }} <span>{{ cate[1].size }}</span></a></li>
+    {% endfor %}
+  {% endif %}
+{% assign cate_list = nil %}
+</ul>
 
-<article>
-  <div>
-    <header>
-      <h2 class="entry-title center">
-			<time class="center">{{ post.date | date: "%Y年%m月%d日" }}</time>
-			<br />
-        <a href="{{ site.url }}{{ post.url }}">
-          {{ post.title }}
-        </a>
-      </h2>
-    </header>
-
-    <div class="entry-content clearfix">
-      {{ post.excerpt }}
-    </div>
-  </div>
-</article>
-
-    {% endif %}
-    {% endif %}
-  {% endfor %}
-  {% assign pages_list = nil %}
-  {% assign group = nil %}
-<hr />
+{% for cate in site.categories %} 
+	<article>
+	<h2 id="{{ cate[0] }}">{{ cate[0] }}</h2>
+		<ul>
+		{% assign pages_list = cate[1] %}  
+		{% for post in pages_list %}
+			{% if post.title != null %}
+			{% if group == null or group == post.group %}
+				<li class="entry-title"><a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li>
+			{% endif %}
+			{% endif %}
+		{% endfor %}
+		{% assign pages_list = nil %}
+		{% assign group = nil %}
+		</ul>
+	</article><!-- /.hentry -->
 {% endfor %}

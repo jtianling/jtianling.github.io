@@ -4,7 +4,7 @@ title: "Redis初次学习"
 date: 2013-02-23
 comments: true
 categories: 编程
-tags: Redis, nodejs, NoSQL
+tags: Redis nodejs NoSQL
 ---
 
 NoSQL热了很久了, 很惭愧直到今天我才初次学习NoSQL的东西.  从一开始做C++的后端用了MySQL和SQL Server后, 一直在做游戏客户端, 真是远离数据库相关的东西太久了, 有意思的是, 很久前, 对编程相关知识如饥似渴的时候, 工作中碰到任何相关的知识, 哪怕是一个新领域, 起码都要买一本大部头来学习的, 当时只有数据库是真的点到为止, 没有深入学习, 直到今天我也说不上具体为什么......

@@ -9,10 +9,16 @@ layout: default
       <h1><a href="{{ page.url }}">{{ page.title }}</a></h2>
     </header>
     {{ content }}
-		<p> tags: 
-			{% for tag in page.tags %}
-			<a href="/tags.html#{{ tag }}" class="tag">{{ tag }}&nbsp;</a>
-			{% endfor %}
+		<p> 
+		分类:&nbsp;
+		{% for cate in page.categories %}
+		<a href="/categories.html#{{ cate }}" class="category">{{ cate }}&nbsp;</a>
+		{% endfor %}
+		<br />
+		标签:&nbsp;
+		{% for tag in page.tags %}
+		<a href="/tags.html#{{ tag }}" class="tag">{{ tag }}&nbsp;</a>
+		{% endfor %}
 	  </p>
 		<div class="sign">
 			<p> Posted By {{ site.author }} on {{ page.date | date: "%Y年%m月%d日" }}</p>

@@ -4,7 +4,7 @@ title: "Mac及Android环境下的JNI学习"
 date: 2013-04-26
 comments: true
 categories: 编程
-tags: Android, Java, Jni
+tags: Android Java Jni
 ---
  
 JNI就是Java Native Interface, 也可以理解为一般脚本语言的C API, 一般情况下这种API的学习都是一种痛苦的精力, 从来如此, 没有太多技术含量, 就是一堆晦涩难以理解的编程模型, 编程接口, 充斥着各种从当前语言到C语言的类型转换.  基本的含义就是用C语言的思维去表示当前的语言, 这个问题在Lua语言中到达了极致.  不管是多么为了效率, 一个纯堆栈操作的编程接口都像汇编语言一样难以使用.  

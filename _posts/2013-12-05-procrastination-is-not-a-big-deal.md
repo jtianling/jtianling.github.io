@@ -4,7 +4,10 @@ title: "拖拉一点也无妨"
 date: 2013-12-05
 comments: true
 categories: 思维
-tags: 书评 结构化拖延法 structured-procrastination
+tags: 
+- 书评 
+- 结构化拖延法
+- Structured Procrastination
 ---
 
 第一次听到结构化拖延法是看[罗辑思维第36集](http://v.youku.com/v_show/id_XNTk2NDI0NDg4.html?firsttime=730)的时候, 觉得很新鲜, 一直就想看看怎么样叫做拖拉一点也无妨.  因为我本身就是个有拖延症的人, 看这本书的时间也一拖再拖, 直到前几天我的kindle paperwhite2终于从美国寄到我手里, 才在亚马逊买了这本书来看.  书本身很薄(因为是看电子书, 其实也没法实际的感知书的厚薄了), 很有趣也很容易看完.  在这里跟大家分享一下.

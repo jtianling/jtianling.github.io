@@ -4,7 +4,7 @@ title: "语言的界限就是一个人世界的界限"
 date: 2012-12-17
 comments: true
 categories: 编程
-tags: Ruby, C++
+tags: Ruby C++
 ---
 
 >	语言的界限就是一个人世界的界限	

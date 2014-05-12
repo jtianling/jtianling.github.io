@@ -4,7 +4,7 @@ title: "Cocosino项目漫谈"
 date: 2013-07-30
 comments: true
 categories: 随笔
-tags: Cocosino, 故事, JavaScript, 游戏开发
+tags: Cocosino 故事 JavaScript 游戏开发
 ---
  
 

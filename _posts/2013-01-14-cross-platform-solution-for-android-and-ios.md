@@ -4,7 +4,7 @@ title: "跨平台(iOS, Android)开发方案"
 date: 2013-01-14
 comments: true
 categories: 编程
-tags: iOS, Android, PhoneGap, Titanium, RubyMotion, Ruboto, Mono 
+tags: iOS Android PhoneGap Titanium RubyMotion Ruboto Mono 
 ---
 
 很久以前的移动平台开发者很幸运, 因为他们只用关注一个平台(iOS)就够了, 现在随着Android越来越受到关注, 以前统一的平台又开始了分裂.  

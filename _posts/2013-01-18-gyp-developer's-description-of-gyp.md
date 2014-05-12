@@ -4,7 +4,7 @@ title: "[译]GYP vs. CMake -- 一个开发者对自己项目客观的说明"
 date: 2013-01-18
 comments: true
 categories: 编程
-tags: CMake, Gyp 
+tags: CMake Gyp 
 ---
 
 [*Gyp*](http://code.google.com/p/gyp/)是一个类似CMake的项目生成工具, 用于管理你的源代码, 在google code主页上唯一的一句slogan是"GYP can Generate Your Projects.".  

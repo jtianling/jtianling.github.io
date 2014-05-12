@@ -4,7 +4,7 @@ title: "在Unity3D中使用iPhone原生UI(Use iPhone Native UI in Unity3D)"
 date: 2013-01-11
 comments: true
 categories: 编程
-tags: Cocoa, Objective-C, Unity3D, iOS
+tags: Cocoa Objective-C Unity3D iOS
 ---
  
 众所周知, Unity中没有提供UI解决方案, 只能靠第三方的插件来完成.  比较著名的有NGUI等, 但是这种方案不仅需要额外付费(虽然不多), 并且类似NGUI的插件还不那么易用, 使用起来过于复杂.  

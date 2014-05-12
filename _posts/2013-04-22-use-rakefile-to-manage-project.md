@@ -4,7 +4,10 @@ title: "用Rakefile管理工程"
 date: 2013-04-22
 comments: true
 categories: 编程
-tags: Rakefile, makefile, project-manage 
+tags: 
+- Rakefile 
+- makefile 
+- project manage 
 ---
   
 游戏项目可能是所有软件项目中需要在编译时处理资源最多的项目, 一般的项目都有下面几种常见需求:  

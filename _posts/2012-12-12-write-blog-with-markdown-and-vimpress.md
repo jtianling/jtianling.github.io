@@ -4,7 +4,7 @@ title: "用Markdown + VimPress写博客"
 date: 2012-12-12
 comments: true
 categories: 随笔
-tags: Markdown, VimPress, vim, LaTeX, Wordpress
+tags: Markdown VimPress Vim LaTeX Wordpress
 ---
 
 这次把CSDN的文章移过来的时候, 发生了格式混乱的不愉快体验.  虽然以前的那些文章有些很稚嫩, 早期的文章现在看来甚至很可笑, 但是, 这种记录还是很值得保留, 毕竟是成长的过程.  

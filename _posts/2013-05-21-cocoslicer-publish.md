@@ -4,7 +4,7 @@ title: "cocoslicer(cocos2d/cocos2d-x 打包后的资源分割器)"
 date: 2013-05-21
 comments: true
 categories: 我的项目
-tags: Cocos2d-x, TexturePacker
+tags: cocoslicer Cocos2d-x TexturePacker
 ---
 
 工具很简单, 就是将TexturePacker等工具打包好的图片给分解开, 相当于Texture Pack后资源的解包过程.  

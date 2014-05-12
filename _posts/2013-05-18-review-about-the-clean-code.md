@@ -4,7 +4,10 @@ title: "又一本被过于抬高的普通之作 -- 小评代码整洁之道"
 date: 2013-05-18
 comments: true
 categories: 编程
-tags: Clean-Code, 代码整洁之道, 书评
+tags: 
+- Clean Code
+- 代码整洁之道
+- 书评
 ---
  
 
