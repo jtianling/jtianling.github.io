@@ -1,20 +1,16 @@
-"=========== Meta ============
-"StrID : 2087
-"Title : 一种语言, 适合任何时候使用 -- Haxe特性杂谈
-"Slug  : %e4%b8%80%e7%a7%8d%e8%af%ad%e8%a8%80-%e9%80%82%e5%90%88%e4%bb%bb%e4%bd%95%e6%97%b6%e5%80%99%e4%bd%bf%e7%94%a8-haxe%e7%89%b9%e6%80%a7%e6%9d%82%e8%b0%88
-"Cats  : Haxe
-"Tags  : Haxe
-"=============================
-"EditType   : post
-"EditFormat : Markdown
-"BlogAddr   : http://www.jtianling.com
-"========== Content ==========
+---
+layout: post
+title: "一种语言, 适合任何时候使用 -- Haxe特性杂谈"
+date: 2013-01-25
+comments: true
+categories: 编程
+tags: Haxe
+---
  
 这个世界有很多的语言, 不同的语言适合不同的情境, Ruby因为很适合开发领域语言(DSL), 所以被大卫选择用于开发Rails, JavaScript因为常用异步模型和方便的回调处理, 被Ryan Dah用于开发node, 而JAVA期望通过JVM一次编写, 随处运行.  各种语言因为不同的目标场景, 也使得语言本身的特性趋于目标场景, 决定了这些语言应该是什么样子, 比如C++因为效率的考虑和兼容C的需求, 决定了C++之所以成为现在的C++.  
 同时也有很多语言是为生成另外一种语言而生的, 最典型的就是[CoffeeScript](http://coffeescript.org/), 我知道我的语言要更加优美, 但是我也知道我无法彻底替代你, 这是这个世界中习惯和惯性带来的悲哀, 所以, 不能替代你, 那我首先通过生成你来取代你.  这就是Coffee这样语言的思路.  因为JavaScript是如此的不好用和难以简单替代, 所以成为了这类语言的竞技场.  
 但是, Haxe就更加夸张了, 他也是一种通过生成其他语言而生的语言, 只不过, 他可以生成多达7种不同的语言.  
-
-$TOC$
+<!-- more -->
 
 # Haxe简单介绍
 > One language, everywhere.  
@@ -52,12 +48,13 @@ Haxe 2.1, 我会通过生成C++代码和JavaScript代码来观察结果.  其中
 从简单的HelloWorld开始吧:  
 HelloWorld.hx:  
 
-    :::hx
-    class HelloWorld {
-      public static function main() {
-        trace("Hello World!");
-      }
-    }
+~~~ hx
+class HelloWorld {
+	public static function main() {
+		trace("Hello World!");
+	}
+}
+~~~
 
 从例子中能够看到, 原来所谓的ECMA风格就是类似C#和JAVA的风格...  
 我用来编译成cpp的.hxml配置是cpp.hxml:  
@@ -104,30 +101,32 @@ HelloWorld.hx:
 Haxe使用的是类似C++和C#的类型推导技术, 也就是说类型会在编译器决定, 不影响执行效率, 而UnityScript则不一样, 会影响执行效率.  就这点来说, Haxe是足够先进的.  
 同时, 作为现代语言, String的连接操作符是没啥问题的.  
 
-    :::hx
-    class HelloWorld {
-      public static function main() {
-        var hello = "Hello,";
-        var world = "World!";
-        trace(hello + world);
-      }
-    }
+~~~ hx
+class HelloWorld {
+	public static function main() {
+		var hello = "Hello,";
+		var world = "World!";
+		trace(hello + world);
+	}
+}
+~~~
     
 自从发现javascript和C#的扭曲特性后, 我总是喜欢用`1 + "1"`的操作来实验一个语言, 很不幸的是, Haxe就是这样中招的语言, 会无错误的输出11.  
 
 ## 函数
 用的还是类似UnityScript的方式, 使用`function`关键字, 同时用`str:String`这样的方式来表示参数类型, 通过把`:Int`加到函数定义语句的结尾来表示返回值, 熟悉UnityScript的XD是无障碍了.  
 
-    :::hx
-    class HelloWorld {
-      static function add(n1 : Int, n2 : Int) : Int {
-        return n1 + n2;
-      }
+~~~ hx
+class HelloWorld {
+	static function add(n1 : Int, n2 : Int) : Int {
+		return n1 + n2;
+	}
 
-      public static function main() {
-        trace( add(3,4) );
-      }
-    }
+	public static function main() {
+		trace( add(3,4) );
+	}
+}
+~~~
 
 ## 操作符
 没有看到操作符重载的内容, 但是支持常见操作符, 包括`>>>`这个javascript特有的和C系的`++`, `--`等.  
@@ -136,51 +135,53 @@ Haxe使用的是类似C++和C#的类型推导技术, 也就是说类型会在编
 基本上该有的都有, while, do-while, for-in, switch. 不过也没有啥亮点.  有些诡异的是去掉了常规的for, 即`for(int i=0; i<length; ++i)`形式的`for`语句.  不知道是为什么.  倒是避免了javascript中for块变量作用域的问题.  
 稍微值得一提的是switch的自动break, case支持常量字符串和用逗号分隔的多路匹配, 现在的语言一般都是从C那儿来的, C特别别扭的switch也就成为了各大语言改进的对象, 有意思的是, 改进的效果都不一样, Haxe就是这样改的:  
 
-    :::hx
-    class HelloWorld {
-      public static function main() {
+~~~ hx
+class HelloWorld {
+	public static function main() {
 
-        var choice : String = "";
-        while (true) {
-          choice = Sys.stdin().readLine();
+		var choice : String = "";
+		while (true) {
+			choice = Sys.stdin().readLine();
 
-          switch( choice ) {
-            case "y", "Y":
-              Sys.println("You surely want it!");
-            case "n", "N":
-              Sys.println("you don't want it?!");
-              break;
-            default:
-              Sys.println("Not a valid choice.");
-          }
-        }
-      }
-    }
+			switch( choice ) {
+				case "y", "Y":
+					Sys.println("You surely want it!");
+				case "n", "N":
+					Sys.println("you don't want it?!");
+					break;
+				default:
+					Sys.println("Not a valid choice.");
+			}
+		}
+	}
+}
+~~~
     
 我没有在`case "y"`后面使用break, 但是不会执行到下面的case, 而事实上, 后面的那个break是用来从while死循环中退出的.  
 上面的代码没法在js下运行, 因为读了命令行, 我们得使用nodejs中读命令行的process模块, 上面的代码经过处理就成了下面这样了:  
 
-    :::hx
-    import js.Node;
+~~~ hx
+import js.Node;
 
-    class HelloWorld {
-      public static function main() {
+class HelloWorld {
+	public static function main() {
 
-        Node.process.stdin.resume();
-        Node.process.stdin.setEncoding('utf8');
-        Node.process.stdin.on('data', function (chunk) {
-          var choice : String = chunk.trim();
-          switch( choice ) {
-            case "y", "Y":
-              Node.console.log("You surely want it!");
-            case "n", "N":
-              Node.console.log("you don't want it?!");
-            default:
-              Node.console.log("Not a valid choice.");
-          }
-        });
-      }
-    }
+		Node.process.stdin.resume();
+		Node.process.stdin.setEncoding('utf8');
+		Node.process.stdin.on('data', function (chunk) {
+			var choice : String = chunk.trim();
+			switch( choice ) {
+				case "y", "Y":
+					Node.console.log("You surely want it!");
+				case "n", "N":
+					Node.console.log("you don't want it?!");
+				default:
+					Node.console.log("Not a valid choice.");
+			}
+		});
+	}
+}
+~~~
 
 首先, 因为没有了`while`死循环, 所以可能得自己加个条件作为退出(这里没有), 其次, 为了使用js的模块, 可能得稍微费点周折.  
 
@@ -206,51 +207,53 @@ Haxe使用的是类似C++和C#的类型推导技术, 也就是说类型会在编
 
 下例我尽量多用了更多特性, 不过一个例子还是有些难, 看个风格吧, 反正和JAVA, C#很像.  
 
-    interface PointProto {
-      function length() : Float;
-    }
+~~~ hx
+interface PointProto {
+	function length() : Float;
+}
 
-    class Point {
-      var x_ : Float;
-      var y_ : Float;
+class Point {
+	var x_ : Float;
+	var y_ : Float;
 
-      public function new(x : Float, y : Float) {
-        this.x_ = x;
-        this.y_ = y;
-      }
+	public function new(x : Float, y : Float) {
+		this.x_ = x;
+		this.y_ = y;
+	}
 
-      public function x() : Float {
-        return x_;
-      }
+	public function x() : Float {
+		return x_;
+	}
 
-      public function y() : Float {
-        return y_;
-      }
-    }
+	public function y() : Float {
+		return y_;
+	}
+}
 
-    class Point3D extends Point, implements PointProto{
-      var z_ : Float;
+class Point3D extends Point, implements PointProto{
+	var z_ : Float;
 
-      public function new(x : Float, y : Float, z : Float) {
-        super(x, y);
-        this.z_ = z;
-      }
+	public function new(x : Float, y : Float, z : Float) {
+		super(x, y);
+		this.z_ = z;
+	}
 
-      public function z() : Float {
-        return z_;
-      }
+	public function z() : Float {
+		return z_;
+	}
 
-      public function length() : Float {
-        return Math.sqrt(x_ * x_ + y_ * y_ + z_ * z_);
-      }
-    }
+	public function length() : Float {
+		return Math.sqrt(x_ * x_ + y_ * y_ + z_ * z_);
+	}
+}
 
-    class HelloWorld {
-      public static function main() {
-        var p = new Point3D(1.0, 2.0, 3.0);
-        trace(p.length());
-      }
-    }
+class HelloWorld {
+	public static function main() {
+		var p = new Point3D(1.0, 2.0, 3.0);
+		trace(p.length());
+	}
+}
+~~~
 
 
 
@@ -265,34 +268,36 @@ Haxe使用的是类似C++和C#的类型推导技术, 也就是说类型会在编
 上面的例子可能还有一些, 不过总得来说, 开发社区还是有保守的倾向和对运行效率的追求.  
 Dynamic除了可以把Haxe当作动态语言来用, 还有个好处就是不用模版来实现模版的功能.  
 
-    :::hx
-    class HelloWorld {
+~~~ hx
+class HelloWorld {
 
-      public static function add(left_param : Dynamic, right_param : Dynamic) {
-        return left_param + right_param;
-      }
+	public static function add(left_param : Dynamic, right_param : Dynamic) {
+		return left_param + right_param;
+	}
 
-      public static function main() {
-        trace( add( 1, 2.0) );
-      }
-    }
+	public static function main() {
+		trace( add( 1, 2.0) );
+	}
+}
+~~~
 
 事实上, 上例要是用模版的话, add函数还需要是双模版(即T1, T2两个类型) 才能实现整数对浮点数的操作.  当然, 上例太弱智了, 但是真实情况下对多种类型进行一样的操作是完全可能的, 特别是你准备用duck typing的时候.  
 有趣的是, Haxe在动态化上走的非常远, 一般情况下, 即使是Dynamic的对象, 也不能访问一个不存在的成员变量和成员函数, 只是把检测推迟到运行时了, 但是Haxe允许动态为Dynamic类型的对象添加成员变量, 甚至函数, 也就是说, 就像javascript里面的Object那样, 对于一个静态类型的语言加入这个特性大大的超乎我的想象.    不过回头想想, Haxe起源于flash社区的Action Script(javascript的方言), 也就没有那么奇怪了.  只是因为Haxe的静态特性又太深入, 使得我有些都忘了它的起源, 这点和UnityScript很不一样.  
 
-    :::hx
-    class HelloWorld {
+~~~ hx
+class HelloWorld {
 
-      public static function main() {
-        var obj : Dynamic = {};
-        obj.name = "Simon";
-        obj.hello = function() {
-          trace("hello," + obj.name);
-        }
+	public static function main() {
+		var obj : Dynamic = {};
+		obj.name = "Simon";
+		obj.hello = function() {
+			trace("hello," + obj.name);
+		}
 
-        obj.hello();
-      }
-    }
+		obj.hello();
+	}
+}
+~~~
 
 以上代码可以说是摘抄自我在[*javascript特性杂谈*](http://www.jtianling.com/articles/2049.html#_11)中javascript对象的演示代码.   几乎一模一样.  
 
@@ -302,17 +307,18 @@ Dynamic除了可以把Haxe当作动态语言来用, 还有个好处就是不用�
 
 在Dynamic如此自由后, 作为静态类型的语言, Haxe加入了参数化动态类型这个新的特性, 作用如下:  
 
-    :::hx
-    class HelloWorld {
+~~~ hx
+class HelloWorld {
 
-      public static function main() {
-        var dyn : Dynamic<String> = cast {};
-        dyn.name = "Paul";
-        dyn.age = "28";   // can't be dyn.age = 28;
+	public static function main() {
+		var dyn : Dynamic<String> = cast {};
+		dyn.name = "Paul";
+		dyn.age = "28";   // can't be dyn.age = 28;
 
-        trace( dyn.name + ":" + dyn.age );
-      }
-    }
+		trace( dyn.name + ":" + dyn.age );
+	}
+}
+~~~
 
 而使用了参数化的动态类型后, (比如dyn变量被设定为`Dynamic<String>`)一个变量能在参数化的范围内, 随意的访问成员变量, 但是, 仍然是有限制的, 比如上例中的`dyn`, 就不能将其成员变量赋值成字符串意外的类型.  
 更觉的是, 这个参数化类型甚至能被继承... 具体的就还是看[官方的介绍](http://haxe.org/ref/dynamic#implementing-dynamic)吧, 因为这样的特性已经超出我的想象了, 所以不知道什么时候能用上.  
@@ -322,24 +328,25 @@ Dynamic除了可以把Haxe当作动态语言来用, 还有个好处就是不用�
 
 默认情况下一个.hx文件就是一个module, 此时是以文件名为模块名的, 比如下例, 我讲上面例子中的`add`函数拆分到一个新的文件中去:
 
-    :::hx
-    // file: utility.hx
-    class Utility {
+~~~ hx
+// file: utility.hx
+class Utility {
 
-      public static function add(left_param : Dynamic, right_param : Dynamic) {
-        return left_param + right_param;
-      }
-    }
+	public static function add(left_param : Dynamic, right_param : Dynamic) {
+		return left_param + right_param;
+	}
+}
 
-    // file: helloworld.hx
-    import Utility;
+// file: helloworld.hx
+import Utility;
 
-    class HelloWorld {
+class HelloWorld {
 
-      public static function main() {
-        trace( Utility.add( 1, 2.0) );
-      }
-    }
+	public static function main() {
+		trace( Utility.add( 1, 2.0) );
+	}
+}
+~~~
 
 值得注意的有以下几点:  
 
@@ -355,21 +362,22 @@ Dynamic除了可以把Haxe当作动态语言来用, 还有个好处就是不用�
 
 在静态类型上走远了, 总会需要泛型的, 不然一些基础的容器会很累人, Haxe也又泛型, 基本的语法如下:  
 
-    :::hx
-    class Array<T> {
+~~~ hx
+class Array<T> {
 
-      function new() {
-        // ...
-      }
+	function new() {
+		// ...
+	}
 
-      function get( pos : Int ) : T {
-        // ...
-      }
+	function get( pos : Int ) : T {
+		// ...
+	}
 
-      function set( pos : Int, val : T ) : Void {
-        // ...
-      }
-    }
+	function set( pos : Int, val : T ) : Void {
+		// ...
+	}
+}
+~~~
 
 单纯函数的泛型官网上没有说明, 可能实际上就没有, 因为正如上面动态类型的例子中所演示的, 用`Dynamic`就能模拟出泛型的效果, 还能通过参数限定.    
 
@@ -378,10 +386,12 @@ Dynamic除了可以把Haxe当作动态语言来用, 还有个好处就是不用�
 
 一般意义的泛型往往太过灵活, 所以Haxe加入了泛型参数限制的特性.  很类似C#的[*约束类型*](http://www.jtianling.com/articles/2007.html#_22).  概念上类似, 就不写例子了, 只是语法上有差异:  
 
-    class EvtQueue<T : (Event, EventDispatcher)> {
-      var evt : T;
-      // ...
-    }
+~~~ hx
+class EvtQueue<T : (Event, EventDispatcher)> {
+	var evt : T;
+	// ...
+}
+~~~
 
 ## 对所有变量适用的先进类型推导, 包括函数参数, 返回值(除了类成员变量)
 > Advanced [Type Inference](http://haxe.org/ref/type_infer) for all variables including methods arguments and return types (except member variables)
@@ -389,40 +399,48 @@ Dynamic除了可以把Haxe当作动态语言来用, 还有个好处就是不用�
 这个在上面最开始讲类型的地方就介绍过了, 不再重复.  
 只在这里介绍一个辅助的标记`$type`, 在编译期这个标记会移除, 但是具有这个标记的表达式会保留, 同时通过Warning信息输出推导出来的类型, 作为方便调试的一个手段.  比如下面的代码:  
 
-    var x : Int = $type(0);
+~~~ hx
+var x : Int = $type(0);
+~~~
 
 ## 具有结构化继承的匿名结构
 > Anonymous [Structures](http://haxe.org/manual/struct) with structural subtyping
 
 这是个很让人惊叹的特性, 同样的也是因为Haxe其实源于Action Script.  Haxe允许以以下的格式来定义新的对象, 这在Haxe被称作匿名结构(Anonymous Structures).  
 
-    var point = { x : 1, y : -5};
+~~~ hx
+var point = { x : 1, y : -5};
 
-    var user = {
-      name : "Nicolas",
-      age : 32,
-      pos : [ {x:0, y:0}, {x:0, y:0}],
-    };
+var user = {
+	name : "Nicolas",
+	age : 32,
+	pos : [ {x:0, y:0}, {x:0, y:0}],
+};
+~~~
 
 了解javascript的人, 一眼就能看出, 这就是javascript Object的一种定义方式.  到这还没有什么, 作为静态语言, Haxe还真的给上面这种对象定义了类型, 比如, 上面的point类似就是`{ x : Int, y : Int }`, 而user的类型是`{ name : String, age : Int, pos : Array<{ x : Int, y : Int }> }`, 这是个很神奇的事情.  可以通过刚提到的`$type`来验证.  
 既然是类型, 你甚至就可以直接使用, 只是要是多次使用会稍微麻烦一点, 所以Haxe提供了C/C++里面的typedef来简化这种操作.  见下面的代码:  
 
-    typedef Point = { x : Int, y : Int }
+~~~ hx
+typedef Point = { x : Int, y : Int }
 
-    class Path {
-        var start : Point;
-        var target : Point;
-        var current : Point;
-    }
+class Path {
+		var start : Point;
+		var target : Point;
+		var current : Point;
+}
+~~~
 
 这就是Haxe中定义一个对象简便的办法, 假如需要的是一个临时使用的对象, 的确不需要兴师动众的动用`class`来做了.  特别的, 虽然官方的例子中没有演示, 我上面已经演示了, Haxe的这种结构实际上也是支持函数成员的, 使得它的应用可以更加广泛.  
 具体还有些细节, 这里就不一一列举了.  
 需要稍微注意一点的是在Haxe中结构是按javascript那么动态实现的, 所以运行效率会低于静态实现的class类型.  但是带来一个好处, 就是Haxe官方所谓的*Structural Subtyping*, 其实又没有subtyping的语法, 只是当一个对象拥有另一个对象的所有成员时, 可以完全当作另一个对象使用, 这个有些类似Duck Typing.  
 更进一步的是, 可以不指定函数参数的类型(似乎默认就是Dynamic), 然后自动适配structural.  
 
-    public static function getLength(pt) {
-      return pt.x + pt.y;
-    }
+~~~ hx
+public static function getLength(pt) {
+	return pt.x + pt.y;
+}
+~~~
 
 此时就完全可以接受上面`typedef`的Point类型对象.  更加神奇的是, 假如你真的传入了一个不对的对象, Haxe能在编译期就发现错误...  这简直逆天了.  在具有极为动态特性的时候, 还能有强大的编译期类型检测, 你还能说什么...
 
@@ -431,40 +449,43 @@ Dynamic除了可以把Haxe当作动态语言来用, 还有个好处就是不用�
 
 静态类型什么的就不提了, 闭包的例子再演示一次吧.  例子来源于[*javascript特性杂谈*](http://www.jtianling.com/articles/2049.html#_7).
 
-    :::hx
-    class HelloWorld {
+~~~ hx
+class HelloWorld {
 
-      public static function makeIncrementor(base : Int) {
-        var count = base;
-        return function(num : Int) {
-          count += num;
-          return count;
-        }
-      }
+	public static function makeIncrementor(base : Int) {
+		var count = base;
+		return function(num : Int) {
+			count += num;
+			return count;
+		}
+	}
 
-      public static function main() {
+	public static function main() {
 
-        var obj1 = makeIncrementor(10);
-        var obj2 = makeIncrementor(20);
+		var obj1 = makeIncrementor(10);
+		var obj2 = makeIncrementor(20);
 
-        trace(obj1(1));
-        trace(obj1(1));
+		trace(obj1(1));
+		trace(obj1(1));
 
-        trace(obj2(2));
-        trace(obj2(2));
-      }
-    }
+		trace(obj2(2));
+		trace(obj2(2));
+	}
+}
+~~~
 
 偏函数是一个很有用的特性, 在很早的时候C++为了支持这个特性鼓捣出了bind1st, bind2nd等恶心的函数, 在C++11中由bind统一了, 主要的作用就是可以让一个函数在经过少量的适配代码后就能应用到需要函数作为参数, 但是参数个数对不上的地方.  
 其实本质上就算没有, 我们也可以通过新建一个函数, 然后调用原有函数实现, 只是有了原生的支持后会变得简单很多.  
 
-    function add( x: Float, y: Float ) {
-      return x + y;
-    }
-        
-    var addOne = callback( add, 1 );
-     
-    addOne( 5 ); // returns 6
+~~~ hx
+function add( x: Float, y: Float ) {
+	return x + y;
+}
+		
+var addOne = callback( add, 1 );
+ 
+addOne( 5 ); // returns 6
+~~~
 
 callback就是实现偏函数的函数, 有个遗憾是, 暂时没有(2.09版本)发现通过常见的通过占位符实现任意参数的bind, 目前只能依照参数从左至右的实现partical function.  在3.x版本中, callback将被废弃, 引入了通过占位符`_`实现的任意参数bind.  
 届时, 以上的代码将会是类似`var addOne = add(1, _);`
@@ -489,47 +510,50 @@ callback就是实现偏函数的函数, 有个遗憾是, 暂时没有(2.09版本
 
 Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于AS啊, 比如:
 
-    var fun = function() { };
+~~~ hx
+var fun = function() { };
+~~~
 
 上面的形式可以在一个局部定义, 此时函数像普通变量一样, 只在作用域内有效, 在外部无法访问.  
 至于with this capturing的意思, 大概是指在这种情况下, 匿名函数还能调用this吧,  比如下面:  
 
-    :::hx
-    class Point {
-      var x_ : Float;
-      var y_ : Float;
-      public function new(x : Float, y : Float) {
-        x_ = x;
-        y_ = y;
+~~~ hx
+class Point {
+	var x_ : Float;
+	var y_ : Float;
+	public function new(x : Float, y : Float) {
+		x_ = x;
+		y_ = y;
 
-        var fun = function() {
-          // this capturing
-          this.x_ = 10.0;
-          this.y_ = 20.0;
-        };
+		var fun = function() {
+			// this capturing
+			this.x_ = 10.0;
+			this.y_ = 20.0;
+		};
 
-        fun();
-      }
+		fun();
+	}
 
-      public function x() {
-        return x_;
-      }
+	public function x() {
+		return x_;
+	}
 
-      public function y() {
-        return y_;
-      }
+	public function y() {
+		return y_;
+	}
 
-    }
+}
 
-    class HelloWorld {
+class HelloWorld {
 
-      public static function main() {
-        var pt = new Point(20.0, 10.0);
+	public static function main() {
+		var pt = new Point(20.0, 10.0);
 
-        trace("x:" + pt.x());
-        trace("y:" + pt.y());
-      }
-    }
+		trace("x:" + pt.x());
+		trace("y:" + pt.y());
+	}
+}
+~~~
 
 要是没有this捕获, 那匿名函数的作用会大打折扣.  
 
@@ -543,15 +567,16 @@ Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于A
 
 不知道是何种原因, Nicolas对枚举似乎有强大的兴趣和偏好, 现代语言中的确对原来C/C++的枚举很反感, 所以一般都会让枚举变得强类型一些, 但是Haxe中就不仅仅是让枚举变的强类型而已, 而是极大的复杂化了枚举(或者说极大的强大?) 比如, 在Haxe中枚举支持构造函数参数:  
 
-    :::hx
-    enum Color {
-        Red;
-        Green;
-        Blue;
-        Grey( v : Int );
-        Rgb( r : Int, g : Int, b : Int );
-        Alpha( a : Int, col : Color );
-    }
+~~~ hx
+enum Color {
+		Red;
+		Green;
+		Blue;
+		Grey( v : Int );
+		Rgb( r : Int, g : Int, b : Int );
+		Alpha( a : Int, col : Color );
+}
+~~~
 
 上面例子中的Grey, Rgb, Alpha就是带构造函数参数的枚举, 甚至在Alpha中递归引用了Color这个枚举类型.  问题是, 我没有发现这个到底有什么用, 因为枚举都是常量, 你可以如下定义Alpha:  
 
@@ -577,26 +602,30 @@ Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于A
 下面我还是用经典的profile需求的例子来看Haxe的元数据吧, 不过有些遗憾的是, Haxe的元数据本质上还是不是那么强大, 比如很受人推崇的C++的Attribute, 都已经是基于对象的了, 甚至可以继承~~  
 下面我通过经典的使用情景来展示Metadata的作用, 比如, 我们首先有一个函数:  
 
-    public static function HelloWorld() {
-      var i = 0;
-      while( i < 1000 ) {
-        trace("Hello World");
-        ++i;
-      }
-    } 
+~~~ hx
+public static function HelloWorld() {
+	var i = 0;
+	while( i < 1000 ) {
+		trace("Hello World");
+		++i;
+	}
+} 
+~~~
 
 当然, 这个函数的功能似乎是没有啥用, 作为演示, 算了吧. 作为程序的一部分, 我们有一天觉得这行代码是不是因为有IO的存在, 太慢了? 决定对其进行profile, 以便对进一步要进行的优化提供参考.  
 
-    public static function HelloWorld() {
-      var time_begin = haxe.Timer.stamp();
-      var i = 0;
-      while( i < 1000 ) {
-        trace("Hello World");
-        ++i;
-      }
-      var time_passed = time_begin - haxe.Timer.stamp();
-      trace(time_passed);
-    }
+~~~ hx
+public static function HelloWorld() {
+	var time_begin = haxe.Timer.stamp();
+	var i = 0;
+	while( i < 1000 ) {
+		trace("Hello World");
+		++i;
+	}
+	var time_passed = time_begin - haxe.Timer.stamp();
+	trace(time_passed);
+}
+~~~
 
 这种代码首先是嵌入破坏式的, 在很久以前, 我还真在C++中写过很多类似这样的代码.  这个方法的问题在于当你准备为很多函数都进行类似的测试的时候, 你需要对每个函数都进行嵌入破坏, 使得代码最后难以修复, 要开关profile的进行也相当费劲, 这个问题在C++中我已经倾向于用一些第三方的库来解决这种问题.  在Haxe这种有Metadata的语言, 其实就可以通过Metadata很轻量级的完成这个任务.  
 
@@ -617,28 +646,33 @@ Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于A
 
 要对类使用, 用`getType`, 对类成员使用, 用`getFields`, 我们此例中是对静态成员函数使用, 所以用的是`getStatics`.  使用的方法很简单, 如下:  
 
-    var need_to_profiles = $type(haxe.rtti.Meta.getStatics(HelloWorld));
+~~~ hx
+var need_to_profiles = $type(haxe.rtti.Meta.getStatics(HelloWorld));
+~~~
 
 但是上述函数都有个问题, 因为类型都是Dynamic的数组, 所以不能用for-in简单的迭代.  需要用到反射.  基本的代码如下:  
 
-
-    var need_to_profiles = haxe.rtti.Meta.getStatics(HelloWorld);
-    for ( fun_name in Reflect.fields(need_to_profiles)) {
-      var fun = Reflect.field(need_to_profiles, fun_name);
-      if (Reflect.hasField(fun, "profile") ) {
-        var fun_to_call = Reflect.field(HelloWorld, fun_name);
-        profile(fun_to_call);
-      }
-    }
+~~~ hx
+var need_to_profiles = haxe.rtti.Meta.getStatics(HelloWorld);
+for ( fun_name in Reflect.fields(need_to_profiles)) {
+	var fun = Reflect.field(need_to_profiles, fun_name);
+	if (Reflect.hasField(fun, "profile") ) {
+		var fun_to_call = Reflect.field(HelloWorld, fun_name);
+		profile(fun_to_call);
+	}
+}
+~~~
 
 其中profile函数是一个类似下面的函数:  
 
-    public static function profile( fun: Void -> Dynamic ) {
-      var time_begin = haxe.Timer.stamp();
-      fun();
-      var time_passed = time_begin - haxe.Timer.stamp();
-      trace(time_passed);
-    }
+~~~ hx
+public static function profile( fun: Void -> Dynamic ) {
+	var time_begin = haxe.Timer.stamp();
+	fun();
+	var time_passed = time_begin - haxe.Timer.stamp();
+	trace(time_passed);
+}
+~~~
 
 作用是针对一个函数进行调用, 然后统计时间, 实际上我们也不需要自己实现这样的函数, Haxe已经实现了, 为`Timer.measure`函数.  
 有了上述代码后, 你可以简单的在一个类里面通过`@profile`的Metadata来实现对一个静态函数开启和关闭profile.  
@@ -663,30 +697,32 @@ Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于A
 
 一个例子如下:  
 
-    class C {
-       public var ro(default,null) : Int;
-       public var wo(null,default) : Int;
-       public var x(getX,setX) : Int;
-       public var y(getX,never) : Int; // here y should always equal x
-       public var z(default, setZ) : Int;
+~~~ hx
+class C {
+	 public var ro(default,null) : Int;
+	 public var wo(null,default) : Int;
+	 public var x(getX,setX) : Int;
+	 public var y(getX,never) : Int; // here y should always equal x
+	 public var z(default, setZ) : Int;
 
-       private var my_x : Int;
+	 private var my_x : Int;
 
-       private function getX():Int {
-           return my_x;
-       }
+	 private function getX():Int {
+			 return my_x;
+	 }
 
-       private function setX( v : Int ):Int {
-          if( v >= 0 )
-             my_x = v;
-          return my_x;
-       }
+	 private function setX( v : Int ):Int {
+			if( v >= 0 )
+				 my_x = v;
+			return my_x;
+	 }
 
-       private function setZ( v : Int ) : Int {
-          return z = v;
-       }
+	 private function setZ( v : Int ) : Int {
+			return z = v;
+	 }
 
-    }
+}
+~~~
 
 ## 使用using的Mixin方法注入
 > Method injection with "using" mixin
@@ -695,25 +731,30 @@ Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于A
 比如常见的字符串扩展, 当标准的字符串不符合我们的需求时我们会怎么做呢? 像C++中, boost库里面就有个string的扩展库boost::string_algo, 你引入了这个库后, 并没有给std::string添加任何方法, 只能从外部用Help类的方法来使用(事实上, 在C++的社区似乎还更偏好这种方法, 不仅仅因为C++没有办法).  在可以打猴子补丁的语言里面, 可以讲Help类的方法直接引入对象本身, 以方便调用, 使得调用更加自然.  
 比如说, 我特别喜欢Ruby中类似自然语言的循环和块调用方式, 你可以用`5.times { |x| print x }`的方式来实现5次循环.  我想要在Haxe中模拟这种方法的话, 我给整数类型增加一个Help函数, times. 比如下例:  
 
-    :::hx
-    // TimesLoop.hx
-    class TimesLoop {
-      public static function times( n : Int, fun : Void -> Void ) : Void {
-        var i = 0;
-        while (i < n) {
-          fun();
-          ++i;
-        }
-      }
-    }
+~~~ hx
+// TimesLoop.hx
+class TimesLoop {
+	public static function times( n : Int, fun : Void -> Void ) : Void {
+		var i = 0;
+		while (i < n) {
+			fun();
+			++i;
+		}
+	}
+}
+~~~
 
 此时我只能以以下形式调用该函数:  
 
-    TimesLoop.times(5, callback( log, "Hello") );
+~~~ hx
+TimesLoop.times(5, callback( log, "Hello") );
+~~~
 
 但是, 用了using后(完全不同于C++的using), TimesLoop的第一个参数所在的对象, 就能获得times方法, 此例中是整数能获得times方法, 于是我们就能这样调用:  
 
-    5.times( callback( log, "Hello") );
+~~~ hx
+5.times( callback( log, "Hello") );
+~~~
 
 虽然还没能用上Ruby的Blocks, 但是形式上已经类似了.  
 主要注意的是, 实际使用中我发现, 这种Using的用法只能在import一个类后立刻使用, 使得没法在当前文件中定义一个对象, 然后使用using, 这也算是个缺憾.  
@@ -723,46 +764,47 @@ Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于A
 
 在流程控制那一节, 我们可以看到因为node和Haxe本身的Sys库不兼容, 所以需要分别实现, 实现在多个不同的文件自然是没有问题, 但是同样的就无法共用共有的部分了, C++中这种问题常用宏指定的条件编译来解决.  Haxe也有类似的命令, 命令格式也很类似, 如下:  
 
-    :::hx
-    #if js
-    import js.Node;
-    #end
+~~~ hx
+#if js
+import js.Node;
+#end
 
-    class HelloWorld {
-      public static function main() {
+class HelloWorld {
+	public static function main() {
 
-      #if js
-        Node.process.stdin.resume();
-        Node.process.stdin.setEncoding('utf8');
-        Node.process.stdin.on('data', function (chunk) {
-          var choice : String = chunk.trim();
-          switch( choice ) {
-            case "y", "Y":
-              Node.console.log("You surely want it!");
-            case "n", "N":
-              Node.console.log("you don't want it?!");
-            default:
-              Node.console.log("Not a valid choice.");
-          }
-        });
-      #else
-        var choice : String = "";
-        while (true) {
-          choice = Sys.stdin().readLine();
+	#if js
+		Node.process.stdin.resume();
+		Node.process.stdin.setEncoding('utf8');
+		Node.process.stdin.on('data', function (chunk) {
+			var choice : String = chunk.trim();
+			switch( choice ) {
+				case "y", "Y":
+					Node.console.log("You surely want it!");
+				case "n", "N":
+					Node.console.log("you don't want it?!");
+				default:
+					Node.console.log("Not a valid choice.");
+			}
+		});
+	#else
+		var choice : String = "";
+		while (true) {
+			choice = Sys.stdin().readLine();
 
-          switch( choice ) {
-            case "y", "Y":
-              Sys.println("You surely want it!");
-            case "n", "N":
-              Sys.println("you don't want it?!");
-              break;
-            default:
-              Sys.println("Not a valid choice.");
-          }
-        }
-      #end
-      }
-    }
+			switch( choice ) {
+				case "y", "Y":
+					Sys.println("You surely want it!");
+				case "n", "N":
+					Sys.println("you don't want it?!");
+					break;
+				default:
+					Sys.println("Not a valid choice.");
+			}
+		}
+	#end
+	}
+}
+~~~
 
 ## 迭代器
 > Iterators
@@ -770,10 +812,12 @@ Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于A
 很难理解, 为什么这会是个语言特性.  
 在Haxe中迭代器都继承自Iterator的一个结构.  
 
-      typedef Iterator<T> = {
-        function hasNext() : Bool;
-        function next() : T;
-      }
+~~~ hx
+typedef Iterator<T> = {
+	function hasNext() : Bool;
+	function next() : T;
+}
+~~~
 
 然后就能在for-in中进行迭代了, 不可思议的是,(再次提到) 为啥没有普通的for循环啊~~~ 不讲了, 迭代器太普遍了.  
 
@@ -785,29 +829,31 @@ Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于A
 因为宏, 我们可以在Haxe中实现自己想要的语法, 比如在前面, 我们用`using`的注入, 实现了类似`5.times( callback( log, "Hello") );`的语法, 但是其实还离Ruby中有差距, Ruby中通过Block, 执行的实际是一段代码, 而不是如目前我在Haxe中实现的一样, 需要一个确定的函数, 这会限制`times`的应用范围, 并且也较为麻烦, 因为我总是得构建函数才能方便的使用`times`, 假如不方便的话, 构建`times`的意义就没有了.  
 用宏的话, 能够稍微解决这个问题.  
 
-    // TimesLoop.hx
-    import haxe.macro.Expr;
-    import haxe.macro.Context;
-    class TimesLoop {
-      @:macro public static function times( n : Int, e:Expr ) : Expr {
-        var n_expr = Context.makeExpr(n, Context.currentPos());
-        return macro for (i in 0...$n_expr) { $e; };
-      }
-    }
+~~~ hx
+// TimesLoop.hx
+import haxe.macro.Expr;
+import haxe.macro.Context;
+class TimesLoop {
+	@:macro public static function times( n : Int, e:Expr ) : Expr {
+		var n_expr = Context.makeExpr(n, Context.currentPos());
+		return macro for (i in 0...$n_expr) { $e; };
+	}
+}
 
-    // HelloWorld.hx
-    import TimesLoop;
-    using TimesLoop;
+// HelloWorld.hx
+import TimesLoop;
+using TimesLoop;
 
-    class HelloWorld {
+class HelloWorld {
 
-      public static function main() {
-        5.times( trace("HelloWorld") );
+	public static function main() {
+		5.times( trace("HelloWorld") );
 
-        var x = 0;
-        5.times( trace(x++));
-      }
-    }
+		var x = 0;
+		5.times( trace(x++));
+	}
+}
+~~~
 
 
 这里实际上是用`using` + macro的方式实现了整数的表达式调用, 这里特意用`trace(x++)`的代码来证明, 这里不是单纯的函数调用, 而是表达式调用, 因为实际上会输出0,1,2,3,4, 而不是输出0 5次.  事实上, 表达式的调用灵活度要比函数调用灵活的多.  
@@ -831,17 +877,21 @@ Haxe中可以用类似javascript的通过变量来定义函数, 毕竟起源于A
 在3.0版本以后, Haxe提供了数组解析的功能, 相对应的功能在Python中是列表解析(list comprehension), 起码所有的Pythoner都认为该特性极大的改善了代码的风格, 在Haxe其实也可以这样.  
 比如, 在一个从1到100的整数数组中过滤出所有的奇数, 只留下偶数.  这个功能在Python中大概是这个样子:  
 
-    :::python3
-    [i for i in range(1, 101) if i % 2 == 2]
+~~~ python
+[i for i in range(1, 101) if i % 2 == 2]
+~~~
 
 在Ruby中没有列表解析, 通过Block实现的特性也很不错, 并且挺接近自然语言(这也是Ruby被广泛称赞的理由).  
 
-    :::ruby
-    (1..100).to_a.select { |x| x % 2 == 0 }
+~~~ ruby
+(1..100).to_a.select { |x| x % 2 == 0 }
+~~~
 
 在很多没有类似特性的语言中, 那就郁闷了, 稍微好一点的, 你还能通过类似`filter`的函数实现, 再不济的, 你得通过循环才能实现这么简单的事情, 在Haxe3中就能通过数组解析较为简单的实现:  
 
-    [for( x in 1...101 ) if( x % 2 == 0 ) x];
+~~~ hx
+[for( x in 1...101 ) if( x % 2 == 0 ) x];
+~~~
 
 就我所知, 连javascript的下一版本都将会加入列表解析的功能.  
 
@@ -869,7 +919,3 @@ CoffeeScript算是有些例外, 因为它非常专注(只生成javascript), 并�
 # 总结
 总的来说, 假如单纯的从程序设计语言的角度来看, Haxe是一门足够严谨, 特性足够多, 有亮点, 又没有太多硬伤的语言, 可以严谨的当C#来用, 又可以自由的像javascript, 我个人很欣赏Haxe的设计.  可以这么说, 从来就没有一个静态类型的语言可以这么深入的支持动态类型, 能够这么灵活, 也从来没有一个动态语言, 能在静态类型上走这么远.  
 但是, 真的要在项目中使用的话, 我可能会谨慎, 也许等我在业余项目中尝试了几次后, 才敢肯定使用Haxe到底值不值得.  
-
-<div style="text-align:right">
-  writen&nbsp;by <a href="http://www.jtianling.com" target="_blank">九天雁翎(JTianLing) -- www.jtianling.com</a>
-</div>

@@ -3,7 +3,7 @@ layout: default
 ---
 
 <section class="posts">
-{% for post in site.posts limit: 10 %}
+{% for post in paginator.posts %}
   <article>
     <header class="center">
 			<time>{{ post.date | date: "%Y年%m月%d日" }}</time>
@@ -17,7 +17,28 @@ layout: default
 {% endfor %}
 </section>
 
+<div class="center">
+{% if paginator.previous_page %}
+<a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}"  class="nav_previous">上一页</a>
+{% endif %}
+{% for page in (1..paginator.total_pages) %}
+    {% if page < 31 %}
+			{% if page == paginator.page %}
+				<span class="active">{{ page }}</span>
+			{% elsif page == 1 %}
+				<a href="{{ '/index.html' | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
+			{% else %}
+				<a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
+			{% endif %}
+		{% endif %}
+{% endfor %}
+
+{% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}" class="nav_next">下一页</a>
+{% endif %}
+</div>
+
 <div class="center" style="margin-bottom: 30px;">
-  <a href="/archive">更多文章</a>
+  <a href="/archive">文章列表</a>
 </div>
 

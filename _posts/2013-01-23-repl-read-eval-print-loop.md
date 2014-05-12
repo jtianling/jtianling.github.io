@@ -1,18 +1,14 @@
-"=========== Meta ============
-"StrID : 2079
-"Title : 常见语言的REPL(Read-eval-print-loop)
-"Slug  : %e5%b8%b8%e8%a7%81%e8%af%ad%e8%a8%80%e7%9a%84replread-eval-print-loop
-"Cats  : 通用编程技术
-"Tags  : repl
-"=============================
-"EditType   : post
-"EditFormat : Markdown
-"BlogAddr   : http://www.jtianling.com
-"========== Content ==========
+---
+layout: post
+title: "常见语言的REPL(Read-eval-print-loop)"
+date: 2013-01-23
+comments: true
+categories: 编程
+tags: REPL
+---
  
 在一般的新脚本语言中, 有REPL是常态, 因为REPL非常的方便, 谁用谁知道.  最近学的语言已经多到几乎超过我的脑容量了, 所以我更加经常的用REPL来验证一些语法, 所以找到了一些传统不存在REPL语言的REPL环境, 在这里记录和分享一下:
-
-$TOC$
+<!-- more -->
 
 # 原生就有REPL的语言
 ## Common Lisp
@@ -100,7 +96,3 @@ BeanShell下载后, 将.jar文件放在JAVA可以找的到的库目录中, 比�
 
 # WIKI的列表
 发现这里的列表也挺详细的:<http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop>
-
-<div style="text-align:right">
-  writen&nbsp;by <a href="http://www.jtianling.com" target="_blank">九天雁翎(JTianLing) -- www.jtianling.com</a>
-</div>
