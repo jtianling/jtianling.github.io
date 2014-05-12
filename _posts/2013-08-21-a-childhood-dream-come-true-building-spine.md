@@ -14,18 +14,18 @@ Spine的作者最近(2013-08-13)在自己的博客上写了一些关于[Spine背
 ## 译文
 ### 一段小小的历史, 改变我的人生
 我(Nate)从很久很久以前就想要制作Spine这样一个骨骼动画编辑器了.  我11岁刚开始学习用QBasic编程时, 我的杰作是一个3D格斗游戏.  这个游戏花费了我几年时间, 但其实也不是那么好玩, 但是它已经有骨骼动画和一个非常简单的编辑器了.  在我19岁离开学校进入公司后, 我又做了12年的软件开发.  在那个时候, 我刚刚离婚, 并且还有房贷尚未还清, 那时候我的生活就是工作, 吃饭和睡觉. 枯燥的生活让我决定要改变这一切, 我放弃了房子, 辞掉了在Mickey Mouse公司的稳定工作, 变成了一个无业游民.  在此后超过一年半的时间里, 我就在我世界各地的朋友们那儿鬼混. 我爱编程, 所以我花了很多时间在开源项目(还有街霸)上.  
-[![3D格斗游戏截图](http://oss.aliyuncs.com/jtianling-blog/2247/qbasic.png)](http://www.youtube.com/watch?v=d7wntjD8YR8)
+[![3D格斗游戏截图](/public/images/2013/spine-qbasic.png)](http://www.youtube.com/watch?v=d7wntjD8YR8)
 
 ### 需求出现, 制作开始
 最后, 我的难兄难弟Soren和我决定做一个游戏.  但序列帧动画限制太大, 并且总是需要花费很多时间在美术制作上. Soren是一个美术, 并且精通Softimgae, 所以我写了一个导出脚本和一个简单的骨骼动画库. 它能够正常工作, 但是工作的流程非常的不好.  因为它很难配置, 并且容易碰到不支持的Softimage的特性.  我们找遍了其他所有工具, 但是都没有合适的, 而我们有清晰的目标, 我们知道我们需要制作一个什么样的工具, 所以我们开始自己动手制作这个工具.  在我做那个QBasic格斗游戏足足20年后, 我很高兴的把全部的时间都投入到Spine上!  
 我们一直推迟着Spine的发布, 直到完成了所有基础的工作以后.  我们有太多关于Spine的想法, 以致很难完成所有功能, 我们只能实现最基本的特性, 所以我们毙掉了很多想法, 我们总是告诉我们自己, "我们总是可以在以后再增加", 任何复杂并且又不是核心功能的特性要被去掉, 而另外一些复杂但是很重要的特性又必须要实现.  困难就在于知道这两者的不同.  还好Soren有很多实际的工程经验, 并且知道这样一个工具应该怎么工作.  同时Soren也想在Spine中加入成千上万的特性, 此时我就反过来拒绝那些特性, 除非它明显很必要(或者很容易实现).  
-![Spine Dragon 截图](http://oss.aliyuncs.com/jtianling-blog/2247/screen.png)
+![Spine Dragon 截图](/public/images/2013/spine-screen.png)
 
 ### 人总是要吃饭的: Kickstarter
 我们在Spine的编辑器部分花了9个月, 并且只有libgdx一个运行时库. 我们和投资人没有任何联系, 并且肯定我们正在花光我们的积蓄.  所以我们决定到Kickstarter上来试试, 一方面我们的确需要钱, 另一方面也是向大家宣传一下Spine.  为了让我们合作更方便, 我到了Denmark, 并且住在Soren的家里.  我把我的手机粘在椅子的后面, 录制了那段视频.(译者注: 指Kickstarter上用于宣传的[那段视频](http://www.kickstarter.com/projects/esotericsoftware/spine)) 这对我来说不是个容易的事情, 因为我必须尝试很多遍才能达到想要的效果.  我现在做梦(可能还有你)都还能总是会梦到我在说"Hi, my name is Nate!".  Soren录制了Spine的操作视频, 并且做了写视频的后期工作.  我们的目标是在前20秒内吸引住观众, 使他们愿意继续看完剩下的内容.  
 我们担心不能达到kickstarter的goal, 所以我们设置了一个我们感觉可以完成一些runtime的底限, 1.2万美元.  而实际上我们只用了3天就达到了这个目标, 这是完全在我们意料之外的.  于是我们决定使用一个更好的方法来制作runtime, 那就是做一个通用的runtimes, 用这些runtime可以更加容易的制作目标游戏套件的runtime.  我们在Kickstarter上写了更多以前没有写的特性, 并且把他们都作为stretch goals.(译者注: Kickstarter上达到基础goal后, 通过募集更多资金去完成的更进一步的goal)  
   
-![Spine Kickstater项目截图](http://oss.aliyuncs.com/jtianling-blog/2247/minichart.png)
+![Spine Kickstater项目截图](/public/images/2013/spine-minichart.png)
   
 要想对Kickstarter上的用户维持一个高水平的用户支持是一个艰巨的任务.  好几天, 我们把全部的时间都用在回复Kickstarter上的问题, 评论, 邮件和论坛帖子上.  这个事情非常的耗费精力, **但是我们的确确保了每一个有问题的人都得到了回答.**  (译者注: 就我最近使用Spine的经验来看, 作者对提问的回答的确相当即时)
 Kickstarter最终募集了67569美元, 是我们初始目标的563%.  我们完成了除最后一个goal外的所有goals.  非常, 非常多的stretch goals.  现在回想起来, 实在是太多goals了.  大部分Kickstarter stretch goals在我们全职工作了6个月后还没有完成, 但是我们将会完成.  **我们决定对每一个曾经支持过我们的人兑现我们的承诺**.  
@@ -37,12 +37,12 @@ Kickstarter最终募集了67569美元, 是我们初始目标的563%.  我们完�
 本段为译者写的概要:  
 在Kickstater以后, 作者花费了相当多的时间回答用户的问题, 并且Nate如期的完成了一些Kickstater中许诺的Stretch Goals.  
 Ghosting, 在Spine中绘制动画的过去和将来.
-![Spine Ghosting功能截图](http://oss.aliyuncs.com/jtianling-blog/2247/ghosting.png),
+![Spine Ghosting功能截图](/public/images/2013/spine-ghosting.png),
   
 支持在一个project中同时操作多个骨骼动画, 这样可以让Spine支持制作一些过场动画(以前我们叫cinematic).  但是目前还需要完成多个骨骼动画之间的绘制顺序问题才能进入实用阶段.  
   
 内嵌了一个图片打包的工具, 这样就可以在不需要类似Texture Packer等工具的情况下, 单独导出需要的动画.
-![Spine Texture Packer功能截图](http://oss.aliyuncs.com/jtianling-blog/2247/packer.png),
+![Spine Texture Packer功能截图](/public/images/2013/spine-packer.png),
   
 增加了event timeline功能, 这样可以在特定的时间点放声音, 粒子效果等.  这个功能很有用, 但是目前大部分runtime都不支持.  
 
