@@ -191,7 +191,9 @@ blockquote {
 	color: black; 
 }
 
-main #uyan_frame {
+main #uyan_frame,
+main .ujian-hook
+{
 	padding-left: 100px; 
 	padding-right: 100px; 
 }
@@ -332,7 +334,8 @@ article .sign {
     max-width: 100%;
   }
 
-	main #uyan_frame {
+	main #uyan_frame,
+	main .ujian-hook {
 		padding-left: 50px; 
 		padding-right: 50px; 
 	}
@@ -384,7 +387,8 @@ article .sign {
 		margin-right: 10px;
 	}
 
-	main #uyan_frame {
+	main #uyan_frame,
+	main .ujian-hook {
 		padding-left: 10px; 
 		padding-right: 10px; 
 	}
