@@ -7,10 +7,6 @@ description: "九天雁翎博客中所有的文章, 按日期不分类列出."
 
 <section class="posts archive">
   <article>
-    <header class="center">
-      <h1>{{ page.title }}</h1>
-    </header>
-
     <ul class="center">
     {% for post in site.posts %}
 		<li><time>{{ post.date | date: "%Y年%m月%d日" }}</time>
