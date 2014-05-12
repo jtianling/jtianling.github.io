@@ -158,6 +158,10 @@ blockquote {
   text-align: right;
 }
 
+#social form fieldset {
+	border: 0;
+}
+
 @media screen and (max-width: 488px) {
   #social {
     position: relative;
@@ -168,7 +172,6 @@ blockquote {
 
 #main #social a {
   padding: 0 5px;
-
   font-size: 1.2rem;
   color: #3A4145;
 }
