@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>{% if page.title %}{{ page.title - site.name }} &middot; {% endif %}{{ site.name }}</title>
+    <title>{% if page.title %}{{ page.title | site.name }} &middot; {% endif %}{{ site.name }}</title>
 
     <!-- Enable responsiveness on mobile devices-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -29,7 +29,7 @@
     {% if page.tags %}
 			<meta name="keywords" content="{{ page.tags | array_to_sentence_string }}">
     {% else %}
-			<meta name="keywords" content="九天雁翎, jtianling, 程序即人生, 程序员, 编程, 游戏, 程序, 安卓, iOS, iPhone, iPad, Android, App, C++, Ruby, Python, 3D, OpenGL, Cocos2d-x, 算法, 搜索, 引擎">
+			<meta name="keywords" content="九天雁翎 jtianling 程序即人生 程序员 编程 游戏 程序 安卓 iOS iPhone iPad Android C++ 3D OpenGL Cocos2d-x 算法 搜索 引擎">
     {% endif %}
 
     <!-- Schema.org meta tags for Google+ -->
