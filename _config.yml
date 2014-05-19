@@ -36,7 +36,7 @@ pygments: true
 
 relative_permalinks: false
 
-permalink:     /:categories/:title.html
+permalink:     /:title.html
 paginate_path: 'page:num'
 paginate:      10
 
