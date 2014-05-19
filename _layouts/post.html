@@ -21,7 +21,7 @@ layout: default
 		{% endfor %}
 	  </p>
 		<div class="sign">
-			<p> Posted By {{ site.author }} on {{ page.date | date: "%Y年%m月%d日" }}</p>
+			<p> Posted By {{ site.author }} at <a href="{{ page.url }}">{{ site.name }}</a> on {{ page.date | date: "%Y年%m月%d日" }}</p>
 	  </div>
 
 		<!-- JiaThis Button BEGIN -->
