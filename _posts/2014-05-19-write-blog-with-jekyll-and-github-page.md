@@ -75,15 +75,137 @@ _config.xml:
 excerpt_separator: "<!-- more -->"
 ~~~
 
-## 其他修改
-* 增加了feed
-* 增加了首页的翻页
-* 文章的结尾列出了标签和分类
-* 增加了sitemap.xml
-* 修改了博客的title style为直接用title做url.
+## 修改了博客的title style为直接用title做url.
+_config.xml:
+~~~ yaml
+permalink:     /:title.html
+~~~
+
+## 增加了feed
+feed.xml:
+{% raw %} 
+~~~ xml
+---
+layout: none
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title type="text">{{ site.title }}</title>
+<generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="{{ site.url }}/feed.xml" />
+<link rel="alternate" type="text/html" href="{{ site.url }}" />
+<updated>{{ site.time | date_to_xmlschema }}</updated>
+<id>{{ site.url }}/</id>
+<author>
+  <name>{{ site.owner.name }}</name>
+  <uri>{{ site.url }}/</uri>
+  <email>{{ site.owner.email }}</email>
+</author>
+{% for post in site.posts limit:20 %}
+
+<entry>
+  <title type="html"><![CDATA[{{ post.title | cdata_escape }}]]></title>
+ <link rel="alternate" type="text/html" href="{% if post.link %}{{ post.link }}{% else %}{{ site.url }}{{ post.url }}{% endif %}" />
+  <id>{{ site.url }}{{ post.id }}</id>
+  {% if post.modified %}<updated>{{ post.modified | to_xmlschema }}T00:00:00-00:00</updated>
+  <published>{{ post.date | date_to_xmlschema }}</published>
+  {% else %}<published>{{ post.date | date_to_xmlschema }}</published>
+  <updated>{{ post.date | date_to_xmlschema }}</updated>{% endif %}
+  <author>
+    <name>{{ site.owner.name }}</name>
+    <uri>{{ site.url }}</uri>
+    <email>{{ site.owner.email }}</email>
+  </author>
+  <content type="html">{{ post.content | xml_escape }}
+  &lt;p&gt;&lt;a href=&quot;{{ site.url }}{{ post.url }}&quot;&gt;{{ post.title }}&lt;/a&gt; was originally published by {{ site.owner.name }} at &lt;a href=&quot;{{ site.url }}&quot;&gt;{{ site.title }}&lt;/a&gt; on {{ post.date | date: "%B %d, %Y" }}.&lt;/p&gt;</content>
+</entry>
+{% endfor %}
+</feed>
+~~~
+{% endraw %} 
+
+## 增加了首页的翻页
+除了上下页以外, 增加了直接跳转的页码, 并且为了格式美观, 把页码限定在31页.
+{% raw %} 
+~~~ xml
+<div class="center">
+{% if paginator.previous_page %}
+<a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}"  class="nav_previous">上一页</a>
+{% endif %}
+{% for page in (1..paginator.total_pages) %}
+    {% if page < 31 %}
+			{% if page == paginator.page %}
+				<span class="active">{{ page }}</span>
+			{% elsif page == 1 %}
+				<a href="{{ '/index.html' | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
+			{% else %}
+				<a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
+			{% endif %}
+		{% endif %}
+{% endfor %}
+
+{% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}" class="nav_next">下一页</a>
+{% endif %}
+</div>
+~~~
+{% endraw %} 
+
+
+## 文章的结尾列出了标签和分类
+{% raw %} 
+~~~ xml
+<p> 
+分类:&nbsp;
+{% for cate in page.categories %}
+<a href="/categories.html#{{ cate }}" class="category">{{ cate }}&nbsp;</a>
+{% endfor %}
+<br />
+标签:&nbsp;
+{% for tag in page.tags %}
+<a href="/tags.html#{{ tag }}" class="tag">{{ tag }}&nbsp;</a>
+{% endfor %}
+</p>
+~~~
+{% endraw %} 
+
+## 增加了sitemap.xml
+sitemap.xml:
+{% raw %} 
+~~~ xml
+---
+layout: none
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {% for post in site.posts %}
+    <url>
+			<loc>{{ site.url }}{{ post.url }}</loc>
+      {% if post.lastmod == null %}
+        <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+      {% else %}
+        <lastmod>{{ post.lastmod | date_to_xmlschema }}</lastmod>
+      {% endif %}
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
+    </url>
+  {% endfor %}
+  {% for page in site.pages %}
+    {% if page.sitemap != null and page.sitemap != empty %}
+      <url>
+				<loc>{{ site.url }}{{ page.url }}</loc>
+        <lastmod>{{ page.sitemap.lastmod | date_to_xmlschema }}</lastmod>
+        <changefreq>{{ page.sitemap.changefreq }}</changefreq>
+        <priority>{{ page.sitemap.priority }}</priority>
+       </url>
+    {% endif %}
+  {% endfor %}
+</urlset>
+~~~
+{% endraw %} 
 
 ## 导入文章
 修改完博客的风格后, 自己感觉还是比较满意的, 原来用markdown写的文章稍微改改就能用了, 但是原来还有很多老的文章, 最开始其实是在[CSDN](http://blog.csdn.net/vagrxie)上写的, 并且导入了原来的wordpress博客了, 这里通过Jekyll官方提供的[导入程序](http://import.jekyllrb.com/docs/wordpress/)导入. 
 
 ## 评论
-原来的博客就接入了[友言](http://uyan.cc), 并且同步了老的评论, 但是因为新的博客所有的地址都变了, 而友言以文章地址为唯一的标识, 所以评论虽然都还在, 但是实际一个都匹配不上了, 感觉丢了2400多条评论也挺可惜的, 所以特别写了个ruby程序导入了原来的评论, 这个明天单开一篇文章来说明.  
+原来的博客就接入了[友言](http://uyan.cc), 并且同步了老的评论, 但是因为新的博客所有的地址都变了, 而友言以文章地址为唯一的标识, 所以评论虽然都还在, 但是实际一个都匹配不上了, 感觉丢了2400多条评论也挺可惜的, 所以特别写了个ruby程序导入了原来的评论, 这个单开了一篇文章[**从Wordpress中导入友言的评论**](/import-comment-from-wordpress-in-uyan.html)来说明.  
