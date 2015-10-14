@@ -11,6 +11,13 @@ tags: Markdown VimPress Vim LaTeX Wordpress
 整理一些文章格式的时候, 还发现一个有趣的故事, 原来我现在这么喜欢Vim, 来自于当时刚到北京, 用一个巨老无比的笔记本, 图形界面几乎没法用, 所以才无奈之下真正的耐下心来学习Vim, 见[*买了个新显示器*](http://www.jtianling.com/articles/1411.html).  而这已经是我第3次开始尝试使用Vim了, 从那以后, 我几乎没有Vim就没法工作了.  
 闲话少说, 综上所述, 我决定好好的管理一下自己的博客, 虽然现在已经用上了自己可以控制的Wordpress, 但是谁知道将来会不会再发生忘记缴费, 数据被删的事情呢, 即使我用上了Wordpress的备份, 我还是需要给自己写的文章做一个自己的备份, 并且可以用Git来管理, 这个才叫真的备份, 连历史记录都备份了.  同时, 因为格式上的原因, 我决定用某种文本格式来保存我的文章, 当然, 我可不准备手写HTML, 这样才不会出现用Windows Live Write写博客那样的悲剧, 并且, 作为离线写博客的方式, 用Vim来处理文本就方便了, 不用再去找各个平台的啥离线工具.  
 <!-- more -->
+<!-- toc-begin -->
+**目录**:
+
+* [最佳方案: Markdown + VimPress](#最佳方案-markdown-vimpress)
+* [适合将来转PDF的方案: Latex](#适合将来转pdf的方案-latex)
+
+<!-- toc-end -->
 
 说了一堆, 总结一下要求如下:
 
@@ -48,3 +55,5 @@ tags: Markdown VimPress Vim LaTeX Wordpress
 # 适合将来转PDF的方案: Latex
 其实我最开始想用LaTeX来写博客, 虽然的确有些麻烦, 但是的确可以更加精确的控制格式, 然后效果会更加好, 特别是将来能更好的转化为PDF.  那个效果, 就像是印刷出来的一样.  还可以使用了一个同样使用pygments实现代码高亮的LaTeX package, [Minted](http://code.google.com/p/minted/).
 用[MacLex](http://www.tug.org/mactex/), 然后再将pdf转换为HTML[pdf2htmlEX](http://coolwanglu.github.com/pdf2htmlEX/), 我也查过一些直接从Latex转换为HTML的软件, 最好的是[HyperLaTeX](http://hyperlatex.sourceforge.net/)和[tth](http://hutchinson.belmont.ma.us/tth/).  但是都不能支持Latex的全部功能, 特别是其他的package, 用起来和Markdown也就没啥区别了.  优点用不上, 又那么麻烦, 所以还是用Markdown是最佳方案吧.
+.
+.

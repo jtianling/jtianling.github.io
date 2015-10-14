@@ -10,6 +10,15 @@ tags: iOS Android PhoneGap Titanium RubyMotion Ruboto Mono
 很久以前的移动平台开发者很幸运, 因为他们只用关注一个平台(iOS)就够了, 现在随着Android越来越受到关注, 以前统一的平台又开始了分裂.  
 到目前为止, 我知道可能的, 能够使用一套代码跨平台开发app的方法有:  
 <!-- more -->
+<!-- toc-begin -->
+**目录**:
+
+* [Html: PhoneGap](#html-phonegap)
+* [JavaScript: Titanium SDK](#javascript-titanium-sdk)
+* [Ruby: RubyMotion(iOS), Ruboto(android)](#ruby-rubymotion-ios-ruboto-android)
+* [C# with Mono](#c-with-mono)
+
+<!-- toc-end -->
 
 # Html: PhoneGap
 [*PhoneGap*](http://phonegap.com/)是基于Web技术的(HTML, CSS, Javascript), 虽然出来的时间不短了, 但是真正是属于未来的解决方案.  因为真正开发出来的就是WebApp.    在移动平台上简单的应用几乎是不需要PhoneGap就能基于HTML开发的, 因为移动平台都提供了类似WebView的控件,  但是PhoneGap提供了能调用本地API的功能, 可以极大的扩展应用的适用范围.  

@@ -10,6 +10,22 @@ tags: Cocoa Objective-C Unity3D iOS
 众所周知, Unity中没有提供UI解决方案, 只能靠第三方的插件来完成.  比较著名的有NGUI等, 但是这种方案不仅需要额外付费(虽然不多), 并且类似NGUI的插件还不那么易用, 使用起来过于复杂.  
 这里我尝试使用iPhone的原生UI(Cocoa Touch)来作为Unity的UI.  这个听起来似乎很容易的事情, 其实却比我想象的要难的多的多.  主要原因就在于Unity根本就不是想让你这么用的, 3D引擎为了效率, 一般都需要比较专横的占用系统资源, 在本来速度有限的移动平台就更加需要这样了, 这样才能发挥出硬件的极限水平, 制作出更精良的游戏.  鉴于这个原因, 这种方法并不适于性能要求高的游戏.  
 <!-- more -->
+<!-- toc-begin -->
+**目录**:
+
+* [用原生UI的优点](#用原生ui的优点)
+* [用原生UI的缺点](#用原生ui的缺点)
+* [开发环境](#开发环境)
+* [基础: Unity 插件编写(managed-to-unmanaged)](#基础-unity-插件编写-managed-to-unmanaged)
+* [原生代码调用Unity的Script代码(native-to-managed)](#原生代码调用unity的script代码-native-to-managed)
+* [UnitySendMessage的一个研究](#unitysendmessage的一个研究)
+* [显示原生UI的尝试(Try to use Native UI in Unity)](#显示原生ui的尝试-try-to-use-native-ui-in-unity)
+ * [UI显示](#ui显示)
+ * [UI + Unity](#ui-unity)
+* [总结](#总结)
+* [参考](#参考)
+
+<!-- toc-end -->
 
 # 用原生UI的优点
 * 易用: 原生UI的使用简单, 可用的第三方界面库也很丰富, 特别是对于已经有很多iOS app开发经验的人来说.
@@ -278,5 +294,5 @@ public class NativeBinding : MonoBehaviour {
 其实到此为止, 想要实现的功能基本都能实现了, 剩下的也就是一些细节了.  但是, Unity的开发团队都不太推荐这种方式, 同样的, 我也不推荐大家使用... 使用后才能知道到底有多痛苦, 特别是非常非常非常非常漫长的编译过程...
 
 # 参考
-Gregg的*An Experiment with iPhone Native UI and Unity 3 Pro*给了我很大的启发.  不知道为什么, Gregg自己把他博客上的文章删掉了-_#  
+Gregg的*An Experiment with iPhone Native UI and Unity 3 Pro*给了我很大的启发.  不知道为什么, Gregg自己把他博客上的文章删掉了-_#
 
