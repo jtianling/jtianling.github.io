@@ -16,16 +16,11 @@ tags:
 **目录**:
 
 * [任何脚本都必须以下列方式开始](#任何脚本都必须以下列方式开始)
- * [理由](#理由)
 * [强类型定义变量](#强类型定义变量)
- * [理由](#理由)
 * [分号结尾](#分号结尾)
 * [枚举类型](#枚举类型)
- * [理由](#理由)
 * [for-in 循环](#for-in-循环)
- * [理由](#理由)
 * [多行字符串常量](#多行字符串常量)
- * [理由](#理由)
 * [Array和Hashtable的常量](#array和hashtable的常量)
 * [命名](#命名)
  * [变量和函数(Properties and methods)](#变量和函数-properties-and-methods)
@@ -44,7 +39,7 @@ tags:
 #pragma strict
 ~~~
 
-## 理由
+### 理由
 
 `pragma strict`将强制进行更加严格的类型检查，并且还能因此在编译期产生更加有用的错误信息，鼓励更好的编程风格。
 
@@ -52,7 +47,7 @@ tags:
 
 总是以 var value : type的形式定义变量，即在定义变量时指定变量的类型。
 
-## 理由
+### 理由
 
 以强类型方式定义变量比让Unity去自动识别变量类型效率要高的多，同时能够在编译期发现一些对变量的错误使用，虽然让语言的灵活性受到了一些影响。
 
@@ -64,7 +59,7 @@ tags:
 
 在需要使用表示不同类型的时候，尽量使用枚举类型。
 
-## 理由
+### 理由
 
 枚举类型是一个效率更高，并且因为强类型检查，比起字符串来说，更加难以出错。
 
@@ -82,7 +77,7 @@ function Start () {
 
 只用在遍历object，map，hash的key。不要用于遍历Array。
 
-## 理由
+### 理由
 
 for-in循环在被用于遍历Array的元素时，常常会被错误的使用，因为for-in循环不是从0到length - 1，而是遍历所有目前已经存在的所有元素。
 以下是一些错误的使用的情况：
@@ -145,7 +140,7 @@ var myString = 'A rather long string of English text, an error message ' +
                'you
 ~~~
 
-## 理由
+### 理由
 
 前一种形式每一行开始的空白字符不能在编译时安全的删除，可能导致很诡异的结果。
 
@@ -250,3 +245,4 @@ Debug.Log('outer j=' + j);
 1. [*Google JavaScript Style Guide*](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml)-- 最主要的参考文档，本文中的很多条款直接就是从此文档翻译过来。
 2. [*Head First into Unity with UnityScript*](http://wiki.unity3d.com/index.php?title=Head_First_into_Unity_with_UnityScript)
 3. [*UnityScript versus JavaScript*](http://wiki.unity3d.com/index.php?title=UnityScript_versus_JavaScript)
+[*UnityScript versus JavaScript*](http://wiki.unity3d.com/index.php?title=UnityScript_versus_JavaScript)
