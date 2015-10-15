@@ -8,7 +8,23 @@ tags: Redis nodejs NoSQL
 ---
 
 NoSQL热了很久了, 很惭愧直到今天我才初次学习NoSQL的东西.  从一开始做C++的后端用了MySQL和SQL Server后, 一直在做游戏客户端, 真是远离数据库相关的东西太久了, 有意思的是, 很久前, 对编程相关知识如饥似渴的时候, 工作中碰到任何相关的知识, 哪怕是一个新领域, 起码都要买一本大部头来学习的, 当时只有数据库是真的点到为止, 没有深入学习, 直到今天我也说不上具体为什么......
+
 <!-- more -->
+<!-- toc-begin -->
+**目录**:
+
+* [Redis介绍](#redis介绍)
+* [安装](#安装)
+ * [MacOS](#macos)
+ * [Ubuntu](#ubuntu)
+* [REPL](#repl)
+* [数据类型](#数据类型)
+* [命令](#命令)
+* [Redis With Nodejs](#redis-with-nodejs)
+ * [实际的例子](#实际的例子)
+* [小结](#小结)
+
+<!-- toc-end -->
 
 # Redis介绍
 就不比较各个用NoSQL统称的大量非关系型数据库了, 相关的内容可以看看[*Cassandra vs MongoDB vs CouchDB vs Redis vs Riak vs HBase vs Couchbase vs Neo4j vs Hypertable vs ElasticSearch vs Accumulo vs VoltDB vs Scalaris comparison*](http://kkovacs.eu/cassandra-vs-mongodb-vs-couchdb-vs-redis)这篇文章, 看看标题有多长, 就知道如今NoSQL的阵营其实有多庞大了.  
@@ -250,7 +266,3 @@ exports.getFavs = getFavs;
 
 # 小结
 这篇文章有些水了...... 因为很久前(2013-02-23日)刚学习Redis时起笔写的, 原计划是像本博客中很多文章一样, 一边学习一边写, 但是因为Redis太简单了, 随便看了看, 感觉就差不多可以用一用了, 就直接写了上面提到的插件的服务器, 等工作都完成了以后, 再回头来写这个文章的动力就小了, 所以一直拖到现在, 今天整理博客, 看了看, 简单的补充了一下, 还是把这个文章发了吧, 好歹有那么多有用的链接.  
-
-<div style="text-align:right">
-  writen&nbsp;by <a href="http://www.jtianling.com" target="_blank">九天雁翎(JTianLing) -- www.jtianling.com</a>
-</div>

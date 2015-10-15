@@ -6,7 +6,7 @@ comments: true
 categories: 编程
 tags: 
 - Rakefile 
-- makefile 
+- Makefile 
 - project manage 
 ---
   
@@ -19,11 +19,24 @@ tags:
 5. 将UI编辑器, 动画编辑器的编辑时格式(往往是文本格式)编译成二进制的发布格式.
   
 特别是图片相关的的资源生成, 时间消耗较多, 需要尽量减少重复生成.  此时像makefile这种东西就很有价值了.  
-<!-- more -->
 
-# makefile的利弊
-makefile最大的好处自然是依赖关系的作用, 在正确设置后, 能做到当原始文件(源文件, 原始的资源等)没有更改时, 不生成目标文件, 更改时才生成, 并且可以自定义生成的规则.  
-缺点也很明显, makefile太难写了, 传统的makefile格式独特, 甚至tab敏感, 而功能相对单一(功能强大基本靠shell).  所以很多人都弄了一套别的东西, 比如传统的Unix/Linux开发环境的Automake和Autoconf, 可以跨平台生成工程的CMake, Qt的qmake, Java的ant等, 而Ruby则提供了[Rake](https://github.com/jimweirich/rake).  
+<!-- more -->
+<!-- toc-begin -->
+**目录**:
+
+* [makefile的利弊](#makefile的利弊)
+* [Rakefile使用](#rakefile使用)
+ * [优点](#优点)
+ * [使用说明](#使用说明)
+ * [实例](#实例)
+* [总结](#总结)
+* [参考](#参考)
+
+<!-- toc-end -->
+
+# Makefile的利弊
+Makefile最大的好处自然是依赖关系的作用, 在正确设置后, 能做到当原始文件(源文件, 原始的资源等)没有更改时, 不生成目标文件, 更改时才生成, 并且可以自定义生成的规则.  
+缺点也很明显, Makefile太难写了, 传统的Makefile格式独特, 甚至tab敏感, 而功能相对单一(功能强大基本靠shell).  所以很多人都弄了一套别的东西, 比如传统的Unix/Linux开发环境的Automake和Autoconf, 可以跨平台生成工程的CMake, Qt的qmake, Java的ant等, 而Ruby则提供了[Rake](https://github.com/jimweirich/rake).  
 
 # Rakefile使用
 简单的说Rakefile就是使用Ruby语法的makefile, 对应make的工具就是rake.  在Ruby on Rails里面, 不管是数据库的初始化, 内容初始化, 删除, 还是测试, 都是用rake来完成的.  

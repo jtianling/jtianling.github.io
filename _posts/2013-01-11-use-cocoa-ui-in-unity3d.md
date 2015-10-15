@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "在Unity3D中使用iPhone原生UI(Use iPhone Native UI in Unity3D)"
+title: 在Unity3D中使用iPhone原生UI(Use iPhone Native UI in Unity3D)
 date: 2013-01-11
 comments: true
 categories: 编程
@@ -9,6 +9,7 @@ tags: Cocoa Objective-C Unity3D iOS
  
 众所周知, Unity中没有提供UI解决方案, 只能靠第三方的插件来完成.  比较著名的有NGUI等, 但是这种方案不仅需要额外付费(虽然不多), 并且类似NGUI的插件还不那么易用, 使用起来过于复杂.  
 这里我尝试使用iPhone的原生UI(Cocoa Touch)来作为Unity的UI.  这个听起来似乎很容易的事情, 其实却比我想象的要难的多的多.  主要原因就在于Unity根本就不是想让你这么用的, 3D引擎为了效率, 一般都需要比较专横的占用系统资源, 在本来速度有限的移动平台就更加需要这样了, 这样才能发挥出硬件的极限水平, 制作出更精良的游戏.  鉴于这个原因, 这种方法并不适于性能要求高的游戏.  
+
 <!-- more -->
 <!-- toc-begin -->
 **目录**:
@@ -28,11 +29,13 @@ tags: Cocoa Objective-C Unity3D iOS
 <!-- toc-end -->
 
 # 用原生UI的优点
+
 * 易用: 原生UI的使用简单, 可用的第三方界面库也很丰富, 特别是对于已经有很多iOS app开发经验的人来说.
 * App风格: 风格上可以很贴近原生app, 假如真有这样的需求, 那么这个优势是无限大的, 要在Unity去模拟iOS Native UI是个能让开发者自杀的需求.  要是模拟的不到位, 更加会不伦不类.  
 * 免费: 因为NGUI等第三方的UI插件比起Unity本身来说并不贵, 所以这也不算多大的好处.  
 
 # 用原生UI的缺点
+
 * 自定义功能弱: 要是需要一个很牛, 很炫的UI, 特别是想要3D效果的UI, 自定义起来, 还是类似NGUI的UI插件要更加强大和方便.  
 * 效率更低: 比起在Unity中直接绘制UI, 用原生UI效率要更低, 这个很好理解, 因为在Unity中绘制UI时, Unity可以尽可能的优化, 用尽量少的draw call去绘制UI, 而Native UI并不受控制.  
 * 不跨平台: 假如你用了iOS的原生UI, 那么你就无法简单的把游戏移植到其他平台了, 起码UI部分你得完全重做.  

@@ -274,6 +274,15 @@ article .codehilite
 	font-family: Monaco, Consolas, Lucida Console, monospace;
 }
 
+article table
+{
+	padding-left: 100px;
+	padding-right: 100px;
+	margin-bottom: 20px;
+	word-wrap: break-word; 
+	word-break: break-all;
+}
+
 article .highlight pre,
 article .codehilite pre
 {

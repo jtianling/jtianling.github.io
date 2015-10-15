@@ -10,6 +10,17 @@ tags: CMake Gyp
 [*Gyp*](http://code.google.com/p/gyp/)是一个类似CMake的项目生成工具, 用于管理你的源代码, 在google code主页上唯一的一句slogan是"GYP can Generate Your Projects.".  
 目前Gyp的应用没有CMake那么广泛, 但是已经被诸如chromium, Node.js等著名项目使用, 而Gyp本身就是chromium团队觉得CMake不满意, 而自己开发用于替代CMake的.  
 作为后来者, 自然有更好的地方, 并且具有较大的改进, 才值得开发, 那Gyp比CMake好在什么地方呢?
+
+<!-- more -->
+<!-- toc-begin -->
+**目录**:
+
+* [GYP vs. CMake](#gyp-vs-cmake)
+ * [Gyp的优点](#gyp的优点)
+ * [Gyp的缺点](#gyp的缺点)
+
+<!-- toc-end -->
+
 下面就是Gyp的开发者对此的解释, 让我比较有感触的是, 虽然是作为Gyp的开发者, 作者没有一味的拔高Gyp, 而是实事求是的陈述自己的看法, 甚至连缺点描述的都不比优点要少, 这种谦虚和实事求是的态度, 让我十分敬佩.  反例什么的我就不举了, 相信大家看到的也不少.  
 需要说明的是, 对于翻译什么的我比较讨厌, 所以以下仅是部分概要, 不是完整翻译, 原文在<http://code.google.com/p/gyp/wiki/GypVsCMake>
 

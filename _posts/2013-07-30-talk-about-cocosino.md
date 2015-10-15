@@ -6,10 +6,11 @@ comments: true
 categories: 随笔
 tags: Cocosino 故事 JavaScript 游戏开发
 ---
- 
 
 最近Cocco2d-x的主页上Post了一个项目, 名叫[Cocosino](http://www.cocos2d-x.org/news/129), 是一个Cocos2d-x Javascript Binding/cocos2d-html5的IDE. 很有兴趣, 所以下回来看了一下.
+
 <!-- more -->
+
 Cocosino定位为IDE, 但是因为目前的版本只是非常早期的版本, 所以功能相当的不足, 基本上仅相当于一个项目创建脚本 + 一个简单的文本编辑器.  假如我真的要做一个项目的画, 我甚至更愿意自己写个脚本干这个事情, 起码文本编辑器我还能用VIM.  
 失望之余, 去Kickstarter看了下Cocosino的[项目介绍](http://www.kickstarter.com/projects/881121752/cocosino).  发现情况相当惨淡, 从七月12号到今天, 已经18天了, 只融到了$1447, 联想到了前段时间的[Spine](http://www.kickstarter.com/projects/esotericsoftware/spine), 两者同样定位为开发工具, Spine30天募集资金$67569, 我倒是想从项目的角度分析一下为啥Spine能成功而Cocosino不行.  
   
