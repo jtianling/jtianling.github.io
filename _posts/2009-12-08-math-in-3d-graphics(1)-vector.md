@@ -22,12 +22,12 @@ tags:
 * [向量的模](#向量的模)
 * [三维空间中两点的距离](#三维空间中两点的距离)
 * [向量的规范化](#向量的规范化)
-* [向量的加减法, 数乘](#向量的加减法, 数乘)
+* [向量的加减法, 数乘](#向量的加减法-数乘)
  * [向量的加法](#向量的加法)
  * [向量的减法](#向量的减法)
  * [数乘向量](#数乘向量)
 * [点积(dot product)又称数量积或内积](#点积-dot-product-又称数量积或内积)
-* [叉积(cross product): 也称向量积](#叉积-cross-product-:也称向量积)
+* [叉积(cross product): 也称向量积](#叉积-cross-product-也称向量积)
 * [参考资料：](#参考资料：)
 * [修改记录](#修改记录)
 
@@ -368,7 +368,6 @@ Irrlicht版本:
 #include <stdio.h>
 #include <irrlicht.h>
 using namespace irr::core;
-
 
 int _tmain(int argc, _TCHAR* argv[])
 {
