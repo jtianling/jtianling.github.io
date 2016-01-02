@@ -422,4 +422,4 @@ c = (1.000000, -2.000000, 2.000000)
 
 # 修改记录
 
-2015年10月, 将原来用Freemat及Ocatave实现的部分, 改为MATLAB, 原文使用live writer编写, 新改为markdown格式.
+2015年10月, 将原来用Freemat及Ocatave实现的部分, 改为MATLAB, 原文使用Live Writer编写, 新改为Markdown格式.
