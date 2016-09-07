@@ -11,31 +11,12 @@ tags: JavaScript
 其实也不是完全没有用过JavaScript, 以前在开发一个Unity项目的时候用过一下Unity里面的JavaScript, 只不过那个JavaScript我甚至都只能称之为UnityScript.  太多太多自己实现的特性, 而又有些不够完整.  现在, 认识一下真正的JavaScript吧.  
 
 <!-- more -->
-<!-- toc-begin -->
+
 **目录**:
 
-* [环境](#环境)
-* [概要](#概要)
-* [语法细节](#语法细节)
-* [字符串](#字符串)
-* [函数](#函数)
- * [匿名函数](#匿名函数)
- * [闭包](#闭包)
- * [灵活的参数调用](#灵活的参数调用)
- * [函数级作用域 ](#函数级作用域)
-* [数组](#数组)
-* [对象](#对象)
-* [面向对象](#面向对象)
- * [类属性(Class Properties)](#类属性-class-properties)
- * [类方法(Class Methods)](#类方法-class-methods)
- * [私有成员(Private Members)](#私有成员-private-members)
- * [模拟class-based的继承](#模拟class-based的继承)
- * [基于原型的继承](#基于原型的继承)
- * [极简主义法](#极简主义法)
-* [小结](#小结)
-* [参考](#参考)
+* TOC
+{:toc}
 
-<!-- toc-end -->
 
 # 环境
 Mac OS X 10.8.2, node v0.8.16

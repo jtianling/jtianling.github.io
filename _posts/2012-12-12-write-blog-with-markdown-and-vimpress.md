@@ -12,13 +12,12 @@ tags: Markdown VimPress Vim LaTeX Wordpress
 闲话少说, 综上所述, 我决定好好的管理一下自己的博客, 虽然现在已经用上了自己可以控制的Wordpress, 但是谁知道将来会不会再发生忘记缴费, 数据被删的事情呢, 即使我用上了Wordpress的备份, 我还是需要给自己写的文章做一个自己的备份, 并且可以用Git来管理, 这个才叫真的备份, 连历史记录都备份了.  同时, 因为格式上的原因, 我决定用某种文本格式来保存我的文章, 当然, 我可不准备手写HTML, 这样才不会出现用Windows Live Write写博客那样的悲剧, 并且, 作为离线写博客的方式, 用Vim来处理文本就方便了, 不用再去找各个平台的啥离线工具.  
 
 <!-- more -->
-<!-- toc-begin -->
+
 **目录**:
 
-* [最佳方案: Markdown + VimPress](#最佳方案-markdown-vimpress)
-* [适合将来转PDF的方案: Latex](#适合将来转pdf的方案-latex)
+* TOC
+{:toc}
 
-<!-- toc-end -->
 
 说了一堆, 总结一下要求如下:
 

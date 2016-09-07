@@ -10,27 +10,12 @@ tags: REPL
 在一般的新脚本语言中, 有REPL是常态, 因为REPL非常的方便, 谁用谁知道.  最近学的语言已经多到几乎超过我的脑容量了, 所以我更加经常的用REPL来验证一些语法, 所以找到了一些传统不存在REPL语言的REPL环境, 在这里记录和分享一下:
 
 <!-- more -->
-<!-- toc-begin -->
+
 **目录**:
 
-* [原生就有REPL的语言](#原生就有repl的语言)
- * [Common Lisp](#common-lisp)
- * [Ruby](#ruby)
- * [Python](#python)
- * [Lua](#lua)
-* [原生不带REPL的语言](#原生不带repl的语言)
- * [JavaScript](#javascript)
- * [PHP](#php)
- * [Java](#java)
- * [C Sharp](#c-sharp)
- * [C++](#c)
- * [Haxe](#haxe)
-* [其他](#其他)
- * [repl.it](#repl-it)
- * [codepad](#codepad)
-* [WIKI的列表](#wiki的列表)
+* TOC
+{:toc}
 
-<!-- toc-end -->
 
 # 原生就有REPL的语言
 ## Common Lisp

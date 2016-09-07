@@ -10,15 +10,12 @@ tags: Rhino JavaScript
 [Rhino](https://github.com/mozilla/rhino)是JavaScript的一个Java实现, 可以直接使用REPL的方式来使用JavaScript, 光是研究语言特性的话, 会比在浏览器里面方便很多.  当然, 现在还有一个新的选择, 那就是[node.js](http://nodejs.org/).  Rhino是Mozilla的实现, node.js用的V8引擎是Google的实现.  
 
 <!-- more -->
-<!-- toc-begin -->
+
 **目录**:
 
-* [下载](#下载)
-* [移动到Java能找到的位置](#移动到java能找到的位置)
-* [简化运行](#简化运行)
-* [参考](#参考)
+* TOC
+{:toc}
 
-<!-- toc-end -->
 
 # 下载
 目前最新版本是[1.7R4版本](https://developer.mozilla.org/en-US/docs/Rhino/Download_Rhino?redirectlocale=en-US&redirectslug=RhinoDownload).

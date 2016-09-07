@@ -12,26 +12,12 @@ tags:
 公司最近要开新的Unity3d项目了，Google虽然有JavaScript Style Guide,但是UnityScript和JavaScript的区别实在大到了几乎不是同一种语言的地步，这个只能自己动手了。好在起码还能参考一下Google的style guide。
 
 <!-- more -->
-<!-- toc-begin -->
+
 **目录**:
 
-* [任何脚本都必须以下列方式开始](#任何脚本都必须以下列方式开始)
-* [强类型定义变量](#强类型定义变量)
-* [分号结尾](#分号结尾)
-* [枚举类型](#枚举类型)
-* [for-in 循环](#for-in-循环)
-* [多行字符串常量](#多行字符串常量)
-* [Array和Hashtable的常量](#array和hashtable的常量)
-* [命名](#命名)
- * [变量和函数(Properties and methods)](#变量和函数-properties-and-methods)
- * [可选的函数参数](#可选的函数参数)
- * [存取器函数（Accessor functions)](#存取器函数（accessor-functions)
- * [局部变量](#局部变量)
-* [字符串](#字符串)
-* [缩进](#缩进)
-* [参考文档：](#参考文档：)
+* TOC
+{:toc}
 
-<!-- toc-end -->
 
 # 任何脚本都必须以下列方式开始
 

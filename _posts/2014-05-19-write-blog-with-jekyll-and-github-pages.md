@@ -15,25 +15,10 @@ tags:
 
 <!-- more -->
 
-<!-- toc-begin -->
 **目录**:
 
-* [为什么要用Github Pages](#为什么要用github-pages)
-* [静态网站生成的选择](#静态网站生成的选择)
-* [博客风格](#博客风格)
-* [模版的改动](#模版的改动)
- * [增加了搜索功能](#增加了搜索功能)
- * [增加了代码的高亮显示](#增加了代码的高亮显示)
- * [首页改为部分输出](#首页改为部分输出)
- * [修改了博客的title style为直接用title做url.](#修改了博客的title-style为直接用title做url)
- * [增加了feed](#增加了feed)
- * [增加了首页的翻页](#增加了首页的翻页)
- * [文章的结尾列出了标签和分类](#文章的结尾列出了标签和分类)
- * [增加了sitemap.xml](#增加了sitemap-xml)
- * [导入文章](#导入文章)
- * [评论](#评论)
-
-<!-- toc-end -->
+* TOC
+{:toc}
 
 # 为什么要用Github Pages
 最重要的原因应该说是觉得每年花一千多租个Linode的服务器就为写博客有些浪费了, 虽然说也可以顺面用SSH做梯子, 但是还是浪费.
@@ -42,7 +27,7 @@ tags:
 综上所述, 换个博客其实挺有必要的, 同时又正好有Github Pages这个好东西, 我又早就换了Vimpress + Markdown写博客了, 又没有什么障碍, 为什么不用这种免费, 速度快, 操作又方便的服务呢?
 
 # 静态网站生成的选择
-要用Github Pages没有什么障碍了, Github Pages目前用的是[Jekyll](http://jekyllrb.com/)(Jekyll是用ruby写的, 这个就更加应该要用了~~)生成静态网页, 在一开始, 查找了一些资料以后, 我原以为[Octpress](octopress.org/)会方便一些, 所以先试用了一段时间的Octpress, 但是因为Octpress比较长时间没有更新了, 用的还是非常老版本的[Jekyll](http://jekyllrb.com/)及其他依赖库, 感觉很不爽, 同时要改模版的时候, 为了找到对应的include文件需要找好几层, 这个也觉得有些繁琐, 虽然Octpress整体设计的我觉得还是OK的, 但是最后我还是放弃了. 所以决定直接用Jekyll, 并且准备自己从头写Jekyll的模版, 在为Jekyll加入Bootstrap的时候发现了Jekyll Bootstrap这个项目, 于是也试用了一下, 因为和Octpress类似的原因, 也放弃了.  
+要用Github Pages没有什么障碍了, Github Pages目前用的是[Jekyll](http://jekyllrb.com/)(Jekyll是用ruby写的, 这个就更加应该要用了..)生成静态网页, 在一开始, 查找了一些资料以后, 我原以为[Octpress](octopress.org/)会方便一些, 所以先试用了一段时间的Octpress, 但是因为Octpress比较长时间没有更新了, 用的还是非常老版本的[Jekyll](http://jekyllrb.com/)及其他依赖库, 感觉很不爽, 同时要改模版的时候, 为了找到对应的include文件需要找好几层, 这个也觉得有些繁琐, 虽然Octpress整体设计的我觉得还是OK的, 但是最后我还是放弃了. 所以决定直接用Jekyll, 并且准备自己从头写Jekyll的模版, 在为Jekyll加入Bootstrap的时候发现了Jekyll Bootstrap这个项目, 于是也试用了一下, 因为和Octpress类似的原因, 也放弃了.  
 经过一番折腾以后, 感觉用任何第三方的东西都是挺浪费时间的, 再也没找过其他的程序了, 坚定的直接用Jekyll了.
 
 # 博客风格

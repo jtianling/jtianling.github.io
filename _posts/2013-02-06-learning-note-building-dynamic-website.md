@@ -12,62 +12,12 @@ tags: JavaScript PHP 网页开发 HTML 学习笔记
 BTW: 因为是课程笔记, 所以其实有些无聊, 个人感觉有用的部分就是老师推荐的那些库和工具.  
 
 <!-- more -->
-<!-- toc-begin -->
+
 **目录**:
 
-* [课程介绍](#课程介绍)
-* [第0课](#第0课)
- * [网页开发需要的服务](#网页开发需要的服务)
- * [网页开发相关的工具](#网页开发相关的工具)
- * [网页开发推荐的库](#网页开发推荐的库)
- * [HTML验证](#html验证)
-* [第1课 PHP](#第1课-php)
- * [建议的开发工具](#建议的开发工具)
- * [Apache服务器配置](#apache服务器配置)
- * [PHP](#php)
-* [第2课 PHP续](#第2课-php续)
- * [XML](#xml)
- * [SSL](#ssl)
- * [PHP](#php)
-* [第3课 XML](#第3课-xml)
- * [XML in PHP](#xml-in-php)
-* [第4课 SQL](#第4课-sql)
- * [XPATH](#xpath)
- * [CSV](#csv)
- * [PhpMyAdmin](#phpmyadmin)
- * [SQL](#sql)
-* [第5课 SQL续](#第5课-sql续)
-* [第6课 JavaScript](#第6课-javascript)
- * [javascript库](#javascript库)
- * [有用的工具](#有用的工具)
- * [压缩工具](#压缩工具)
-* [第7课 Ajax](#第7课-ajax)
- * [Dom参考](#dom参考)
- * [XMLHttpRequest Object参考](#xmlhttprequest-object参考)
- * [Ajax演示](#ajax演示)
- * [Ajax实例](#ajax实例)
- * [JavaScript对DOM的动态操作](#javascript对dom的动态操作)
- * [一些Ajax Activity Indicators图片](#一些ajax-activity-indicators图片)
-* [第8课 安全](#第8课-安全)
- * [常见的不安全的服务:](#常见的不安全的服务)
- * [常见的安全的服务:  ](#常见的安全的服务)
- * [Wifi下非常不安全](#wifi下非常不安全)
- * [VPN](#vpn)
- * [Diffie-Hellman key exchange](#diffie-hellman-key-exchange)
- * [JSONP](#jsonp)
- * [不要点击E-mail中的链接](#不要点击e-mail中的链接)
-* [第9课 可规模性](#第9课-可规模性)
- * [推荐读物](#推荐读物)
- * [竖直规模化](#竖直规模化)
- * [水平规模化](#水平规模化)
- * [PHP的缓存加速](#php的缓存加速)
- * [负载均衡(load balancer)](#负载均衡-load-balancer)
- * [MySQL Query Cache](#mysql-query-cache)
- * [memcached](#memcached)
- * [数据库主从服务器](#数据库主从服务器)
-* [总结](#总结)
+* TOC
+{:toc}
 
-<!-- toc-end -->
 
 # 课程介绍
 

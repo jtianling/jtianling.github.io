@@ -11,22 +11,12 @@ tags: Cocoa Objective-C Unity3D iOS
 这里我尝试使用iPhone的原生UI(Cocoa Touch)来作为Unity的UI.  这个听起来似乎很容易的事情, 其实却比我想象的要难的多的多.  主要原因就在于Unity根本就不是想让你这么用的, 3D引擎为了效率, 一般都需要比较专横的占用系统资源, 在本来速度有限的移动平台就更加需要这样了, 这样才能发挥出硬件的极限水平, 制作出更精良的游戏.  鉴于这个原因, 这种方法并不适于性能要求高的游戏.  
 
 <!-- more -->
-<!-- toc-begin -->
+
 **目录**:
 
-* [用原生UI的优点](#用原生ui的优点)
-* [用原生UI的缺点](#用原生ui的缺点)
-* [开发环境](#开发环境)
-* [基础: Unity 插件编写(managed-to-unmanaged)](#基础-unity-插件编写-managed-to-unmanaged)
-* [原生代码调用Unity的Script代码(native-to-managed)](#原生代码调用unity的script代码-native-to-managed)
-* [UnitySendMessage的一个研究](#unitysendmessage的一个研究)
-* [显示原生UI的尝试(Try to use Native UI in Unity)](#显示原生ui的尝试-try-to-use-native-ui-in-unity)
- * [UI显示](#ui显示)
- * [UI + Unity](#ui-unity)
-* [总结](#总结)
-* [参考](#参考)
+* TOC
+{:toc}
 
-<!-- toc-end -->
 
 # 用原生UI的优点
 

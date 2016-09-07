@@ -17,25 +17,12 @@ tags:
 并且, 因为以下讲到的每个点要讲的详细了, 其实都可以写一整篇文章了, 没法在短时间内详述, 这篇文章也就仅仅作为一个引子而已.
 
 <!-- more -->
-<!-- toc-begin -->
+
 **目录**:
 
-* [C++的内存管理](#c-的内存管理)
- * [C语言的malloc, free](#c语言的malloc-free)
- * [C++的new, delete, new[], delete[]](#c-的new-delete-new-delete)
- * [C/C++内存管理的实际使用](#c-c-内存管理的实际使用)
-* [Objective-C的内存管理](#objective-c的内存管理)
- * [引用计数](#引用计数)
- * [容器对引用计数的影响](#容器对引用计数的影响)
- * [内存池](#内存池)
- * [ARC(Automatic Reference Counting)](#arc-automatic-reference-counting)
-* [Cocos2d-x的内存管理](#cocos2d-x的内存管理)
- * [简单情况](#简单情况)
- * [容器对引用计数的影响](#容器对引用计数的影响)
- * [内存池](#内存池)
-* [小结](#小结)
+* TOC
+{:toc}
 
-<!-- toc-end -->
 
 # C++的内存管理
 ## C语言的malloc, free

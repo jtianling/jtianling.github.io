@@ -11,18 +11,12 @@ JNI就是Java Native Interface, 也可以理解为一般脚本语言的C API, �
 因为最近又开始做Android游戏了, 用的是cocos2d-x, JNI是难以避免了, 以前的使用都是照猫画虎似的写几个函数调用接口, 总感觉有问题, 今天好好的学习学习吧.  
 
 <!-- more -->
-<!-- toc-begin -->
+
 **目录**:
 
-* [从Java中调用C/C++库](#从java中调用c-c-库)
- * [Hello World](#hello-world)
- * [带参数的函数](#带参数的函数)
- * [Android中的情况](#android中的情况)
-* [从C/C++中调用JAVA](#从c-c-中调用java)
-* [高级主题](#高级主题)
-* [参考](#参考)
+* TOC
+{:toc}
 
-<!-- toc-end -->
 
 与一般关于JNI文章稍微有些不一样的是, 本文会更多的关注于Android相关的问题.  
   
