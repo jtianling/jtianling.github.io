@@ -15,6 +15,10 @@ tags:
 因为多次看到有人在博客上说Rust的好, 最近学习了下Rust, 作为练习, 照例是要找个东西来做, 碰巧想给我的博客文章都添加一下目录(英文缩写TOC, table of content) , 于是想到了用Rust来写这个, 虽然这种任务我以前肯定是用Ruby来做, Ruby作为动态类型语言也更适合做这种工作.  本文相当于是个发布通告和使用说明, 具体的可以在[我的Github](https://github.com/jtianling/toc-auto-add)上找到源码和编译好的程序.
 
 <!-- more -->
+
+* TOC
+{:toc}
+
 <!-- toc-begin -->
 **目录**:
 
