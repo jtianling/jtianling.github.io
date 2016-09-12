@@ -20,29 +20,30 @@ safe: true
 lsi: false
 source: .
 destination: ./_site
-layouts:     ./_layouts
+layouts_dir:     ./_layouts
 include:     ['.htaccess']
-exclude:     ['Gemfile', 'Gemfile.lock', 'README.md']
+exclude:     ['Gemfile', 'Gemfile.lock', 'README.md', '/vendor']
 keep_files:  ['.git','.svn']
-gems:        []
+gems: [jekyll-paginate]
 timezone:    Asia/Shanghai
 encoding:    utf-8
 
 future:      true
 show_drafts: nil
 limit_posts: 0
-highlighter: rouge
-
-relative_permalinks: false
+syntax_highlighter: rouge
 
 permalink:     /:title.html
 paginate_path: 'page:num'
 paginate:      10
 
 markdown_ext:  md
+kramdown:
+  input: GFM
 
 excerpt_separator: "<!-- more -->"
 
 host:        127.0.0.1
 port:        8080
 baseurl:     /
+

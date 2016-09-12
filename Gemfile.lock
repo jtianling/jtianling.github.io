@@ -133,3 +133,8 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
+  jekyll-paginate
+  kramdown
+
+BUNDLED WITH
+   1.12.5
