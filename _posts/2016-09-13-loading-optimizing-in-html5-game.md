@@ -62,7 +62,7 @@ Content-Type:application/json
 
 对于图片, 载入期必要图片都应该打包成图集, 最好是能打包成 1 个文件, 我们项目中最后做到了, 我命名为 gamemin, 这个图集可以进一步的考虑压缩, 比如使用 png8 格式.  因为最后的大小已经在 150K 的水平了, 没有进一步的使用诸如 webp 等压缩比更大的图片格式, 有更严格要求和追求的话, 可以考虑, 不过需要测试一下对应的 javascript 解码库的效率.
 
-游戏配置, 成规模的项目, 又是策划写 excel 导出的话, 往往有几十个, 可以合并成一个, 去掉空格换行等. 为此我写了个合并工具: [json_compacker](https://github.com/jtianling/json_compacke.
+游戏配置, 成规模的项目, 又是策划写 excel 导出的话, 往往有几十个, 可以合并成一个, 去掉空格换行等. 为此我写了个合并工具: [json_compacker](https://github.com/jtianling/json_compacker)
 
 # egret 库的合并
 在新的 egret 中, 进行了模块化的设计, 每个模块可以单独选择是否添加, 但是这样一来, 原来只需要 loading 一个库, 现在需要 loading 好几个, 实际是划不来的, 而 egret 官方没有提供官方的解决方案.
