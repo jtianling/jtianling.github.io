@@ -1,0 +1,37 @@
+[0m[[0mdebug[0m] [0mWaiting for threads to exit or System.exit to be called.[0m
+[0m[[0mdebug[0m] [0mGetting org.scala-sbt:compiler-interface:0.13.13:component from component compiler for Scala 2.10.6[0m
+[0m[[0mdebug[0m] [0mWaiting for thread run-main-0 to terminate.[0m
+[0m[[0minfo[0m] [0m'compiler-interface' not yet compiled for Scala 2.10.6. Compiling...[0m
+[0m[[0mdebug[0m] [0mPlain interface to Scala compiler 2.10.6  with arguments: [0m
+[0m[[0mdebug[0m] [0m	-nowarn[0m
+[0m[[0mdebug[0m] [0m	-d[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_c8228292[0m
+[0m[[0mdebug[0m] [0m	-bootclasspath[0m
+[0m[[0mdebug[0m] [0m	/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/classes:/Users/jtianling/.sbt/boot/scala-2.10.6/lib/scala-library.jar[0m
+[0m[[0mdebug[0m] [0m	-classpath[0m
+[0m[[0mdebug[0m] [0m	/Users/jtianling/.sbt/boot/scala-2.10.6/org.scala-sbt/sbt/0.13.13/xsbti/interface-0.13.13.jar:/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_ebb099fc/srcs/org.scala-sbt/compiler-interface/compiler-interface-0.13.13-sources.jar:/Users/jtianling/.sbt/boot/scala-2.10.6/lib/scala-compiler.jar:/Users/jtianling/.sbt/boot/scala-2.10.6/lib/jline.jar:/Users/jtianling/.sbt/boot/scala-2.10.6/lib/jansi.jar:/Users/jtianling/.sbt/boot/scala-2.10.6/lib/scala-reflect.jar[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/API.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/Analyzer.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/Command.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/Compat.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/CompilerInterface.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/ConsoleInterface.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/DelegatingReporter.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/Dependency.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/ExtractAPI.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/ExtractUsedNames.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/GlobalHelpers.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/LocateClassFile.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/Log.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/Message.scala[0m
+[0m[[0mdebug[0m] [0m	/var/folders/k9/wd41v8zs3yq00fcm4wsg31j40000gn/T/sbt_1e36b6bf/xsbt/ScaladocInterface.scala[0m
+[0m[[0minfo[0m] [0m  Compilation completed in 11.077 s[0m
+[0m[[0mdebug[0m] [0mGetting org.scala-sbt:compiler-interface:0.13.13:component from component compiler for Scala 2.10.6[0m
+[0m[[0minfo[0m] [0mStarting scala interpreter...[0m
+[0m[[0minfo[0m] [0m[0m
+[0m[[0mdebug[0m] [0mInterrupting thread run-main-0[0m
+[0m[[0mdebug[0m] [0m	Interrupted run-main-0[0m
+[0m[[0mdebug[0m] [0m	Thread run-main-0 exited.[0m
+[0m[[0mdebug[0m] [0mInterrupting remaining threads (should be all daemons).[0m
+[0m[[0mdebug[0m] [0mSandboxed run complete..[0m
+[0m[[0mdebug[0m] [0mExited with code 0[0m
