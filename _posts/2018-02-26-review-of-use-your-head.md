@@ -15,6 +15,6 @@ tags:
 
 <!-- more -->
 
-![启动大脑一书的思维导图](/public/images/2018/mindmap-of-use-your-head.svgz)
+![启动大脑一书的思维导图](/public/images/2018/mindmap-of-use-your-head.png)
 
 
