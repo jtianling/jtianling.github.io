@@ -62,8 +62,24 @@ layout: default
 
   </article>
 
+  <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+  <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+  <script>
+  const gitment = new Gitment({
+    owner: 'jtianling',
+    repo: 'jtianling.com',
+    oauth: {
+      client_id: '01bb42160ed3e535e9dc',
+      client_secret: 'd270d3890f582616dbcc339c943d15c6dc9794c4',
+    },
+    // ...
+    // For more available options, check out the documentation below
+  })
+  
+  gitment.render('comments')
+  </script>
+
   <!-- UY BEGIN -->
-  <div id="uyan_frame"></div>
-  <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1547690"></script>
-  <!-- UY END -->
+  <!-- <div id="uyan_frame"></div> <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1547690"></script>-->
+  <!-- UY END --> 
 </section>
