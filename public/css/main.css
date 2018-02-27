@@ -7,7 +7,7 @@
 }
 
 body {
-	font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+  font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
   font-size: 1.0rem;
   color: #3A4145;
   font-weight: 400;
@@ -28,14 +28,14 @@ h1, h2, h3, h4, h5, h6 {
 
 p, ul, ol, dl, hr, .sign, .fluid-width-video-wrapper  {
   margin-bottom: 20px;
-	font-weight: normal; 
+  font-weight: normal; 
 }
 
 @media screen and (max-width: 656px) {
   h1, h2, h3, h4, h5, h6, p, ul, ol, dl,
   hr,
   blockquote,
-	.sign,
+  .sign,
   .fluid-width-video-wrapper {
     margin-bottom: 20px;
   }
@@ -62,7 +62,7 @@ hr {
 blockquote {
   font-size: 1.0rem;
   font-style: italic;
-	margin: 0 100px 20px 120px;
+  margin: 0 100px 20px 120px;
   border-left: 5px solid #ccc;
 }
 
@@ -73,13 +73,13 @@ blockquote {
 }
 
 .nav_previous {
-	float: left;
-	margin-left: 100px;
+  float: left;
+  margin-left: 100px;
 }
 
 .nav_next {
-	float: right;
-	margin-right: 100px;
+  float: right;
+  margin-right: 100px;
 }
 
 
@@ -135,15 +135,15 @@ blockquote {
 }
 
 .sitename {
-	font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+  font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
   text-transform: uppercase;
-	font-size: 1.6rem;
+  font-size: 1.6rem;
 }
 
 .tagline {
-	font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+  font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
   text-transform: uppercase;
-	font-size: 0.9rem;
+  font-size: 0.9rem;
 }
 
 #main nav {
@@ -159,7 +159,7 @@ blockquote {
 }
 
 #social form fieldset {
-	border: 0;
+  border: 0;
 }
 
 @media screen and (max-width: 488px) {
@@ -188,18 +188,18 @@ blockquote {
 }
 
 #main nav a:hover { 
-	color: black; 
+  color: black; 
 }
 
 main #uyan_frame,
 main .ujian-hook
 {
-	padding-left: 100px; 
-	padding-right: 100px; 
+  padding-left: 100px; 
+  padding-right: 100px; 
 }
 
 article .jiathis_style {
-	padding: 0 100px;
+  padding: 0 100px;
 }
 
 
@@ -210,15 +210,15 @@ article { margin-bottom: 50px; }
 
 article header time,
 .archive li time {
-	font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+  font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
   font-size: .8rem;
 }
 
 article header h1 {
-	margin-bottom: 30px;
+  margin-bottom: 30px;
   font-weight: bold;
   text-align: center;
-	font-size: 1.4rem;
+  font-size: 1.4rem;
 }
 
 article header a {
@@ -231,9 +231,9 @@ article header a:hover {
 }
 
 article h1 {
-	font-size: 1.3rem;
+  font-size: 1.3rem;
   text-align: left;
-	padding: 0 100px;
+  padding: 0 100px;
 }
 
 article h2,
@@ -241,66 +241,66 @@ article h3,
 article h4,
 article h5,
 article h6 {
-	font-size: 1.2rem;
+  font-size: 1.2rem;
   text-align: left;
-	padding: 0 100px;
+  padding: 0 100px;
 }
 
 article p { padding: 0 100px; }
 article ol, article ul { 
-	padding-left: 130px; 
-	padding-right: 100px; 
+  padding-left: 130px; 
+  padding-right: 100px; 
 }
 
 article blockquote p { 
-	padding: 0;
-	margin: 0 0 0 20px;
+  padding: 0;
+  margin: 0 0 0 20px;
 }
 
 article blockquote ol,
 article blockquote ul { 
-	padding: 0 0 0 20px;
-	margin: 0 0 0 20px;
+  padding: 0 0 0 20px;
+  margin: 0 0 0 20px;
 }
 
 article .highlight,
 article .codehilite
 {
-	padding-left: 100px;
-	padding-right: 100px;
-	margin-bottom: 20px;
-	word-wrap: break-word; 
-	word-break: break-all;
-	font-family: Monaco, Consolas, Lucida Console, monospace;
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-bottom: 20px;
+  word-wrap: break-word; 
+  word-break: break-all;
+  font-family: Monaco, Consolas, Lucida Console, monospace;
 }
 
 article table
 {
-	padding-left: 100px;
-	padding-right: 100px;
-	margin-bottom: 20px;
-	word-wrap: break-word; 
-	word-break: break-all;
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-bottom: 20px;
+  word-wrap: break-word; 
+  word-break: break-all;
 }
 
 article .highlight pre,
 article .codehilite pre
 {
-	padding-left: 5px;
-	padding-right: 5px;
-	display: block;
-	background-color: #f9f9f9;
+  padding-left: 5px;
+  padding-right: 5px;
+  display: block;
+  background-color: #f9f9f9;
 }
 
 article img {
-	display: block;
-	background-position: center center;
-	background-repeat: no-repeat;
-	margin: auto;
+  display: block;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin: auto;
 }
 
 article .sign {
-	text-align: right;
+  text-align: right;
 }
 
 @media screen and (max-width: 900px) {
@@ -314,9 +314,9 @@ article .sign {
     padding-right: 50px;
   }
 
-	article ol, article ul {
-		padding-left: 80px; 
-		padding-right: 50px; 
+  article ol, article ul {
+    padding-left: 80px; 
+    padding-right: 50px; 
   }
   article p { padding: 0 50px; }
   article blockquote {
@@ -324,35 +324,40 @@ article .sign {
     margin-right: 50px;
   }
 
-	article .highlight,
-	article .codehilite
-	{
-		padding-left: 50px;
-		padding-right: 50px;
-	}
+  article .highlight,
+  article .codehilite
+  {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
 
-	.nav_previous {
-		margin-left: 50px;
-	}
+  .nav_previous {
+    margin-left: 50px;
+  }
 
-	.nav_next {
-		margin-right: 50px;
-	}
+  .nav_next {
+    margin-right: 50px;
+  }
 
   article img:not(.position) {
     margin-left: 0;
     max-width: 100%;
   }
 
-	main #uyan_frame,
-	main .ujian-hook {
-		padding-left: 50px; 
-		padding-right: 50px; 
-	}
+  main #uyan_frame,
+  main .ujian-hook {
+    padding-left: 50px; 
+    padding-right: 50px; 
+  }
+  
+  main #comments {
+    padding-left: 50px; 
+    padding-right: 50px; 
+  }
 
-	article .jiathis_style {
-		padding: 0 50px;
-	}
+  article .jiathis_style {
+    padding: 0 50px;
+  }
 }
 
 @media screen and (max-width: 564px) {
@@ -370,9 +375,9 @@ article .sign {
     padding-right: 10px;
   }
 
-	article ol, article ul {
-		padding-left: 40px; 
-		padding-right: 10px; 
+  article ol, article ul {
+    padding-left: 40px; 
+    padding-right: 10px; 
   }
 
   article p { padding: 0 10px; }
@@ -382,30 +387,30 @@ article .sign {
     margin-right: 10px;
   }
 
-	article .highlight,
-	article .codehilite
-	{
-		padding-left: 10px;
-		padding-right: 10px;
-	}
+  article .highlight,
+  article .codehilite
+  {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 
-	.nav_previous {
-		margin-left: 10px;
-	}
+  .nav_previous {
+    margin-left: 10px;
+  }
 
-	.nav_next {
-		margin-right: 10px;
-	}
+  .nav_next {
+    margin-right: 10px;
+  }
 
-	main #uyan_frame,
-	main .ujian-hook {
-		padding-left: 10px; 
-		padding-right: 10px; 
-	}
+  main #uyan_frame,
+  main .ujian-hook {
+    padding-left: 10px; 
+    padding-right: 10px; 
+  }
 
-	article .jiathis_style {
-		padding: 0 10px;
-	}
+  article .jiathis_style {
+    padding: 0 10px;
+  }
 }
 
 /**
