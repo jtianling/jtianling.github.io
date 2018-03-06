@@ -35,7 +35,7 @@ author:
 <h2 class="title_txt">源码阅读思路及目标</h2>
 <p>
 &nbsp;&nbsp;&nbsp; 对于源码阅读，我还是用个人习惯的的先从整体上了解各个模块，然后单独了解各模块源码，最后整个的走一下主要的执行流程，了解各个模块是怎么结合在一起的。</p>
-<p>&nbsp;&nbsp;&nbsp; 对于Orx的源码阅读，我还是不准备达到到句句理解的地步，基本上还是以整体了解为主，顺面关心一下个人比较感兴趣的渲染部分，对源码的理解程度以最后能够完全脱离Orx的配置模块，靠自己的代码将各个模块组合起来，并实现基本的Orx功能为止。Orx作为跨平台引擎，我不能去分析所有其支持的平台，主要关心的版本是Win32版本及IPhone版本，当然，事实上因为Orx的跨平台主要是依赖于将SDL,GLFW等库作为插件来完成的，所以，其实在Orx这一层的代码其实都一样。（IPhone版本比较特殊）</p>
+<p>&nbsp;&nbsp;&nbsp; 对于Orx的源码阅读，我还是不准备达到到句句理解的地步，基本上还是以整体了解为主，顺便关心一下个人比较感兴趣的渲染部分，对源码的理解程度以最后能够完全脱离Orx的配置模块，靠自己的代码将各个模块组合起来，并实现基本的Orx功能为止。Orx作为跨平台引擎，我不能去分析所有其支持的平台，主要关心的版本是Win32版本及IPhone版本，当然，事实上因为Orx的跨平台主要是依赖于将SDL,GLFW等库作为插件来完成的，所以，其实在Orx这一层的代码其实都一样。（IPhone版本比较特殊）</p>
 <p>&nbsp;&nbsp;&nbsp; 为了无论在何时都能找到本文对应的源码，这里使用最新的Orx1.2版本的源码，并未使用svn上的版本。</p>
 <p class="title_txt">&nbsp;</p>
 <h2 class="title_txt">Orx总体结构</h2>
@@ -149,7 +149,7 @@ author:
 。</p>
 <h2>关于SFML</h2>
 <p>
-在最后提供一些额外的关于SFML信息，虽然与Orx的总体结构无关，但是也顺面在此记录。</p>
+在最后提供一些额外的关于SFML信息，虽然与Orx的总体结构无关，但是也顺便在此记录。</p>
 <p>很多外部工程的引用都是从新的1.2开始的，而且都是为了替代SFML的相关部分而引入的，也就是说，最后Orx用glfw/SDL + SOIL + OpenAL + stb_vorbis + libsndfile才实现了SFML的部分功能。这还真的仅仅是SFML的部分功能，仅仅是Orx需要的那一部分功能。这里可以看出SFML有多么强大，其作为simple and fast Multimedia library的库，与SDL(Simple DirectMedia Layer)相比真的是太不simple了。事实上，从SFML的<a id="l.f0" title="License页" href="http://www.sfml-dev.org/license.php" title="License页">License页</a><br />
 可以看到，SFML本身就使用了</p>
 <ul>

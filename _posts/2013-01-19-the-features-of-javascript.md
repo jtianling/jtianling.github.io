@@ -7,7 +7,7 @@ categories: 编程
 tags: JavaScript
 ---
 
-最近语言学习有些疯狂, 从Ruby到Lisp, 然后是C#, 既然已经疯狂了, 就顺面学习一下JavaScript吧.  对JavaScript的印象一直不佳, 从骂脏话最多的使用者, 到使用者平反的世界上[最被误解的语言](http://javascript.crockford.com/javascript.html), 从所谓的让人抓狂的特性, 到世界上任何可以用JavaScript实现的东西, 最终都会被JavaScript实现, 并且, 这是最后一个实现.  出处太多, 不一一列举, 知者已知, 不知者也没有必要为了这些无聊的言论特意找出处了.  
+最近语言学习有些疯狂, 从Ruby到Lisp, 然后是C#, 既然已经疯狂了, 就顺便学习一下JavaScript吧.  对JavaScript的印象一直不佳, 从骂脏话最多的使用者, 到使用者平反的世界上[最被误解的语言](http://javascript.crockford.com/javascript.html), 从所谓的让人抓狂的特性, 到世界上任何可以用JavaScript实现的东西, 最终都会被JavaScript实现, 并且, 这是最后一个实现.  出处太多, 不一一列举, 知者已知, 不知者也没有必要为了这些无聊的言论特意找出处了.  
 其实也不是完全没有用过JavaScript, 以前在开发一个Unity项目的时候用过一下Unity里面的JavaScript, 只不过那个JavaScript我甚至都只能称之为UnityScript.  太多太多自己实现的特性, 而又有些不够完整.  现在, 认识一下真正的JavaScript吧.  
 
 <!-- more -->

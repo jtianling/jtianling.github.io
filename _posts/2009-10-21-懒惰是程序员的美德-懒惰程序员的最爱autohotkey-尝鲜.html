@@ -28,10 +28,10 @@ author:
 <p align="left"><a href="http://www.autohotkey.com/" target="_blank">AutoHotkey</a>的名字大家说不上如雷贯耳，久仰大名，起码也是早有耳闻了吧。让我们不惧艰险（又是一种脚本语言-_-!）将AutoHotkey作为饭后甜点好好品尝一下吧吧^^</p>
 <p align="left"> </p>
 <h2>AutoHotkey是什么</h2>
-<p align="left">AutoHotkey简单来说是一个附带键盘宏录制的脚本工具，但是因为功能太过强大了，叫做自动化工具也许较为合适。从自动化工作这一点来看，AutoHotkey类似Linux下的Bash，都不以脚本语言的逻辑表达能力取胜，专门针对自动化工作设计，只不过Bash是命令行下的，对窗口一无所知，而AutoHotkey可以说是专门针对Windows的窗口平台的，有对快捷键和窗口环境的强大支持。（我见人将其称作GUI-Scripting，实在贴切）也许可以说AutoHotkey就是GUI环境下的Bash。既然Linux下Bash是必学的（的确应该学），那么AutoHotkey也就顺面学了吧。</p>
+<p align="left">AutoHotkey简单来说是一个附带键盘宏录制的脚本工具，但是因为功能太过强大了，叫做自动化工具也许较为合适。从自动化工作这一点来看，AutoHotkey类似Linux下的Bash，都不以脚本语言的逻辑表达能力取胜，专门针对自动化工作设计，只不过Bash是命令行下的，对窗口一无所知，而AutoHotkey可以说是专门针对Windows的窗口平台的，有对快捷键和窗口环境的强大支持。（我见人将其称作GUI-Scripting，实在贴切）也许可以说AutoHotkey就是GUI环境下的Bash。既然Linux下Bash是必学的（的确应该学），那么AutoHotkey也就顺便学了吧。</p>
 <p align="left"> </p>
 <h2>安装配置</h2>
-<p align="left">下载安装我就不多说了，真的不知道这里有个地址可以去<a href="http://xbeta.info/autohotkey-guide.htm" target="_blank">看看</a>。善用佳软的AutoHotkey 0级教程，顺面推荐下<a href="http://xbeta.info/" target="_blank">善用佳软</a>，推崇并介绍了很多好用的免费软件，个人很喜欢。</p>
+<p align="left">下载安装我就不多说了，真的不知道这里有个地址可以去<a href="http://xbeta.info/autohotkey-guide.htm" target="_blank">看看</a>。善用佳软的AutoHotkey 0级教程，顺便推荐下<a href="http://xbeta.info/" target="_blank">善用佳软</a>，推崇并介绍了很多好用的免费软件，个人很喜欢。</p>
 <p align="left">AutoHotkey的脚本是以ahk为后缀的文本文件，用你自己最喜欢的编辑器编辑吧，对于vim来说，已经内置了对ahk的语法高亮，我习惯将AutoHotkey的安装目录添加进环境的PATH中，这样用vim编辑脚本的时候可以直接简单的通过!Autohotkey %来运行脚本。（事实上我将其map到了F5上）但是愿意的话，其实.ahk文件在AutoHotkey安装后是与其关联的，直接双击也可以运行此脚本。</p>
 <p align="left"> </p>
 <h2>初步</h2>
@@ -79,7 +79,7 @@ author:
 <p>这个功能有点像国内一个也比较强大的软件键盘精灵的功能（当年玩那种泡菜网络游戏没有少用过它，单纯的键盘鼠标模拟功能不比AutoHotkey差），就是将键盘鼠标操作记录下来，自动生成AutoHotkey的脚本。省去了重复工作的脚本编写之苦。带GUI界面，截图如下：</p>
 <p><a href="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image_2_633917609392965000.png"><img style="border-right-width: 0px; display: block; float: none; border-top-width: 0px; border-bottom-width: 0px; margin-left: auto; border-left-width: 0px; margin-right: auto" title="image" border="0" alt="image" src="http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image_thumb_633917609499527500.png" width="469" height="338" /></a> 点击左上角的Record按钮就开始记录键盘鼠标的操作了。然后通过点击录制时屏幕左上角的Stop停止录制。上面的脚本是我录制的一段激活Windows live Writer和最小化Windows live Writer的过程。</p>
 <p>WinWait, ,    <br />IfWinNotActive, , , WinActivate, ,     <br />WinWaitActive, ,     <br />MouseClick, left,  1159,  889     <br />Sleep, 100     <br />WinWait, xfsdlaf.ahk (E:/work) - GVIM,     <br />IfWinNotActive, xfsdlaf.ahk (E:/work) - GVIM, , WinActivate, xfsdlaf.ahk (E:/work) - GVIM,     <br />WinWaitActive, xfsdlaf.ahk (E:/work) - GVIM,     <br />MouseClick, left,  908,  17     <br />Sleep, 100     <br />WinWait, ,     <br />IfWinNotActive, , , WinActivate, ,     <br />WinWaitActive, ,     <br />MouseClick, left,  33216,  32891     <br />Sleep, 100     <br />WinWait, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer,     <br />IfWinNotActive, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer, , WinActivate, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer,     <br />WinWaitActive, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer,     <br />MouseClick, left,  1362,  10     <br />Sleep, 100     <br />MouseClick, left,  1387,  10     <br />Sleep, 100 </p>
-<p>会发现自动生成的代码较人工的代码还是乱了很多-_-!机器嘛，不是那么聪明。上面代码很重要的一个就是通过MouseClick来模拟鼠标的点击，有了这个功能，想干什么都可以了………………顺面提及一下，也可以通过</p>
+<p>会发现自动生成的代码较人工的代码还是乱了很多-_-!机器嘛，不是那么聪明。上面代码很重要的一个就是通过MouseClick来模拟鼠标的点击，有了这个功能，想干什么都可以了………………顺便提及一下，也可以通过</p>
 <p>Send Keys    <br />SendRaw Keys     <br />SendInput Keys     <br />SendPlay Keys     <br />SendEvent Keys</p>
 <p>来模拟键盘的输入。下面是一个当你暂时离开机器却有不想锁屏时可以提出警告的脚本。：）</p>
 <p>SetTitleMatchMode 2    <br />SetKeyDelay 50     <br />Words = WARNING{!} DO NOT OPERATE MY COMPUTER{!} </p>

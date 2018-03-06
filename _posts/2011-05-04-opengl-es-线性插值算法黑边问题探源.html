@@ -24,7 +24,7 @@ author:
   first_name: ''
   last_name: ''
 ---
-<p class="c8 c14" style="text-align: right;">第二次使用别人的引擎碰到用OpenGL线性过滤算法放大图片出现黑边的问题了，而引擎的制作者竟然不知道怎么解决，两次碰到此问题时都是试图教导我使用最近点过滤方式绕行，我很无奈，帮助其解决一下，顺面将问题简单的记录于此。</p>
+<p class="c8 c14" style="text-align: right;">第二次使用别人的引擎碰到用OpenGL线性过滤算法放大图片出现黑边的问题了，而引擎的制作者竟然不知道怎么解决，两次碰到此问题时都是试图教导我使用最近点过滤方式绕行，我很无奈，帮助其解决一下，顺便将问题简单的记录于此。</p>
 <p class="c3"><span class="c5">OpenGL在放大图片时有两种方法，一种是最近点(NEAREST)，一种是线性(LINEAR)，虽然在OpenGL里面，设置纹理参数的时候都称为过滤(filter)，都通过glTexParameteri函数设置。比如二维时，设置线性过滤：</span></p>
 <p class="c4"><span class="c18">glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );</span></p>
 <p class="c3 c6">
