@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 添加4A,5A景区列表到Trello中, 顺面聊聊旅行
+title: 添加4A,5A景区列表到Trello中, 顺便聊聊旅行
 date: 2015-09-04
 comments: true
 categories: 编程
@@ -10,7 +10,7 @@ tags:
 ---
 
 又是很久没写博客了, 貌似最近写博客都需要用这个开头......
-突然多了一个胜利日假期, 按最近的习惯, 我需要提前规划一下带孩子去哪玩, 作为一定程度的选择困难症患者, 我将所有的5A, 4A级景区用Checklist的形式添加到了Trello里面, 以方便规划, 下面是我抓回来的数据(从百度百科), 和添加到Trello里面的代码, 借由聊为什么选择路线困难, 顺面聊聊日常. 没兴趣看过程和日常的直接在[github](https://github.com/jtianling/ChineseAttractionsToTrello)上能找到弄好的4A, 5A景区列表数据和将其添加到trello中的代码.
+突然多了一个胜利日假期, 按最近的习惯, 我需要提前规划一下带孩子去哪玩, 作为一定程度的选择困难症患者, 我将所有的5A, 4A级景区用Checklist的形式添加到了Trello里面, 以方便规划, 下面是我抓回来的数据(从百度百科), 和添加到Trello里面的代码, 借由聊为什么选择路线困难, 顺便聊聊日常. 没兴趣看过程和日常的直接在[github](https://github.com/jtianling/ChineseAttractionsToTrello)上能找到弄好的4A, 5A景区列表数据和将其添加到trello中的代码.
 
 <!-- more -->
 
