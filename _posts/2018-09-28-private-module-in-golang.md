@@ -184,7 +184,7 @@ ok  	github.com/jtianling/goModule	0.005s
 $ git config --global url."git@github.com:".insteadOf "https://github.com/"
 ```
 
-对于自己的是有仓库, 可能还需要用 http:
+对于自己的私有仓库, 可能还需要用 http:
 
 ```bash
 $ git config --global url."git@github.com:".insteadOf "http://github.com/"
