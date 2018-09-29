@@ -5,7 +5,8 @@
 /** CONFIGURATION VARIABLES **/
 var commentitUsername = 'jtianling';
 var commentitRepo = 'jtianling/jtianling.github.io';
-var commentitPath = '{{ page.path }}';
+// var commentitPath = '{{ page.path }}';
+var commentitId = '{{ page.id }}';
 /** DON'T EDIT FOLLOWING LINES **/
 (function() {
   var commentit = document.createElement('script');
@@ -16,8 +17,8 @@ var commentitPath = '{{ page.path }}';
 })();
 </script>
 
-{%if page.comments %}
-{% assign sorted_comments = (page.comments | sort: 'date') %}
+{%if site.data.comments[page.id] %}
+{% assign sorted_comments = (site.data.comments[page.id] | sort: 'date') %}
 {% endif %}
 {% for c in sorted_comments %}
 <div class="media">
