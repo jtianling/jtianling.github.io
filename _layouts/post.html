@@ -62,31 +62,25 @@ layout: default
 
   </article>
 
-  <div id="comments"></div>
-  <div id="disqus_thread"></div>
-<script>
+  <div id="comments">
+    <noscript>Please enable JavaScript to view the comment form powered by <a href="https://commentit.io/">Comm(ent|it)</a></noscript>
+    <div id="commentit"></div>
+    <script type="text/javascript">
+      /** CONFIGURATION VARIABLES **/
+      var commentitUsername = 'jtianling';
+      var commentitRepo = 'jtianling/jtianling.github.io';
+      var commentitPath = '{{ page.path }}';
 
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://jtianling.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      /** DON'T EDIT FOLLOWING LINES **/
+      (function () {
+        var commentit = document.createElement('script');
+        commentit.type = 'text/javascript';
+        commentit.async = true;
+        commentit.src = 'https://commentit.io/static/embed/dist/commentit.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(commentit);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
 
-  
-
-  <!-- UY BEGIN -->
-  <!-- <div id="uyan_frame"></div> <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1547690"></script>-->
-  <!-- UY END --> 
 </section>
