@@ -3,7 +3,7 @@ layout: post
 title: 读瑞 达利欧的"原则"
 date: 2018-12-16
 comments: true
-categories: 编程
+categories: 随笔
 published: true
 tags:
 - 金融
