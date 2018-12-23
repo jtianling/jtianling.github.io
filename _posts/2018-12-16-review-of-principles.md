@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 读 瑞·达利欧 的 "原则" (Principles: Life and Work)
+title: 读瑞 达利欧的"原则"
 date: 2018-12-16
 comments: true
 categories: 编程
