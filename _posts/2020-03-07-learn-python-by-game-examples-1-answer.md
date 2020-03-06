@@ -21,9 +21,8 @@ tags:
 
 ## 答案
 
-该答案由一名热心读者完成, 感谢该热心读者
-
 ```python
+
 player_pos_x = 100
 player_pos_y = 100
 
@@ -37,38 +36,39 @@ left = False
 right = False
 
 def on_key_down(key):
-    global down,up,left,right
+    global up,down, left,right
    
-    if key == keys.S:
-        down = True
-    elif key == keys.W:
+    if key == keys.UP:
         up = True
-    elif key == keys.A:
+    elif key == keys.DOWN:
+        down = True
+    elif key == keys.LEFT:
         left = True
-    elif key == keys.D:
-        right = True
+    elif key == keys.RIGHT:
+        right = True        
 
 def update():
-    global down,up,left,right,player_pos_x,player_pos_y
-    if down == True:
-        player_pos_y = player_pos_y + 10 
-    if right == True:
-        player_pos_x = player_pos_x + 10
-    if up == True:
-        player_pos_y = player_pos_y - 10 
-    if left == True:
-        player_pos_x = player_pos_x - 10 
+    global up, down, left, right, player_pos_x, player_pos_y
+    if up:
+        player_pos_y = player_pos_y - 1
+    if down:
+        player_pos_y = player_pos_y + 1
+    if left:
+        player_pos_x = player_pos_x - 1
+    if right:
+        player_pos_x = player_pos_x + 1
         
 def on_key_up(key):
     global down,up,left,right
-    if key == keys.A:
-        left = False
-    elif key == keys.S:
-        down = False
-    elif key == keys.D:
-        right = False
-    elif key == keys.W:
+    if key == keys.UP:
         up = False
+    elif key == keys.DOWN:
+        down = False
+    elif key == keys.LEFT:
+        left = False
+    elif key == keys.RIGHT:
+        right = False
+
 ```
 
 该习题完成后, 我们就有了一个可以较自由操作的主角了, 期待接下来的课程吧.
