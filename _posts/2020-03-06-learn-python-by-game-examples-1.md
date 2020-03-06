@@ -13,11 +13,12 @@ tags:
 学编程后, 过了初期的语法熟悉阶段, 新手往往会比较迷茫, 因为也不知道编程能干嘛, 对于这种情况, 我的建议当然是实际的做一些项目, 这里用一些游戏和 Python 的例子, 来真正的了解和熟悉编程吧.   
 
 <!-- more -->
+
 ## 前提
 以下的教程基于 Python3.7, 并且假设你已经会 Python 的基本语法和概念了.  
 要是还没有学会, Python 的各种教程太多了, 先找来学习一下吧.  
 
-[官方文档](https://docs.python.org/zh-cn/3.7/tutorial/index.html)
+[官方文档](https://docs.python.org/zh-cn/3.7/tutorial/index.html)  
 [廖雪峰的 Python教程](https://www.liaoxuefeng.com/wiki/1016959663602400)
 
 ## 用什么写游戏
@@ -92,6 +93,11 @@ screen.draw.circle(pos, radius, (r, g, b))
 
 知道了参数类型以后, 我们尝试改改这几个参数, 看看画出来的圆的效果变化情况吧.
 
+## 坐标的含义
+
+位置坐标的含义, pyzero 里面用的位置, 使用的是所谓的屏幕坐标系, 以左上角为原点(即 0,0 点), X 向右增加, Y 向下增加.
+![坐标示意图](/public/images/2020/axis.png)
+
 ## 更多形状
 
 参考前面的[pyzero官网](https://pygame-zero.readthedocs.io/en/stable/builtins.html#screen), 只要你看明白了参数的类型, 试试更多的形状吧. 
@@ -144,6 +150,7 @@ def draw():
 我们都知道, 游戏不是静态的图片, 那么我们光靠静态的绘制, 也没有什么意思, 现在我们尝试让前面绘制的圆动起来.
 
 看看下面这个程序:
+
 ```python
 player_pos_x = 100
 player_pos_y = 100
@@ -229,10 +236,10 @@ def on_key_down(key):
 我们去掉了 `update` 函数, 并且判断了 `on_key_down` 被回调时, 传进来的 `key` 参数的值, 然后再按我们设定的规则去操作了这个圆, 试试吧.
 具体的按键枚举, 还是可以在[pyzero官网](https://pygame-zero.readthedocs.io/en/stable/hooks.html#buttons-and-keys)看到
 
-## 第一篇的结束
-我们现在已经了解了一个游戏需要的基础知识, 游戏开发的大门, 已经向我们打开了, 有想好要做什么游戏了吗?
-
 ## 课后练习
 这里我留下一个思考题, 我们平时操作游戏的时候, 不会一直不停的按键盘, 那样太累, 怎么样把上面的程序改成当我们按下方向键的时候, 圆一直移动呢?
 
 这里给个提示, 你还需要实现 `on_key_up` 函数, 来获得我们松开键盘按键的信息.
+
+## 第一篇的结束
+我们现在已经了解了一个游戏需要的基础知识, 游戏开发的大门, 已经向我们打开了, 有想好要做什么游戏了吗?
