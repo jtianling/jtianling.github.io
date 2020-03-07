@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 用 Dart 加 Pixi.js 写 HTML 游戏
+title: 用 Dart 加 Pixijs 写 HTML 游戏
 date: 2020-03-09
 comments: true
 categories: 编程
@@ -25,7 +25,7 @@ tags:
 [源代码](https://github.com/jtianling/dart-pixi-test)放在 Github 上了, 因为是写的第一个 Dart 程序, 写的难看的地方, 就不要太在意了...
 
 因为是 H5 版本, 可以直接通过这个链接看到效果:
-<http://www.jtianling.com/learn-python-by-game-examples-2.html>
+<http://www.jtianling.com/dart-pixi-test>
 
 # 引用的库
 pixi 的 Dart 封装:
