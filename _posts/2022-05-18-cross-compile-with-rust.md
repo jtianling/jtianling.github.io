@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Rust 的交叉编译
-date: 2022-05-
+date: 2022-05-18
 comments: true
 categories: 编程
 published: true
