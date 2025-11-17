@@ -29,13 +29,17 @@ author:
   first_name: ''
   last_name: ''
 ---
-<p>In addition to alternative list implementations, the library also offers other tools such as the <a title="Array bisection algorithms for binary searching." href="library/bisect.html"><tt>bisect</tt></a> module with functions for manipulating sorted lists:</p>
-<pre class="brush:py">&gt;&gt;&gt; import bisect
-&gt;&gt;&gt; scores = [(100, 'perl'), (200, 'tcl'), (400, 'lua'), (500, 'python')]
-&gt;&gt;&gt; bisect.insort(scores, (300, 'ruby'))
-&gt;&gt;&gt; scores</pre>
-<div>[(100, 'perl'), (200, 'tcl'), (300, 'ruby'), (400, 'lua'), (500, 'python')]<br />
-摘自：Python 2.6.1的文档，Brief Tour of the Standard Library – Part II章，Tools for Working with Lists节<br />
-呵呵，很明显可以看出Guido van Rossum的意图，以scores来表示含义，然后分别给了perl 100分，tcl 200分， ruby 300分， lua 400分，然后给了其创造的语言python 最高的500分：）<br />
-其他的都还能理解。。。。。不过ruby在其心中排在lua之后，实在有点让ruby阵营的人抓狂-_-!呵呵，虽然个人没有学过ruby,仅学过lua。。。。。。<br />
-呵呵，纯YY一下，这是偶然从文档中查资料的时候翻出来的：）</div>
+
+In addition to alternative list implementations, the library also offers other tools such as the [`bisect`](<library/bisect.html> "Array bisection algorithms for binary searching.") module with functions for manipulating sorted lists:
+    
+    
+    >>> import bisect
+    >>> scores = [(100, 'perl'), (200, 'tcl'), (400, 'lua'), (500, 'python')]
+    >>> bisect.insort(scores, (300, 'ruby'))
+    >>> scores
+
+[(100, 'perl'), (200, 'tcl'), (300, 'ruby'), (400, 'lua'), (500, 'python')]  
+摘自：Python 2.6.1的文档，Brief Tour of the Standard Library – Part II章，Tools for Working with Lists节  
+呵呵，很明显可以看出Guido van Rossum的意图，以scores来表示含义，然后分别给了perl 100分，tcl 200分， ruby 300分， lua 400分，然后给了其创造的语言python 最高的500分：）  
+其他的都还能理解。。。。。不过ruby在其心中排在lua之后，实在有点让ruby阵营的人抓狂-_-!呵呵，虽然个人没有学过ruby,仅学过lua。。。。。。  
+呵呵，纯YY一下，这是偶然从文档中查资料的时候翻出来的：）
