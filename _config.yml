@@ -16,7 +16,7 @@ subscribe_rss: /feed.xml
 root: /
 date_format: "%Y-%m-%d"
 # github need
-safe: true
+safe: false
 lsi: false
 source: .
 destination: ./_site
@@ -24,7 +24,7 @@ layouts_dir:     ./_layouts
 include:     ['.htaccess']
 exclude:     ['Gemfile', 'Gemfile.lock', 'README.md', '/vendor']
 keep_files:  ['.git','.svn']
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
 timezone:    Asia/Shanghai
 encoding:    utf-8
 
@@ -46,4 +46,3 @@ excerpt_separator: "<!-- more -->"
 host:        127.0.0.1
 port:        8080
 baseurl:     /
-
