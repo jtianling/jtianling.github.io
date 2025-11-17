@@ -1,0 +1,66 @@
+---
+layout: post
+title: "折腾一晚上Bullet及Ogre相关工具的成果 -- 3Ds Max，Maya, blender, GameKit"
+categories:
+- "游戏开发"
+tags:
+- 3Ds Max
+- Blender
+- Bullet
+- GameKit
+- MAYA
+- Ogre
+status: publish
+type: post
+published: true
+meta:
+  ratings_users: '0'
+  ratings_score: '0'
+  ratings_average: '0'
+  views: '30'
+author:
+  login: jtianling
+  email: jtianling@gmail.com
+  display_name: jtianling
+  first_name: ''
+  last_name: ''
+---
+
+起始目的很简单，整合Bullet及Ogre,找个能够生成.scene和.bullet文件的建模工具。
+
+折腾一晚上Bullet及Ogre相关的东西，基本上就像爱迪生发明灯泡一样，得出了N个失败的教训，总结如下，大家不要再走弯路了。
+
+ 
+
+1\. Blender， 开源产品，我寄予了厚望，结果却是大大的失望，Blender的Ogre插件那个弱。。。。。Mesh导出还算可用，但是不能一次导出多个，要导出多个你就去吐血吧。而Scene导出插件简直就是跟你开国际玩笑，只能导出scene文件，需要你自己用Mesh插件导出所有的模型，于是乎，两者合作的结果是，你需要一个一个的导出mesh，然后再用Scene导出插件导出Scene。（不过经测试，的确可用）这个就算了，Blender内置bullet物理支持，编辑非常方便，在自己的Game Engine中模拟也是几乎完美，还支持constraints，我都惊叹了。。。。结果是，无法导出.bullet文件，用了erwin提供的改版blender,发现没有菜单，于是乎，google出了下列脚本：
+
+import PhysicsConstraints  
+PhysicsConstraints.exportBullet("testFile.bullet")
+
+运行之，发现没有PhysicsConstraints这个模块，再Google之，要先运行Game Engine（相当于动态加载了此模块），然后再运行脚本。（先按‘p'运行，然后按space键运行脚本）
+
+好不容易出来个bullet文件，尝试加载之，一堆错误输出，有些物体被创建，但是可能因为坐标轴的问题导致重力方向不对，有点乱。。。。。。。。。。。
+
+ 
+
+暂时放弃寄希望于Blender的mesh,scene导出（这个过程是在复杂）+.bullet文件导出了，那么用Blender自己的打包文件.blender吧，开始尝试GameKit。
+
+ 
+
+2\. GameKit，虽然以前试过，知道其还不成熟，到了现在感觉要用blender,那么就必须要用gamekit了（如上原因），这次硬着头皮实验，获取svn代码，直接用cmake生成iPhone工程（按官方文档方法所述），无法用Xcode打开，使用Gamekit工程中提供的改版cmake源码编译一套cmake，再生成工程，还是无法打开，下载官方发布的源代码，再生成，可以打开了（明显svn上最新的源码的cmake脚本有bug了）。编译，错误无数，查看到某人的类似经历，他竟然编译成功并且运行了，但是运行后错误同样惨不忍睹。遂放弃。。。。。
+
+ 
+
+3\. MAYA， OgreMax插件的MAYA版本同样异常出色，而Maya的bullet插件原来是迪斯尼做的，也还算好，支持简单的constraints。尝试载入了一个复杂的场景，导出bullet,结果载入时崩溃。自己尝试制作一个简单的场景，通过bullet的demo载入正常。也就是说估计哪里还是有问题，但是起码还算可用吧。然后尝试将此用Bullet插件建立的Max文件导出为scene，用Ogre载入，没有任何东西显示。。。。。这就悲剧了，同样是在MAYA当中，你要么使用Bullet的插件编辑Bullet的东西，可以到处.Bullet文件，但是无法显示，反之，用MAYA自身编辑的模型又无法拥有物理，无法导出.bullet文件，这是最大的悲剧，拆开可用，合起来不能用。。。。。、
+
+ 
+
+ 
+
+4\. 3Ds Max,  
+我最熟悉的工具，用于建模很好很强大，OgreMax这个Ogre的Scene导出也非常不错（除了愚蠢的不知道复制出来的模型可以用同一个mesh），  
+可以一次导出一个场景的所有模型的mesh文件及scene文件。最开始用Bullet的Max插件导出了一个.bullet文件无法使用，非常无奈。以为这个插件根本无法使用，差点放弃。但是因为实在没有太好的其他解决方案，所以后来自己通过插件源代码编译插件，希望新版插件能够修复一些bug，最后发现，问题的核心在于我通过plane创建出来的static的物体无法使用，（应该是转成bullet中的triangle mesh了，载入时会失败，但是其他的sphere和box等其实可以正常使用，包括普通的static物体。一下子让我在黑暗中看到了光明。。。。。。。。神啊。。。。。。。。。。。。。
+
+ 
+
+但是其实还有几个问题，其一，物理和显示的关联。其二，bullet的坐标轴和Max的坐标轴不一样，导出的物理会有点混乱。但是，已经有路可以走了。。。。。。。。。。。
