@@ -51,13 +51,10 @@ Ubuntu Add commentsubuntu预设是跑runleve2，也就是/etc/rc2.d内的软连�
 
 可以试试这个套件： 
 
- 
-
-$ sudo apt-get install sysvconfig 
-
-$ sudo sysvconfig 
-
- 
+```bash
+$ sudo apt-get install sysvconfig
+$ sudo sysvconfig
+```
 
 就可以设定开机服务。
 
@@ -68,5 +65,3 @@ $ sudo sysvconfig
  
 
 其实上面的说法很简单，有点看不懂，基本思路是将服务器启动的脚本卸载/etc/init.d中，然后建立软连接（用ln -s）到/etc/rc2.d中去，这样就能那里面的启动脚本会在开机时自动运行，也就达到了我们要的开机运行效果。
-
- 

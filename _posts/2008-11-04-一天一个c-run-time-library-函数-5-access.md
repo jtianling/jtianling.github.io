@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 ## 一天一个C Run-Time Library 函数(5)  access
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
@@ -36,10 +34,14 @@ Determines if a file
 is read-only or not. More secure versions are available; see [_access_s, _waccess_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/fb3004fc-dcd3-4569-8b27-d817546e947e.htm>).  
   
 ---  
-int  
-_access(     const char *_path_ ,     int _mode_ ); int  
-_waccess(     const wchar_t *_path_ ,     int _mode_ );  
-  
+
+```c
+int
+_access(const char *_path_, int _mode_);
+int
+_waccess(const wchar_t *_path_, int _mode_);
+```
+
 ## 测试程序：
 
  
@@ -91,5 +93,3 @@ security-enhanced [_access_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.Visua
  
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
-
- 

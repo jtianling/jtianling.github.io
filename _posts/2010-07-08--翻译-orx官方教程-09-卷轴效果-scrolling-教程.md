@@ -140,92 +140,52 @@ tutorial)]]里我们所看到的，我们把天空对象的frame设置为摄像�
 在，让我们来看Update函数。首先，我们从配置文件得到摄像机速度，然后通过依赖  
 DT((译者注：指clock结构的DT字段，见下面的例子))来更新它,从而摆脱帧率依赖。
 
- 
-
+```c
 orxVECTOR vScrollSpeed;
 
- 
-
 orxConfig_SelectSection("Tutorial");
-
- 
 
 orxConfig_GetVector("ScrollSpeed",  
 &vScrollSpeed);
 
 orxVector_Mulf(&vScrollSpeed,  
 &vScrollSpeed, _pstClockInfo->fDT);
-
- 
+```
 
 到目前为止没有什么是真正新鲜的。//
 
 现在我们需要根据输入改变摄像头移动的vector（向量）。//
 
- 
-
+```c
 if(orxInput_IsActive("CameraRight"))
-
 {
-
-  
-vMove.fX += vScrollSpeed.fX;
-
+    vMove.fX += vScrollSpeed.fX;
 }
-
 if(orxInput_IsActive("CameraLeft"))
-
 {
-
-  
-vMove.fX -= vScrollSpeed.fX;
-
+    vMove.fX -= vScrollSpeed.fX;
 }
-
 if(orxInput_IsActive("CameraDown"))
-
 {
-
-  
-vMove.fY += vScrollSpeed.fY;
-
+    vMove.fY += vScrollSpeed.fY;
 }
-
 if(orxInput_IsActive("CameraUp"))
-
 {
-
-  
-vMove.fY -= vScrollSpeed.fY;
-
+    vMove.fY -= vScrollSpeed.fY;
 }
-
 if(orxInput_IsActive("CameraZoomIn"))
-
 {
-
-  
-vMove.fZ += vScrollSpeed.fZ;
-
+    vMove.fZ += vScrollSpeed.fZ;
 }
-
 if(orxInput_IsActive("CameraZoomOut"))
-
 {
-
-  
-vMove.fZ -= vScrollSpeed.fZ;
-
- 
-
- 
-
-最  
-后我们将这个移动（向量）应 用到摄像头上
+    vMove.fZ -= vScrollSpeed.fZ;
+}
 
 orxCamera_SetPosition(pstCamera,  
 orxVector_Add(&vPosition, orxCamera_GetPosition(pstCamera,  
 &vPosition), &vMove));
+```
 
  
 
@@ -242,33 +202,18 @@ orxVector_Add(&vPosition, orxCamera_GetPosition(pstCamera,
 让  
 我们看看配置数据。这是第一 块有我们自己数据的教程部分。
 
+```ini
 [Tutorial]
 
 CloudNumber = 1000
 
 ScrollSpeed = (300.0, 300.0, 400.0)
 
- 
-
- 
-
-正  
-如你所看见的，我们用ScrollSpeed和CloudNumber两个字段来控制这个程 序。
-
-ScrollSpeed可以在运行时修改然后重载读取配置文件（通过按  
-Backspace键）进行更新。
-
- 
-
-现在让我们看看云朵对象
-
 [CloudGraphic]
 
 Texture = ../../data/scenery/cloud.png
 
 Pivot   = center
-
- 
 
 [Cloud]
 
@@ -291,9 +236,35 @@ Scale       = 1.0 ~ 1.5
 
 FXList      = FadeIn
 
- 
+[SkyGraphic]
+
+Texture = ../../data/scenery/sky.png
+
+Pivot   = center
+
+[Sky]
+
+Graphic        
+= SkyGraphic
+
+Scale         = (0.5,  
+0.004167, 1.0)
+
+Position      = (0.0, 0.0,  
+1.0)
+
+ParentCamera  = Camera
+```
+
+正  
+如你所看见的，我们用ScrollSpeed和CloudNumber两个字段来控制这个程 序。
+
+ScrollSpeed可以在运行时修改然后重载读取配置文件（通过按  
+Backspace键）进行更新。
 
  
+
+现在让我们看看云朵对象
 
 激  
 活视差卷轴的AutoScroll字段和DpthScale地段是非常重要的两个字段。
@@ -330,29 +301,6 @@ DepathScale（深度缩放比）的缺省值是false
  
 
 现在让我们看看我们的天空对象
-
-[SkyGraphic]
-
-Texture = ../../data/scenery/sky.png
-
-Pivot   = center
-
- 
-
-[Sky]
-
-Graphic        
-= SkyGraphic
-
-Scale         = (0.5,  
-0.004167, 1.0)
-
-Position      = (0.0, 0.0,  
-1.0)
-
-ParentCamera  = Camera
-
- 
 
 正  
 如你所看到的，我们为''Sky''对象设置 了一个ParentCamera（父摄像机）,意味着我们的''Sky''将在摄像机的local  

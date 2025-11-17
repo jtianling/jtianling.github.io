@@ -43,424 +43,219 @@ author:
 
 Observer.h
 
- 
-
+```cpp
 #ifndef __OBSERVER_H__
-
 #define __OBSERVER_H__
 
 #include "BaseDefines.h"
 
- 
-
 class CSubject;
-
 class CObserver
-
 {
-
 typedef LRESULT (CObserver:: *EventFunc)(LPARAM , WPARAM , WPARAMEX );
 
- 
-
 public:
+    CObserver(CSubject* apSubject);
+    virtual ~CObserver(void);
 
-    CObserver(CSubject* apSubject);
+    bool InitEvent();
 
-    virtual ~CObserver(void);
+    // 此接口相当于原设计模式中的Update
+    LRESULT OnEvent(EventID_t aiEventID, LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx);
 
- 
+    typedef map<EventID_t, EventFunc> EventMap_t; 
+    typedef EventMap_t::iterator EventIter_t;
+    EventMap_t moEvents;
 
-    bool InitEvent();
 
- 
+    // 以下仅为示例，即是各个事件的相应
+    LRESULT OnEvent1( LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx);
+    LRESULT OnEvent2( LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx);
+    LRESULT OnEvent3( LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx);
 
-    // 此接口相当于原设计模式中的Update
-
-    LRESULT OnEvent(EventID_t aiEventID, LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx);
-
- 
-
-    typedef map<EventID_t, EventFunc> EventMap_t; 
-
-    typedef EventMap_t::iterator EventIter_t;
-
-    EventMap_t moEvents;
-
- 
-
- 
-
-    // 以下仅为示例，即是各个事件的相应
-
-    LRESULT OnEvent1( LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx);
-
-    LRESULT OnEvent2( LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx);
-
-    LRESULT OnEvent3( LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx);
-
- 
-
-    CSubject *mpSubject;
-
+    CSubject *mpSubject;
 };
 
- 
-
 #endif
-
- 
+```
 
 Observer.cpp
 
+```cpp
 #include "StdAfx.h"
-
 #include "Observer.h"
-
 #include "Subject.h"
 
- 
-
 CObserver::CObserver(CSubject* apSubject):mpSubject(apSubject)
-
 {
-
-    InitEvent();
-
+    InitEvent();
 }
-
- 
 
 CObserver::~CObserver(void)
-
 {
-
 }
-
- 
 
 // 此实现中通过aiEventID分发事件，具体方式类似于MFC的消息映射
-
 LRESULT CObserver::OnEvent( EventID_t aiEventID, LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx )
-
 {
+    EventIter_t lit = moEvents.find(aiEventID);
+    if(lit == moEvents.end())
+    {
+       // 表示Observer实际没有订阅此事件。
+       return -1;
+    }
 
-    EventIter_t lit = moEvents.find(aiEventID);
-
-    if(lit == moEvents.end())
-
-    {
-
-       // 表示Observer实际没有订阅此事件。
-
-       return -1;
-
-    }
-
- 
-
-    // 假如有订阅，则调用相应的响应函数
-
-    return ( this->*(lit->second))(aLParam, aWParam, aWParamEx);
-
+    // 假如有订阅，则调用相应的响应函数
+    return ( this->*(lit->second))(aLParam, aWParam, aWParamEx);
 }
-
- 
 
 bool CObserver::InitEvent()
-
 {
+    moEvents.insert(make_pair(1, &CObserver::OnEvent1));
+    moEvents.insert(make_pair(2, &CObserver::OnEvent2));
+    moEvents.insert(make_pair(3, &CObserver::OnEvent3));
 
-    moEvents.insert(make_pair(1, &CObserver::OnEvent1));
-
-    moEvents.insert(make_pair(2, &CObserver::OnEvent2));
-
-    moEvents.insert(make_pair(3, &CObserver::OnEvent3));
-
- 
-
-    return true;
-
+    return true;
 }
-
- 
 
 LRESULT CObserver::OnEvent1( LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx )
-
 {
 
- 
-
-    return 1;
-
+    return 1;
 }
-
- 
 
 LRESULT CObserver::OnEvent2( LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx )
-
 {
 
- 
-
-    return 1;
-
+    return 1;
 }
-
- 
 
 LRESULT CObserver::OnEvent3( LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx )
-
 {
 
- 
-
-    return 1;
-
+    return 1;
 }
-
- 
+```
 
 Subject.h
 
+```cpp
 #ifndef __SUBJECT_H__
-
 #define __SUBJECT_H__
 
- 
-
 #include "BaseDefines.h"
-
 #include <map>
-
 #include <list>
-
 using namespace std;
 
- 
-
 class CObserver;
-
 class CSubject
-
 {
-
 public:
+    CSubject(void);
+    virtual ~CSubject(void);
 
-    CSubject(void);
+    bool Attach( EventID_t aiEventID, CObserver *apObs);
+    bool Detach( EventID_t aiEventID, CObserver *apObs);
 
-    virtual ~CSubject(void);
+    // 类似原Observer模式中的Notice消息
+    LRESULT SendEvent(EventID_t aiEventID, LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx );
 
- 
+    typedef list<CObserver*> ObsList_t;
+    typedef ObsList_t::iterator ObsIter_t;
 
- 
-
-    bool Attach( EventID_t aiEventID, CObserver *apObs);
-
-    bool Detach( EventID_t aiEventID, CObserver *apObs);
-
- 
-
-    // 类似原Observer模式中的Notice消息
-
-    LRESULT SendEvent(EventID_t aiEventID, LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx );
-
- 
-
-    typedef list<CObserver*> ObsList_t;
-
-    typedef ObsList_t::iterator ObsIter_t;
-
- 
-
-    typedef map<EventID_t, ObsList_t> EventObsMap_t;
-
-    typedef EventObsMap_t::iterator EventObsIter_t;
-
-    EventObsMap_t moEventObsMap;
-
+    typedef map<EventID_t, ObsList_t> EventObsMap_t;
+    typedef EventObsMap_t::iterator EventObsIter_t;
+    EventObsMap_t moEventObsMap;
 };
 
- 
-
 #endif
-
- 
+```
 
 Subject.cpp
 
+```cpp
 #include "StdAfx.h"
-
 #include "Subject.h"
-
 #include "Observer.h"
-
 #include <boost/bind.hpp>
 
- 
-
 CSubject::CSubject(void)
-
 {
-
 }
-
- 
 
 CSubject::~CSubject(void)
-
 {
-
 }
-
- 
-
- 
 
 bool CSubject::Attach( EventID_t aiEventID, CObserver *apObs )
-
 {
+    EventObsIter_t lit = moEventObsMap.find(aiEventID);
+    if(lit != moEventObsMap.end())
+    {// 已经有相关的事件响应Obs列表
+       ObsList_t& lObsList = lit->second;
+       ObsIter_t litList = find(lObsList.begin(), lObsList.end(), apObs);
+       if(litList != lObsList.end())
+       {// 重复Attach
+           return false;
+       }
 
-    EventObsIter_t lit = moEventObsMap.find(aiEventID);
+       lObsList.push_back(apObs);
+       return true;
+    }
 
-    if(lit != moEventObsMap.end())
+    // 实际上先添加list到map然后再添加bos效率会略高。
+    ObsList_t lObsList;
+    lObsList.push_back(apObs);
 
-    {// 已经有相关的事件响应Obs列表
-
-       ObsList_t& lObsList = lit->second;
-
-       ObsIter_t litList = find(lObsList.begin(), lObsList.end(), apObs);
-
-       if(litList != lObsList.end())
-
-       {// 重复Attach
-
-           return false;
-
-       }
-
- 
-
-       lObsList.push_back(apObs);
-
-       return true;
-
-    }
-
- 
-
-    // 实际上先添加list到map然后再添加bos效率会略高。
-
-    ObsList_t lObsList;
-
-    lObsList.push_back(apObs);
-
- 
-
-    // 此insert必成功
-
+    // 此insert必成功
 #ifdef _DEBUG
-
-    pair<EventObsIter_t, bool> lpairResult = moEventObsMap.insert(make_pair(aiEventID, lObsList));
-
-    ASSERT(lpairResult.second);
-
+    pair<EventObsIter_t, bool> lpairResult = moEventObsMap.insert(make_pair(aiEventID, lObsList));
+    ASSERT(lpairResult.second);
 #else
-
-    moEventObsMap.insert(make_pair(aiEventID, lObsList));
-
+    moEventObsMap.insert(make_pair(aiEventID, lObsList));
 #endif
 
- 
-
-    return true;
-
+    return true;
 }
-
- 
 
 bool CSubject::Detach( EventID_t aiEventID, CObserver* apObs )
-
 {
+    EventObsIter_t lit = moEventObsMap.find(aiEventID);
+    if(lit == moEventObsMap.end())
+    {// 根本没有订阅此消息
+       return false;
+    }
 
-    EventObsIter_t lit = moEventObsMap.find(aiEventID);
+    ObsList_t& lObsList = lit->second;
+    ObsIter_t litList = find(lObsList.begin(), lObsList.end(), apObs);
+    if(litList == lObsList.end())
+    {// 根本没有订阅此消息
+       return false;
+    }
 
-    if(lit == moEventObsMap.end())
+    // 这里当list为空的时候也不删除map中的对应item，添加的时候速度更快，也没有删除的时间，消耗多一点内存，但是减少内存碎片
+    lObsList.erase(litList);
 
-    {// 根本没有订阅此消息
-
-       return false;
-
-    }
-
- 
-
-    ObsList_t& lObsList = lit->second;
-
-    ObsIter_t litList = find(lObsList.begin(), lObsList.end(), apObs);
-
-    if(litList == lObsList.end())
-
-    {// 根本没有订阅此消息
-
-       return false;
-
-    }
-
- 
-
-    // 这里当list为空的时候也不删除map中的对应item，添加的时候速度更快，也没有删除的时间，消耗多一点内存，但是减少内存碎片
-
-    lObsList.erase(litList);
-
- 
-
-    return true;
-
+    return true;
 }
-
- 
 
 LRESULT CSubject::SendEvent( EventID_t aiEventID, LPARAM aLParam, WPARAM aWParam, WPARAMEX aWParamEx )
-
 {
+    EventObsIter_t lit = moEventObsMap.find(aiEventID);
+    if(lit == moEventObsMap.end())
+    {// 根本没有Observer订阅此消息
+       return 0;
+    }
 
-    EventObsIter_t lit = moEventObsMap.find(aiEventID);
+    ObsList_t& lObsList = lit->second;
+    for(ObsIter_t litList = lObsList.begin(); litList != lObsList.end(); ++litList)
+    {
+       (*litList)->OnEvent(aiEventID, aLParam, aWParam, aWParamEx);
+    }
 
-    if(lit == moEventObsMap.end())
-
-    {// 根本没有Observer订阅此消息
-
-       return 0;
-
-    }
-
- 
-
-    ObsList_t& lObsList = lit->second;
-
-    for(ObsIter_t litList = lObsList.begin(); litList != lObsList.end(); ++litList)
-
-    {
-
-       (*litList)->OnEvent(aiEventID, aLParam, aWParam, aWParamEx);
-
-    }
-
- 
-
-    return 1;
-
+    return 1;
 }
-
- 
-
- 
-
- 
-
- 
+```
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

@@ -21,8 +21,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 潜心开始学习网络编程的第一步 ，UNP(Unix Network Programming)第一章，时间服务器到windows的移植
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
@@ -45,109 +43,62 @@ UNPv1中最前面的时间客户端/服务器程序在我的Ubuntu中跑的没�
 
 更改后源代码如下：
 
+```c
 #include <time.h>
 
 #include "Winsock2.h"
 
- 
-
 #define MAXLINE 1000
 
 int
-
 main(int argc, char **argv)
-
 {
+    WORD wVersionRequested;
+    WSADATA wsaData;
+    int err;
 
-    WORD wVersionRequested;
+    wVersionRequested = MAKEWORD( 2, 2 );
 
-    WSADATA wsaData;
+    // windows下此初始化为必须
+    err = WSAStartup( wVersionRequested, &wsaData );
+    if ( err != 0 ) {
+       return -1;
+    }
 
-    int err;
+    SOCKET listenfd, connfd;
+    struct sockaddr_in   servaddr;
+    char   buff[MAXLINE];
+    time_t ticks;
 
- 
+    listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    if(INVALID_SOCKET == listenfd)
+    {
+       printf("socket Error: %d",WSAGetLastError());
+       return -1;
+    }
 
-    wVersionRequested = MAKEWORD( 2, 2 );
+    ZeroMemory(&servaddr, sizeof(servaddr));
+    servaddr.sin_family      = AF_INET;
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servaddr.sin_port        = htons(13);  /* daytime server */
 
- 
+    bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
 
-    // windows下此初始化为必须
+    listen(listenfd, SOMAXCONN);
 
-    err = WSAStartup( wVersionRequested, &wsaData );
+    for ( ; ; ) {
+       connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
 
-    if ( err != 0 ) {
+       ticks = time(NULL);
+       _snprintf(buff, sizeof(buff), "%.24s/r", ctime(&ticks));
 
-       return -1;
+       // 相当诡异的write换成了send
+       send(connfd, buff, strlen(buff),MSG_OOB);
 
-    }
-
- 
-
-    SOCKET listenfd, connfd;
-
-    struct sockaddr_in   servaddr;
-
-    char   buff[MAXLINE];
-
-    time_t ticks;
-
- 
-
-    listenfd = socket(AF_INET, SOCK_STREAM, 0);
-
-    if(INVALID_SOCKET == listenfd)
-
-    {
-
-       printf("socket Error: %d",WSAGetLastError());
-
-       return -1;
-
-    }
-
- 
-
-    ZeroMemory(&servaddr, sizeof(servaddr));
-
-    servaddr.sin_family      = AF_INET;
-
-    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-    servaddr.sin_port        = htons(13);  /* daytime server */
-
- 
-
-    bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
-
- 
-
-    listen(listenfd, SOMAXCONN);
-
- 
-
-    for ( ; ; ) {
-
-       connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-
- 
-
-       ticks = time(NULL);
-
-       _snprintf(buff, sizeof(buff), "%.24s/r", ctime(&ticks));
-
- 
-
-       // 相当诡异的write换成了send
-
-       send(connfd, buff, strlen(buff),MSG_OOB);
-
- 
-
-       closesocket(connfd);
-
-    }
-
+       closesocket(connfd);
+    }
 }
+```
 
  
 
@@ -170,5 +121,3 @@ main(int argc, char **argv)
  
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

@@ -45,13 +45,14 @@ SystemTrayIcon在官方的Demo中有一个示例，（那些示例有些可真�
 
 主要用到的类是QtGui.QSystemTrayIcon。  
 图标用QtGui.QIcon类来表示，可以以文件名字符串为构造函数的参数。如：  
-  
+
+```python
 icon = QtGui.QIcon('jt.png  
-')  
-  
+')
+```
+
 然后用QtGui.QSystemTrayIcon的
 
-  
 setIcon(icon) 去完成系统TrayIcon的创建。OK，已经完成80%了，图标已经出来了。
 
 ## 气泡信息  
@@ -64,26 +65,28 @@ QtGui.QSystemTrayIcon的showMessage
 ## 菜单
 
 再然后呢？希望有菜单？这个稍微复杂点，在Qt中，菜单是一个一个的Action，如下建立Action:  
-  
-  
-        self.quitAction = QtGui.QAction("&Quit  
+
+```python
+self.quitAction = QtGui.QAction("&Quit  
 ", self,  
-                                        triggered=QtGui.qApp.quit)  
-          
-        self.aboutAction = QtGui.QAction("&About  
+                                triggered=QtGui.qApp.quit)
+        
+self.aboutAction = QtGui.QAction("&About  
 ", self,  
-                                        triggered=self.about)  
+                                triggered=self.about)
+```
+
 注意上述Action的triggerd参数，实际上是一个Callable的回调函数，意思是点击此菜单时进行的操作。  
 然后将Action添加进某个Menu  
-  
-  
-self.trayIconMenu = QtGui.QMenu(self)  
-  
-self.trayIconMenu.addAction(self.aboutAction)  
-self.trayIconMenu.addAction(self.quitAction)  
-然后将Menu  
-关联上TrayIcon  
+
+```python
+self.trayIconMenu = QtGui.QMenu(self)
+
+self.trayIconMenu.addAction(self.aboutAction)
+self.trayIconMenu.addAction(self.quitAction)
+
 self.trayIcon.setContextMenu(self.trayIconMenu)
+```
 
 完成了。
 
@@ -97,36 +100,36 @@ self.trayIcon.setContextMenu(self.trayIconMenu)
 
 将需要实现成Check菜单的所有命令添加到一个Action组中，在Qt中称为QActionGroup。
 
-  
-  
-        self.synGroup = QtGui.QActionGroup(self)  
-          
-        **for**  
-  
- syn **in**  
-  
- config.syntaxSupport:  
-            action = QtGui.QAction(syn, self, checkable=True,  
-                triggered=self.setSyn)  
-            self.synGroup.addAction(action)
+```python
+self.synGroup = QtGui.QActionGroup(self)
+        
+**for**
+ 
+ syn **in**
+ 
+ config.syntaxSupport:
+            action = QtGui.QAction(syn, self, checkable=True,
+                triggered=self.setSyn)
+            self.synGroup.addAction(action)
+```
 
  
 
 需要注意的是，每个Action的checkable参数设为True,表示是CheckBox类型的菜单。  
 通过某个Action的setChecked来选中，比如：
 
-        actions = self.synGroup.actions()  
-  
-  
-        **if**  
-  
- len(actions) != 0:  
-            actions[0].setChecked(True)
+```python
+actions = self.synGroup.actions()
+        
+        **if**
+ 
+ len(actions) != 0:
+            actions[0].setChecked(True)
+```
 
 主要注意的是，在Qt中QActionGroup返回的是一个QList的列表，但是在PyQt已经将其转换为Python中原生的list了，这样更加符合Python的使用习惯，当然，调用方法的时候也需要注意一下了，接口可是不同的，感谢RiverBank(PyQt的创造维护公司）伟大的工作，对于可怜的RiverBank我其实还有话要说，以后再详述吧。  
-具体哪个菜单选项被Check了，通过  
-  
-  
+具体哪个菜单选项被Check了，通过
+
 checkedAction = self.synGroup.checkedAction()  
 来查询，返回的是被Check的Action，此时假如你是通过Action的字符串来查询的话，（比如我）那么调用Action的text  
 函数获取。
@@ -164,5 +167,3 @@ Mercurial使用方法见《[分布式的，新一代版本控制系统Mercurial�
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
 **
-
- 

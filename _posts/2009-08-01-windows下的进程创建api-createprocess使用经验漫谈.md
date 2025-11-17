@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # Windows下的进程创建API--CreateProcess使用经验漫谈
 
 # 
@@ -36,83 +34,46 @@ author:
 
 基本的应用上，这里用MSDN的一个例子讲解：
 
+```c
 #include <windows.h>
-
 #include <stdio.h>
-
 #include <tchar.h>
 
- 
-
 void _tmain( VOID )
-
 {
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    LPTSTR szCmdline=_tcsdup(TEXT("MyChildProcess"));
 
-    STARTUPINFO si;
+    ZeroMemory( &si, sizeof(si) );
+    si.cb = sizeof(si);
+    ZeroMemory( &pi, sizeof(pi) );
 
-    PROCESS_INFORMATION pi;
+    // Start the child process. 
+    if( !CreateProcess( NULL,   // No module name (use command line)
+       szCmdline,      // Command line
+       NULL,           // Process handle not inheritable
+       NULL,           // Thread handle not inheritable
+       FALSE,          // Set handle inheritance to FALSE
+       0,              // No creation flags
+       NULL,           // Use parent's environment block
+       NULL,           // Use parent's starting directory 
+       &si,            // Pointer to STARTUPINFO structure
+       &pi )           // Pointer to PROCESS_INFORMATION structure
+       ) 
+    {
+       printf( "CreateProcess failed (%d)./n", GetLastError() );
+       return;
+    }
 
-    LPTSTR szCmdline=_tcsdup(TEXT("MyChildProcess"));
+    // Wait until child process exits.
+    WaitForSingleObject( pi.hProcess, INFINITE );
 
- 
-
-    ZeroMemory( &si, sizeof(si) );
-
-    si.cb = sizeof(si);
-
-    ZeroMemory( &pi, sizeof(pi) );
-
- 
-
-    // Start the child process. 
-
-    if( !CreateProcess( NULL,   // No module name (use command line)
-
-       szCmdline,      // Command line
-
-       NULL,           // Process handle not inheritable
-
-       NULL,           // Thread handle not inheritable
-
-       FALSE,          // Set handle inheritance to FALSE
-
-       0,              // No creation flags
-
-       NULL,           // Use parent's environment block
-
-       NULL,           // Use parent's starting directory 
-
-       &si,            // Pointer to STARTUPINFO structure
-
-       &pi )           // Pointer to PROCESS_INFORMATION structure
-
-       ) 
-
-    {
-
-       printf( "CreateProcess failed (%d)./n", GetLastError() );
-
-       return;
-
-    }
-
- 
-
-    // Wait until child process exits.
-
-    WaitForSingleObject( pi.hProcess, INFINITE );
-
- 
-
-    // Close process and thread handles. 
-
-    CloseHandle( pi.hProcess );
-
-    CloseHandle( pi.hThread );
-
+    // Close process and thread handles. 
+    CloseHandle( pi.hProcess );
+    CloseHandle( pi.hThread );
 }
-
- 
+```
 
 1.LPTSTR szCmdline；一句很重要，而且是必须得有的，这里需要注意，因为CreateProcess的第二参数是一个非const字符串，这点比较意外，因为事实上，我也没有看到MS改动过此字符串，从理论上来讲，改动commandline也是很让人惊讶的事情。
 
@@ -137,5 +98,3 @@ void _tmain( VOID )
  
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

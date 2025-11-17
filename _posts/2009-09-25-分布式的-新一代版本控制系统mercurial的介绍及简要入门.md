@@ -114,35 +114,29 @@ Eclipse插件：[http://www.vectrace.com/mercurialeclipse/](<http://www.vectrace
 
 Windows下：
 
+```bash
 E:/work>hg version
 
 Mercurial Distributed SCM (version 1.3.1+1444a42f6052)
 
- 
-
 Copyright (C) 2005-2009 Matt Mackall <mpm@selenic.com> and others
 
 This is free software; see the source for copying conditions. There is NO
-
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
- 
+```
 
 Linux下：
 
+```bash
 jtianling@jtianling-laptop:~$ hg version
 
 分布式软件配置管理工具 \- 水银 (版本 1.3.1)
 
- 
-
 版权所有 (C) 2005-2009 Matt Mackall <mpm@selenic.com> 和其他人。
 
 这是自由软件，具体参见版权条款。这里没有任何担保，甚至没有适合
-
 特定目的的隐含的担保。
-
- 
+```
 
 呵呵,在通过ppa那个链接安装了新版后，竟然版权信息是中文的。。。。并且,Mercurial翻译成了水银，这点比较让人吐血。事实上Mercurial表示墨丘利。。。。。也就是希腊神话中的赫尔墨斯（Hermes）。。。。。。
 
@@ -176,55 +170,38 @@ Mercurial有内建的帮助系统，参数是help，help后还可以以需要查
 
 比如：
 
+```bash
 E:/work>hg help init
 
 hg init [-e CMD] [--remotecmd CMD] [DEST]
 
- 
-
 create a new repository in the given directory
 
- 
+    Initialize a new repository in the given directory. If the given
+    directory does not exist, it will be created.
 
-    Initialize a new repository in the given directory. If the given
+    If no directory is given, the current directory is used.
 
-    directory does not exist, it will be created.
-
- 
-
-    If no directory is given, the current directory is used.
-
- 
-
-    It is possible to specify an ssh:// URL as the destination.
-
-    See 'hg help urls' for more information.
-
- 
+    It is possible to specify an ssh:// URL as the destination.
+    See 'hg help urls' for more information.
 
 options:
 
- 
-
- -e --ssh        specify ssh command to use
-
-    \--remotecmd  specify hg command to run on the remote side
-
- 
+ -e --ssh        specify ssh command to use
+    --remotecmd  specify hg command to run on the remote side
 
 use "hg -v help init" to show global options
-
- 
+```
 
 ## 2.      建库(init)
 
 上面的帮助内容，懂E文的的就看懂了，init就是Mercurial的建库命令，使用方法如此简单。比如我希望在E:/Work/Hello下建立一个我自己的库，只需要在e:/Work/Hello目录输入hg init如下：
 
+```bash
 E:/work/hello>hg init
 
- 
-
 E:/work/hello>
+```
 
 事实上，你看不到任何输出，但是通过dir查看的时候会发现多出的.hg目录(在Linux因为是“.”开头，默认是隐藏的)，而Windows下没有这个规矩，所以还是会显示出来。想起一个笑话，以前有个牛人说，为啥.Net叫.Net？因为在Linux下甚至都不会显示出来^^
 
@@ -238,9 +215,11 @@ E:/work/hello>
 
 首先看下帮助，（这里只贴上了第一行）：
 
+```bash
 E:/work>hg help clone
 
 hg clone [OPTION]... SOURCE [DEST]
+```
 
 即hg clone 源 目标
 
@@ -256,21 +235,19 @@ hg clone https://blog-sample-code.jtianling.googlecode.com/hg/ jtianling-blog-sa
 
 如下所示：
 
+```bash
 E:/work/jtianling-blog-sample-code>dir/w
 
- 驱动器 E 中的卷是 文档
+ 驱动器 E 中的卷是 文档
+ 卷的序列号是 940C-1FF8
+ E:/work/jtianling-blog-sample-code 的目录
+ [.]         [..]        [.hg]       [2009-9-25]
 
- 卷的序列号是 940C-1FF8
-
- E:/work/jtianling-blog-sample-code 的目录
-
-[.]         [..]        [.hg]       [2009-9-25]
-
-               0 个文件              0 字节
-
-               4 个目录  3,043,004,416 可用字节
+               0 个文件              0 字节
+               4 个目录  3,043,004,416 可用字节
 
 E:/work/jtianling-blog-sample-code>
+```
 
 目前仅仅有在E:/work/jtianling-blog-sample-code/2009-9-25/helloMercurial下添加进去的一个文本，helloMercurial.txt。
 
@@ -284,45 +261,39 @@ Mercurial也有commit，不过这里的commit与VSS,SVN中的不同，这里的c
 
 比如，刚才我clone回来的文本helloMercurial.txt内容是：
 
+```text
 Hello World
-
 To Test Mercruail and Google Code
 
- 
-
 Create By JTianLing
+```
 
 我将其修改一下
 
+```text
 Hello World
-
 To Test Mercruail and Google Code
-
 And Test Commit
 
 Create By JTianLing
-
- 
+```
 
 然后提交，命令如下：
 
+```bash
 E:/work/jtianling-blog-sample-code>hg commit
+```
 
 这个时候，在Windows下，直接弹出的是默认的文本编辑工具，我这里是记事本，有如下提示信息：
 
-HG: Enter commit message.  Lines beginning with 'HG:' are removed.
-
+```bash
+HG: Enter commit message.  Lines beginning with 'HG:' are removed.
 HG: Leave message empty to abort commit.
-
 HG: --
-
 HG: user: JTianLing
-
 HG: branch 'default'
-
 HG: changed 2009-9-25/helloMercurial/helloMercurial.txt
-
- 
+```
 
 告诉你输入提交的message，没有的话是会终止提交的，这也体现了一种好的软件版本管理哲学，每次提交都强制性的要求有说明的，VSS中由于可以忽略说明，所以事实上，我们公司是没有任何人提交带说明的，然后呢？碰到问题的时候就靠喊贝，反正在一个公司-_-!这里，我加入一行：
 
@@ -336,33 +307,23 @@ Add a Line to Test commit command
 
 怎么确认提交完成没有，怎么查看版本历史，用log命令，执行效果如下：
 
+```bash
 E:/work/jtianling-blog-sample-code>hg log
 
-changeset:   1:88252aa4d260
+changeset:   1:88252aa4d260
+tag:         tip
+user:        JTianLing
+date:        Fri Sep 25 12:27:01 2009 +0800
+summary:     Add a Line to Test commit command
 
-tag:         tip
+changeset:   0:baf69ca9684e
+user:        JTianLing
+date:        Fri Sep 25 12:00:01 2009 +0800
+summary:     Create Project Blog
 
-user:        JTianLing
-
-date:        Fri Sep 25 12:27:01 2009 +0800
-
-summary:     Add a Line to Test commit command
-
- 
-
-changeset:   0:baf69ca9684e
-
-user:        JTianLing
-
-date:        Fri Sep 25 12:00:01 2009 +0800
-
-summary:     Create Project Blog
-
- 
-
- 
 
 E:/work/jtianling-blog-sample-code>
+```
 
  
 
@@ -376,45 +337,35 @@ E:/work/jtianling-blog-sample-code>
 
 命令及输出如下：
 
+```bash
 E:/work/jtianling-blog-sample-code>hg push https://blog-sample-code.jtianling.googlecode.com/hg/
 
 pushing to https://blog-sample-code.jtianling.googlecode.com/hg/
-
 searching for changes
-
 http authorization required
-
 realm: Google Code Mercurial Repository
-
 user: JTianLing
-
 password:
-
 Success.
+```
 
 当然，在google code上push是需要用户名和密码的，完成后显示Success，然后你再去clone的时候会发现内容已经变了。
 
 这里我们确认一下，通过下面的命令，我们再clone一份放到jtianling-blog-sample-code2目录中去。
 
+```bash
 E:/work>hg clone https://blog-sample-code.jtianling.googlecode.com/hg/ jtianling-blog-sample-code2
 
 requesting all changes
-
 adding changesets
-
 adding manifests
-
 adding file changes
-
 added 2 changesets with 2 changes to 1 files
-
 updating working directory
-
 1 files updated, 0 files merged, 0 files removed, 0 files unresolved
 
- 
-
 E:/work>
+```
 
 这里，会发现输出的信息也与第一次看到的不同了，这里已经有两个changesets了，需要说明的是Mercurial是基于changesets管理的版本控制系统与git基于内容管理（snapshot）管理的方式不同。在Mercurial中，一个系统就是通过一个一个changesets累加起来的。
 

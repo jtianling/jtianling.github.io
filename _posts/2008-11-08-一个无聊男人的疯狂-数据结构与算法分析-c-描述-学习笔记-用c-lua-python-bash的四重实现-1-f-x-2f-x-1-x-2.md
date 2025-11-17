@@ -29,8 +29,6 @@ author:
   last_name: ''
 ---
 
-    
-
 # 一个无聊男人的疯狂数据结构学习（1） f(x) = 2f(x-1) + x^2
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
@@ -47,6 +45,7 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 ## lua:
 
+```lua
 1 function f(x)  
  2     **if**  (x == 0)  
  3     **then**  
@@ -62,9 +61,11 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 13 print(f(3))  
 14 print(f(4))  
 15       
+```
 
 ## python:
 
+```python
 1 **def**  f(x):  
  2     'a easy recursive funtion'  
  3     **if**  x == 0:  
@@ -79,11 +80,13 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 12 **print**  f(3)  
 13 **print**  f(4)  
 14   
+```
 
 ## bash:
 
 用bash写一个简单的递归竟然也这么难。。。。。。郁闷，这是过了两天自己后来补上的，最后因为vim的上色没有办法直接复制到word和这边，所以通过vim2html的转换后再贴过来：）效果很好啊。
 
+```bash
 1 #!/bin/bash  
  2   
  3 function f  
@@ -107,6 +110,7 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 21     **echo**  $?  
 22 **done**  
 23   
+```
 
 补充说明一下，这次完全lua,python都是在windows中gvim完成，以后全部放到linux中完成。呵呵，其实作为脚本语言这样移植性非常好的语言来说，主要的区别仅仅是开始第一句linux会多句magic指示，以方便直接在shell中执行而已。主要的目的是以后的vim2html可以通过bash的脚本来一次完成，不需要在windows中通过这么多操作了。：）  
 

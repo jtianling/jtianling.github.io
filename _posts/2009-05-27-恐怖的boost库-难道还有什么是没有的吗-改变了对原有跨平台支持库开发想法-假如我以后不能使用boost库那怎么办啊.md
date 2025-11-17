@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 恐怖的boost库，难道还有什么是没有的吗？改变了对原有跨平台支持库开发想法。假如我以后不能使用boost库那怎么办啊？！
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
@@ -115,5 +113,3 @@ boost作为准标准库可移植性实在是做的够好了。。。。看看其
  
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

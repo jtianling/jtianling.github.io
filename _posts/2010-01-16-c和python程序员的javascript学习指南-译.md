@@ -249,19 +249,15 @@ Update: Martin Clausen指出存在
 
 JS的函数与C有些不同。他有两种形式，命名的及匿名的。命名函数与C中很像，但是，当然，没有任何参数或返回值的类型声明。在C语言中放置返回值的地方，使用function关键字。
 
+```javascript
 function treeWalk(branch, visitor){
-
-    visitor(branch)
-
-    var i // not going to let you forget! you'll thank me later! 
-
-    for (i in branch.children) {
-
-        treeWalk(branch.children[i], visitor)
-
-    }
-
+    visitor(branch)
+    var i // not going to let you forget! you'll thank me later! 
+    for (i in branch.children) {
+        treeWalk(branch.children[i], visitor)
+    }
 }
+```
 
 在这里，visitor是一个传递进来的函数，我们将在以后展示怎么样做到。branch是一个用户定义的对象，我们假设它有一个名叫children的array。
 
@@ -317,17 +313,16 @@ treeWalk(rootNode, function(item) { logDebug(item) } )
 rhino   
 示例:
 
+```javascript
 js> 2 + 2
-
 4
 
 js> "2" \+ 2
-
 22
 
 js> "2" * 2
-
-4  
+4
+```
 
 "+" 被用于数学的加法和字符串连接。  
   
@@ -339,35 +334,26 @@ rhino 示例
 :  
   
   
-  
-
+```javascript
 js> "2" \+ 2 + 2
-
 222
 
 js> 2 + "2" \+ 2
-
 222
 
 js> 2 + 2 + "2"
-
 42
 
 js> "2" \+ 2 * 2
-
 24
 
 js> "2" * 2 + 2
-
 6
 
 js> ("2" \+ 2) * 2
-
-## 44  
+## 44
+```
   
-   
-  
-
 ## 深深的，慢慢的呼吸...  
  这一切总会过去的。。。。。。。（**真不愧是最大惊讶。。。。）  
   
@@ -380,63 +366,57 @@ Oh yeah，并且JS的比较操作符也是诡异的，==转换类型，===不会
 rhino 示例  
 :
 
+```javascript
 js> 2 == 2
-
 true
 
 js> 2 == "2"
-
 true
 
 js> 2 === 2
-
 true
 
 js> 2 === "2"
-
 false
+```
 
 并且，注意字符串比较中给你的意外，然而，这还不算太坏，假如每个操作数都是数字，转换将会向着数字的方向。
 
 rhino 示例  
 :
 
+```javascript
 js> 4 > 2
-
 true
 
 js> 4 > 22
-
 false
 
 js> 4 > "22"
-
 false
 
 js> "4" > "22"
-
 true
+```
 
 噢!并且JS将会很高兴的无声无息的将无效的数字转换为NaN，并且会将这种行为贯穿在整个代码中。。。。
 
 rhino 示例  
 :
 
+```javascript
 js> "2" * 2
-
 4
 
 js> "two" * 2
-
 NaN
 
 js> x = "two" * 2
-
 NaN
 
 js> 4 * x
-
 NaN
+```
 
 记住，深深的，慢慢的呼吸......  
 
@@ -453,25 +433,25 @@ JS内建Arrays and hashmaps 。假如你仅仅需要声明一个含有一些初�
 
 rhino 示例:  
 
+```javascript
 js> myArray = [1, 2, 3, 17, 23, 42, 69]
-
 1,2,3,17,23,42,69
 
 js> myHash = {"key": "value", "key2": "value2"}
-
 [object Object]
+```
 
 两者都是用方括号索引：  
 
 rhino 示例:（接上面）  
 
+```javascript
 js> myArray[3]
-
 17
 
 js> myHash["key2"]
-
 value2
+```
 
 你可以混合和配对使用任何集合数据类型，比如每个值都是一个array或者hashmap。对于key来说，似乎转换所有的数据类型到字符串形  
 式并且这样使用--所以JS中的语句myHash[fred] = value似乎像python中的myDict[repr(fred)] =  
@@ -481,17 +461,16 @@ value一样。
 
 rhino 示例:（接上面）
 
+```javascript
 js> myHash["key2"]
-
 value2
 
 js> delete myArray[3]
-
 true
 
 js> delete myHash["key2"]
-
 true
+```
 
 (delete似乎总是返回true，是的，甚至你的索引超出范围，是的，甚至这里没有一个对应的key。我不知道为什么）
 
@@ -499,13 +478,11 @@ true
 
 (**rhino 示例:（接上面）
 
-## 
-
+```javascript
 js> myHash["key2"]
-
 js> delete myHash["key2"]
-
 true
+```
 
 )
 
@@ -513,21 +490,19 @@ true
 
 rhino 示例:
 
+```javascript
 js> myArray
-
 1,2,3,,23,42,69
 
 js> print(myArray)
-
 1,2,3,,23,42,69
 
 js> print(myArray[3])
-
 undefined
 
 js> print(myArray[4])
-
 23
+```
 
 （那个两个连续的逗号不是一个印刷错误，undefined的值转换到字符串类型时没有任何输出，但是这里仍然有一个在array为其保留的‘槽’）
 
@@ -535,52 +510,37 @@ js> print(myArray[4])
 
 rhino 示例:
 
+```javascript
 js> for (i in myArray) print(i)
-
- 1
-
- 2
-
- 3
-
- 23
-
- 42
-
- 69
+ 1
+ 2
+ 3
+ 23
+ 42
+ 69
+```
 
   
   
 
 (**在我这里的  rhino 运行效果与原作者的有所区别，就像作者前面说的那样，返回的是key
 
-js> for( i in  myArray) print(i)
-
+```javascript
+js> for( i in  myArray) print(i)
 0
-
 1
-
 2
-
 4
-
 5
-
 6
-
-js> for( i in  myArray) print(myArray[i])
-
+js> for( i in  myArray) print(myArray[i])
 1
-
 2
-
 3
-
 23
-
 42
-
 69
+```
 
 真正神奇的是此时跳过undefined值的方式是直接忽略了，连个空行都没有
 
@@ -588,21 +548,15 @@ js> for( i in  myArray) print(myArray[i])
 
 虽然如此，对于许多人物来说，有一个undefined的值在array中可能是非常痛苦的事情，所以你会发现，写一个函数用于“压缩”一个array，或者返回一个指定索引忽略的副本是有用的，给你一个删除+压缩的函数。（代价是一次不必要的复制操作）
 
-JS:
-
+```javascript
 function deleteArrayItem(source, index){
-
-    var result = new Array()
-
-    for (i in source) 
-
-        if (i != index) 
-
-            result.push(source[i])
-
-    return result
-
+    var result = new Array()
+    for (i in source) 
+        if (i != index) 
+            result.push(source[i])
+    return result
 }
+```
 
 **Update: Reddit 用户 [davidsickmiller](<http://www.reddit.com/r/programming/comments/8c6hj/introduction_to_javascript_for_c_python/c08uf1p>)  
 提到一个我忽略的array方法，当我在2006年写下这个的时候。Array::splice(**切片函数）从数组中移出一个范围，返回移出的元素，并且，将原来的array打包。（**此处原作者用packing，其实就是去除undefined的元素）  
@@ -611,17 +565,16 @@ function deleteArrayItem(source, index){
 
 rhino 示例：
 
+```javascript
 js> myArray = [1, 2, 3, 17, 23, 42, 69]
-
 1,2,3,17,23,42,69
 
 js> myArray.splice(3,1)
-
 17
 
 js> myArray
-
 1,2,3,23,42,69
+```
 
 (**这样的形式可以看到，事实上不想要undefined的数据时根本就不应该使用delete操作，事实上，对于已经有了undefined数据时，splice也是很有用的，可以直接移出undefined的数据）
 
@@ -656,9 +609,4 @@ Array有一个length成员变量，比如myArray.length，但是它不告诉你�
 原创文章作者保留版权 转载请注明原作者 并给出链接  
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**  
-
-  
-
-  
-
+**

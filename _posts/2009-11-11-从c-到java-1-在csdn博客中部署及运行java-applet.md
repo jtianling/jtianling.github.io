@@ -45,18 +45,19 @@ Technorati 标签: [JAVA](<http://technorati.com/tags/JAVA>),[JAVA Applet](<http
 为了使概念的演示更为直观,也减少大家对源代码运行的负担，首先学习的是JAVA Applet的编写，这样，以后的例子全部通过浏览器就能运行，大家可以在博客中直接查看运行效果，呵呵，这样也算利用JAVA的一点优势。。。。。将来我要是准备学习HTML,JS的时候都可以使用此方式，但是学习C++的时候。。。。。呵呵，就没有办法了。呵呵，在此离开老是依赖截图的日子吧。。。。。。。
 
 首先看一个最简单的JAVA Applet程序：
-    
-    
-    import java.applet.Applet;  
-    import java.awt.*;  
+
+```java
+import java.applet.Applet;  
+import java.awt.*;  
       
-    public class AppletHelloWorld extends Applet   
+public class AppletHelloWorld extends Applet   
+{  
+    public void paint(Graphics g)   
     {  
-        public void paint(Graphics g)   
-        {  
-            g.drawString("Hello Wolrd",10,50);  
-        }  
-    }
+        g.drawString("Hello Wolrd",10,50);  
+    }  
+}
+```
 
 JAVA程序有个让C++程序员别扭的特点，完全以对象为基础，没有任何全局函数，在普通的JAVA程序中即使是使用Main函数都是弄成一个类的静态成员变量，扭曲的无以复加。。。。（个人观点）当然，习惯的人也许觉得没有什么，个人感觉有点太强制了。。。。也许用惯了C/C++的人都太习惯自由吧。。。。呵呵，也不仅仅是这样说，Python不也是一切皆对象吗？还是可以方便的定义全局函数和变量，不仅仅是C/C++程序员才拿自由说事儿。
 
@@ -79,33 +80,33 @@ paint函数的参数是个Graphics类的对象，java.awt.Graphics属于Java中�
 首先，假如使用命令行操作的话，将上述代码保存成一个名为AppletHelloWorld.java的文件，并用javac编译，生成AppletHelloWorld.class文件。假如使用Eclipse的话就简单了，生成一个工程，文件名不要错了，然后build projects就好了（或者是自动编译的），然后（默认情况下）可以在工程的bin目录下找到AppletHelloWorld.class。
 
 生成的class文件就是我们需要运行的文件，部署JAVA Applet时，需要建立一个如下简单内容的HTML文件：
-    
-    
-    <html>  
-    <head><title>我的第一个JavaApplet程序</title></head>  
-    </body>  
-    <p>  
-    <applet code=AppletHelloWorld.class  
-    width=300  
-    height=200>  
-    </applet>  
-    </body>  
-    </html>  
-    
+
+```html
+<html>  
+<head><title>我的第一个JavaApplet程序</title></head>  
+</body>  
+<p>  
+<applet code=AppletHelloWorld.class  
+width=300  
+height=200>  
+</applet>  
+</body>  
+</html>  
+```
 
 保存为html文件，并放在与class文件同一目录下，用浏览器打开此html文件即可看到运行效果，显示hello World字样，此文字并不是写死在HTML中的，而是由JAVA Applet动态运行生成并显示的。。。。。虽然在此例中还看不出区别-_-！但是，现在仅仅是个Hello World程序嘛，不用急。在官网上讲的所有applet tag部署内容都是假设jar或者class是在当前目录下的，这在自己做网站的时候或者本地实验没有什么，可以自己确定各个文件的位置，可是在CSDN博客上这一套就行不通了，还好我找到了HTML的[applet tag的specification](<http://www.w3.org/TR/1999/REC-html401-19991224/struct/objects.html#h-13.4>),其中有个官网没有讲到的确定文件位置的codebase tag。
 
 此时，我将上述class文件上传到我在google code上托管的地方，（事实上，大家愿意上传到哪里都可以，只要提供了直接的链接地址就行）然后直接用codebase指定位置，然后直接将相关的html嵌入此博文，那么，大家就能直接看到运行效果了：）
 
 代码如下：
-    
-    
-    <p>  
-    <applet codebase="http://jtianling.googlecode.com/files/"  
-            code="AppletHelloWorld.class"  
-    width=300  
-    height=200>  
-    
+
+```html
+<p>  
+<applet codebase="http://jtianling.googlecode.com/files/"  
+        code="AppletHelloWorld.class"  
+width=300  
+height=200>  
+```
 
 下面是一个java applet程序的运行效果： 
 

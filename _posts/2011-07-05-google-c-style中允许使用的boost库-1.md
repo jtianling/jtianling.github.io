@@ -57,31 +57,21 @@ _Think of a trait as a small object whose main purpose is to carry information u
 
 正常情况下，一个函数在C++中要么以传值方式传递参数，要么以传引用的方式传递，没法两者兼得：
 
+```cpp
 template <class T>
-
 class TestClass {
+public:
+  TestClass(T value) {
 
-public:  
+  }
 
-  TestClass(T value) {
+  TestClass(const T& value) {
 
-  
+  }
 
-  }
-
-  
-
-  TestClass(const T& value) {
-
-  
-
-  }
-
-  
-
-  T value_;
-
+  T value_;
 };
+```
 
 在使用时会报错：
 
@@ -91,175 +81,96 @@ error C2668: 'TestClass<T>::TestClass' : ambiguous call to overloaded function
 
 使用Call_Traits的param_type作为参数类型时，以下例子：
 
+```cpp
 int g_i = 0;
-
 class PrintClass {
-
 public:
-
-  PrintClass() {
-
-    printf("PrintClass created");
-
-    ++g_i;
-
-  }
-
+  PrintClass() {
+    printf("PrintClass created");
+    ++g_i;
+  }
 };
-
-  
 
 template <class T>
-
 class TestClass {
-
 public:
-
-  
-
-  TestClass(typename boost::call_traits<T>::param_type value) : value_(value){
-
-  
-
-  }
-
-  T value_;
-
+  TestClass(typename boost::call_traits<T>::param_type value) : value_(value){
+  }
+  T value_;
 };
 
-  
+TestClass<int> test(10);
 
-  TestClass<int> test(10);
-
-  
-
-  PrintClass printClass;
-
-  TestClass<PrintClass> testPrintClass(printClass);
-
-  
+PrintClass printClass;
+TestClass<PrintClass> testPrintClass(printClass);
+```
 
 g_i会等于1，实际因为传递的typename boost::call_traits<T>::param_type value在参数类型是PrintClass（一个对象）时，传递的是引用。同时，我没有想到更好的办法去验证在传递的参数是int类型时，的确是通过时传值。这样说来就很有意思了，因为即使我们在使用模版时函数全部通过传值方式来设计，会在T是对象时导致很大的额外开销，我们全部通过const T&的方式来传递参数就好了，就算是原生类型，这种额外开销还是小到足够忽略不计的，只是，boost库的制作者觉得这样还是不够完美？
 
 同时，Call Traits还解决一个问题，那就是"引用的引用"，比如上例中T为T&时的情况..........函数参数假如是通过传递引用的方式的话，const T&的参数，T又等于T&，那么就是const T&&了，C++中没有引用的引用这种东西的存在（只有指针的指针），事实上，Call Traits给函数的调用和参数的类型有完整的一套解决方案，如boost文档中的[example 1](<http://boost.ez2learn.com/libs/utility/call_traits.htm> "example 1"):
 
+```cpp
 template <class T>
-
 struct contained
-
 {
+  // define our typedefs first, arrays are stored by value
+  // so value_type is not the same as result_type:
+  typedef typename boost::call_traits<T>::param_type       param_type;
+  typedef typename boost::call_traits<T>::reference        reference;
+  typedef typename boost::call_traits<T>::const_reference  const_reference;
+  typedef T                                              value_type;
+  typedef typename boost::call_traits<T>::value_type       result_type;
 
-  // define our typedefs first, arrays are stored by value
+  // stored value:
+  value_type v_;
 
-  // so value_type is not the same as result_type:
-
-  typedef typename boost::call_traits<T>::param_type       param_type;
-
-  typedef typename boost::call_traits<T>::reference        reference;
-
-  typedef typename boost::call_traits<T>::const_reference  const_reference;
-
-  typedef T                                                value_type;
-
-  typedef typename boost::call_traits<T>::value_type       result_type;
-
-  
-
-  // stored value:
-
-  value_type v_;
-
-  
-
-  // constructors:
-
-  contained() {}
-
-  contained(param_type p) : v_(p){}
-
-  // return byval:
-
-  result_type value() { return v_; }
-
-  // return by_ref:
-
-  reference get() { return v_; }
-
-  const_reference const_get()const { return v_; }
-
-  // pass value:
-
-  void call(param_type p){}
-
-  
-
+  // constructors:
+  contained() {}
+  contained(param_type p) : v_(p){}
+  // return byval:
+  result_type value() { return v_; }
+  // return by_ref:
+  reference get() { return v_; }
+  const_reference const_get()const { return v_; }
+  // pass value:
+  void call(param_type p){}
 };
-
-  
-
-  
+```
 
 _2.[Compressed Pair](<http://www.boost.org/libs/utility/compressed_pair.htm>)_ from boost/compressed_pair.hpp  
 
 这里正好找到一个很[perfect的文章](<http://hi.baidu.com/_%E2d_%B7%B3_%DE%B2%C2%D2/blog/item/2d8f76f57f0b0829bd3109cc.html> "perfect的文章")，简单的说就是当pair中某个类是空类时，compressed Pair比std中的pair会更省一些空间（1个字节...........），我几乎没有想到我实际工作中有什么对空间要求非常高并且还会使用pair的情况.................这也就是compressed_pair的尴尬之处了。可以稍微提及的是，看看compressed pair的定义，就能看到call traits的使用：
 
+```cpp
 template <class T1, class T2>
-
 class compressed_pair
-
 {
-
 public:
+  typedef T1                                           first_type;
+  typedef T2                                           second_type;
+  typedef typename call_traits<first_type>::param_type       first_param_type;
+  typedef typename call_traits<second_type>::param_type      second_param_type;
+  typedef typename call_traits<first_type>::reference        first_reference;
+  typedef typename call_traits<second_type>::reference       second_reference;
+  typedef typename call_traits<first_type>::const_reference  first_const_reference;
+  typedef typename call_traits<second_type>::const_reference second_const_reference;
 
-  typedef T1                                                 first_type;
+  compressed_pair() : base() {}
+  compressed_pair(first_param_type x, second_param_type y);
+  explicit compressed_pair(first_param_type x);
+  explicit compressed_pair(second_param_type y);
 
-  typedef T2                                                 second_type;
+  compressed_pair& operator=(const compressed_pair&);
 
-  typedef typename call_traits<first_type>::param_type       first_param_type;
+  first_reference       first();
+  first_const_reference first() const;
 
-  typedef typename call_traits<second_type>::param_type      second_param_type;
+  second_reference       second();
+  second_const_reference second() const;
 
-  typedef typename call_traits<first_type>::reference        first_reference;
-
-  typedef typename call_traits<second_type>::reference       second_reference;
-
-  typedef typename call_traits<first_type>::const_reference  first_const_reference;
-
-  typedef typename call_traits<second_type>::const_reference second_const_reference;
-
-  
-
-  compressed_pair() : base() {}
-
-  compressed_pair(first_param_type x, second_param_type y);
-
-  explicit compressed_pair(first_param_type x);
-
-  explicit compressed_pair(second_param_type y);
-
-  
-
-  compressed_pair& operator=(const compressed_pair&);
-
-  
-
-  first_reference       first();
-
-  first_const_reference first() const;
-
-  
-
-  second_reference       second();
-
-  second_const_reference second() const;
-
-  
-
-  void swap(compressed_pair& y);
-
+  void swap(compressed_pair& y);
 };
-
-  
+```
 
 说实话，虽然逻辑上感觉完美了，但是代码上还真是累赘...........typedef简直就是C++强类型+类型定义复杂最大的补丁工具.............但是总的来说compress pair是很简单的东西，不多讲。
 
@@ -271,27 +182,17 @@ Array也是最简单的boost库使用类之一了，用于以最小性能损失�
 
 操作示例：
 
-  boost::array<int, 100> intArray;
+```cpp
+boost::array<int, 100> intArray;
 
-  
+intArray.fill(10);
 
-  intArray.fill(10);
+for (boost::array<int, 100>::iterator it = intArray.begin();
+  it != intArray.end(); ++it) {
 
-  
-
-  for (boost::array<int, 100>::iterator it = intArray.begin();
-
-    it != intArray.end(); ++it) {
-
-  
-
-      *it = 20;
-
-  }
-
-  
-
-  
+    *it = 20;
+}
+```
 
 小结：
 
@@ -314,5 +215,4 @@ Array也是最简单的boost库使用类之一了，用于以最小性能损失�
 [_**write by 九天雁翎(JTianLing) -- blog.jtianling.com**_](<http://blog.jtianling.com/>)[](<http://www.jtianling.com>)
 
 [](<http://www.jtianling.com>)  
-[](<http://www.jtianling.com>)  
-
+[](<http://www.jtianling.com>)

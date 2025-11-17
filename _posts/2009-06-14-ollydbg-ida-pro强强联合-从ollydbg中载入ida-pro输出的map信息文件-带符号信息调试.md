@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # OllyDbg,IDA pro强强联合！从OllyDbg中载入IDA Pro输出的map信息文件，带符号信息调试!  
 
 **write by 九天雁翎(JTianLing) -- www.jtianling.com**

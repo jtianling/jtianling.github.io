@@ -9,7 +9,6 @@ tags:
 - CMake
 ---
 
-
 第一次见到CMake应该是在Eclipse中的编译工具链选项，但是一直没有太过在意，然后再次认识CMake与许多人一样，是通过KDE的源代码，当我上次查看KDE中右键菜单编辑时，接触了KDE的源代码时，很自然的需要KDE的构建系统，CMake，但是光是用用，也没有在意，直到我看到《通向KDE4之路》系列文章《通向KDE4之路（八）：CMake，新的KDE构建系统》时，（KDE使用者推荐阅读，写的实在是太精彩了！Linux伊甸园的转载版本是比较好的，但是不全，其他很多版本都不带图，少了很多阅读乐趣，KDECN的版本文章较全，就是没有图）对KDE4从autotools工具链转向CMake有了深刻印象，有了一探究竟的想法，毕竟，当年我学习autotools系列工具的时候，压根就没有用心，在公司也没有类似工具的使用氛围，一般都是通过一个简单的模板手工编写makefile，然后整个工程的先后顺序依赖等事情通过bash脚本来管理-_-!呵呵，虽然说实话，因为毕竟公司的工程的改动并不大，而且当时以移植Windows的服务器程序为主，所以还算够用。。。。。另外，要是不是现在没有工作比较清闲，还真没有闲工夫去学习这些东西。
 
 <!-- more -->
@@ -52,23 +51,23 @@ Windows下的版本一如既往的有自动安装包。见右边的链接http://
 
 比如说，以前我在Linux编写程序时，常常自己手工创建一个Makefile，（虽然我利用bash自动生成了原始的Makefile及cpp文件）如下例Test工程中所示：
 
-~~~makefile
+```makefile
 obj = test.o
 
 test : $(obj) 
-    g++ -g -o test $(obj) 
+	g++ -g -o test $(obj) 
     
 $(obj) : test.cpp test.h 
-    g++ -g -c test.cpp
+	g++ -g -c test.cpp
 
 .PHONY : clean 
 clean : 
-    -rm test $(obj) 
-~~~
+	-rm test $(obj) 
+```
 
 通过这样的Makefile来使的 test.cpp,test.h可以正常被编译，编译时我只需要使用make命令即可。举个例子，比如test.cpp,test.h的内容如下：
 
-~~~cpp
+```cpp
 // test.cpp:
 #include <stdlib.h>
 #include <stdio.h>
@@ -85,13 +84,13 @@ int main(int argc, char* argv[])
 
 #include <iostream>
 using namespace std;
-~~~
+```
 
 这样，我只需要make，然后就能生成test程序，然后就可以调试或看运行结果了，并且能够通过make clean清理环境，这基本就算一个和那简单的Makefile文件示例了。但是这样的过程有个问题，那就是我每添加一个文件总是需要手工再次编辑Makefile文件，比如，下例中我添加了一个类，然后Makefile文件需要做相应的更改。
 
 添加一个类，2个文件：
 
-~~~cpp
+```cpp
 // Out.cpp
 #include "Out.h"
 
@@ -127,12 +126,11 @@ int main(int argc, char* argv[] )
 	getchar();
 	exit(0);
 }
-
-~~~
+```
 
 此时的Makefile就需要手动改变，变成如下形式：
 
-~~~makefile
+```makefile
 # makefile:
 
 obj = test.o
@@ -140,43 +138,37 @@ obj = test.o
 objOut = Out.o
 
 test : $(obj) $(objOut)
-
-    g++ -g -o test $(obj) $(objOut)
-
+	g++ -g -o test $(obj) $(objOut)
     
-
 $(obj) : test.cpp test.h
-
-    g++ -g -c test.cpp
+	g++ -g -c test.cpp
 
 $(objOut) : Out.cpp Out.h
-
-    g++ -g -c Out.cpp
+	g++ -g -c Out.cpp
 
 .PHONY : clean
 
 clean :
-
-    -rm test $(obj) $(objOut)
-~~~
+	-rm test $(obj) $(objOut)
+```
 
 并且，每次的文件变动都需要手工改动，事实上，手工改动还有更好点的办法，makefile提供了一些简便的通过%.,$<,$@自动通过后缀匹配的方法，（参看Makefile编写的相关教程）但是事实上，每次的文件变动手工对Makefile的改动还是少不了，更重要的是，文件间的依赖无法简单的人工判断，比如上面这个简单的例子，事实上，test.cpp对Out.o的依赖我就没有加上，这种情况下，重新链接或者编译时常常会出现问题，导致最简单的办法就是直接全部重新编译链接，在我以前的公司基本上也就靠这样的办法，事实上，这些弊端，通过CMake，甚至autotools都是可以解决的。另外，上述仅仅是最最简单的情况，事实上，现实规模的程序起码要包含一大堆的库，库的依赖等事情在手工编写makefile的时候也不得不自己考虑，常常会出现一大堆的函数未实现，有的还好说，自己编写的库的函数未实现大概还知道在哪，常常有系统函数的未实现连具体漏了哪个库都难发现，反复的链接，分析也是的确烦人，这种重复枯燥的工作自然不应该由程序员来做，浪费生命，再更进一步的讲，分发源代码的时候怎么保证别人的机器配置与你的一样啊？gcc所在的目录，各种库所在的目录，这些都没有办法强制指定-_-！这就不是简单复杂的问题了，而是实现上的问题。更甚者，一样的源代码也允许不一样的编辑工具啊，有人习惯vim,有人习惯emacs，有人喜欢eclipse，怎么协调统一啊？当然，同一公司可以统一规定，但是开源的世界还那么多规矩那就不现实了，下面我们对比一下CMake使用时的解决方案。
 
 
 # CMake入门
 
-CMake靠的是CMakeLists.txt文件来生成工程的，事实上，CMakeList.txt的编写就如使用make时编写Makefile，只不过，相对来说CMake站的高度更高一些，所以虽然还是要编写一个配置文件，但是CMakefile的编写比makefile轻松简单很多，而CMake最后其实还是通过生成makefile的方式来管理工程的（事实上，CMake可以生成多种工程文件，甚至支持eclipse和VC-_-!）
+CMake靠的是CMakeLists.txt文件来生成工程的，事实上、CMakeList.txt的编写就如使用make时编写Makefile，只不过，相对来说CMake站的高度更高一些，所以虽然还是要编写一个配置文件，但是CMakefile的编写比makefile轻松简单很多，而CMake最后其实还是通过生成makefile的方式来管理工程的（事实上，CMake可以生成多种工程文件，甚至支持eclipse和VC-_-!）
 
 ## 普通程序构建
 
 比如，在上面那个简单的HelloWorld例子中，我们只需要编写一个如下面所示的CMakeLists.txt文件即可：
 
-~~~cmake
+```cmake
 project(test)
 set(CMAKE_CXX_FLAGS "-g -Wall")
 set(SRC_LIST test.cpp)
 add_executable(test ${SRC_LIST})
-~~~
+```
 
 保存文件，然后可以通过在原工程中添加子目录的（也可以是另外的目录）方式隔离CMakefile及以后编译生成的中间文件对源程序的干扰（这点非常出彩），深受VS自动创建文件导致源代码管理的时候老是要去处理的我那是尤为感叹。（当然，假如用VSS管理就好一点，我用mercurial就烦了）
 原来我们常用的autotools构建编译软件的步骤就是众所周知的
@@ -192,7 +184,7 @@ add_executable(test ${SRC_LIST})
 在子目录中（我将其命名为build）中，运行`cmake ../`，
 然后出现一大堆的信息：
 
-~~~
+```bash
 jtianling@jtianling-laptop:~/test/cmakeTest2/build$ cmake ../
 -- The C compiler identification is GNU
 -- The CXX compiler identification is GNU
@@ -208,11 +200,11 @@ jtianling@jtianling-laptop:~/test/cmakeTest2/build$ cmake ../
 -- Generating done
 -- Build files have been written to: /home/jtianling/test/cmakeTest2/build
 jtianling@jtianling-laptop:~/test/cmakeTest2/build$ 
-~~~
+```
 
 此时，Makefile文件就生成完了，我们可以看看，一大堆的东西，看不懂也没有关系，直接make就好了，如下所示：
 
-~~~
+```bash
 jtianling@jtianling-laptop:~/test/cmakeTest2/build$ make
 Scanning dependencies of target test
 [100%] Building CXX object CMakeFiles/test.dir/test.cpp.o
@@ -221,7 +213,7 @@ Linking CXX executable test
 jtianling@jtianling-laptop:~/test/cmakeTest2/build$ ls
 CMakeCache.txt  CMakeFiles  cmake_install.cmake  Makefile  test
 jtianling@jtianling-laptop:~/test/cmakeTest2/build$ 
-~~~
+```
 
 假如不是通过putty远程的话，还能看到一些颜色信息。此时我们可以看到test程序已经生成出来了，运行看看，没有什么问题。
 
@@ -257,7 +249,7 @@ set用于指定变量，这里指定了CMAKE_CXX_FLAGS为”-g -Wall”，CMAKE_
 
 使用此CMakeFiles.txt后，我们不再需要为源代码的添加额外改动任何东西，见下面的执行过程：（警告信息是告诉我们去指定最小需要的cmake版本，对于此演示来说管不管都无所谓，以后都不管了）
 
-~~~
+```bash
 jtianling@jtianling-laptop:~/test/cmakeTest/build$ cmake ../
 CMake Warning (dev) in CMakeLists.txt:
   No cmake_minimum_required command is present.  A line of code such as
@@ -279,7 +271,7 @@ Scanning dependencies of target test
 Linking CXX executable test
 [100%] Built target test
 jtianling@jtianling-laptop:~/test/cmakeTest/build$ 
-~~~
+```
 
 自动的完成了编译，并且自动的添加了Out.cpp的依赖，呵呵，这种过程比起手工编写makefile就像是从手洗衣服到使用全自动洗衣机一样愉快。（当然，工程文件的目录管理那就得用心了，再乱七八糟估计是不能用这种方式来简化了）
 
@@ -289,7 +281,7 @@ jtianling@jtianling-laptop:~/test/cmakeTest/build$
 
 此处以《Unix/Linux编程实践教程》中的一个curses例子为例，原代码如下：
 
-~~~c
+```c
 /* hello3.c
  *      purpose  using refresh and sleep for animated effects
  *      outline  initialize, draw stuff, wrap up
@@ -315,7 +307,7 @@ main()
 	}
 	endwin();
 }
-~~~
+```
 
 此例需要使用curses库，我们只需要在CMakeLists.txt中添加一句话就够了。如下：
 
@@ -329,7 +321,7 @@ main()
 
 比如将上例中的out类给独立出一个库来，在原来的目录下面单独建立一个out目录，编写如下CMakeLists.txt文件:
 
-~~~
+```cmake
 project(out)
 
 set(CMAKE_CXX_FLAGS "-g -Wall")
@@ -337,7 +329,7 @@ set(CMAKE_CXX_FLAGS "-g -Wall")
 aux_source_directory(./ SRC_LIST)
 
 add_library(out ${SRC_LIST})
-~~~
+```
 
 会发现，其实编写一个静态库需要的做的仅仅是最后一行从add_excuteable到add_library的区别-_-!简单到让人无语。编译后，一个名为libout.a的文件就生成了，名字也按Linux的惯例取好了。
 
@@ -345,7 +337,7 @@ add_library(out ${SRC_LIST})
 
 用系统的库很简单，我们已经看到了，上面我们得到一个自己的库了，怎么和程序一起构建呢？也是很容易的。比如，保持上述目录结构，我们利用以下的CMakeLists.txt就可以自动生成自己的库，并完成test到库的依赖：
 
-~~~
+```cmake
 project(test)
 
 set(CMAKE_CXX_FLAGS "-g -Wall")
@@ -359,7 +351,7 @@ link_libraries(out)
 aux_source_directory(./ SRC_LIST)
 
 add_executable(test ${SRC_LIST})
-~~~
+```
 
 呵呵，没有任何新内容，就是设定目录的时候注意一点，so easy？YES!
 

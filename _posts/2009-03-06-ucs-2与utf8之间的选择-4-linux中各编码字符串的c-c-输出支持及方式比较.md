@@ -22,9 +22,7 @@ author:
   last_name: ''
 ---
 
-  
-
-# UCS-2与UTF8之间的选择（4）\--linux中各编码字符串的C/C++输出支持及方式比较
+# UCS-2与UTF8之间的选择（4）--linux中各编码字符串的C/C++输出支持及方式比较
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
@@ -38,67 +36,67 @@ author:
 
 昨天看了下Windows下的方法，这次研究Linux下的：
 
- 1 #include <stdio.h>  
- 2 #include <locale.h>  
- 3 #include <stdlib.h>  
- 4 #include "ConvertUTF.h"  
- 5   
- 6 **int**  main(**int**  argc, **char** * argv[])  
- 7 {  
- 8   
- 9     ConversionResult result = sourceIllegal;  
-10     UTF16 utf16_buf[3] = {0};  
-11     utf16_buf[0] = 0x4e2d;  
-12     utf16_buf[1] = 0x6587;  
-13     utf16_buf[2] = 0;  
-14     UTF16 *utf16Start = utf16_buf;  
-15     UTF8 utf8_buf[12] = {0};  
-16     UTF8* utf8Start = utf8_buf;  
+```c
+ 1 #include <stdio.h>  
+ 2 #include <locale.h>  
+ 3 #include <stdlib.h>  
+ 4 #include "ConvertUTF.h"  
+ 5   
+ 6 **int**  main(**int**  argc, **char** * argv[])  
+ 7 {  
+ 8   
+ 9     ConversionResult result = sourceIllegal;  
+10     UTF16 utf16_buf[3] = {0};  
+11     utf16_buf[0] = 0x4e2d;  
+12     utf16_buf[1] = 0x6587;  
+13     utf16_buf[2] = 0;  
+14     UTF16 *utf16Start = utf16_buf;  
+15     UTF8 utf8_buf[12] = {0};  
+16     UTF8* utf8Start = utf8_buf;  
 17   
-18     // If you want to test next line, you can't get anything but ???  
-19     // wprintf("%s/n", utf16_buf);  
+18     // If you want to test next line, you can't get anything but ???  
+19     // wprintf("%s/n", utf16_buf);  
 20   
-21     result = ConvertUTF16toUTF8((**const**  UTF16 **) &utf16Start, &(utf16_buf[3]), &utf8Start, &(utf8_buf[12]), strictConversion);  
-22     **switch**  (result) {  
-23         **default** : fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);  
-24         **case**  conversionOK: **break** ;  
-25         **case**  sourceExhausted: printf("sourceExhausted/t"); exit(0);  
-26         **case**  targetExhausted: printf("targetExhausted/t"); exit(0);  
-27         **case**  sourceIllegal: printf("sourceIllegal/t"); exit(0);  
-28     }  
+21     result = ConvertUTF16toUTF8((**const**  UTF16 **) &utf16Start, &(utf16_buf[3]), &utf8Start, &(utf8_buf[12]), strictConversion);  
+22     **switch**  (result) {  
+23         **default** : fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);  
+24         **case**  conversionOK: **break** ;  
+25         **case**  sourceExhausted: printf("sourceExhausted/t"); exit(0);  
+26         **case**  targetExhausted: printf("targetExhausted/t"); exit(0);  
+27         **case**  sourceIllegal: printf("sourceIllegal/t"); exit(0);  
+28     }  
 29   
-30     **int**  i = 0;  
-31     **for**(; i < 12; ++i)  
-32     {  
-33         printf("%x ", utf8_buf[i]);  
-34     }  
-35       
-36     printf("/n");  
+30     **int**  i = 0;  
+31     **for**(; i < 12; ++i)  
+32     {  
+33         printf("%x ", utf8_buf[i]);  
+34     }  
+35      
+36     printf("/n");  
 37   
-38     printf("%s/n", (**char** *)utf8_buf);  
-39     bzero(utf16_buf, **sizeof**(utf16_buf));  
+38     printf("%s/n", (**char** *)utf8_buf);  
+39     bzero(utf16_buf, **sizeof**(utf16_buf));  
 40   
-41     UTF8* utf8End = utf8Start;  
-42     utf8Start = utf8_buf;  
-43     utf16Start = utf16_buf;  
+41     UTF8* utf8End = utf8Start;  
+42     utf8Start = utf8_buf;  
+43     utf16Start = utf16_buf;  
 44   
-45     result = ConvertUTF8toUTF16((**const**  UTF8 **) &utf8Start, utf8End, &utf16Start, &(utf16_buf[3]), strictConversion);  
-46     **switch**  (result) {  
-47         **default** : fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);  
-48         **case**  conversionOK: **break** ;  
-49         **case**  sourceExhausted: printf("sourceExhausted/t"); exit(0);  
-50         **case**  targetExhausted: printf("targetExhausted/t"); exit(0);  
-51         **case**  sourceIllegal: printf("sourceIllegal/t"); exit(0);  
-52     }  
+45     result = ConvertUTF8toUTF16((**const**  UTF8 **) &utf8Start, utf8End, &utf16Start, &(utf16_buf[3]), strictConversion);  
+46     **switch**  (result) {  
+47         **default** : fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);  
+48         **case**  conversionOK: **break** ;  
+49         **case**  sourceExhausted: printf("sourceExhausted/t"); exit(0);  
+50         **case**  targetExhausted: printf("targetExhausted/t"); exit(0);  
+51         **case**  sourceIllegal: printf("sourceIllegal/t"); exit(0);  
+52     }  
 53   
-54     // If you want to test next line, you can't get anything  
-55     wprintf("%s/n", utf16_buf);  
+54     // If you want to test next line, you can't get anything  
+55     wprintf("%s/n", utf16_buf);  
 56   
-57     **return**  0;  
+57     **return**  0;  
 58 }  
 59
-
- 
+```
 
 运行结果：
 
@@ -112,60 +110,62 @@ e4 b8 ad e6 96 87 0 0 0 0 0 0
 
  
 
- 1 #include <stdio.h>  
- 2 #include <locale.h>  
- 3 #include <stdlib.h>  
- 4 #include <iostream>  
- 5 #include "ConvertUTF.h"  
- 6 **using**  **namespace**  std;  
- 7   
- 8 **int**  main(**int**  argc, **char** * argv[])  
- 9 {  
-10     ConversionResult result = sourceIllegal;  
-11     UTF16 utf16_buf[3] = {0};  
-12     utf16_buf[0] = 0x4e2d;  
-13     utf16_buf[1] = 0x6587;  
-14     utf16_buf[2] = 0;  
-15     UTF16 *utf16Start = utf16_buf;  
-16     UTF8 utf8_buf[12] = {0};  
-17     UTF8* utf8Start = utf8_buf;  
+```cpp
+ 1 #include <stdio.h>  
+ 2 #include <locale.h>  
+ 3 #include <stdlib.h>  
+ 4 #include <iostream>  
+ 5 #include "ConvertUTF.h"  
+ 6 **using**  **namespace**  std;  
+ 7   
+ 8 **int**  main(**int**  argc, **char** * argv[])  
+ 9 {  
+10     ConversionResult result = sourceIllegal;  
+11     UTF16 utf16_buf[3] = {0};  
+12     utf16_buf[0] = 0x4e2d;  
+13     utf16_buf[1] = 0x6587;  
+14     utf16_buf[2] = 0;  
+15     UTF16 *utf16Start = utf16_buf;  
+16     UTF8 utf8_buf[12] = {0};  
+17     UTF8* utf8Start = utf8_buf;  
 18   
-19     result = ConvertUTF16toUTF8((**const**  UTF16 **) &utf16Start, &(utf16_buf[3]), &utf8Start, &(utf8_buf[12]), strictConversion);  
-20     **switch**  (result) {  
-21         **default** : fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);  
-22         **case**  conversionOK: **break** ;  
-23         **case**  sourceExhausted: printf("sourceExhausted/t"); exit(0);  
-24         **case**  targetExhausted: printf("targetExhausted/t"); exit(0);  
-25         **case**  sourceIllegal: printf("sourceIllegal/t"); exit(0);  
-26     }  
+19     result = ConvertUTF16toUTF8((**const**  UTF16 **) &utf16Start, &(utf16_buf[3]), &utf8Start, &(utf8_buf[12]), strictConversion);  
+20     **switch**  (result) {  
+21         **default** : fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);  
+22         **case**  conversionOK: **break** ;  
+23         **case**  sourceExhausted: printf("sourceExhausted/t"); exit(0);  
+24         **case**  targetExhausted: printf("targetExhausted/t"); exit(0);  
+25         **case**  sourceIllegal: printf("sourceIllegal/t"); exit(0);  
+26     }  
 27   
-28     **int**  i = 0;  
-29     **for**(; i < 12; ++i)  
-30     {  
-31         printf("%x ", utf8_buf[i]);  
-32     }  
-33       
-34     printf("/n");  
+28     **int**  i = 0;  
+29     **for**(; i < 12; ++i)  
+30     {  
+31         printf("%x ", utf8_buf[i]);  
+32     }  
+33      
+34     printf("/n");  
 35   
-36     cout << (**char** *)utf8_buf <<endl;  
-37     bzero(utf16_buf, **sizeof**(utf16_buf));  
+36     cout << (**char** *)utf8_buf <<endl;  
+37     bzero(utf16_buf, **sizeof**(utf16_buf));  
 38   
-39     UTF8* utf8End = utf8Start;  
-40     utf8Start = utf8_buf;  
-41     utf16Start = utf16_buf;  
+39     UTF8* utf8End = utf8Start;  
+40     utf8Start = utf8_buf;  
+41     utf16Start = utf16_buf;  
 42   
-43     result = ConvertUTF8toUTF16((**const**  UTF8 **) &utf8Start, utf8End, &utf16Start, &(utf16_buf[3]), strictConversion);  
-44     **switch**  (result) {  
-45         **default** : fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);  
-46         **case**  conversionOK: **break** ;  
-47         **case**  sourceExhausted: printf("sourceExhausted/t"); exit(0);  
-48         **case**  targetExhausted: printf("targetExhausted/t"); exit(0);  
-49         **case**  sourceIllegal: printf("sourceIllegal/t"); exit(0);  
-50     }  
+43     result = ConvertUTF8toUTF16((**const**  UTF8 **) &utf8Start, utf8End, &utf16Start, &(utf16_buf[3]), strictConversion);  
+44     **switch**  (result) {  
+45         **default** : fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);  
+46         **case**  conversionOK: **break** ;  
+47         **case**  sourceExhausted: printf("sourceExhausted/t"); exit(0);  
+48         **case**  targetExhausted: printf("targetExhausted/t"); exit(0);  
+49         **case**  sourceIllegal: printf("sourceIllegal/t"); exit(0);  
+50     }  
 51   
-52     **return**  0;  
+52     **return**  0;  
 53 }  
 54
+```
 
  
 
@@ -183,10 +183,4 @@ e4 b8 ad e6 96 87 0 0 0 0 0 0
 
  
 
- 
-
- 
-
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

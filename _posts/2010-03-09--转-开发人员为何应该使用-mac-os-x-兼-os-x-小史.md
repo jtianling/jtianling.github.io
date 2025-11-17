@@ -21,8 +21,6 @@ author:
   last_name: ''
 ---
 
-  
-
 ## [  
 ](<http://blog.youxu.info/2010/02/28/why-mac-os-x-for-programmers/> "Permanent link to 开发人员为何应该使用 Mac OS X 兼 OS X 小史")  
 
@@ -250,4 +248,4 @@ Mac OS X 就是 GUI 时代的这样的一个操作系统。 即使是从应用�
 
  
 
-作者知识比较丰富。。。。。历史老师？-_-!而且，很明显对Small Talk有太多的偏爱。。。。。。。
+作者知识比较丰富。。。。。历史老师？-_-!而且，很明显对Small Talk有太多的偏爱。。。。。。

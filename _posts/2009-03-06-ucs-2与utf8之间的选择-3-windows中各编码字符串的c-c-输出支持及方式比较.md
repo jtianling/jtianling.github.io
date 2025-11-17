@@ -23,8 +23,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # UCS-2与UTF8之间的选择（3）\--windows与linux中各编码字符串的C/C++输出支持及方式比较
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
@@ -91,299 +89,161 @@ author:
 
 一般来说，用VS2005中用wchar_t来表示UTF16中文就比较合适了，因为目前VS2005中wchar_t默认就是两字节的，下面是演示过程的源代码：
 
+```cpp
 // Unicode.cpp : 定义控制台应用程序的入口点。
-
 //
 
 #include <stdio.h>
-
 #include <tchar.h>
-
 #include <windows.h>
-
 #include <locale.h>
-
 #include "ConvertUTF.h"
 
- 
-
 int _tmain(int argc, _TCHAR* argv[])
-
 {
-
     setlocale(LC_ALL, "");
-
     wprintf(L"windows控制台在C语言中输出UCS-2宽字节中文\-----begin-----/n");
-
     ConversionResult result = sourceIllegal;
-
     wchar_t lwcBuf[3] = L"中文";
-
     UTF16 utf16_buf[3] = {0};
-
     utf16_buf[0] = 0x4e2d;
-
     utf16_buf[1] = 0x6587;
-
     utf16_buf[2] = 0;
-
     UTF16 *utf16Start = utf16_buf;
-
     UTF8 utf8_buf[12] = {0};
-
     UTF8* utf8Start = utf8_buf;
 
- 
-
     wprintf(L"%s/n", (wchar_t*)utf16_buf);
-
     wprintf(L"%s/n", lwcBuf);
 
- 
-
     result = ConvertUTF16toUTF8((const UTF16 **) &utf16Start, &(utf16_buf[3]), &utf8Start, &(utf8_buf[12]), strictConversion);
-
     switch (result) {
-
        default: fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);
-
        case conversionOK: break;
-
        case sourceExhausted: printf("sourceExhausted/t"); exit(0);
-
        case targetExhausted: printf("targetExhausted/t"); exit(0);
-
        case sourceIllegal: printf("sourceIllegal/t"); exit(0);
-
     }
-
- 
 
     printf("is leagal UTF8: %d/n", isLegalUTF8Sequence(utf8_buf, utf8Start));
-
     printf("%s/n", (char*)utf8_buf);
 
- 
-
     // 清空缓存，以确定以后的值的确是转换得来
-
     ZeroMemory(utf16_buf, sizeof(utf16_buf));
 
- 
-
     // 由于转换中利用了这两个start，所以需要重新为start定位,并且保存住End值
-
     UTF8* utf8End = utf8Start;
-
     utf8Start = utf8_buf;
-
     utf16Start = utf16_buf;
 
- 
-
     result = ConvertUTF8toUTF16((const UTF8 **) &utf8Start, utf8End, &utf16Start, &(utf16_buf[3]), strictConversion);
-
     switch (result) {
-
        default: fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);
-
        case conversionOK: break;
-
        case sourceExhausted: printf("sourceExhausted/t"); exit(0);
-
        case targetExhausted: printf("targetExhausted/t"); exit(0);
-
        case sourceIllegal: printf("sourceIllegal/t"); exit(0);
-
     }
 
- 
-
     wprintf(L"%s/n", (wchar_t*)utf16_buf);
-
     wprintf(L"windows控制台在C语言中输出UCS-2宽字节中文\-----end-----/n");
 
- 
-
     return 0;
-
 }
-
- 
+```
 
 运行结果：
 
+```text
 windows控制台在C语言中输出UCS-2宽字节中文\-----begin-----
-
 中文
-
 中文
-
 is leagal UTF8: 1
-
 涓枃
-
 中文
-
 windows控制台在C语言中输出UCS-2宽字节中文\-----end-----
-
- 
+```
 
 还是利用了上一篇提到的函数，需要注意的是在C语言中不使用setlocale函数是没有办法正确输出utf16中文的，（因为默认可能是使用了windows以前的codepage那一套系统）设置后一切非常正常。无论是用short标志的中文，或者是直接输入的中文，控制台都能正确输出，但是utf8显然没有得到MS的支持，一样的，在VS2005中，UTF8字符不能正常的通过鼠标停留显示出来。。。。
 
 以上是C语言的方案，C++的输出方式如下：（从原来的代码改过来的，有点乱，但是仅仅作为测试，没有考虑那么多了）
 
- 
-
+```cpp
 #include <stdio.h>
-
 #include <tchar.h>
-
 #include <windows.h>
-
 #include <locale.h>
-
 #include <iostream>
-
 #include "ConvertUTF.h"
-
 using namespace std;
 
- 
-
 void TestInCPP()
-
 {
-
     // 未为wcout流设置locale前的效果,cout能够输出中文是因为Windows以前的多字节技术
-
     cout <<"未为wcout流设置locale前的效果: /"";
-
     wcout <<L"中文";
-
     cout <<"/"" <<endl;
 
- 
-
     // 可以看到什么效果都没有，还会将wcout设置错误标志位，不清楚此标志位将什么输出都没有
-
     wcout.clear();
 
- 
-
     wcout.imbue(locale(""));
-
     wcout <<L"windows控制台在C++语言中输出UCS-2宽字节中文\-----begin-----/n" <<endl;
-
     ConversionResult result = sourceIllegal;
-
     wchar_t lwcBuf[3] = L"中文";
-
     UTF16 utf16_buf[3] = {0};
-
     utf16_buf[0] = 0x4e2d;
-
     utf16_buf[1] = 0x6587;
-
     utf16_buf[2] = 0;
-
     UTF16 *utf16Start = utf16_buf;
-
     UTF8 utf8_buf[12] = {0};
-
     UTF8* utf8Start = utf8_buf;
-
- 
 
     wcout<<L"utf16_buf:" <<(wchar_t*)utf16_buf <<L" lwcBuf:" <<lwcBuf <<endl;
 
- 
-
     result = ConvertUTF16toUTF8((const UTF16 **) &utf16Start, &(utf16_buf[3]), &utf8Start, &(utf8_buf[12]), strictConversion);
-
     switch (result) {
-
        default: fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);
-
        case conversionOK: break;
-
        case sourceExhausted: printf("sourceExhausted/t"); exit(0);
-
        case targetExhausted: printf("targetExhausted/t"); exit(0);
-
        case sourceIllegal: printf("sourceIllegal/t"); exit(0);
-
     }
-
- 
 
     wcout <<L"Is leagal UTF8:" <<isLegalUTF8Sequence(utf8_buf, utf8Start) <<endl;
-
     cout.imbue(locale(""));
-
     cout <<(char*)utf8_buf <<endl;
 
- 
-
     // 清空缓存，以确定以后的值的确是转换得来
-
     ZeroMemory(utf16_buf, sizeof(utf16_buf));
 
- 
-
     // 由于转换中利用了这两个start，所以需要重新为start定位,并且保存住End值
-
     UTF8* utf8End = utf8Start;
-
     utf8Start = utf8_buf;
-
     utf16Start = utf16_buf;
 
- 
-
     result = ConvertUTF8toUTF16((const UTF8 **) &utf8Start, utf8End, &utf16Start, &(utf16_buf[3]), strictConversion);
-
     switch (result) {
-
        default: fprintf(stderr, "Test02B fatal error: result %d for input %08x/n", result, utf16_buf[0]); exit(1);
-
        case conversionOK: break;
-
        case sourceExhausted: printf("sourceExhausted/t"); exit(0);
-
        case targetExhausted: printf("targetExhausted/t"); exit(0);
-
        case sourceIllegal: printf("sourceIllegal/t"); exit(0);
-
     }
-
- 
 
     wcout<<L"utf16_buf:" <<(wchar_t*)utf16_buf <<endl;
 
- 
-
     wcout <<L"windows控制台在C++语言中输出UCS-2宽字节中文\-----end-----/n" <<endl;
-
 }
 
- 
-
 int _tmain(int argc, _TCHAR* argv[])
-
 {
-
- 
 
     TestInCPP();
 
- 
-
     return 0;
-
 }
-
- 
+```
 
 可以看到，C++的使用方法更加有效一些，因为仅仅影响到某个特定的输出流，而不是对所有的东西都一次性更改，这点与C++中面向对象的思想相符合，C语言那种方式太霸道了一点(符合C语言全局设定的风格)。但是作为操作系统的特性，C++也没有办法超越，去将UTF-8编码的字符串输出。
 
@@ -394,5 +254,3 @@ int _tmain(int argc, _TCHAR* argv[])
   
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

@@ -23,8 +23,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 本文译自 orx tutorials 的  
 [独立程序与本地化教程  
 ](<http://orx-project.org/wiki/en/orx/tutorials/standalone>)  
@@ -420,43 +418,27 @@ Run() and Exit() callbacks.
 现在看下我们的StandAlone类，包含orx  
 Init()、Run()和Exit()回调函数。
 
-class StandAlone   
-  
-{   
-  
-public:   
-  
-    static orxSTATUS  
-orxFASTCALL EventHandler(const orxEVENT *_pstEvent);  
-  
-      static  
-orxSTATUS orxFASTCALL Init();  
-  
-      static void orxFASTCALL Exit();  
-  
-      static  
-orxSTATUS orxFASTCALL Run();  
-  
-    void SelectNextLanguage();
+```cpp
+class StandAlone
+{
+public:
+    static orxSTATUS orxFASTCALL EventHandler(const orxEVENT *_pstEvent);
+    static orxSTATUS orxFASTCALL Init();
+    static void orxFASTCALL Exit();
+    static orxSTATUS orxFASTCALL Run();
 
-    StandAlone() :  
-m_poLogo(NULL), s32LanguageIndex(0) {};  
-  
-      ~StandAlone()  
-{};     
-  
-private:  
-  
-  
-     
-orxSTATUS InitGame();     
-  
-    Logo *m_poLogo;   
-  
-    orxS32  
-s32LanguageIndex;   
-  
+    void SelectNextLanguage();
+
+    StandAlone() : m_poLogo(NULL), s32LanguageIndex(0) {};
+    ~StandAlone() {};
+
+private:
+    orxSTATUS InitGame();
+
+    Logo *m_poLogo;
+    orxS32 s32LanguageIndex;
 };
+```
 
 All  
 the callbacks could actually have been defined out of any class. This  
@@ -474,24 +456,18 @@ to our Logo class definition.
   
 现在看一下Logo类的定义：
 
-class Logo   
-  
-{   
-  
-   private:   
-  
-    orxOBJECT  
-*m_pstObject;   
-  
-    orxOBJECT *m_pstLegend;   
-  
-    public:   
-  
-    Logo();   
-  
-    ~Logo();  
-  
+```cpp
+class Logo
+{
+private:
+    orxOBJECT *m_pstObject;
+    orxOBJECT *m_pstLegend;
+
+public:
+    Logo();
+    ~Logo();
 };
+```
 
 Nothing fancy here, we  
 have a reference to an orxOBJECT that will be our logo and another one  
@@ -511,20 +487,14 @@ constructor.
   
 现在让我们看一下它的构造函数：  
   
-Logo::Logo()   
-  
-{   
-  
-    m_pstObject =  
-orxObject_CreateFromConfig("Logo");  
-  
-       
-orxObject_SetUserData(m_pstObject, this);  
-  
-    m_pstLegend =  
-orxObject_CreateFromConfig("Legend");  
-  
+```cpp
+Logo::Logo()
+{
+    m_pstObject = orxObject_CreateFromConfig("Logo");
+    orxObject_SetUserData(m_pstObject, this);
+    m_pstLegend = orxObject_CreateFromConfig("Legend");
 }
+```
 
 As seen in the previous tutorials we  
 create our two objects (Logo and Legend) and we link our Logo C++ object  
@@ -532,19 +502,15 @@ to its orx equivalent using orxObject_SetUserData().
 
 用前面的教程中讲的方法，我们创建了两个对象  
 （Logo和Legend）并且我们通过  
-  
 orxObject_SetUserData()把Logo C++对象链接到它对应的orx对象上。
 
-Logo::~Logo()  
-  
-{  
-  
-       
-orxObject_Delete(m_pstObject);  
-  
-      orxObject_Delete(m_pstLegend);  
-  
+```cpp
+Logo::~Logo()
+{
+    orxObject_Delete(m_pstObject);
+    orxObject_Delete(m_pstLegend);
 }
+```
 
 Simple cleaning here  
 as we only delete our both objects.
@@ -557,18 +523,13 @@ function.
 现  
 在看看我们的main函数：
 
-int  
-main(int argc, char **argv)  
-  
-{  
-  
-      orx_Execute(argc, argv,  
-StandAlone::Init, StandAlone::Run, StandAlone::Exit);   
-  
-    return  
-EXIT_SUCCESS;  
-  
+```cpp
+int main(int argc, char **argv)
+{
+    orx_Execute(argc, argv, StandAlone::Init, StandAlone::Run, StandAlone::Exit);
+    return EXIT_SUCCESS;
 }
+```
 
 As  
 we can see, we're using the orx_Execute() helper that will initialize  
@@ -593,25 +554,17 @@ glance at the console-less version for windows.
   
 我们快速浏览一下windows的无终端版本。
 
-#ifdef __orxMSVC__    
-  
-int WINAPI  
-WinMain(HINSTANCE hInstance, HINSTANCE PrevInstance,  
-  
-        LPSTR  
-lpCmdLine, int nCmdShow) {  
-  
-    // Inits and executes orx  
-  
-     
-orx_WinExecute(StandAlone::Init, StandAlone::Run, StandAlone::Exit);  
-  
-    // Done!   
-  
-    return  
-EXIT_SUCCESS;   
-  
-}   #endif
+```cpp
+#ifdef __orxMSVC__
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE PrevInstance,
+                   LPSTR lpCmdLine, int nCmdShow) {
+    // Inits and executes orx
+    orx_WinExecute(StandAlone::Init, StandAlone::Run, StandAlone::Exit);
+    // Done!
+    return EXIT_SUCCESS;
+}
+#endif
+```
 
 Same as for the traditional main() version  
 except that we use the orx_WinExecute() helper that will compute the  
@@ -643,17 +596,13 @@ Init() code looks like.
   
 现在看看我们的Init() 代码是怎么样的：
 
-orxSTATUS  
-StandAlone::Init()  
-  
-{  
-  
-      orxLOG("10_StandAlone Init() called!");  
-  
-    return  
-soMyStandAloneGame.InitGame();  
-  
+```cpp
+orxSTATUS StandAlone::Init()
+{
+    orxLOG("10_StandAlone Init() called!");
+    return soMyStandAloneGame.InitGame();
 }
+```
 
 We simply initialize our StandAlone instance  
 by calling its InitGame() method.
@@ -664,25 +613,16 @@ Let's see its content.
   
 让我们看看它的内容：
 
-orxEvent_AddHandler(orxEVENT_TYPE_LOCALE,  
-EventHandler);  
-  
-m_poLogo = new Logo();  
-  
-std::cout << "The available  
-languages are:" << std::endl;  
-  
-for(orxS32 i = 0; i <  
-orxLocale_GetLanguageCounter(); i++)  
-  
-{  
-  
-      std::cout << " \- "  
-<< orxLocale_GetLanguage(i) << std::endl;  
-  
-}   
-  
+```cpp
+orxEvent_AddHandler(orxEVENT_TYPE_LOCALE, EventHandler);
+m_poLogo = new Logo();
+std::cout << "The available languages are:" << std::endl;
+for(orxS32 i = 0; i < orxLocale_GetLanguageCounter(); i++)
+{
+    std::cout << " \\- " << orxLocale_GetLanguage(i) << std::endl;
+}
 orxViewport_CreateFromConfig("Viewport");
+```
 
 We simply register a  
 callback to catch all the orxEVENT_TYPE_LOCALE events.  
@@ -712,20 +652,14 @@ Exit() callback.
 现  
 在看下我们的Exit()回调函数：
 
-void  
-StandAlone::Exit()  
-  
-{  
-  
-    delete soMyStandAloneGame.m_poLogo;   
-  
-     
-soMyStandAloneGame.m_poLogo = NULL;     
-  
-    orxLOG("10_StandAlone Exit()  
-called!");  
-  
+```cpp
+void StandAlone::Exit()
+{
+    delete soMyStandAloneGame.m_poLogo;
+    soMyStandAloneGame.m_poLogo = NULL;
+    orxLOG("10_StandAlone Exit() called!");
 }
+```
 
 Simple Logo object  
 deletion here, nothing surprising.
@@ -737,40 +671,25 @@ to our Run() callback.
   
 让我们看下Run()回调函数：
 
-orxSTATUS  
-StandAlone::Run()  
-  
-{  
-  
-    orxSTATUS eResult = orxSTATUS_SUCCESS;  
-  
-     
-if(orxInput_IsActive("CycleLanguage") &&  
-orxInput_HasNewStatus("CycleLanguage"))  
-  
-          {  
-  
-                
-soMyStandAloneGame.SelectNextLanguage();  
-  
-    }
+```cpp
+orxSTATUS StandAlone::Run()
+{
+    orxSTATUS eResult = orxSTATUS_SUCCESS;
 
-     
-if(orxInput_IsActive("Quit"))  
-  
-          {  
-  
-                
-orxLOG("Quit action triggered, exiting!");  
-  
-        eResult =  
-orxSTATUS_FAILURE;  
-  
-    }  
-  
-    return eResult;  
-  
+    if(orxInput_IsActive("CycleLanguage") && orxInput_HasNewStatus("CycleLanguage"))
+    {
+        soMyStandAloneGame.SelectNextLanguage();
+    }
+
+    if(orxInput_IsActive("Quit"))
+    {
+        orxLOG("Quit action triggered, exiting!");
+        eResult = orxSTATUS_FAILURE;
+    }
+
+    return eResult;
 }
+```
 
 Two things are done here.  
   
@@ -795,18 +714,13 @@ SelectNextLanguage() method.
 
 让我们快速的浏览一下 SelectNextLanguage() 方法。
 
-void  
-StandAlone::SelectNextLanguage()  
-  
+```cpp
+void StandAlone::SelectNextLanguage()
 {
-
-s32LanguageIndex = (s32LanguageIndex ==  
-orxLocale_GetLanguageCounter() - 1) ? 0 : s32LanguageIndex + 1;
-
-  
-orxLocale_SelectLanguage(orxLocale_GetLanguage(s32LanguageIndex));
-
+    s32LanguageIndex = (s32LanguageIndex == orxLocale_GetLanguageCounter() - 1) ? 0 : s32LanguageIndex + 1;
+    orxLocale_SelectLanguage(orxLocale_GetLanguage(s32LanguageIndex));
 }
+```
 
 We basically go to the  
 next available language (cycling back to the beginning of the list when  
@@ -828,47 +742,26 @@ language selection as done in our EventHandler callback.
   
 我们可以在EventHandler回调函数中做捕捉任意语言的选择事件。
 
-orxSTATUS orxFASTCALL  
-StandAlone::EventHandler(const orxEVENT *_pstEvent)  
-  
-{  
-  
-  
- switch(_pstEvent->eID)  
-  
- {  
-  
-   case orxLOCALE_EVENT_SELECT_LANGUAGE:  
-  
-  
-  
-  
-     orxLOCALE_EVENT_PAYLOAD *pstPayload;  
-  
-     pstPayload =  
-(orxLOCALE_EVENT_PAYLOAD *)_pstEvent->pstPayload;  
-  
-  
-     orxLOG("Switching to '%s'.", pstPayload->zLanguage);  
-  
-     break;  
-  
-  
-  
-   default:  
-  
-  
-  
-     break;  
-  
- }  
-  
-  
-  
- return  
-orxSTATUS_FAILURE;  
-  
+```cpp
+orxSTATUS orxFASTCALL StandAlone::EventHandler(const orxEVENT *_pstEvent)
+{
+    switch(_pstEvent->eID)
+    {
+        case orxLOCALE_EVENT_SELECT_LANGUAGE:
+        {
+            orxLOCALE_EVENT_PAYLOAD *pstPayload;
+            pstPayload = (orxLOCALE_EVENT_PAYLOAD *)_pstEvent->pstPayload;
+            orxLOG("Switching to '%s'.", pstPayload->zLanguage);
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    return orxSTATUS_FAILURE;
 }
+```
 
 As  
 you can see, we only track the orxLOCALE_EVENT_SELECT_LANGUAGE event  
@@ -943,14 +836,12 @@ display.
 
 首先定义我们的display配置段：
 
-[Display]  
-  
-ScreenWidth   = 800  
-  
-ScreenHeight  = 600  
-  
-Title         = Stand  
-Alone/Locale Tutorial
+```ini
+[Display]
+ScreenWidth   = 800
+ScreenHeight  = 600
+Title         = Stand Alone/Locale Tutorial
+```
 
 As you can see, we're creating a window of  
 resolution 800×600 and define its title.
@@ -964,27 +855,17 @@ and camera.
 现在我们要提供视口（viewport）和摄像  
 头（camera）配置段的信息：
 
-[Viewport]  
-  
-Camera          =  
-Camera  
-  
-BackgroundColor  
-= (20, 10, 10)  
-  
-  
-  
-[Camera]  
-  
-FrustumWidth  = @Display.ScreenWidth  
-  
-FrustumHeight =  
-@Display.ScreenHeight  
-  
-FrustumFar    = 2.0  
-  
-Position      = (0.0,  
-0.0, -1.0)
+```ini
+[Viewport]
+Camera         = Camera
+BackgroundColor = (20, 10, 10)
+
+[Camera]
+FrustumWidth  = @Display.ScreenWidth
+FrustumHeight = @Display.ScreenHeight
+FrustumFar    = 2.0
+Position      = (0.0, 0.0, -1.0)
+```
 
 Nothing new here as  
 everything was already covered in the   
@@ -1002,20 +883,15 @@ Let's now see which inputs are defined.
 
 现在看看输入（inputs）是怎么定义的：
 
-[Input]  
-  
-SetList = MainInput  
-  
-  
-  
-[MainInput]  
-  
-KEY_ESCAPE  = Quit  
-  
-KEY_SPACE   =  
-CycleLanguage  
-  
-MOUSE_LEFT  = CycleLanguage
+```ini
+[Input]
+SetList = MainInput
+
+[MainInput]
+KEY_ESCAPE  = Quit
+KEY_SPACE   = CycleLanguage
+MOUSE_LEFT  = CycleLanguage
+```
 
 In the Input section, we define all our  
 input sets. In this tutorial we'll only use one called MainInput but we  
@@ -1051,73 +927,38 @@ define languages that will be used by the orxLOCALE module.
 现在让我们看看怎么定义将要被  
 orxLOCALE模块使用的语言。
 
-[Locale]  
-  
-LanguageList =  
-English#French#Spanish#German#Finnish#Swedish#Norwegian  
-  
-  
-  
-[English]  
-  
-Content = This is  
-orx's logo.  
-  
-Lang  
-   = (English)  
-  
-  
-  
-[French]  
-  
-Content = Ceci est le logo d'orx.  
-  
-Lang    = (Fran?ais)  
-  
-  
-  
-[Spanish]  
-  
-Content = Este es el  
-logotipo de orx.  
-  
-Lang    = (Espa?ol)  
-  
-  
-  
-[German]  
-  
-Content = Das ist orx Logo.  
-  
-Lang    = (Deutsch)  
-  
-  
-  
-[Finnish]  
-  
-Content = T?m? on orx  
-logo.  
-  
-Lang  
-   = (Suomi)  
-  
-  
-  
-[Swedish]  
-  
-Content = Detta ?r orx logotyp.  
-  
-Lang    = (Svenska)  
-  
-  
-  
-[Norwegian]  
-  
-Content = Dette er orx  
-logo.  
-  
-Lang  
-   = (Norsk)
+```ini
+[Locale]
+LanguageList = English#French#Spanish#German#Finnish#Swedish#Norwegian
+
+[English]
+Content = This is orx's logo.
+Lang    = (English)
+
+[French]
+Content = Ceci est le logo d'orx.
+Lang    = (Fran?ais)
+
+[Spanish]
+Content = Este es el logotipo de orx.
+Lang    = (Espa?ol)
+
+[German]
+Content = Das ist orx Logo.
+Lang    = (Deutsch)
+
+[Finnish]
+Content = T?m? on orx logo.
+Lang    = (Suomi)
+
+[Swedish]
+Content = Detta ?r orx logotyp.
+Lang    = (Svenska)
+
+[Norwegian]
+Content = Dette er orx logo.
+Lang    = (Norsk)
+```
 
 To  
 define languages for localization we only need to define a Locale  
@@ -1144,24 +985,16 @@ defined our Logo object.
 
 现在看看我们是怎么定义Logo对象：
 
-[LogoGraphic]  
-  
-Texture =  
-../../data/object/orx.png  
-  
-Pivot   = center  
-  
-  
-  
-[Logo]  
-  
-Graphic   =  
-LogoGraphic  
-  
-FXList  
-   = FadeIn # LoopFX # ColorCycle1  
-  
+```ini
+[LogoGraphic]
+Texture = ../../data/object/orx.png
+Pivot   = center
+
+[Logo]
+Graphic   = LogoGraphic
+FXList    = FadeIn # LoopFX # ColorCycle1
 Smoothing = true
+```
 
 Again, everything we  
 can see here is already covered in the   
@@ -1195,9 +1028,10 @@ our Legend object.
 下  
 一个要查看的是：我们的Legend对象：
 
-[Legend]  
-  
+```ini
+[Legend]
 ChildList = Legend1 # Legend2
+```
 
 Surprise! Actually  
 it's an empty object that will spawn two child objects: Legend1 and  
@@ -1249,33 +1083,19 @@ to our two object, Legend1 and Legend2.
 好了，现在让我们回到Legend1  
 和Legend2两个对象。
 
-[Legend1]  
-  
-Graphic       =  
-Legend1Graphic  
-  
-Position      = (0, 0.25, 0.0)  
-  
-FXList        =  
-ColorCycle2  
-  
-ParentCamera  
- = Camera  
-  
-  
-  
-[Legend2]  
-  
-Graphic       =  
-Legend2Graphic  
-  
-Position      = (0, 0.3, 0.0)  
-  
-FXList        =  
-@Legend1  
-  
-ParentCamera  
- = @Legend1
+```ini
+[Legend1]
+Graphic      = Legend1Graphic
+Position     = (0, 0.25, 0.0)
+FXList       = ColorCycle2
+ParentCamera = Camera
+
+[Legend2]
+Graphic      = Legend2Graphic
+Position     = (0, 0.3, 0.0)
+FXList       = @Legend1
+ParentCamera = @Legend1
+```
 
 They  
 look very basic, they're both using the same FX (ColorCyle2), they both  
@@ -1305,31 +1125,21 @@ having a look at their Graphic objects.
 现在让我们看一下它们的Graphic对象作为  
 结束。
 
-[Legend1Text]  
-  
-String = $Content  
-  
-  
-  
-[Legend2Text]  
-  
-String = $Lang  
-  
-  
-  
-[Legend1Graphic]  
-  
-Pivot = center  
-  
-Text  = Legend1Text  
-  
-  
-  
-[Legend2Graphic]  
-  
-Pivot = center  
-  
-Text  = Legend2Text
+```ini
+[Legend1Text]
+String = $Content
+
+[Legend2Text]
+String = $Lang
+
+[Legend1Graphic]
+Pivot = center
+Text  = Legend1Text
+
+[Legend2Graphic]
+Pivot = center
+Text  = Legend2Text
+```
 
 We can see that each  
 Graphic has its own Text attribute: Legend1Text and Legend2Text.  
@@ -1408,5 +1218,3 @@ __orxCPP__ 会被自动定义
 ](<http://orx-project.org/wiki/en/orx/tutorials/standalone#fnt__5>)  
   
 使用WinMain()替代main()
-
- 

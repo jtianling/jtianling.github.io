@@ -56,35 +56,28 @@ PyObject *tuple = Py_BuildValue("(iis)", 1, 2, "three");
 
 形式来构建，假如很多的话，可以用下面的方式来构建
 
+```c
 PyObject *t;
 
- 
-
 t = PyTuple_New(3);
-
 PyTuple_SetItem(t, 0, PyLong_FromLong(1L));
-
 PyTuple_SetItem(t, 1, PyLong_FromLong(2L));
-
 PyTuple_SetItem(t, 2, PyString_FromString("three"));
+```
 
 这一点在刚开始开工的时候迷惑了很久。
 
 4.      将要输出的所有函数放入一个数组中，数组的结构是：
 
+```c
 struct PyMethodDef {
-
-    const char    *ml_name;  /* The name of the built-in function/method */
-
-    PyCFunction  ml_meth;   /* The C function that implements it */
-
-    int       ml_flags; /* Combination of METH_xxx flags, which mostly
-
-                 describe the args expected by the C func */
-
-    const char    *ml_doc;   /* The __doc__ attribute, or NULL */
-
+    const char    *ml_name;  /* The name of the built-in function/method */
+    PyCFunction  ml_meth;   /* The C function that implements it */
+    int       ml_flags; /* Combination of METH_xxx flags, which mostly
+                 describe the args expected by the C func */
+    const char    *ml_doc;   /* The __doc__ attribute, or NULL */
 };
+```
 
 数组以{NULL, NULL}结束
 
@@ -92,15 +85,13 @@ struct PyMethodDef {
 
 类似
 
+```c
 PyMODINIT_FUNC
-
 initexample(void)
-
 {
-
-    Py_InitModule("example", example_methods);
-
+    Py_InitModule("example", example_methods);
 }
+```
 
 这里有个特别需要注意的是，初始化函数名字有严格要求，init后面必须跟模块名，否则Python找不到确定的函数会报没有初始化函数的错误
 
@@ -114,47 +105,28 @@ initexample(void)
 
 最后，python的源代码中附带了一个叫做example_nt的例子，可以参考一样，完整的扩展代码如下：
 
+```c
 #include "Python.h"
 
- 
-
 static PyObject *
-
 ex_foo(PyObject *self, PyObject *args)
-
 {
-
-    printf("Hello, world/n");
-
-    Py_INCREF(Py_None);
-
-    return Py_None;
-
+    printf("Hello, world/n");
+    Py_INCREF(Py_None);
+    return Py_None;
 }
-
- 
 
 static PyMethodDef example_methods[] = {
-
-    {"foo", ex_foo, METH_VARARGS, "foo() doc string"},
-
-    {NULL, NULL}
-
+    {"foo", ex_foo, METH_VARARGS, "foo() doc string"},
+    {NULL, NULL}
 };
 
- 
-
 PyMODINIT_FUNC
-
 initexample(void)
-
 {
-
-    Py_InitModule("example", example_methods);
-
+    Py_InitModule("example", example_methods);
 }
-
- 
+```
 
  
 
@@ -275,5 +247,3 @@ PyObject* PyMarshal_ReadObjectFromString(char *string, Py_ssize_t len)
  
 
 **write by****九天雁翎(JTianLing) -- www.jtianling.com**
-
- 

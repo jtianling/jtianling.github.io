@@ -54,69 +54,40 @@ boost::thread不是通过继承使用线程那种用了template method模式的�
 
 example1:
 
+```cpp
 #include <windows.h>
-
 #include <boost/thread.hpp>
-
 #include <iostream>
 
 using namespace std;
-
 using namespace boost;
 
- 
-
 void HelloWorld()
-
 {
-
-    char* pc = "Hello World!";
-
-    do
-
-    {
-
-       cout <<*pc;
-
-    }while(*pc++);
-
-    cout <<endl;
-
+    char* pc = "Hello World!";
+    do
+    {
+       cout <<*pc;
+    }while(*pc++);
+    cout <<endl;
 }
-
- 
 
 void NormalFunThread()
-
 {
+    thread loThread1(HelloWorld);
+    thread loThread2(HelloWorld);
+    HelloWorld();
 
-    thread loThread1(HelloWorld);
-
-    thread loThread2(HelloWorld);
-
-    HelloWorld();
-
- 
-
-    Sleep(100);
-
+    Sleep(100);
 }
-
- 
 
 int main()
-
 {
+    NormalFunThread();
 
-    NormalFunThread();
-
- 
-
-    return 0;
-
+    return 0;
 }
-
- 
+```
 
 不知道如此形式的程序够不够的上一个thread的helloworld程序了。但是你会发现，boost::thread的确是通过构造函数的方式，（就是构造函数），老实的给我们创建了线程了，所以我们连一句完成的helloworld也没有办法正常看到，熟悉线程的朋友们，可以理解将会看到多么支离破碎的输出，在我的电脑上，一次典型的输出如下：
 
@@ -130,147 +101,84 @@ l d
 
 example2:
 
+```cpp
 #include <boost/thread.hpp>
-
 #include <iostream>
 
 using namespace std;
-
 using namespace boost;
 
- 
-
 void HelloWorld()
-
 {
-
-    char* pc = "Hello World!";
-
-    do
-
-    {
-
-       cout <<*pc;
-
-    }while(*pc++);
-
-    cout <<endl;
-
+    char* pc = "Hello World!";
+    do
+    {
+       cout <<*pc;
+    }while(*pc++);
+    cout <<endl;
 }
-
- 
 
 void NormalFunThread()
-
 {
-
-    thread loThread1(HelloWorld);
-
-    loThread1.join();
-
-    thread loThread2(HelloWorld);
-
-    loThread2.join();
-
-    HelloWorld();
-
- 
+    thread loThread1(HelloWorld);
+    loThread1.join();
+    thread loThread2(HelloWorld);
+    loThread2.join();
+    HelloWorld();
 
 }
-
- 
 
 int main()
-
 {
+    NormalFunThread();
 
-    NormalFunThread();
-
- 
-
-    return 0;
-
+    return 0;
 }
-
- 
+```
 
 这样，我们就能完成的看到3句hello world了。但是这种方式很少有意义，因为实际上我们的程序同时还是仅仅存在一个线程，下一个线程只在一个线程结束后才开始运行，所以，实际中使用的更多的是其他同步手段，比如，临界区就用的非常多，但是我在boost::thread中没有找到类似的使用方式，倒是有mutex（互斥），其实两者对于使用是差不多的。下面看使用了mutex同步线程的例子：
 
 example3:
 
+```cpp
 #include <windows.h>
-
 #include <boost/thread.hpp>
-
 #include <boost/thread/mutex.hpp>
-
 #include <iostream>
 
 using namespace std;
-
 using namespace boost;
 
- 
-
- 
-
 mutex mu;
-
 void HelloWorld()
-
 {
-
-    mu.lock();
-
-    char* pc = "Hello World!";
-
-    do
-
-    {
-
-       cout <<*pc;
-
-    }while(*pc++);
-
-    cout <<endl;
-
-    mu.unlock();
-
+    mu.lock();
+    char* pc = "Hello World!";
+    do
+    {
+       cout <<*pc;
+    }while(*pc++);
+    cout <<endl;
+    mu.unlock();
 }
-
- 
 
 void NormalFunThread()
-
 {
+    thread loThread1(HelloWorld);
+    thread loThread2(HelloWorld);
+    HelloWorld();
 
-    thread loThread1(HelloWorld);
-
-    thread loThread2(HelloWorld);
-
-    HelloWorld();
-
- 
-
-    loThread1.join();
-
-    loThread2.join();
-
+    loThread1.join();
+    loThread2.join();
 }
-
- 
 
 int main()
-
 {
+    NormalFunThread();
 
-    NormalFunThread();
-
- 
-
-    return 0;
-
+    return 0;
 }
+```
 
 我们还是能看到3个完好的helloworld，并且，这在实际使用中也是有意义的，因为，在主线程进入HelloWorld函数时，假如第一个线程还没有执行完毕，那么，可能同时有3个线程存在，第一个线程正在输出，第二个线程和主线程在mu.lock();此句等待（也叫阻塞在此句）。其实,作为一个多线程的库，自然同步方式不会就这么一种，其他的我就不讲了。
 
@@ -280,111 +188,58 @@ int main()
 
 example4:
 
+```cpp
 #include <boost/thread.hpp>
-
 #include <boost/thread/mutex.hpp>
-
 #include <iostream>
 
- 
-
 #include <boost/function.hpp>
-
 #include <boost/bind.hpp>
-
 #include <boost/lambda/lambda.hpp>
-
 #include <boost/lambda/bind.hpp>
-
 using namespace std;
-
 using namespace boost;
 
- 
-
- 
-
 void HelloWorld()
-
 {
-
-    char* pc = "Hello World!";
-
-    do
-
-    {
-
-       cout <<*pc;
-
-    }while(*pc++);
-
-    cout <<endl;
-
+    char* pc = "Hello World!";
+    do
+    {
+       cout <<*pc;
+    }while(*pc++);
+    cout <<endl;
 }
-
- 
 
 void NormalFunThread()
-
 {
+    thread loThread1(HelloWorld);
+    thread loThread2(HelloWorld);
+    HelloWorld();
 
-    thread loThread1(HelloWorld);
-
-    thread loThread2(HelloWorld);
-
-    HelloWorld();
-
- 
-
-    loThread1.join();
-
-    loThread2.join();
-
+    loThread1.join();
+    loThread2.join();
 }
-
- 
 
 void BoostFunThread()
-
 {
+    thread loThread1(HelloWorld);
+    function< void(void) > lfun = bind(HelloWorld);
+    thread loThread2(bind(HelloWorld));
+    thread loThread3(lfun);
 
-    thread loThread1(HelloWorld);
-
-    function< void(void) > lfun = bind(HelloWorld);
-
-    thread loThread2(bind(HelloWorld));
-
-    thread loThread3(lfun);
-
- 
-
-    loThread1.join();
-
-    loThread2.join();
-
-    loThread3.join();
-
+    loThread1.join();
+    loThread2.join();
+    loThread3.join();
 }
-
- 
-
- 
 
 int main()
-
 {
+//  NormalFunThread();
+    BoostFunThread();
 
-//  NormalFunThread();
-
-    BoostFunThread();
-
- 
-
-    return 0;
-
+    return 0;
 }
-
- 
+```
 
 一如既往的乱七八糟：
 
@@ -397,15 +252,14 @@ HHHeeelllllolo o W WoWoorrrlldld!d!
 还记得可怜的Win32 API怎么为线程传递参数吗？
 
 看看其线程的原型
-    
-    
-    **DWORD ThreadProc(**
-    
-    
-      **LPVOID** _lpParameter_
-    
-    
-    **);**
+
+```c
+**DWORD ThreadProc(**
+
+  **LPVOID** _lpParameter_
+
+**);**
+```
 
 这里有个很大的特点就是，运行线程的函数必须是这样的，规矩是定死的，返回值就是这样，参数就是LPVOID(void*)，你没有选择，函数原型没有选择，参数传递也没有选择，当你需要很多数据时，唯一的办法就是将其塞入一个结构，然后再传结构指针，然后再强行使用类型转换。其实这是很不好的编程风格，不过也是无奈的折衷方式。
 
@@ -415,117 +269,61 @@ HHHeeelllllolo o W WoWoorrrlldld!d!
 
 example5:
 
+```cpp
 #include <boost/thread.hpp>
-
 #include <boost/thread/mutex.hpp>
-
 #include <iostream>
 
- 
-
 #include <boost/function.hpp>
-
 #include <boost/bind.hpp>
-
 #include <boost/lambda/lambda.hpp>
-
 #include <boost/lambda/bind.hpp>
-
 using namespace std;
-
 using namespace boost;
 
- 
-
- 
-
 mutex mu;
-
 void HelloTwoString(char *pc1, char *pc2)
-
 {
-
-    mu.lock();
-
-    if(pc1)
-
-    {
-
-       do
-
-       {
-
-           cout <<*pc1;
-
-       }while(*pc1++);
-
-    }
-
-    if(pc2)
-
-    {
-
-       do
-
-        {
-
-           cout <<*pc2;
-
-       }while(*pc2++);
-
-       cout <<endl;
-
-    }
-
-    mu.unlock();
-
+    mu.lock();
+    if(pc1)
+    {
+       do
+       {
+           cout <<*pc1;
+       }while(*pc1++);
+    }
+    if(pc2)
+    {
+       do
+       {
+           cout <<*pc2;
+       }while(*pc2++);
+       cout <<endl;
+    }
+    mu.unlock();
 }
-
- 
 
 void BoostFunThread()
-
 {
+    char* lpc1 = "Hello ";
+    char* lpc2 = "World!";
+    thread loThread1(HelloTwoString, lpc1, lpc2);
+    function< void(void) > lfun = bind(HelloTwoString, lpc1, lpc2);
+    thread loThread2(bind(HelloTwoString, lpc1, lpc2));
+    thread loThread3(lfun);
 
-    char* lpc1 = "Hello ";
-
-    char* lpc2 = "World!";
-
-    thread loThread1(HelloTwoString, lpc1, lpc2);
-
-    function< void(void) > lfun = bind(HelloTwoString, lpc1, lpc2);
-
-    thread loThread2(bind(HelloTwoString, lpc1, lpc2));
-
-    thread loThread3(lfun);
-
- 
-
-    loThread1.join();
-
-    loThread2.join();
-
-    loThread3.join();
-
+    loThread1.join();
+    loThread2.join();
+    loThread3.join();
 }
-
- 
-
- 
 
 int main()
-
 {
+    BoostFunThread();
 
-    BoostFunThread();
-
- 
-
-    return 0;
-
+    return 0;
 }
-
- 
+```
 
  
 
@@ -540,5 +338,3 @@ int main()
  
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

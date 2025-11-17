@@ -22,21 +22,21 @@ author:
   last_name: ''
 ---
 
-    今天看到Irrlicht作者Ambiera推的一则有意思的消息，虽然其实与iPhone开发关系不大，但是因为牵涉到Windows Phone 7和HTML5，我还是大概看完了。
+今天看到Irrlicht作者Ambiera推的一则有意思的消息，虽然其实与iPhone开发关系不大，但是因为牵涉到Windows Phone 7和HTML5，我还是大概看完了。
 
     消息原地址来自于：http://bit.ly/d3wEqD  
 
      大概的含义是某人刚到MS总部一周，发现了MS内部在HTML5和SilverLight技术上的派系之争。并且，提到WPF已经死掉。
 
-"Right now there’s a faction war inside Microsoft over HTML5 vs  
-Silverlight. oh and WPF is dead.. i mean..it kind of was..but now..  
-funeral."
+> "Right now there’s a faction war inside Microsoft over HTML5 vs  
+> Silverlight. oh and WPF is dead.. i mean..it kind of was..but now..  
+> funeral."
 
  
 
 文中还提到，HTML5是WPF的替代者，并且MS还是会对HTML执行它惯用的"拥抱并且扩展"(Embrace and extend")战略，然后分支HTML5，用本地化的Windows API来特殊化Windows下的JS/HTML5。
 
-“HTML5 is the replacement for WPF.. IE team want to fork the HTML5 spec by bolting on custom windows APi’s via JS/HTML5”
+> “HTML5 is the replacement for WPF.. IE team want to fork the HTML5 spec by bolting on custom windows APi’s via JS/HTML5”
 
   
 
@@ -44,9 +44,9 @@ funeral."
 
   
 
-这个其实并不是我最感兴趣的，最有意思的是，Hadi Hariri在他的博客上发表了一篇反SilverLight的文章。“[WTF you got against Silverlight?!”](<http://hadihariri.com/blogengine/post/2010/09/08/WTF-you-got-against-Silverlight%21.aspx>)  
+这个其实并不是我最感兴趣的，最有意思的是，Hadi Hariri在他的博客上发表了一篇反SilverLight的文章。[WTF you got against Silverlight?!](http://hadihariri.com/blogengine/post/2010/09/08/WTF-you-got-against-Silverlight%21.aspx)  
 
-见:http://tinyurl.com/3x7r8p8
+见: http://tinyurl.com/3x7r8p8
 
 文中提到了很多有趣的观点，文后的评论质量更加是非常高，很多评论的信息量已经足够独立成文了，想到国内的"顶顶族"和“家具党”，我真是感到了国际差距。。。。。
 

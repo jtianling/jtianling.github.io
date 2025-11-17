@@ -22,10 +22,6 @@ author:
   last_name: ''
 ---
 
- 
-
- 
-
 ## 一天一个C Run-Time Library 函数（8）  assert
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
@@ -38,10 +34,12 @@ Evaluates an expression and, when the result is **false** ,
 prints a diagnostic message and aborts the program.
 
    
----  
-void  
-assert(     int _expression_ );  
-  
+---
+```c
+void
+assert(   int _expression_ );
+```
+
 ## 测试程序：
 
 无
@@ -94,16 +92,17 @@ abort
 
 assert是个宏，大部分人可能都不会惊讶，不然也达不到debug时有效，release时无效的效果，但是最有意思的是判断是否需要弹出异常的方式，并没有使用if-的判断方式，仅仅是为了避免宏的副作用。假如是用if方式实现的话，当在外部通过
 
-    if(someEx)  
-        assert(someEx);  
-    else  
-        assert(someEx);  
-    的形式使用时，会使得else与assert中的if配对，而发生问题。。。。所以通过&&,||的计算顺序特性来完成：）又是一个C语言的小技巧啊。。。。太多这样的奇技淫巧了-_-!
+```c
+if(someEx)
+    assert(someEx);
+else
+    assert(someEx);
+```
+
+的形式使用时，会使得else与assert中的if配对，而发生问题。。。。所以通过&&,||的计算顺序特性来完成：）又是一个C语言的小技巧啊。。。。太多这样的奇技淫巧了-_-!
 
   
 
  
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
-
- 

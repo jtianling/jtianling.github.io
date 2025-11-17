@@ -27,8 +27,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记 用C++/lua/python/bash的四重实现（2）  
 IntCell类
 
@@ -58,93 +56,73 @@ CPP:
 
 LUA: 
 
- 1  
-#!/usr/bin/env  
-lua  
- 2   
- 3 IntCell = **{**  storedValue = 0 **}**  
- 4   
- 5 function IntCell:new(orig)  
- 6     **if**  type(orig)  
-== "number"  
- 7     **then**  
- 8         o  
-= **{}**  
- 9         o.storedValue  
-= orig  
-10     **else**  
-11         o  
-= orig **or**  **{}**  
-12     **end**  
-13     setmetatable(o, self)  
-14     self.__index =  
-self  
-15     **return**  o  
-16 end  
-17   
-18 function IntCell:read()  
-19     **return**  self.storedValue  
-20 end  
-21   
-22 function IntCell:write(x)  
-23     self.storedValue
+```lua
+#!/usr/bin/env lua
 
-= x  
-24 end  
-25   
-26 \-- test code  
-27 \-- new IntCel  
-and read and write  
-28 a = IntCell:new()  
-29 print ("a:" .. (a:read()))  
-30 a:write(10)  
-31 print ("a:" .. (a:read()))  
-32   
-33 \-- create  
-IntCell from a  
-34 b = IntCell:new(a)  
-35 print ("b:" .. (b:read()))  
-36   
-37 \-- create  
-IntCell from a number  
-38 c = IntCell:new(100)  
-39 print ("c:" .. (c:read()))  
+IntCell = {  storedValue = 0 }
+
+function IntCell:new(orig)
+    if type(orig) == "number" then
+        o = {}
+        o.storedValue = orig
+    else
+        o = orig or {}
+    end
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+function IntCell:read()
+    return self.storedValue
+end
+
+function IntCell:write(x)
+    self.storedValue = x
+end
+
+-- test code
+-- new IntCell and read and write
+a = IntCell:new()
+print("a:" .. (a:read()))
+a:write(10)
+print("a:" .. (a:read()))
+
+-- create IntCell from a
+b = IntCell:new(a)
+print("b:" .. (b:read()))
+
+-- create IntCell from a number
+c = IntCell:new(100)
+print("c:" .. (c:read()))
+```
 
 PYTHON: 
 
- 1  
-#!/usr/bin/env  
-python  
- 2   
- 3 **class**  IntCell(object):  
- 4     **def**  __init__(self,  
-orig = 0):  
- 5         self.storedValue  
-= orig   
- 6     **def**  read(self):  
- 7         **return**  self.storedValue  
- 8     **def**  write(self,x):  
- 9         self.storedValue  
-= x   
-10   
-11 # Test Code  
-12 **def**  Test():  
-13     a = IntCell()  
-14     **print**  "a:" +  
-str(a.read())  
-15     a.write(10)  
-16     **print**  "a:" +  
-str(a.read())  
-17   
-18     b = IntCell(100)  
-19     **print**  "b:" +  
-str(b.read())  
-20   
-21 **if**  __name__ == '__main__':  
-22     Test();  
-23   
-24           
-25   
+```python
+#!/usr/bin/env python
+
+class IntCell(object):
+    def __init__(self, orig = 0):
+        self.storedValue = orig
+    def read(self):
+        return self.storedValue
+    def write(self,x):
+        self.storedValue = x
+
+# Test Code
+def Test():
+    a = IntCell()
+    print "a:" + str(a.read())
+    a.write(10)
+    print "a:" + str(a.read())
+
+    b = IntCell(100)
+    print "b:" + str(b.read())
+
+if __name__ == '__main__':
+    Test();
+```
 
 BASH: 
 
@@ -152,5 +130,3 @@ BASH:
 
  **_write by_**** _九天雁翎(JTianLing)  
 \-- www.jtianling.com_**
-
- 

@@ -37,47 +37,51 @@ UI用信号-槽设计的好处是巨大的，这让给对象的职责更加明�
 
 下面的例子（来自boost文档）是我个人认为最有价值，最能说明问题的，解决的也就是我提到的问题。  
   
-//[ passing_slots_defs_code_snippet  
-// a pretend GUI button  
-class Button  
-{  
-typedef boost::signals2::signal<void (int x, int y)> OnClick;  
-public:  
-typedef OnClick::slot_type OnClickSlotType;  
-// forward slots through Button interface to its private signal  
-boost::signals2::connection doOnClick(const OnClickSlotType & slot);
+```cpp
+//[ passing_slots_defs_code_snippet
+// a pretend GUI button
+class Button
+{
+    typedef boost::signals2::signal<void (int x, int y)> OnClick;
+public:
+    typedef OnClick::slot_type OnClickSlotType;
+    // forward slots through Button interface to its private signal
+    boost::signals2::connection doOnClick(const OnClickSlotType & slot);
 
-// simulate user clicking on GUI button at coordinates 52, 38  
-void simulateClick();  
-private:  
-OnClick onClick;  
+    // simulate user clicking on GUI button at coordinates 52, 38
+    void simulateClick();
+private:
+    OnClick onClick;
 };
 
-boost::signals2::connection Button::doOnClick(const OnClickSlotType & slot)  
-{  
-return onClick.connect(slot);  
+boost::signals2::connection Button::doOnClick(const OnClickSlotType & slot)
+{
+    return onClick.connect(slot);
 }
 
-void Button::simulateClick()  
-{  
-onClick(52, 38);  
+void Button::simulateClick()
+{
+    onClick(52, 38);
 }
 
-void printCoordinates(long x, long y)  
-{  
-std::cout << "(" << x << ", " << y << ")n";  
-}  
+void printCoordinates(long x, long y)
+{
+    std::cout << "(" << x << ", " << y << ")n";
+}
 //]
+```
 
-int main()  
-{  
-//[ passing_slots_usage_code_snippet  
-Button button;  
-button.doOnClick(&printCoordinates;);  
-button.simulateClick();  
-//]  
-return 0;  
-}  
+```cpp
+int main()
+{
+    //[ passing_slots_usage_code_snippet
+    Button button;
+    button.doOnClick(&printCoordinates;);
+    button.simulateClick();
+    //]
+    return 0;
+}
+```
 
 参考：  
 《[boost 手册,signal2](<http://www.boost.org/doc/libs/1_42_0/doc/html/signals2.html> "boost 手册,signal2")》，特别感谢[金庆](<http://blog.csdn.net/jq0123>) 将其翻译成中文了，并且翻译的非常好。

@@ -80,27 +80,31 @@ author:
 
 怎么去实现这个类先放一边，看看整个类的使用：
 
-    GLDebugDrawer    gDebugDrawer;
+```cpp
+GLDebugDrawer   gDebugDrawer;
 
-    BasicDemo ccdDemo;
+BasicDemo ccdDemo;
 
-    ccdDemo.initPhysics();
+ccdDemo.initPhysics();
 
-    ccdDemo.getDynamicsWorld()->setDebugDrawer(&gDebugDrawer);
+ccdDemo.getDynamicsWorld()->setDebugDrawer(&gDebugDrawer);
 
-    glutmain(argc, argv,640,480,"Bullet Physics Demo. http://bulletphysics.com",&ccdDemo);
+glutmain(argc, argv,640,480,"Bullet Physics Demo. http://bulletphysics.com",&ccdDemo);
+```
 
 实际就这5句，很简单，构造debug,BasicDemo，调用initPhysics函数，设定debug，调用glutmain这个函数，参数也一目了然。这里就不看了。看实现一个有用的DemoApplication的过程。
 
     大概看看DemoApplication这个基类和GlutDemoApplication知道必须要实现的两个纯虚函数是
 
-virtual    void initPhysics() = 0;
+```cpp
+virtual    void initPhysics() = 0;
 
 virtual void clientMoveAndDisplay() = 0;
+```
 
 看BasicDemo的实现后，知道还需要实现displayCallback这个现实回调，基本上就没有其他东西了，理解起来也还算容易。
 
-initPhysics的部分，一看就知道，与HelloWorld中过程几乎一致，也就是实际构建物理世界的过程。只是多了   
+initPhysics的部分，一看就知道，与HelloWorld中过程几乎一致，也就是实际构建物理世界的过程。只是多了    
 
 setTexturing(true);
 
@@ -117,58 +121,32 @@ clientMoveAndDisplay和displayCallback部分
 其实非常简单，几乎可以直接放到glutExampleApplication中去。（事实上不从灵活性考虑，我觉得放到glutExampleApplication中更好）
 
 原来的程序有些代码重复，其实只要下列代码就够了：（一般的程序也不需要修改）  
-void  
- BasicDemo::clientMoveAndDisplay()
-
+```cpp
+void BasicDemo::clientMoveAndDisplay()
 {
+    //simple dynamics world doesn't handle fixed-time-stepping
+    float ms = getDeltaTimeMicroseconds();
 
-    //simple dynamics world doesn't handle fixed-time-stepping  
+    ///step the simulation
+    if (m_dynamicsWorld)
+    {
+        m_dynamicsWorld->stepSimulation(ms / 1000000.f);
+    }
 
-    float  
- ms = getDeltaTimeMicroseconds();
-
-    
-
-    ///step the simulation  
-
-    if  
- (m_dynamicsWorld)
-
-    {
-
-        m_dynamicsWorld->stepSimulation(ms / 1000000.f  
-);
-
-    }
-
-        
-
-    displayCallback();
-
+    displayCallback();
 }
 
-void  
- BasicDemo::displayCallback(void  
-) {
+void BasicDemo::displayCallback(void) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-
-    
-
-    renderme();
-
-    //optional but useful: debug drawing to detect problems  
-
-    if  
- (m_dynamicsWorld)
-
-        m_dynamicsWorld->debugDrawWorld();
-
-    glFlush();
-
-    swapBuffers();
-
+    renderme();
+    //optional but useful: debug drawing to detect problems
+    if (m_dynamicsWorld)
+        m_dynamicsWorld->debugDrawWorld();
+    glFlush();
+    swapBuffers();
 }
+```
 
 运行该程序能够看到中间一个很多Box堆起来的大方块，点击鼠标右键还能发射一个方块出去。
 
@@ -184,15 +162,17 @@ void
 
 3.Main中的使用代码：
 
-    GLDebugDrawer    gDebugDrawer;
+```cpp
+GLDebugDrawer   gDebugDrawer;
 
-    BasicDemo ccdDemo;
+BasicDemo ccdDemo;
 
-    ccdDemo.initPhysics();
+ccdDemo.initPhysics();
 
-    ccdDemo.getDynamicsWorld()->setDebugDrawer(&gDebugDrawer);
+ccdDemo.getDynamicsWorld()->setDebugDrawer(&gDebugDrawer);
 
-    glutmain(argc, argv,640,480,"Bullet Physics Demo. http://bulletphysics.com",&ccdDemo);
+glutmain(argc, argv,640,480,"Bullet Physics Demo. http://bulletphysics.com",&ccdDemo);
+```
 
 4.注意工程需要多包含$(BULLET_HOME)/Demos/OpenGL的头文件目录
 
@@ -232,118 +212,60 @@ glu32.lib
 
 先看看回调接口：
 
-///The btMotionState interface class allows the dynamics world to synchronize and interpolate the updated world transforms with graphics  
-  
-///For optimizations, potentially only moving objects get synchronized (using setWorldPosition/setWorldOrientation)  
-  
-class  
-   btMotionState
-
+```cpp
+///The btMotionState interface class allows the dynamics world to synchronize and interpolate the updated world transforms with graphics
+///For optimizations, potentially only moving objects get synchronized (using setWorldPosition/setWorldOrientation)
+class btMotionState
 {
+    public :
 
-    public  
-:
+        virtual ~btMotionState()
+        {
 
-        
+        }
 
-        virtual  
- ~btMotionState()
+        virtual void  getWorldTransform(btTransform& worldTrans ) const =0 ;
 
-        {
-
-            
-
-        }
-
-        
-
-        virtual  
- void  
-  getWorldTransform(btTransform& worldTrans ) const  
- =0  
-;
-
-        //Bullet only calls the update of worldtransform for active objects  
-
-        virtual  
- void  
-  setWorldTransform(const  
- btTransform& worldTrans)=0  
-;
-
-        
-
-    
+        //Bullet only calls the update of worldtransform for active objects
+        virtual void  setWorldTransform(const btTransform& worldTrans)=0 ;
 
 };
+```
 
 很简单，一个get接口，用于bullet获取物体的初始状态，一个set接口，用于活动物体位置改变时调用以设置新的状态。
 
 下面看看btDefaultMotionState这个bullet中带的默认的MotionState类。
 
-///The btDefaultMotionState provides a common implementation to synchronize world transforms with offsets.  
-  
-struct  
-  btDefaultMotionState : public  
- btMotionState
-
+```cpp
+///The btDefaultMotionState provides a common implementation to synchronize world transforms with offsets.
+struct  btDefaultMotionState : public  btMotionState
 {
+    btTransform m_graphicsWorldTrans;
+    btTransform m_centerOfMassOffset;
+    btTransform m_startWorldTrans;
+    void *      m_userPointer;
 
-    btTransform m_graphicsWorldTrans;
-
-    btTransform m_centerOfMassOffset;
-
-    btTransform m_startWorldTrans;
-
-    void  
-*      m_userPointer;
-
-    btDefaultMotionState(const  
- btTransform& startTrans = btTransform::getIdentity(),const  
- btTransform& centerOfMassOffset = btTransform::getIdentity())
-
-        : m_graphicsWorldTrans(startTrans),
-
-        m_centerOfMassOffset(centerOfMassOffset),
-
-        m_startWorldTrans(startTrans),
-
-        m_userPointer(0  
-)
-
-    {
-
-    }
-
-    ///synchronizes world transform from user to physics  
-
-    virtual  
- void  
-   getWorldTransform(btTransform& centerOfMassWorldTrans ) const  
- 
-
-    {
-
-            centerOfMassWorldTrans =    m_centerOfMassOffset.inverse() * m_graphicsWorldTrans ;
-
-    }
-
-    ///synchronizes world transform from physics to user  
-
-    ///Bullet only calls the update of worldtransform for active objects  
-
-    virtual  
- void  
-   setWorldTransform(const  
- btTransform& centerOfMassWorldTrans)
-
-    {
-
-            m_graphicsWorldTrans = centerOfMassWorldTrans * m_centerOfMassOffset ;
-
-    }
+    btDefaultMotionState(const btTransform& startTrans = btTransform::getIdentity(),const btTransform& centerOfMassOffset = btTransform::getIdentity())
+        : m_graphicsWorldTrans(startTrans),
+        m_centerOfMassOffset(centerOfMassOffset),
+        m_startWorldTrans(startTrans),
+        m_userPointer(0)
+    {
+    }
+    ///synchronizes world transform from user to physics
+    virtual void   getWorldTransform(btTransform& centerOfMassWorldTrans ) const
+    {
+            centerOfMassWorldTrans =    m_centerOfMassOffset.inverse() * m_graphicsWorldTrans ;
+    }
+    ///synchronizes world transform from physics to user
+    ///Bullet only calls the update of worldtransform for active objects
+    virtual void   setWorldTransform(const btTransform& centerOfMassWorldTrans)
+    {
+            m_graphicsWorldTrans = centerOfMassWorldTrans * m_centerOfMassOffset ;
+    }
 
 };
+```
 
 这个默认的MotionState实现了这两个接口，但是还引入了质心  
 （center Of Mass应该是指质心  
@@ -351,174 +273,100 @@ struct
 
 在一般rigitBody的构造函数中可以看到下列代码：
 
-    if  
- (m_optionalMotionState)
-
-    {
-
-        m_optionalMotionState->getWorldTransform(m_worldTransform);
-
-    } else  
-
-    {
-
-        m_worldTransform = constructionInfo.m_startWorldTransform;
-
-    }
+```cpp
+if (m_optionalMotionState)
+{
+    m_optionalMotionState->getWorldTransform(m_worldTransform);
+} else
+{
+    m_worldTransform = constructionInfo.m_startWorldTransform;
+}
+```
 
 这就是get函数的使用，也就是决定物体初始坐标的函数回调。
 
 set函数的回调如下：
 
-void  
-    btDiscreteDynamicsWorld::synchronizeSingleMotionState(btRigidBody* body)
-
+```cpp
+void btDiscreteDynamicsWorld::synchronizeSingleMotionState(btRigidBody* body)
 {
-
-    btAssert(body);
-
-    if  
- (body->getMotionState() && !body->isStaticOrKinematicObject())
-
-    {
-
-        //we need to call the update at least once, even for sleeping objects  
-
-        //otherwise the 'graphics' transform never updates properly  
-
-        ///@todo: add 'dirty' flag  
-
-        //if (body->getActivationState() != ISLAND_SLEEPING)  
-
-        {
-
-            btTransform interpolatedTransform;
-
-            btTransformUtil::integrateTransform(body->getInterpolationWorldTransform(),
-
-                body->getInterpolationLinearVelocity(),body->getInterpolationAngularVelocity(),m_localTime*body->getHitFraction(),interpolatedTransform);
-
-            body->getMotionState()->setWorldTransform(interpolatedTransform);
-
-        }
-
-    }
-
+    btAssert(body);
+    if (body->getMotionState() && !body->isStaticOrKinematicObject())
+    {
+        //we need to call the update at least once, even for sleeping objects
+        //otherwise the 'graphics' transform never updates properly
+        ///@todo: add 'dirty' flag
+        //if (body->getActivationState() != ISLAND_SLEEPING)
+        {
+            btTransform interpolatedTransform;
+            btTransformUtil::integrateTransform(body->getInterpolationWorldTransform(),
+                body->getInterpolationLinearVelocity(),body->getInterpolationAngularVelocity(),m_localTime*body->getHitFraction(),interpolatedTransform);
+            body->getMotionState()->setWorldTransform(interpolatedTransform);
+        }
+    }
 }
+```
 
 也就是同步状态的时候调用。此过程发生在调用bullet的btDynamicsWorld::stepSimulation函数调用时。
 
 然后可以参考DemoApplication的DemoApplication::renderscene(int pass)函数：
 
-    btScalar    m[16  
-];
-
-    btMatrix3x3 rot;rot.setIdentity();
-
-    const  
- int  
-  numObjects=m_dynamicsWorld->getNumCollisionObjects();
-
-    btVector3 wireColor(1  
-,0  
-,0  
-);
-
-    for  
-(int  
- i=0  
-;i<numObjects;i++)
-
-    {
-
-        btCollisionObject*  colObj=m_dynamicsWorld->getCollisionObjectArray()[i];
-
-        btRigidBody*        body=btRigidBody::upcast(colObj);
-
-        if  
-(body&&body->getMotionState())
-
-        {
-
-            btDefaultMotionState* myMotionState = (btDefaultMotionState*)body->getMotionState();
-
-            myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(m);
-
-            rot=myMotionState->m_graphicsWorldTrans.getBasis();
-
-        }
-
-    }
-
+```cpp
+btScalar    m[16];
+btMatrix3x3 rot;rot.setIdentity();
+const int  numObjects=m_dynamicsWorld->getNumCollisionObjects();
+btVector3 wireColor(1,0,0);
+for (int i=0;i<numObjects;i++)
+{
+    btCollisionObject*  colObj=m_dynamicsWorld->getCollisionObjectArray()[i];
+    btRigidBody*        body=btRigidBody::upcast(colObj);
+    if (body&&body->getMotionState())
+    {
+        btDefaultMotionState* myMotionState = (btDefaultMotionState*)body->getMotionState();
+        myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(m);
+        rot=myMotionState->m_graphicsWorldTrans.getBasis();
+    }
 }
+```
 
 实际也就是再通过获取motionState然后获取到图形的位置了，这种defaultMotion的使用就类似Box2D中的使用了。
 
 既然是回调，那么就可以让函数不仅仅做赋值那么简单的事情，回头来再做一次轮询全部物体的查询，官网的WIKI中为Ogre编写的MotionState就比较合乎推荐的MotionState用法，代码如下：
 
-lass MyMotionState : public  
- btMotionState {  
-public  
-:
+```cpp
+lass MyMotionState : public  btMotionState {  
+public :
 
-    MyMotionState(const  
- btTransform &initialpos, Ogre::SceneNode *node) {
+    MyMotionState(const  btTransform &initialpos, Ogre::SceneNode *node) {
+        mVisibleobj = node;
+        mPos1 = initialpos;
+    }
 
-        mVisibleobj = node;
+    virtual  ~MyMotionState() {
+    }
 
-        mPos1 = initialpos;
+    void setNode(Ogre::SceneNode *node) {
+        mVisibleobj = node;
+    }
 
-    }
+    virtual void getWorldTransform(btTransform &worldTrans) const 
+    {
+        worldTrans = mPos1;
+    }
 
-    virtual  
- ~MyMotionState() {
+    virtual void setWorldTransform(const  btTransform &worldTrans) {
+        if (NULL == mVisibleobj) return ; // silently return before we set a node
+        btQuaternion rot = worldTrans.getRotation();
+        mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
+        btVector3 pos = worldTrans.getOrigin();
+        mVisibleobj->setPosition(pos.x(), pos.y(), pos.z());
+    }
 
-    }
-
-    void  
- setNode(Ogre::SceneNode *node) {
-
-        mVisibleobj = node;
-
-    }
-
-    virtual  
- void  
- getWorldTransform(btTransform &worldTrans) const  
- {
-
-        worldTrans = mPos1;
-
-    }
-
-    virtual  
- void  
- setWorldTransform(const  
- btTransform &worldTrans) {
-
-        if  
-(NULL  
- == mVisibleobj) return  
-; // silently return before we set a node  
-
-        btQuaternion rot = worldTrans.getRotation();
-
-        mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
-
-        btVector3 pos = worldTrans.getOrigin();
-
-        mVisibleobj->setPosition(pos.x(), pos.y(), pos.z());
-
-    }
-
-protected  
-:
-
-    Ogre::SceneNode *mVisibleobj;
-
-    btTransform mPos1;
-
+protected :
+    Ogre::SceneNode *mVisibleobj;
+    btTransform mPos1;
 };
+```
 
 注意，这里的使用直接在set回调中直接设置了物体的位置。如此使用MotionState后，update只需要关心逻辑即可，不用再去手动查询物体的位置，然后更新物体的位置并刷新显示。
 
@@ -530,66 +378,34 @@ protected
 
 而官方的WIKI对于碰撞检测的描述也过于简单，只给下列的示例代码，但是却没有详细的解释。
 
-    //Assume world->stepSimulation or world->performDiscreteCollisionDetection has been called
+```cpp
+//Assume world->stepSimulation or world->performDiscreteCollisionDetection has been called
+int numManifolds = world->getDispatcher()->getNumManifolds();
 
-    int  
- numManifolds = world->getDispatcher()->getNumManifolds();
+for (int i=0;i<numManifolds;i++)
+{
+    btPersistentManifold* contactManifold =  world->getDispatcher()->getManifoldByIndexInternal(i);
+    btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
+    btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
 
-    for  
- (int  
- i=0  
-;i<numManifolds;i++)
-
-    {
-
-        btPersistentManifold* contactManifold =  world->getDispatcher()->getManifoldByIndexInternal(i);
-
-        btCollisionObject* obA = static_cast  
-<btCollisionObject*>(contactManifold->getBody0());
-
-        btCollisionObject* obB = static_cast  
-<btCollisionObject*>(contactManifold->getBody1());
-
-    
-
-        int  
- numContacts = contactManifold->getNumContacts();
-
-        for  
- (int  
- j=0  
-;j<numContacts;j++)
-
-        {
-
-            btManifoldPoint& pt = contactManifold->getContactPoint(j);
-
-            if  
- (pt.getDistance()<0.f  
-)
-
-            {
-
-                const  
- btVector3& ptA = pt.getPositionWorldOnA();
-
-                const  
- btVector3& ptB = pt.getPositionWorldOnB();
-
-                const  
- btVector3& normalOnB = pt.m_normalWorldOnB;
-
-            }
-
-        }
-
-    }
+    int numContacts = contactManifold->getNumContacts();
+    for (int j=0;j<numContacts;j++)
+    {
+        btManifoldPoint& pt = contactManifold->getContactPoint(j);
+        if (pt.getDistance()<0.f)
+        {
+            const btVector3& ptA = pt.getPositionWorldOnA();
+            const btVector3& ptB = pt.getPositionWorldOnB();
+            const btVector3& normalOnB = pt.m_normalWorldOnB;
+        }
+    }
+}
+```
 
 以上代码的主要内容就是  
-int  
- numManifolds = world->getDispatcher()->getNumManifolds();
+int numManifolds = world->getDispatcher()->getNumManifolds();
 
-btPersistentManifold* contactManifold =  world->getDispatcher()->getManifoldByIndexInternal(i);
+btPersistentManifold* contactManifold =  world->getDispatcher()->getManifoldByIndexInternal(i);
 
 两句。
 
@@ -598,124 +414,67 @@ btPersistentManifold* contactManifold =  world->getDispatcher()->getManifoldByI
 这里特别提及的是,Manifold并不直接表示碰撞，其真实的含义大概是重叠，在不同的情况下可能表示不同的含义，比如在Box2D中，手册的描述大概是（凭记忆）为了快速的检测碰撞，在2D中一般先经过AABB盒的检测过滤，而只有AABB盒重叠的才有可能碰撞，而Manifold在Box2D中就表示AABB盒重叠的两个物体，而我看Bullet有不同的Broadphase,在实际中，也重叠也应该会有不同的情况，因为我没有看源码，所以不能确定，但是，总而言之，可以理解Manifold为接近碰撞的情况。
 
 所以无论在Box2D还是Bullet中，都有额外的表示碰撞的概念，那就是contact（接触）。上述示例代码：  
-int  
- numContacts = contactManifold->getNumContacts();
+int numContacts = contactManifold->getNumContacts();
 
 就表示查看接触点的数量，假如接触点为0，那么自然表示两个物体接近于碰撞，而实际没有碰撞。而上述代码中的Distance的判断应该是防止误差，因为我输出了一个盒子和地面发生碰撞的全部过程的distance，发现绝大部分情况，只要有contact，那么距离就小于0，可是在一次盒子离开地面的过程中，distance还真有过一次0.00x的正值。。。。。。。
 
 当你开始放心大胆的使用上述代码后，也许你总是用来模拟物体的其他效果，也许都不会有问题，直到某一天你希望在碰撞检测后删除掉发生碰撞的问题，你的程序crash了。。。。你却不知道为什么。用前面的demo来展示碰撞检测的方法，并且删除掉发生碰撞的物体。一般先写出的代码都会类似下面这样：
 
-    int  
- numManifolds = m_dynamicsWorld->getDispatcher()->getNumManifolds();
+```cpp
+int numManifolds = m_dynamicsWorld->getDispatcher()->getNumManifolds();
 
-    for  
- (int  
- i=0  
-;i<numManifolds;i++)
-
-    {
-
-        btPersistentManifold* contactManifold =  m_dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
-
-        btCollisionObject* obA = static_cast  
-<btCollisionObject*>(contactManifold->getBody0());
-
-        btCollisionObject* obB = static_cast  
-<btCollisionObject*>(contactManifold->getBody1());
-
-        int  
- numContacts = contactManifold->getNumContacts();
-
-        for  
- (int  
- j=0  
-;j<numContacts;j++)
-
-        {
-
-            btManifoldPoint& pt = contactManifold->getContactPoint(j);
-
-            if  
- (pt.getDistance()<0.f  
-)
-
-            {
-
-                RemoveObject(obA);
-
-                RemoveObject(obB);
-
-            }
-
-        }
-
-    }
+for (int i=0;i<numManifolds;i++)
+{
+    btPersistentManifold* contactManifold =  m_dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
+    btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
+    btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
+    int numContacts = contactManifold->getNumContacts();
+    for (int j=0;j<numContacts;j++)
+    {
+        btManifoldPoint& pt = contactManifold->getContactPoint(j);
+        if (pt.getDistance()<0.f)
+        {
+            RemoveObject(obA);
+            RemoveObject(obB);
+        }
+    }
+}
+```
 
 但是上面这样的代码是有问题的，这在Box2D的文档中有详细描述，Bullet文档中没有描述，那就是obA和obB可能重复删除的问题（也就相当于删除同一个对象多次，自然crash）在本例中有两个问题会导致重复，很明显的一个，当两个物体多余一个Contact点的时候，在遍历Contacts点时会导致obA,obB重复删除。另外，稍微隐晦点的情况是，当一个物体与两个物体发生碰撞时，同一个物体也可能在不同的manifold中，所以，真正没有问题的代码是先记录所有的碰撞，然后消除重复，再然后删除  
 。这是Bullet文档中没有提到，WIKI中也没有说明的，初学者需要特别注意。。。。。。下面才是安全的代码：
 
-    int  
- numManifolds = m_dynamicsWorld->getDispatcher()->getNumManifolds();
+```cpp
+int numManifolds = m_dynamicsWorld->getDispatcher()->getNumManifolds();
 
-    for  
- (int  
- i=0  
-;i<numManifolds;i++)
+for (int i=0;i<numManifolds;i++)
+{
+    btPersistentManifold* contactManifold =  m_dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
+    btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
+    btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
+    int numContacts = contactManifold->getNumContacts();
+    for (int j=0;j<numContacts;j++)
+    {
+        btManifoldPoint& pt = contactManifold->getContactPoint(j);
+        if (pt.getDistance()<0.f)
+        {
+            m_collisionObjects.push_back(obA);
+            m_collisionObjects.push_back(obB);
+        }
+    }
+}
 
-    {
+m_collisionObjects.sort();
+m_collisionObjects.unique();
 
-        btPersistentManifold* contactManifold =  m_dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
+for (CollisionObjects_t::iterator itr = m_collisionObjects.begin();
+        itr != m_collisionObjects.end();
+        ++itr) {
+    RemoveObject(*itr);
+}
 
-        btCollisionObject* obA = static_cast  
-<btCollisionObject*>(contactManifold->getBody0());
-
-        btCollisionObject* obB = static_cast  
-<btCollisionObject*>(contactManifold->getBody1());
-
-        int  
- numContacts = contactManifold->getNumContacts();
-
-        for  
- (int  
- j=0  
-;j<numContacts;j++)
-
-        {
-
-            btManifoldPoint& pt = contactManifold->getContactPoint(j);
-
-            if  
- (pt.getDistance()<0.f  
-)
-
-            {
-
-                m_collisionObjects.push_back(obA);
-
-                m_collisionObjects.push_back(obB);
-
-            }
-
-        }
-
-    }
-
-    m_collisionObjects.sort();
-
-    m_collisionObjects.unique();
-
-    for  
- (CollisionObjects_t::iterator itr = m_collisionObjects.begin();
-
-        itr != m_collisionObjects.end();
-
-        ++itr) {
-
-        RemoveObject(*itr);
-
-    }
-
-    m_collisionObjects.clear();
+m_collisionObjects.clear();
+```
 
 上述m_collisionObjects是std::list类型的成员变量。
 
@@ -728,137 +487,86 @@ int
 
 WIKI中的代码已经很能说明问题了：
 
-#define BIT(x) (  
-1  
-<<(x))  
-  
-enum  
- collisiontypes {
+```cpp
+#define BIT(x) (1<<(x))
 
-    COL_NOTHING = 0  
-, //<Collide with nothing  
-
-    COL_SHIP = BIT(1  
-), //<Collide with ships  
-
-    COL_WALL = BIT(2  
-), //<Collide with walls  
-
-    COL_POWERUP = BIT(3  
-) //<Collide with powerups  
-
+enum collisiontypes {
+    COL_NOTHING = 0, //<Collide with nothing
+    COL_SHIP = BIT(1), //<Collide with ships
+    COL_WALL = BIT(2), //<Collide with walls
+    COL_POWERUP = BIT(3) //<Collide with powerups
 }
 
-int  
- shipCollidesWith = COL_WALL;  
-int  
- wallCollidesWith = COL_NOTHING;  
-int  
- powerupCollidesWith = COL_SHIP | COL_WALL;
+int shipCollidesWith = COL_WALL;
+int wallCollidesWith = COL_NOTHING;
+int powerupCollidesWith = COL_SHIP | COL_WALL;
 
-btRigidBody ship; // Set up the other ship stuff  
-
-btRigidBody wall; // Set up the other wall stuff  
-
+btRigidBody ship; // Set up the other ship stuff
+btRigidBody wall; // Set up the other wall stuff
 btRigidBody powerup; // Set up the other powerup stuff
 
 mWorld->addRigidBody(ship, COL_SHIP, shipCollidesWith);
-
 mWorld->addRigidBody(wall, COL_WALL, wallCollidesWith);
-
 mWorld->addRigidBody(powerup, COL_POWERUP, powerupCollidesWith);
+```
 
-特别是那个#define BIT(x) (  
-1  
-<<(x))  
+特别是那个#define BIT(x) (1<<(x))  
 宏用的很有意思。
 
 不要特别注意的是，两个物体要发生碰撞，那么，两个物体的collidesWith参数必须要互相指定对方，假如A指定碰撞B，但是B没有指定碰撞A,那么还是没有碰撞。就上面的例子而言，虽然ship和powerup想要撞墙，但是墙不想撞它们，那么事实上，上面的例子就相当于过滤了所有墙的碰撞，其实仅仅只有ship和power的碰撞，这真所谓强扭的瓜不甜啊，等双方都情愿。
 
 仿照上面的例子，假如你希望在碰撞检测的时候过滤掉地板，只让物体间发生碰撞然后删除物体，为demo添加下列代码：
 
-#define BIT(x) (  
-1  
-<<(x))  
+```cpp
+#define BIT(x) (1<<(x))
 
-    enum  
- collisiontypes {
+enum collisiontypes {
+    COL_NOTHING = 0, //<Collide with nothing
+    COL_GROUND = BIT(1), //<Collide with ships
+    COL_OBJECTS = BIT(2), //<Collide with walls
+};
 
-        COL_NOTHING = 0  
-, //<Collide with nothing  
-
-        COL_GROUND = BIT(1  
-), //<Collide with ships  
-
-        COL_OBJECTS = BIT(2  
-), //<Collide with walls  
-
-    };
-
-    short  
- GroundCollidesWith = COL_OBJECTS;
-
-    short  
- ObjectsCollidesWith = COL_GROUND;
+short GroundCollidesWith = COL_OBJECTS;
+short ObjectsCollidesWith = COL_GROUND;
+```
 
 但是当你将上述方法应用到demo中，想要过滤掉你想要的碰撞，你会发现碰撞检测的确是过滤掉了，同时过滤掉的还有碰撞，球直接传地板而过，掉进了无底的深渊。注意，这里的过滤是指碰撞过滤，而不是碰撞检测的过滤，假如希望实现碰撞检测的过滤，你可以在碰撞检测中直接进行。比如前面地板的例子，因为地板是静态物体，你可以通过调用rigidBody的isStaticObject来判断是否是地板，然后进行删除，就如下面的代码这样：
 
-            if  
- (pt.getDistance()<0.f  
-) {
-
-                if  
- (!obA->isStaticObject()) {
-
-                    m_collisionObjects.push_back(obA);
-
-                }
-
-                if  
- (!obB->isStaticObject()) {
-
-                    m_collisionObjects.push_back(obB);
-
-                }
-
-            }
+```cpp
+if (pt.getDistance()<0.f) {
+    if (!obA->isStaticObject()) {
+        m_collisionObjects.push_back(obA);
+    }
+    if (!obB->isStaticObject()) {
+        m_collisionObjects.push_back(obB);
+    }
+}
+```
 
 假如希望与地面碰撞并不删除物体，只有物体与物体的碰撞才删除物体，这也简单：
 
-                if  
- (!obA->isStaticObject() && !obB->isStaticObject()) {
-
-                    m_collisionObjects.push_back(obA);
-
-                    m_collisionObjects.push_back(obB);
+```cpp
+if (!obA->isStaticObject() && !obB->isStaticObject()) {
+    m_collisionObjects.push_back(obA);
+    m_collisionObjects.push_back(obB);
+}
+```
 
 至于更加复杂的情况，还可以借助于rigidBody的UserPointer，这在WIKI中没有提及，
 
-    ///users can point to their objects, userPointer is not used by Bullet  
+```cpp
+///users can point to their objects, userPointer is not used by Bullet
+void * getUserPointer() const
+{
+    return m_userObjectPointer;
+}
 
-    void  
-*  getUserPointer() const  
-
-    {
-
-        return  
- m_userObjectPointer;
-
-    }
-
-    
-
-    ///users can point to their objects, userPointer is not used by Bullet  
-
-    void  
-   setUserPointer(void  
-* userPointer)
-
-    {
-
-        m_userObjectPointer = userPointer;
-
-    }
+///users can point to their objects, userPointer is not used by Bullet
+void   setUserPointer(void * userPointer)
+{
+    m_userObjectPointer = userPointer;
+}
+```
 
 但是就我的经验，这两个函数的作用是巨大的，你可以将你需要的一切都设置进去。。。。。。。。然后取出来，就上面的碰撞检测过滤而言，你完全可以实现自己的一套碰撞检测mask，只要你想，一切皆有可能。这些例子的完整源代码见https://bullet-sample.jtianling.googlecode.com/hg/中的Bullet-CollideDetection工程。
 
@@ -946,5 +654,3 @@ mWorld->addRigidBody(powerup, COL_POWERUP, powerupCollidesWith);
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
 **
-
- 

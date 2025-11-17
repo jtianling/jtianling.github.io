@@ -44,9 +44,9 @@ author:
 [![2009-10-17 16-05-42 code Snippet](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_2009-10-17%2016-05-42%20code%20Snippet_thumb.png)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_2009-10-17%2016-05-42%20code%20Snippet_2.png>)
 
 实际代码出现效果，可配置，可用容器显示滚动条效果以限制源代码所占篇幅（可惜高度不可以通过GUI方便的调节），格式正常，颜色漂亮，支持中文。感觉不错。有个缺点就是不是用容器的时候无法一次选择然后配置。
-    
-    
-       1:  
+
+```cpp
+      1:  
     
     
        2: // OpenGL需要的头文件
@@ -236,6 +236,7 @@ author:
     
     
       31: }
+```
 
 ## 
 
@@ -247,6 +248,7 @@ author:
 
 代码效果还行，并且可以一次选中然后进一步配置，就是对中文支持有些问题，可惜了。还有标题栏可以选择显示，就是不能编辑，奇怪的设置。
 
+```cpp
   1.   2. // OpenGL??的头文件
   3. #include <GL/glew.h>
   4. #include <GL/glut.h>
@@ -271,6 +273,7 @@ author:
   30. wglDeleteContext( ghRC ); 
   31. ReleaseDC( ghWnd, ghDC ); 
   32. } 
+```
 
 [Source Code Formater](<http://www.amergerzic.com/post/WLWSourceCodePlugin.aspx>):
 
@@ -279,8 +282,8 @@ author:
 [![2009-10-17 17-01-34sourcecodeformatter](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_2009-10-17%2017-01-34sourcecodeformatter_thumb.png)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_2009-10-17%2017-01-34sourcecodeformatter_2.png>)
 
 全文格式效果一般，颜色明显没有Code Snippet丰富,而且代码行间距实在太大,还无法配置.
-    
-    
+
+```cpp
       1: 
     
     
@@ -414,6 +417,7 @@ author:
     
     
      34: 
+```
 
 一个[syntaxhighlighter](<http://code.google.com/p/syntaxhighlighter/>)
 
@@ -428,115 +432,118 @@ author:
 [![2009-10-17 17-18-36 syntax highlighted](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_2009-10-17%2017-18-36%20syntax%20highlighted_thumb.png)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_2009-10-17%2017-18-36%20syntax%20highlighted_2.png>)
 
 颜色还不错,但是不支持中文,一票否决.
-    
-    
-    // OpenGLÐèÒªµÄÍ·ÎÄ¼þ
-    #include <GL/glew.h>
-    #include <GL/glut.h>
-    
-    //¶¨Òå³ÌÐòÁ´½ÓÊ±ËùÐèÒªµ÷ÓÃµÄOpenGL³ÌÐò¿â,¼ò»¯¹¤³ÌÅäÖÃ
-    #pragma comment( lib, "glu32.lib" )  
-    #pragma comment( lib, "glut32.lib" )  
-    
-    // DEFINES ////////////////////////////////////////////////
-    
-    // MACROS /////////////////////////////////////////////////
-    
-    #define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
-    #define KEYUP(vk_code)   ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
-    
-    // GLOBALS ////////////////////////////////////////////////
-    HWND      ghWnd; // ´°¿Ú¾ä±ú
-    HINSTANCE ghInstance; // ³ÌÐòÊµÀý¾ä±ú
-    
-    #define FRAME_PER_SECOND (30)
-    #define TIME_IN_FRAME (1000/FRAME_PER_SECOND)
-    #define CIRCLE_POINTS (100)
-    #define PI (3.1415926535898)
-    
-    // È¡Ïû OpenGL £¬ÔÚ³ÌÐò½áÊøÇ°µ÷ÓÃ£¬ÊÍ·ÅäÖÈ¾»·¾³£¬Éè±¸»·¾³ÒÔ¼°×îÖÕ´°¿Ú¾ä±ú¡£
-    void DisableOpenGL()
-    {
-    	wglMakeCurrent( NULL, NULL );
-    	wglDeleteContext( ghRC );
-    	ReleaseDC( ghWnd, ghDC );
-    }
+
+```cpp
+// OpenGLÐèÒªµÄÍ·ÎÄ¼þ
+#include <GL/glew.h>
+#include <GL/glut.h>
+
+//¶¨Òå³ÌÐòÁ´½ÓÊ±ËùÐèÒªµ÷ÓÃµÄOpenGL³ÌÐò¿â,¼ò»¯¹¤³ÌÅäÖÃ
+#pragma comment( lib, "glu32.lib" )  
+#pragma comment( lib, "glut32.lib" )  
+
+// DEFINES ////////////////////////////////////////////////
+
+// MACROS /////////////////////////////////////////////////
+
+#define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
+#define KEYUP(vk_code)   ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
+
+// GLOBALS ////////////////////////////////////////////////
+HWND      ghWnd; // ´°¿Ú¾ä±ú
+HINSTANCE ghInstance; // ³ÌÐòÊµÀý¾ä±ú
+
+#define FRAME_PER_SECOND (30)
+#define TIME_IN_FRAME (1000/FRAME_PER_SECOND)
+#define CIRCLE_POINTS (100)
+#define PI (3.1415926535898)
+
+// È¡Ïû OpenGL £¬ÔÚ³ÌÐò½áÊøÇ°µ÷ÓÃ£¬ÊÍ·ÅäÖÈ¾»·¾³£¬Éè±¸»·¾³ÒÔ¼°×îÖÕ´°¿Ú¾ä±ú¡£
+void DisableOpenGL()
+{
+	wglMakeCurrent( NULL, NULL );
+	wglDeleteContext( ghRC );
+	ReleaseDC( ghWnd, ghDC );
+}
+```
 
 还有一个[syntax highter](<http://blog.prabir.me/>),需求真是大啊,软件如此多。可
 
 [![2009-10-17 17-27-22 syntax highlighted edit](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_2009-10-17%2017-27-22%20syntax%20highlighted%20edit_thumb.png)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_2009-10-17%2017-27-22%20syntax%20highlighted%20edit_2.png>)
 
 名不符实，根本没有高亮，仅仅只有缩进。但是可以一次选中然后配置，这点比较好。支持中文。
-    
-    
-    // OpenGL需要的头文件
-    #include <GL/glew.h>
-    #include <GL/glut.h>
-    
-    //定义程序链接时所需要调用的OpenGL程序库,简化工程配置
-    #pragma comment( lib, "glu32.lib" )  
-    #pragma comment( lib, "glut32.lib" )  
-    
-    // DEFINES ////////////////////////////////////////////////
-    
-    // MACROS /////////////////////////////////////////////////
-    
-    #define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
-    #define KEYUP(vk_code)   ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
-    
-    // GLOBALS ////////////////////////////////////////////////
-    HWND      ghWnd; // 窗口句柄
-    HINSTANCE ghInstance; // 程序实例句柄
-    
-    #define FRAME_PER_SECOND (30)
-    #define TIME_IN_FRAME (1000/FRAME_PER_SECOND)
-    #define CIRCLE_POINTS (100)
-    #define PI (3.1415926535898)
-    
-    // 取消 OpenGL ，在程序结束前调用，释放渲染环境，设备环境以及最终窗口句柄。
-    void DisableOpenGL()
-    {
-    	wglMakeCurrent( NULL, NULL );
-    	wglDeleteContext( ghRC );
-    	ReleaseDC( ghWnd, ghDC );
-    }
+
+```cpp
+// OpenGL需要的头文件
+#include <GL/glew.h>
+#include <GL/glut.h>
+
+//定义程序链接时所需要调用的OpenGL程序库,简化工程配置
+#pragma comment( lib, "glu32.lib" )  
+#pragma comment( lib, "glut32.lib" )  
+
+// DEFINES ////////////////////////////////////////////////
+
+// MACROS /////////////////////////////////////////////////
+
+#define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
+#define KEYUP(vk_code)   ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
+
+// GLOBALS ////////////////////////////////////////////////
+HWND      ghWnd; // 窗口句柄
+HINSTANCE ghInstance; // 程序实例句柄
+
+#define FRAME_PER_SECOND (30)
+#define TIME_IN_FRAME (1000/FRAME_PER_SECOND)
+#define CIRCLE_POINTS (100)
+#define PI (3.1415926535898)
+
+// 取消 OpenGL ，在程序结束前调用，释放渲染环境，设备环境以及最终窗口句柄。
+void DisableOpenGL()
+{
+	wglMakeCurrent( NULL, NULL );
+	wglDeleteContext( ghRC );
+	ReleaseDC( ghWnd, ghDC );
+}
+```
 
 [Paste from Visual Studio](<http://gallery.live.com/liveItemDetail.aspx?li=d8835a5e-28da-4242-82eb-e1a006b083b9>)
 
 完美复制visual studio的代码，从其他地方拷贝过来的无效，无界面配置。用途单一。
-    
-    
-    // OpenGL需要的头文件
-    #include <GL/glew.h>
-    #include <GL/glut.h>
-    
-    //定义程序链接时所需要调用的OpenGL程序库,简化工程配置
-    #pragma comment( lib, "glu32.lib" )  
-    #pragma comment( lib, "glut32.lib" )  
-    
-    // DEFINES ////////////////////////////////////////////////
-    
-    // MACROS /////////////////////////////////////////////////
-    
-    #define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
-    #define KEYUP(vk_code)   ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
-    
-    // GLOBALS ////////////////////////////////////////////////
-    HWND      ghWnd; // 窗口句柄
-    HINSTANCE ghInstance; // 程序实例句柄
-    
-    #define FRAME_PER_SECOND (30)
-    #define TIME_IN_FRAME (1000/FRAME_PER_SECOND)
-    #define CIRCLE_POINTS (100)
-    #define PI (3.1415926535898)
-    
-    // 取消 OpenGL ，在程序结束前调用，释放渲染环境，设备环境以及最终窗口句柄。
-    void DisableOpenGL()
-    {
-        wglMakeCurrent( NULL, NULL );
-        wglDeleteContext( ghRC );
-        ReleaseDC( ghWnd, ghDC );
-    }
+
+```cpp
+// OpenGL需要的头文件
+#include <GL/glew.h>
+#include <GL/glut.h>
+
+//定义程序链接时所需要调用的OpenGL程序库,简化工程配置
+#pragma comment( lib, "glu32.lib" )  
+#pragma comment( lib, "glut32.lib" )  
+
+// DEFINES ////////////////////////////////////////////////
+
+// MACROS /////////////////////////////////////////////////
+
+#define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
+#define KEYUP(vk_code)   ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
+
+// GLOBALS ////////////////////////////////////////////////
+HWND      ghWnd; // 窗口句柄
+HINSTANCE ghInstance; // 程序实例句柄
+
+#define FRAME_PER_SECOND (30)
+#define TIME_IN_FRAME (1000/FRAME_PER_SECOND)
+#define CIRCLE_POINTS (100)
+#define PI (3.1415926535898)
+
+// 取消 OpenGL ，在程序结束前调用，释放渲染环境，设备环境以及最终窗口句柄。
+void DisableOpenGL()
+{
+    wglMakeCurrent( NULL, NULL );
+    wglDeleteContext( ghRC );
+    ReleaseDC( ghWnd, ghDC );
+}
+```
 
 ## 代码及语法高亮插件小结
 
@@ -555,38 +562,40 @@ author:
 将控制台中复制的东西插入，因为我常用putty登录linux，然后展示命令行的东西，所以对我个人也很实用，也许一般人没有什么用吧。Windows的命令行甚至可以显示命令高亮-_-!功能强大，好用，虽然没有任何配置的办法。
 
 Windows:
-    
-    
-    **C:/ >**_dir/w_
-     驱动器 C 中的卷没有标签。
-     卷的序列号是 6854-7E94
-    
-     C:/ 的目录
-    
-    AnalysisLog.sr0          AUTOEXEC.BAT             CONFIG.SYS
-    [Documents and Settings] [Download]               [Downloads]
-    [ppt]                    [Program Files]          [TDDOWNLOAD]
-    [Temp]                   [WINDOWS]
-                   3 个文件        419,464 字节
-                   8 个目录  1,806,254,080 可用字节
-    
-    **C:/ >**__  
-  
+
+```bash
+**C:/ >**_dir/w_
+ 驱动器 C 中的卷没有标签。
+ 卷的序列号是 6854-7E94
+
+ C:/ 的目录
+
+AnalysisLog.sr0          AUTOEXEC.BAT             CONFIG.SYS
+[Documents and Settings] [Download]               [Downloads]
+[ppt]                    [Program Files]          [TDDOWNLOAD]
+[Temp]                   [WINDOWS]
+               3 个文件        419,464 字节
+               8 个目录  1,806,254,080 可用字节
+
+**C:/ >**__  
+```
+
 ---  
-  
+
 Linux:
-    
-    
-    jtianling@jtianling-laptop:~$ ls -l | head -n 5
-    总用量 20772
-    -rwxrw-r--  1 jtianling jtianling     1570 2008-10-26 16:59 1
-    -rwxrw-r--  1 jtianling jtianling       11 2009-08-21 17:25 1.bat
-    -rwxrw-r--  1 jtianling jtianling       80 2008-11-12 23:45 allhead
-    -rw-r--r--  1 jtianling jtianling        0 2009-08-29 12:37 a.out
-    jtianling@jtianling-laptop:~$   
-  
+
+```bash
+jtianling@jtianling-laptop:~$ ls -l | head -n 5
+总用量 20772
+-rwxrw-r--  1 jtianling jtianling     1570 2008-10-26 16:59 1
+-rwxrw-r--  1 jtianling jtianling       11 2009-08-21 17:25 1.bat
+-rwxrw-r--  1 jtianling jtianling       80 2008-11-12 23:45 allhead
+-rw-r--r--  1 jtianling jtianling        0 2009-08-29 12:37 a.out
+jtianling@jtianling-laptop:~$   
+```
+
 ---  
-  
+
 Rich Editor
 
 有点像代码高亮的插件，但是仅支持C#和VB.net,还不支持中文，图都不想贴。
@@ -619,4 +628,4 @@ Word Count
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-> 
+>

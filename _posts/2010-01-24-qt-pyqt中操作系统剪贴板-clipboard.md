@@ -46,21 +46,25 @@ clipboard = QtGui.QApplication.clipboard()
 
 对于普通的文本操作，这两个函数就足够了。以前我也是这样做的。但是，我发现一个现象，那就是复制网页上的数据后，在Google Document上paste的时候，是直接可以复原原来的网页内容的（虽然常常有些偏差），但是我转换后的HTML源码是用setText设置到剪贴板中的话，paste出来的就是源码，说明肯定里面还有蹊跷，要是我的转换工具，直接粘贴就可以在Google Document中出现语法高亮过的文字多好啊，于是我查看了一下QClipboard类，及MSDN。果然，在剪贴板中保存的不仅仅是文字，还可以是一些有格式的内容，在windows中可以保存OLE的东西。。。。Qt中将其统一划分为MimeData。  
 看看QMimedata这个类就会很惊喜，包括了HTML，Image等很多的东西，当然我要的就是HTML。  
-于是乎，我通过  
-mimeData = QtCore.QMimeData()  
-mimeData.setHtml(clipboard.text())  
-clipboard.setMimeData(mimeData) 
+于是乎，我通过
+
+```python
+mimeData = QtCore.QMimeData()
+mimeData.setHtml(clipboard.text())
+clipboard.setMimeData(mimeData)
+```
 
 来设置一个转换过的HTML源码，此时就能直接在Google Document上通过粘贴来得到高亮过的代码了：）  
 但是，在语法文本源代码的地方此时的粘贴就无效了，因为已经没有文本了，经过试验，Qt中不同的数据时相互不影响的，于是再改了一下：  
   
-  
-def setClipboardMimeToHTML():  
-clipboard = QtGui.QApplication.clipboard()  
-mimeData = QtCore.QMimeData()  
-mimeData.setText(clipboard.text())  
-mimeData.setHtml(clipboard.text())  
-clipboard.setMimeData(mimeData) 
+```python
+def setClipboardMimeToHTML():
+    clipboard = QtGui.QApplication.clipboard()
+    mimeData = QtCore.QMimeData()
+    mimeData.setText(clipboard.text())
+    mimeData.setHtml(clipboard.text())
+    clipboard.setMimeData(mimeData)
+```
 
 哈哈，能够粘贴HTML的地方，显示的就是HTML，只能显示文本的地方，粘贴的即是HTML的源码。好不强大，这也就是最后，你们在 _[“ onekeycodehighlighter"](<http://code.google.com/p/onekeycodehighlighter/>)_ 中实际使用的效果。  
 总之，我是对自己做的这个工具很满意了：）

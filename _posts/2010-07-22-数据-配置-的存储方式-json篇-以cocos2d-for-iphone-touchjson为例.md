@@ -50,39 +50,43 @@ author:
 这里，我们就不用其他图了，看看怎么配置这个Hello World。
 
 最最基础的流程：  
-建立一个Json文件，仅仅有两行配置，一行表示显示的文字，一行表示文字的旋转  
-**{**  
-  
-  
-  "text"  
-  : "Don't Hello World"  
-,  
-   "rotation"  
- : 20  
-**}**  
-  
-  
-  
+建立一个Json文件，仅仅有两行配置，一行表示显示的文字，一行表示文字的旋转
+
+```json
+{
+  "text": "Don't Hello World",
+  "rotation": 20
+}
+```
+
 然后将此Json文件放入工程的Resources目录，我这里命名为picture.json。
 
 然后可以开始着手解析这个Json文件了。  
 整个解析过程又分几步，首先，#import "CJSONDeserializer.h"  
-然后，获取到编译打包后在Resources目录文件的位置：  
-NSString *path  = [[NSBundle mainBundle]pathForResource:@"picture" ofType:@"json"];
+然后，获取到编译打包后在Resources目录文件的位置：
 
-获取文件路径后，从文件中读取数据：  
+```objc
+NSString *path  = [[NSBundle mainBundle]pathForResource:@"picture" ofType:@"json"];
+```
+
+获取文件路径后，从文件中读取数据：
+
+```objc
 NSData *jsonData = [[NSFileManager defaultManager] contentsAtPath:path];
+```
 
-获取文件数据后，解析Json文件：  
-// Parse JSON results with TouchJSON.  It converts it into a dictionary.  
-CJSONDeserializer *jsonDeserializer = [CJSONDeserializer deserializer];  
-NSError *error = nil;  
-NSDictionary *jsonDict = [jsonDeserializer deserializeAsDictionary:jsonData error:&error];  
-if (error) {  
-//handle Error, didn't have here.  
-}  
-  
-  
+获取文件数据后，解析Json文件：
+
+```objc
+// Parse JSON results with TouchJSON.  It converts it into a dictionary.
+CJSONDeserializer *jsonDeserializer = [CJSONDeserializer deserializer];
+NSError *error = nil;
+NSDictionary *jsonDict = [jsonDeserializer deserializeAsDictionary:jsonData error:&error];
+if (error) {
+  //handle Error, didn't have here.
+}
+```
+
 此时jsonDict保存的就是解析后的Json数据了。  
 （以上代码都添加在HelloWorldScene的init中）
 
@@ -106,73 +110,53 @@ if (error) {
 上面的流程已经基本完整了，作为补充，还是添加一个Json数组使用的例子。  
 在TouchJson中，作者不推荐将根对象设定为数组([参见这里](<http://stackoverflow.com/questions/288412/deserializing-a-complex-json-result-array-of-dictionaries-with-touchjson> "参见这里")  
 ，TouchJson的作者自己说的），事实上也就不那么做就好了。我们随便用一个key来指定这个数组即可。  
-所以，定义Json文件如下：  
-  
-**{**  
-  
-  
-  "result"  
- :  
-  **[**  
-  
-  
-    **{**  
-  
-  
-      "text"  
-  : "Don't Hello World"  
-,
+所以，定义Json文件如下：
 
-      "rotation"  
- : 20
-
-    **}**  
-  
-,  
-    **{**  
-  
-  
-      "text"  
-  : "Just Hello World"  
-,  
-      "rotation"  
- : -20  
-    **}**  
-  
-  
-  **]**  
-  
-  
-**}**  
+```json
+{
+  "result": [
+    {
+      "text": "Don't Hello World",
+      "rotation": 20
+    },
+    {
+      "text": "Just Hello World",
+      "rotation": -20
+    }
+  ]
+}
+```
 
 然后，读取的时候还是先读取出一个NSDictionary对象，但是我们随后从中取出数组：  
 NSArray *dictArray = [jsonDict valueForKey:@"result"];
 
-然后再遍历数组，此时数组中的每个对象又是NSDictionary对象  
-  
+然后再遍历数组，此时数组中的每个对象又是NSDictionary对象
+
 for (NSDictionary *dict in dictArray) {}
 
-此时获取到NSDictionary的对象就与原来的字典对象很像了，直接通过valueForKey取对应的配置使用即可。较完整的循环代码如下：  
-  
-    for (NSDictionary *dict in dictArray) {  
-      NSString *text = [dict valueForKey:@"text"];  
-      // create and initialize a Label  
-      CCLabel* label = [CCLabel labelWithString:text fontName:@"Marker Felt" fontSize:64];  
-        
-      NSNumber *rotation = [dict valueForKey:@"rotation"];  
-      NSAssert(rotation, @"Didn't have a key named rotation");  
-      label.rotation = [rotation floatValue];  
-        
-      // ask director the the window size  
-      CGSize size = [[CCDirector sharedDirector] winSize];  
-        
-      // position the label on the center of the screen  
-      label.position =  ccp( size.width /2 , size.height/2 );  
-        
-      // add the label as a child to this Layer  
-      [self addChild: label];  
-    }  
-  
+此时获取到NSDictionary的对象就与原来的字典对象很像了，直接通过valueForKey取对应的配置使用即可。较完整的循环代码如下：
+
+```objc
+for (NSDictionary *dict in dictArray) {
+  NSString *text = [dict valueForKey:@"text"];
+  // create and initialize a Label
+  CCLabel* label = [CCLabel labelWithString:text fontName:@"Marker Felt" fontSize:64];
+
+  NSNumber *rotation = [dict valueForKey:@"rotation"];
+  NSAssert(rotation, @"Didn't have a key named rotation");
+  label.rotation = [rotation floatValue];
+
+  // ask director the the window size
+  CGSize size = [[CCDirector sharedDirector] winSize];
+
+  // position the label on the center of the screen
+  label.position =  ccp( size.width /2 , size.height/2 );
+
+  // add the label as a child to this Layer
+  [self addChild: label];
+}
+```
+
 此时可以看到同时显示多个文字的效果：
 
 ![](http://docs.google.com/File?id=dhn3dw87_172xvbt8wwt_b)

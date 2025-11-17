@@ -29,8 +29,6 @@ author:
   last_name: ''
 ---
 
-  
-
 #   一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记  
 用C++/lua/python/bash的四重实现（5）欧几里得算法求最大公约数
 
@@ -60,152 +58,117 @@ write by 九天雁翎(JTianLing)
 
 CPP: 
 
- 1  
-#include  
-<stdio.h>  
- 2 #include  
-<stdlib.h>  
- 3   
- 4 **long**  gcd(**long**  m, **long**  n)  
- 5 {  
- 6     **if**(m < n)  
- 7     {  
- 8         **long**  temp = m;  
- 9         m  
-= n;  
-10         n  
-= temp;  
-11     }  
-12     **while**( n != 0)  
-13     {  
-14         **long**  rem = m % n;  
-15         m  
-= n;  
-16         n  
-= rem;  
-17     }  
-18       
-19     **return**  m;  
-20 }  
-21   
-22 **int**  main(**int**  argc, **char** *  
-argv[])  
-23 {  
-24     printf("gcd(1989,1590)=%ld/n",gcd(1989,1590));  
-25     printf("gcd(1590,1989)=%ld/n",gcd(1590,1989));  
-26     exit(0);  
-27 }  
-28   
+```cpp
+#include <stdio.h>
+#include <stdlib.h>
+
+**long**  gcd(**long**  m, **long**  n)
+{
+    **if**(m < n)
+    {
+        **long**  temp = m;
+        m = n;
+        n = temp;
+    }
+    **while**( n != 0)
+    {
+        **long**  rem = m % n;
+        m = n;
+        n = rem;
+    }
+
+    **return**  m;
+}
+
+**int**  main(**int**  argc, **char** * argv[])
+{
+    printf("gcd(1989,1590)=%ld/n",gcd(1989,1590));
+    printf("gcd(1590,1989)=%ld/n",gcd(1590,1989));
+    exit(0);
+}
+```
 
 LUA: 
 
- 1  
-#!/usr/bin/env  
-lua  
- 2   
- 3   
- 4 function gcd(m,n)  
- 5     **if**  m < n **then**  
- 6         m,n  
-= n,m  
- 7     **end**  
- 8   
- 9     **while**  n ~= 0 **do**  
-10         rem  
-= m % n  
-11         m  
-= n  
-12         n  
-= rem  
-13     **end**  
-14   
-15     **return**  m  
-16 end  
-17   
-18 \-- Test code  
-19 print("gcd(1989,1590)=" .. gcd(1989,1590))  
-20 print("gcd(1590,1989)=" .. gcd(1590,1989))  
-21   
+```lua
+#!/usr/bin/env lua
+
+function gcd(m,n)
+    **if**  m < n **then**
+        m,n = n,m
+    **end**
+
+    **while**  n ~= 0 **do**
+        rem = m % n
+        m = n
+        n = rem
+    **end**
+
+    **return**  m
+end
+
+-- Test code
+print("gcd(1989,1590)=" .. gcd(1989,1590))
+print("gcd(1590,1989)=" .. gcd(1590,1989))
+```
 
 PYTHON: 
 
- 1  
-#!/usr/bin/env  
-python  
- 2   
- 3   
- 4 **def**  gcd(m,n):  
- 5     **if**  m < n:  
- 6         m,n  
-= n,m  
- 7       
- 8     **while**  n != 0:  
- 9         rem  
-= m % n  
-10         m  
-= n  
-11         n  
-= rem  
-12   
-13     **return**  m  
-14   
-15 **def**  test():  
-16     **print**  "gcd(1989,1590)=" +  
-str(gcd(1989,1590))  
-17     **print**  "gcd(1590,1989)=" +  
-str(gcd(1590,1989))  
-18   
-19 **if**  __name__ == '__main__':  
-20     test()  
-21   
+```python
+#!/usr/bin/env python
+
+**def**  gcd(m,n):
+    **if**  m < n:
+        m,n = n,m
+
+    **while**  n != 0:
+        rem = m % n
+        m = n
+        n = rem
+
+    **return**  m
+
+**def**  test():
+    **print**  "gcd(1989,1590)=" + str(gcd(1989,1590))
+    **print**  "gcd(1590,1989)=" + str(gcd(1590,1989))
+
+**if**  __name__ == '__main__':
+    test()
+```
 
 BASH: 
 
- 1  
-#!/usr/bin/env  
-bash  
- 2   
- 3   
- 4 gcd**()**  
- 5 {  
- 6     m=$1  
- 7     n=$2  
- 8     **if**  (( m  
-**<**  n ))  
- 9     **then**  
-10         (( temp **=**  m ))  
-11         (( m **=**  n ))  
-12         (( n **=**  temp ))  
-13     **fi**  
-14   
-15     **while  **(( n  
-**!=**  0 ))  
-16 **     do**  
-17         **((**  rem **=**  m  
-% n **))**  
-18         **((**  m **=**  n  
-**))**  
-19         **((**  n **=**  rem  
-**))**  
-20     **done**  
-21   
-22     **return**  $m  
-23 }  
-24   
-25   
-26 # test code  
-27 **echo**  -n  
-**"** gcd(1989,1590)=**"**  
-28 gcd 1989 1590  
-29 **echo**  $?  
-30 **echo**  -n  
-**"** gcd(1590,1989)=**"**  
-31 gcd 1590 1989  
-32 **echo**  $?  
-33   
-34   
-35
+```bash
+#!/usr/bin/env bash
+
+gcd()
+{
+    m=$1
+    n=$2
+    **if**  (( m < n ))
+    then
+        (( temp = m ))
+        (( m = n ))
+        (( n = temp ))
+    fi
+
+    **while  **(( n != 0 ))
+    do
+        (( rem = m % n ))
+        (( m = n ))
+        (( n = rem ))
+    done
+
+    **return**  $m
+}
+
+# test code
+**echo**  -n  " gcd(1989,1590)="
+gcd 1989 1590
+**echo**  $?
+**echo**  -n  " gcd(1590,1989)="
+gcd 1590 1989
+**echo**  $?
+```
 
 **_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**
-
- 

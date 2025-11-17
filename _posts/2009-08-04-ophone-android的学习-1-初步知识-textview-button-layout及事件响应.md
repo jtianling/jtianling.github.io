@@ -33,69 +33,45 @@ author:
 
 昨天用ADT自动生成的Hello World程序用了很多东西，资源啊，什么的一大堆，弄得比较复杂，源代码如下： 
 
-**package** oms.hello; 
+```java
+**package** oms.hello;
 
- 
+**import** android.app.Activity;
 
-**import** android.app.Activity; 
+**import** android.os.Bundle;
 
-**import** android.os.Bundle; 
-
- 
-
-**public** **class** HelloOPhone **extends** Activity { 
-
+**public** **class** HelloOPhone **extends** Activity {
 /** Called when the activity is first created. */
-
 @Override
-
-**public** **void** onCreate(Bundle savedInstanceState) { 
-
-**super**.onCreate(savedInstanceState); 
-
-setContentView(R.layout._main_); 
-
-} 
-
-} 
-
- 
+**public** **void** onCreate(Bundle savedInstanceState) {
+**super**.onCreate(savedInstanceState);
+setContentView(R.layout._main_);
+}
+}
+```
 
 另外说一句，Eclipse是Windows下我用过的除了VS以外能够直接带程序着色复制的IDE程序，一般的开源的都不好用，Eclipse还算是比较强大。这个代码是简单了。。。。。。但是R.layout.main的出现将问题复杂了，我当时就没有弄清楚Hello Android是怎么来的，后来才发现实在资源里面。这点和一般我们写的程序有点不一样（可能主要是为了大型程序的设计成这样的），作为一个Hello World都这样拐弯抹角就让人受不了了，Google的Andorid教程中就交给我们了另一个较为直观的HelloWorld程序，源代码如下： 
 
-**package** oms.hello; 
+```java
+**package** oms.hello;
 
- 
+**import** android.app.Activity;
 
-**import** android.app.Activity; 
+**import** android.os.Bundle;
 
-**import** android.os.Bundle; 
+**import** android.widget.TextView;
 
-**import** android.widget.TextView; 
-
- 
-
-**public** **class** HelloOPhone **extends** Activity { 
-
+**public** **class** HelloOPhone **extends** Activity {
 /** Called when the activity is first created. */
-
 @Override
-
-**public** **void** onCreate(Bundle savedInstanceState) { 
-
-**super**.onCreate(savedInstanceState); 
-
-TextView tv = **new** TextView(**this**); 
-
-tv.setText("Hello, Android"); 
-
-setContentView(tv); 
-
-} 
-
-} 
-
- 
+**public** **void** onCreate(Bundle savedInstanceState) {
+**super**.onCreate(savedInstanceState);
+TextView tv = **new** TextView(**this**);
+tv.setText("Hello, Android");
+setContentView(tv);
+}
+}
+```
 
 这样的程序相对来说就直观多了，也符合一般的HelloWorld的简洁，这个程序即使是不了解JAVA的人应该也能一眼看明白。 
 
@@ -115,41 +91,28 @@ Known Indirect Subclasses
 
 先看看Button，到底能不能有效： 
 
-**package** oms.hello; 
+```java
+**package** oms.hello;
 
- 
+**import** android.app.Activity;
 
-**import** android.app.Activity; 
+**import** android.os.Bundle;
 
-**import** android.os.Bundle; 
+**import** android.widget.Button;
 
-**import** android.widget.Button; 
+**import** android.widget.TextView;
 
-**import** android.widget.TextView; 
-
- 
-
-**public** **class** HelloOPhone **extends** Activity { 
-
+**public** **class** HelloOPhone **extends** Activity {
 /** Called when the activity is first created. */
-
 @Override
-
-**public** **void** onCreate(Bundle savedInstanceState) { 
-
-**super**.onCreate(savedInstanceState); 
-
-TextView tv = **new** Button(**this**); 
-
-tv.setText("Hello, Android"); 
-
-setContentView(tv); 
-
-} 
-
-} 
-
- 
+**public** **void** onCreate(Bundle savedInstanceState) {
+**super**.onCreate(savedInstanceState);
+TextView tv = **new** Button(**this**);
+tv.setText("Hello, Android");
+setContentView(tv);
+}
+}
+```
 
 上面的程序显示出来的效果如下： 
 
@@ -161,87 +124,57 @@ setContentView(tv);
 
 这个按钮实在太大了，几乎已经看不出是个按钮了。。。。给他瘦瘦身吧。直觉反应的程序应该是下面这样的： 
 
-**package** oms.hello; 
+```java
+**package** oms.hello;
 
- 
+**import** android.app.Activity;
 
-**import** android.app.Activity; 
+**import** android.os.Bundle;
 
-**import** android.os.Bundle; 
+**import** android.widget.Button;
 
-**import** android.widget.Button; 
-
- 
-
-**public** **class** HelloOPhone **extends** Activity { 
-
+**public** **class** HelloOPhone **extends** Activity {
 /** Called when the activity is first created. */
-
 @Override
-
-**public** **void** onCreate(Bundle savedInstanceState) { 
-
-**super**.onCreate(savedInstanceState); 
-
-Button btn = **new** Button(**this**); 
-
-btn.setText("Hello, Android"); 
-
-btn.setWidth(100); 
-
-btn.setHeight(100); 
-
-setContentView(btn); 
-
-} 
-
-} 
-
- 
+**public** **void** onCreate(Bundle savedInstanceState) {
+**super**.onCreate(savedInstanceState);
+Button btn = **new** Button(**this**);
+btn.setText("Hello, Android");
+btn.setWidth(100);
+btn.setHeight(100);
+setContentView(btn);
+}
+}
+```
 
 事实上这个程序与上例中一模一样，还是整个按钮充满了整个Activity。思考了一下，可能问题出在setContentView一句上，因为此举设定了整个内容，这样相当于拉伸效果，否定了整个按钮的设定长宽的效果。既然是这样的思路，那么自然就需要将Button放入某个容器中，让Android显示此容器，用此容器撑满整个屏幕，然后让Button属于此容器的一个子Widget，以调整大小，有了此思路，在文档中一搜索，就出现了目标，有两个layout类，layout是多么的熟悉啊，QT中让人解脱的类，MFC中缺乏导致的对话框程序进行缩放编程就是噩梦的类。有了目标，尝试看看，是否如直觉所示。 
 
 如下程序，达到了我们的目的： 
 
-**package** oms.hello; 
+```java
+**package** oms.hello;
 
- 
+**import** android.app.Activity;
 
-**import** android.app.Activity; 
+**import** android.os.Bundle;
 
-**import** android.os.Bundle; 
+**import** android.widget.Button;
 
-**import** android.widget.Button; 
+**import** android.widget.LinearLayout;
 
-**import** android.widget.LinearLayout; 
-
- 
-
-**public** **class** HelloOPhone **extends** Activity { 
-
+**public** **class** HelloOPhone **extends** Activity {
 /** Called when the activity is first created. */
-
 @Override
-
-**public** **void** onCreate(Bundle savedInstanceState) { 
-
-**super**.onCreate(savedInstanceState); 
-
-LinearLayout layout = **new** LinearLayout(**this**); 
-
-Button btn = **new** Button(**this**); 
-
-btn.setText("Hello, Android"); 
-
-layout.addView(btn, 100, 50); 
-
-setContentView(layout); 
-
-} 
-
-} 
-
- 
+**public** **void** onCreate(Bundle savedInstanceState) {
+**super**.onCreate(savedInstanceState);
+LinearLayout layout = **new** LinearLayout(**this**);
+Button btn = **new** Button(**this**);
+btn.setText("Hello, Android");
+layout.addView(btn, 100, 50);
+setContentView(layout);
+}
+}
+```
 
 效果如下： 
 
@@ -257,85 +190,52 @@ setContentView(layout);
 
 见下例： 
 
-**package** oms.hello; 
+```java
+**package** oms.hello;
 
- 
+**import** android.app.Activity;
 
-**import** android.app.Activity; 
+**import** android.os.Bundle;
 
-**import** android.os.Bundle; 
+**import** android.view.View;
 
-**import** android.view.View; 
+**import** android.view.View.OnClickListener;
 
-**import** android.view.View.OnClickListener; 
+**import** android.widget.Button;
 
-**import** android.widget.Button; 
-
-**import** android.widget.LinearLayout; 
-
- 
+**import** android.widget.LinearLayout;
 
 **public** **class** HelloOPhone **extends** Activity **implements** OnClickListener{ 
-
 /** Called when the activity is first created. */
-
-    **boolean** isClicked = **false** ; 
-
-    @Override **public** **void** onClick(View v) { 
-
-        **if**( v **instanceof** Button) { 
-
-            **if**(!isClicked) { 
-
-                ((Button)v).setText("Hello, New Button."); 
-
-                isClicked = **true** ; 
-
-            } 
-
-            **else**
-
-            { 
-
-                ((Button)v).setText("Hello, Old Button."); 
-
-                isClicked = **false** ; 
-
-            } 
-
-        } 
-
-    } 
-
- 
+    **boolean** isClicked = **false** ;
+    @Override **public** **void** onClick(View v) {
+        **if**( v **instanceof** Button) {
+            **if**(!isClicked) {
+                ((Button)v).setText("Hello, New Button.");
+                isClicked = **true** ;
+            }
+            **else**
+            {
+                ((Button)v).setText("Hello, Old Button.");
+                isClicked = **false** ;
+            }
+        }
+    }
 
 @Override
-
-**public** **void** onCreate(Bundle savedInstanceState) { 
-
-**super**.onCreate(savedInstanceState); 
-
-LinearLayout layout = **new** LinearLayout(**this**); 
-
-Button btn = **new** Button(**this**); 
-
-btn.setText("Hello, Android"); 
-
- 
+**public** **void** onCreate(Bundle savedInstanceState) {
+**super**.onCreate(savedInstanceState);
+LinearLayout layout = **new** LinearLayout(**this**);
+Button btn = **new** Button(**this**);
+btn.setText("Hello, Android");
 
 // 添加一个OnClick事件响应的监听对象
-
-btn.setOnClickListener(**this**); 
-
-layout.addView(btn, 100, 50); 
-
-setContentView(layout); 
-
-} 
-
-} 
-
- 
+btn.setOnClickListener(**this**);
+layout.addView(btn, 100, 50);
+setContentView(layout);
+}
+}
+```
 
 这个程序一下子复杂了很多，几点说明：要响应事件(Event)，需要有监听事件的对象，这个对象在Android中属于Listener一族的接口类，实现这个类的接口，然后通过setOnxxxxListener指定Listener后，一旦有监听(Listening)的事件，则相应的函数（即实现接口的那个函数）就会被调用，并且，发生事件的对象也会通过参数传入此函数。上例中有点特殊的是HelloOPhone本身实现了OnClickListener，这样的话，直接在类中用this表示Listener比较方便（这也是Android文档中提到过的方法），上例实现了一个动态改变的按钮。效果如下： 
 
@@ -346,7 +246,3 @@ setContentView(layout);
  
 
 [write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
-
-  
-  
-

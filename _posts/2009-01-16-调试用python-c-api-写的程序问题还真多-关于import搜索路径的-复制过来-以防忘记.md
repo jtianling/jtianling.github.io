@@ -33,8 +33,11 @@ http://groups.google.com/group/python-cn/browse_thread/thread/f4e2b245147182ad
  
 
 1、可以修改python的环境变量PYTHONPATH   
-2、可以在程序里动态的修改sys.path   
-import sys   
-# 获得当前文件的路径并添加到sys.path   
-sys.path.append(os.getcwd())   
-import other_python 
+2、可以在程序里动态的修改sys.path
+
+```python
+import sys
+# 获得当前文件的路径并添加到sys.path
+sys.path.append(os.getcwd())
+import other_python
+```

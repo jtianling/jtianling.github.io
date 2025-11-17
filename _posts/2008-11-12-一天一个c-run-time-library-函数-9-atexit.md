@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 ## 一天一个C Run-Time Library 函数 （9） atexit
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
@@ -35,9 +33,12 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 Processes the specified function at exit.  
   
 ---  
-int  
-atexit(    void (__cdecl *_func_ )( void ) );  
-  
+
+```c
+int
+atexit(   void (__cdecl *_func_ )( void ) );
+```
+
  
 
  
@@ -46,76 +47,66 @@ atexit(    void (__cdecl *_func_ )( void ) );
 
 ## 测试程序：
 
+```c
 #include  
 <stdlib.h>
 
 #include  
 <stdio.h>
 
- 
-
 void fn1(  
 void ), fn2( void ), fn3( void ), fn4( void );
-
- 
 
 int main(  
 void )
 
 {
 
-   atexit( fn1 );
+   atexit( fn1 );
 
-   atexit( fn2 );
+   atexit( fn2 );
 
-   atexit( fn3 );
+   atexit( fn3 );
 
-   atexit( fn4 );
+   atexit( fn4 );
 
-   printf( "This is executed  
+   printf( "This is executed  
 first./n" );
 
 }
-
- 
 
 void fn1()
 
 {
 
-   printf( "next./n" );
+   printf( "next./n" );
 
 }
-
- 
 
 void fn2()
 
 {
 
-   printf( "executed " );
+   printf( "executed " );
 
 }
-
- 
 
 void fn3()
 
 {
 
-   printf( "is " );
+   printf( "is " );
 
 }
-
- 
 
 void fn4()
 
 {
 
-   printf( "This " );
+   printf( "This " );
 
 }
+```
 
  
 
@@ -141,44 +132,36 @@ gcc:
 
 下面贴出那个有参数调用的实现
 
+```c
 int __cxa_atexit (void (*func) (void *), void *arg, void *d)
-
 {
 
-    struct exit_function  
+    struct exit_function  
 *new = __new_exitfn  
 ();
 
- 
-
-    if (new  
+    if (new  
 == NULL)
 
-       return -1;
-
- 
+       return -1;
 
 #ifdef PTR_MANGLE
 
-    PTR_MANGLE (func);
-
+    PTR_MANGLE (func);
 #endif
-
-    new->func.cxa.fn = (void (*) (void *, int)) func;
-
-    new->func.cxa.arg = arg;
-
-    new->func.cxa.dso_handle  
+    new->func.cxa.fn = (void (*) (void *, int)) func;
+    new->func.cxa.arg = arg;
+    new->func.cxa.dso_handle  
 = d;
+    atomic_write_barrier ();
 
-    atomic_write_barrier ();
-
-    new->flavor  
+    new->flavor  
 = ef_cxa;
 
-    return 0;
+    return 0;
 
 }
+```
 
  
 
@@ -209,5 +192,3 @@ exit,_exit
  
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
-
- 

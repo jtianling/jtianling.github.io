@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-    
-
 ## 一天一个C Run-Time Library 函数  (11)  bsearch
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
@@ -35,17 +33,20 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 Performs a binary search of a sorted array. A  
 more secure version is available; see [bsearch_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/d5690d5e-6be3-4f1d-aa0b-5ca6dbded276.htm>).  
   
----  
-void  
-*bsearch(     const void *_key_ ,    const void *_base_ ,    size_t _num_ ,    size_t _width_ ,    int ( __cdecl *_compare_ ) ( const void *, const  
-void *)  );  
-  
+---
+```c
+void
+*bsearch(     const void *_key_ ,    const void *_base_ ,    size_t _num_ ,    size_t _width_ ,    int ( __cdecl *_compare_ ) ( const void *, const
+void *)  );
+```
+
  
 
  
 
 ## 测试程序：(来自MSDN)
 
+```c
 #include <search.h>
 
 #include <string.h>
@@ -55,46 +56,34 @@ void *)  );
  
 
 int compare( char **arg1, char **arg2 )
-
 {
-
     /* Compare all of both strings: */
-
     return _strcmpi(  
 *arg1, *arg2  
 );
-
 }
 
  
 
 int main( void )
-
 {
-
     char *arr[]  
 = {"dog", "pig",  
 "horse", "cat",  
 "human", "rat",  
 "cow", "goat"};
-
     char **result;
-
     char *key  
 = "cat";
-
     int i;
 
  
-
     /* Sort using Quicksort algorithm: */
-
     qsort( (void *)arr, sizeof(arr)/sizeof(arr[0]), sizeof( char * ), (int (*)(const
 
        void*, const void*))compare );
 
  
-
     for( i  
 = 0; i < sizeof(arr)/sizeof(arr[0]); ++i  
 )    /* Output  
@@ -103,7 +92,6 @@ sorted list */
        printf( "%s ", arr[i] );
 
  
-
     /* Find the word "cat" using  
 a binary search algorithm: */
 
@@ -112,18 +100,17 @@ a binary search algorithm: */
 sizeof(arr)/sizeof(arr[0]),
 
        sizeof( char * ), (int (*)(const void*, const void*))compare );
-
     if( result  
 )
 
        printf( "/n%s found at %Fp/n", *result, result  
 );
-
     else
 
        printf( "/nCat not found!/n" );
 
 }
+```
 
 ## 说明：
 
@@ -166,5 +153,3 @@ qsort，不先排序，二分查找可是没有办法进行的
  
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
-
- 

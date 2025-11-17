@@ -26,29 +26,65 @@ author:
 
 在Ubuntu中设置samba共享可读写文件夹 收藏   
 首先当然是要安装samba了，呵呵： 代码:   
-sudo apt-get install samba sudo apt-get install smbfs   
+```bash
+sudo apt-get install samba
+sudo apt-get install smbfs
+```
 下面我们来共享群组可读写文件夹，假设你要共享的文件夹为： /home/ray/share 首先创建这个文件夹 代码:   
-mkdir /home/ray/share chmod 777 /home/ray/share   
+```bash
+mkdir /home/ray/share
+chmod 777 /home/ray/share
+```
 备份并编辑smb.conf允许网络用户访问 代码:   
-sudo cp /etc/samba/smb.conf /etc/samba/smb.conf_backup sudo gedit /etc/samba/smb.conf   
+```bash
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf_backup
+sudo gedit /etc/samba/smb.conf
+```
 搜寻这一行文字 代码:   
 ; security = user   
 用下面这几行取代 代码:   
-security = user username map = /etc/samba/smbusers   
+```ini
+security = user
+username map = /etc/samba/smbusers
+```
 将下列几行新增到文件的最后面，假设允许访问的用户为：newsfan。而文件夹的共享名为 Share 代码:   
-[Share] comment = Shared Folder with username and password path = /home/ray/share public = yes writable = yes valid users = newsfan create mask = 0700 directory mask = 0700 force user = nobody force group = nogroup available = yes browseable = yes   
+```ini
+[Share]
+comment = Shared Folder with username and password
+path = /home/ray/share
+public = yes
+writable = yes
+valid users = newsfan
+create mask = 0700
+directory mask = 0700
+force user = nobody
+force group = nogroup
+available = yes
+browseable = yes
+```
 然后顺便把这里改一下，找到［global］把 workgroup = MSHOME 改成 代码:   
-workgroup = WORKGROUP display charset = UTF-8 unix charset = UTF-8 dos charset = cp936   
+```ini
+workgroup = WORKGROUP
+display charset = UTF-8
+unix charset = UTF-8
+dos charset = cp936
+```
 后面的三行是为了防止出现中文目录乱码的情况。其中根据你的local，UTF-8 有可能需要改成 cp936。自己看着办吧。 现在要添加newsfan这个网络访问帐户。如果系统中当前没有这个帐户，那么 代码:   
 sudo useradd newsfan   
 要注意，上面只是增加了newsfan这个用户，却没有给用户赋予本机登录密码。所以这个用户将只能从远程访问，不能从本机登录。而且samba的登录密码可以和本机登录密码不一样。 现在要新增网络使用者的帐号： 代码:   
-sudo smbpasswd -a newsfan sudo gedit /etc/samba/smbusers   
+```bash
+sudo smbpasswd -a newsfan
+sudo gedit /etc/samba/smbusers
+```
 在新建立的文件内加入下面这一行并保存 代码:   
 newsfan = "network username"   
 如果将来需要更改newsfan的网络访问密码，也用这个命令更改 代码:   
 sudo smbpasswd -a newsfan   
 删除网络使用者的帐号的命令把上面的 -a 改成 -x 代码:   
-sudo testparm sudo /etc/init.d/samba restart   
+```bash
+sudo testparm
+sudo /etc/init.d/samba restart
+```
 最后退出重新登录或者重新启动一下机器。
 
 本文来自CSDN博客，转载请标明出处：<http://blog.csdn.net/joliny/archive/2008/07/13/2646420.aspx>
@@ -62,44 +98,62 @@ sudo testparm sudo /etc/init.d/samba restart
 以root根用户进行操作，如果您不是，请在每条命令前加上sudo
 
 步骤1:安装samba   
-#apt-get install samba   
-#apt-get install smbfs 
+```bash
+#apt-get install samba
+#apt-get install smbfs
+```
 
 步骤2:添加linux用户   
-#useradd user1 //添加用户名user1   
-#passwd user1 //给用户名user1添加密码   
-#mkdir /home/user1 //建立user1的home目录，如果不用这个用户名来登陆linux，此步骤不是必需   
+```bash
+#useradd user1 //添加用户名user1
+#passwd user1 //给用户名user1添加密码
+#mkdir /home/user1 //建立user1的home目录，如果不用这个用户名来登陆linux，此步骤不是必需
 #chown -R user1:user1 /home/user1 //给user1的home目录设置好权限
+```
 
 步骤3：给samba服务器添加用户   
 说明：登陆samba的用户必须已经是linux中的用户   
+```bash
 #smbpasswd -a user1 //添加并给user1设置samba密码
+```
 
 步骤4：smb.conf设置   
-#cd /etc/samb //进入设置目录   
-#mv smb.conf smb.conf.bak //做好备份，直接将系统默认配置文件改名   
+```bash
+#cd /etc/samb //进入设置目录
+#mv smb.conf smb.conf.bak //做好备份，直接将系统默认配置文件改名
 #vim smb.conf //建立和配置smb.conf文件
+```
 
-[global]   
-workgroup=x1 //X1为你局域网中的工作组名   
-server string=x2 //x2为你linux主机描述性文字，比如：samba server。   
+```ini
+[global]
+workgroup=x1 //X1为你局域网中的工作组名
+server string=x2 //x2为你linux主机描述性文字，比如：samba server。
 security=user //samba的安全等级，user代表需要输入用户名和密码，改成share则不需要输入用户名和密码
+```
 
-[x3] //方框号中的x3这个名字可以随便取，只是在win的网上邻居中显示的共享文件夹名   
-path=/home/x4 //x4为你要共享的文件夹名，在共享前还要建立这个文件夹，并设好权限以便访问，下面会说明。   
-valid users=user1 //这个x4共享目录只允许user1这个用户进入   
-public=no //no表示除了user1这个用户，其它用户在进入samba服务器后看不见x4这个目录，如果为yes，虽然能看见x4这个目录，但除了user1这个用户能进入这个目录，其它人进不了。   
-writable=yes //允许user1在x4目录中进行读和写操作，反之no 
+```ini
+[x3] //方框号中的x3这个名字可以随便取，只是在win的网上邻居中显示的共享文件夹名
+path=/home/x4 //x4为你要共享的文件夹名，在共享前还要建立这个文件夹，并设好权限以便访问，下面会说明。
+valid users=user1 //这个x4共享目录只允许user1这个用户进入
+public=no //no表示除了user1这个用户，其它用户在进入samba服务器后看不见x4这个目录，如果为yes，虽然能看见x4这个目录，但除了user1这个用户能进入这个目录，其它人进不了。
+writable=yes //允许user1在x4目录中进行读和写操作，反之no
+```
 
 //存盘退出   
+```bash
 #testparm //检查一下语法错误，比如拼错
+```
 
 步骤5：建立共享目录   
-#mkdir /home/x4   
+```bash
+#mkdir /home/x4
 #chown -R user1:user1 /home/x4 //因为是root建立的目录，其它用户只有读的权限，所还得把权限改一下。当然也可以简单的用#chmod 777 /home/x4。还有个问题就是共享里目录的文件如果有些能访问有些不能访问，那肯定也是权限的问题,进入/home/x4,直接#chmod 777 *来解决。
+```
 
 步骤6：重启samba服务   
-#/etc/init.d/samba restart 
+```bash
+#/etc/init.d/samba restart
+```
 
 设置samba服务要注意以下两点（即两个两次）：   
 1.添加两次用户：一次添加系统用户#useradd user1；再一次是添加samba用户#smbpasswd -a user1;   
@@ -112,7 +166,6 @@ writable=yes //允许user1在x4目录中进行读和写操作，反之no
 如果设置passdb backend = tdbsam 则可以访问
 
  
-
 passdb backend = tdbsam   
 用tdbsam的时候，密码文件是放在 /var/lib/samba/passdb.tdb 
 
@@ -122,11 +175,13 @@ passdb backend = tdbsam
 
 第二篇：
 
-#rpm -q samba     //查看SAMBA是否安装，如未安装，则执行下列安装
+```bash
+#rpm -q samba     //查看SAMBA是否安装，如未安装，则执行下列安装
 
-#rpm -ivh  samba-3.0.25b-0.4E.6.i386.rpm 
+#rpm -ivh  samba-3.0.25b-0.4E.6.i386.rpm
 
-#vi /etc/services    //查看以netbios开头的是否可用，必须要全部可用
+#vi /etc/services    //查看以netbios开头的是否可用，必须要全部可用
+```
 
  
 
@@ -134,16 +189,14 @@ passdb backend = tdbsam
 
 //linux防火墙要关闭
 
+```bash
 #ls /etc/samba //无smbpasswd文件
-
 #smbpasswd -a tom //创建tom用户
-
 #ls /var/log/samba //smb服务器的日志文件
-
 #vi /etc/samba/smb.conf //编辑smb服务器的主配置文件
+```
 
- 
-
+```ini
 Workgroup = WORKGROUP //windows工作组名
 
 server string = samba server //samba服务器简要说明
@@ -159,12 +212,15 @@ interfaces = eth0 //多网卡SAMBA服务器设置监听的网卡
 interfaces = 192.168.16.177/24 //举例说明
 
 wins support = yes //设置将samba服务器作为wins服务器，默认不使用
+```
 
  
 
 //wins服务器由微软开发，功能是将NetBIOS名称转换为对应的ip地址
 
+```ini
 username map = /etc/samba/smbusers //去掉前面的;号，用于用户映射
+```
 
 然后编辑文件/etc/samba/smbusers，将需要映射的用户添加进去，格式为
 
@@ -178,25 +234,20 @@ encrypt password = yes 或 no //yes表示采用加密方式发送密码，no为�
 
  
 
+```ini
 [homes] //设置共享目录
-
 comment = Home Directories //简要说明
-
 browseable = no //是否允许用户浏览所有人的主目录
-
 writable = yes //是否允许用户写入自己的主目录
+```
 
- 
-
+```ini
 [share] //设置一个共享目录
-
 comment = Samba's share Directory //简要说明
-
 read list = test //只读用户或组
-
 write list = @share //可写用户或组
-
 path = /home/share //共享文件夹目录路径
+```
 
  
 
@@ -212,8 +263,7 @@ path = /home/share //共享文件夹目录路径
 
  
 
- 
-
+```bash
 #testparm //测试smb.conf文件是否有语法错误
 
 #su - //切换root用户
@@ -221,3 +271,4 @@ path = /home/share //共享文件夹目录路径
 #service smb start restart stop //启动 重启 停止samba服务器
 
 #ntsysv //设置samba服务器开机启动
+```

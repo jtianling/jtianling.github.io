@@ -64,62 +64,65 @@ C++中可以由unsigned选择某个整数类型是否是无符号，默认为有
 对于符号的问题，本人使用C++中最为印象深刻的是另外的问题。（也不能全部定性为有无符号带来的问题）工作中，很多遗留的代码喜欢用-1来表示一个无符号数的最大值，事实上，这样做仅仅当类型是int时才是安全的，其他情况下的确能够获取到最大的无符号数，但是比较的时候却会带来问题，不知道的话也常常会在调试时陷入郁闷当中，当时开发的程序常常通过网络通信（服务器端的程序嘛），更加加大了问题的严重性，我甚至还帮同事调试过几个这样的问题。
 
 比如下面这个例子：
-    
-    
-    #include 
-    using namespace std;
-    
-    int main()
+
+```cpp
+#include 
+using namespace std;
+
+int main()
+{
+    unsigned int d = -1;
+    cout <<d <<endl;
+
+    if(d == -1)
     {
-        unsigned int d = -1;
-        cout <<d <<endl;
-    
-        if(d == -1)
-        {
-            cout <<" d == -1" <<endl;
-        }
-        else
-        {
-            cout <<" d != -1" <<endl;
-        }
-    
-        unsigned short s = -1;
-        cout <<s <<endl;
-    
-        if(s == -1)
-        {
-            cout <<" s == -1" <<endl;
-        }
-        else
-        {
-            cout <<" s != -1" <<endl;
-    
-            if(s == (unsigned short)-1)
-            {
-                cout <<" s == (unsigned short)-1" <<endl;
-            }
-            else
-            {
-                cout <<" s != (unsigned short)-1" <<endl;
-            }
-        }
-    
-        return 0;
+        cout <<" d == -1" <<endl;
     }
+    else
+    {
+        cout <<" d != -1" <<endl;
+    }
+
+    unsigned short s = -1;
+    cout <<s <<endl;
+
+    if(s == -1)
+    {
+        cout <<" s == -1" <<endl;
+    }
+    else
+    {
+        cout <<" s != -1" <<endl;
+
+        if(s == (unsigned short)-1)
+        {
+            cout <<" s == (unsigned short)-1" <<endl;
+        }
+        else
+        {
+            cout <<" s != (unsigned short)-1" <<endl;
+        }
+    }
+
+    return 0;
+}
+```
 
 [](<http://11011.net/software/vspaste>)
 
 会输出：
 
-4294967295  
-  
-d == -1 
+```text
+4294967295
 
-65535 
+d == -1
 
-s != -1 
+65535
+
+s != -1
 
 s == (unsigned short)-1
+```
 
 注意了，在C++中，unsigned short用-1赋值后，在与-1的比较中是不为真，这种情况的避免一般可以通过两种方式，一种是在所有的-1使用中全部加上确定的类型，如上面示例中所示，另一种就是全部弃用-1，而是使用0xFFFF…..的形式代替。
 

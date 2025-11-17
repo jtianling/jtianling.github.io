@@ -82,6 +82,7 @@ iPhone上还有些难以承受，但是，我还是希望学习学习，并将Og
 
 如下所示
 
+```cpp
 #if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
 
 class OgreFramework : public Ogre::Singleton<OgreFramework>, OIS::KeyListener, OIS::MultiTouchListener
@@ -91,60 +92,63 @@ class OgreFramework : public Ogre::Singleton<OgreFramework>, OIS::KeyListener, O
 class OgreFramework : public Ogre::Singleton<OgreFramework>, OIS::KeyListener, OIS::MouseListener
 
 #endif
+```
 
 OgreFramework是一个C++类，并通过Ogre::Singleton做成单件，并且，这里可以看出来，通过OIS的MultiTouchListener来支持多点触摸。
 
 所有的接口如下：
 
+```cpp
 public:
 
-    OgreFramework();
+    OgreFramework();
 
-    ~OgreFramework();
-
-#if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-
-    bool initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener = 0, OIS::MultiTouchListener *pMouseListener = 0);
-
-#else
-
-    bool initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener = 0, OIS::MouseListener *pMouseListener = 0);
-
-#endif
-
-    void updateOgre(double timeSinceLastFrame);
-
-    void updateStats();
-
-    void moveCamera();
-
-    void getInput();
-
-    bool isOgreToBeShutDown()const{return m_bShutDownOgre;}  
-
-    bool keyPressed(const OIS::KeyEvent &keyEventRef);
-
-    bool keyReleased(const OIS::KeyEvent &keyEventRef);
+    ~OgreFramework();
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
 
-    bool touchMoved(const OIS::MultiTouchEvent &evt);
-
-    bool touchPressed(const OIS::MultiTouchEvent &evt); 
-
-    bool touchReleased(const OIS::MultiTouchEvent &evt);
-
-    bool touchCancelled(const OIS::MultiTouchEvent &evt);
+    bool initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener = 0, OIS::MultiTouchListener *pMouseListener = 0);
 
 #else
 
-    bool mouseMoved(const OIS::MouseEvent &evt);
-
-    bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id); 
-
-    bool mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
+    bool initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener = 0, OIS::MouseListener *pMouseListener = 0);
 
 #endif
+
+    void updateOgre(double timeSinceLastFrame);
+
+    void updateStats();
+
+    void moveCamera();
+
+    void getInput();
+
+    bool isOgreToBeShutDown()const{return m_bShutDownOgre;}  
+
+    bool keyPressed(const OIS::KeyEvent &keyEventRef);
+
+    bool keyReleased(const OIS::KeyEvent &keyEventRef);
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
+
+    bool touchMoved(const OIS::MultiTouchEvent &evt);
+
+    bool touchPressed(const OIS::MultiTouchEvent &evt); 
+
+    bool touchReleased(const OIS::MultiTouchEvent &evt);
+
+    bool touchCancelled(const OIS::MultiTouchEvent &evt);
+
+#else
+
+    bool mouseMoved(const OIS::MouseEvent &evt);
+
+    bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id); 
+
+    bool mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id);
+
+#endif
+```
 
 可以从接口看出，此框架设计的使用方式是直接作为变量/成员变量使用，不是希望使用者继承此类。下面分别看各个部分。
 
@@ -156,255 +160,155 @@ public:
 
 /|||||||||||||||||||||||||||||||||||||||||||||||
 
+```cpp
 #if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-
 bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener, OIS::MultiTouchListener *pMouseListener)
-
 #else
-
 bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener, OIS::MouseListener *pMouseListener)
-
 #endif
+{
+    // 日志管理的初始化  
 
-{  
-// 日志管理的初始化  
+    new Ogre::LogManager();
+    
+    m_pLog = Ogre::LogManager::getSingleton().createLog("OgreLogfile.log", true, true, false);
+    m_pLog->setDebugOutputEnabled(true);
+    
+    // 不是静态链接的时候使用plugins.cfg配置文件，因为iPhone只能使用静态链接方式，没戏了  
 
-    new Ogre::LogManager();
-
-    
-
-    m_pLog = Ogre::LogManager::getSingleton().createLog("OgreLogfile.log", true, true, false);
-
-    m_pLog->setDebugOutputEnabled(true);
-
-      
-// 不是静态链接的时候使用plugins.cfg配置文件，因为iPhone只能使用静态链接方式，没戏了  
-
-    String pluginsPath;
-
-    // only use plugins.cfg if not static
+    String pluginsPath;
+    // only use plugins.cfg if not static
 
 #ifndef OGRE_STATIC_LIB
-
-    pluginsPath = m_ResourcePath + "plugins.cfg";
-
+    pluginsPath = m_ResourcePath + "plugins.cfg";
 #endif
+    
+    // Root的创建（Ogre::Root* m_pRoot;）  
 
-      
-// Root的创建（Ogre::Root* m_pRoot;）  
-
-    m_pRoot = new Ogre::Root(pluginsPath, Ogre::macBundlePath() + "/ogre.cfg");
-
-    
-
+    m_pRoot = new Ogre::Root(pluginsPath, Ogre::macBundlePath() + "/ogre.cfg");
+    
 #ifdef OGRE_STATIC_LIB
-
-    m_StaticPluginLoader.load();
-
+    m_StaticPluginLoader.load();
 #endif
+    
+    // 代码虽然是显示配置对话框的代码，但是示例中不会显示配置对话框，而是直接restore了原来的配置  
 
-      
-// 代码虽然是显示配置对话框的代码，但是示例中不会显示配置对话框，而是直接restore了原来的配置  
+    if(!m_pRoot->showConfigDialog())
+        return false;
+    
+    // 渲染窗口的创建及初始化(Ogre::RenderWindow* m_pRenderWnd;)  
 
-    if(!m_pRoot->showConfigDialog())
-
-        return false;
-
-      
-// 渲染窗口的创建及初始化(Ogre::RenderWindow* m_pRenderWnd;)  
-
-    m_pRenderWnd = m_pRoot->initialise(true, wndTitle);
-
-      
-// iPhone平台特定操作，设定屏幕位置及大小（这些都是随着设备就固定了的），这里的(0,0)还是2维坐标，即屏幕的左上角  
-// 有意思的是一开始的时候，Ogre就认为iPhone设备是横的。。。。即RenderWnd height: 320     width: 480  
-// 即状态OR_LANDSCAPELEFT  = OR_DEGREE_270  
+    m_pRenderWnd = m_pRoot->initialise(true, wndTitle);
+    
+    // iPhone平台特定操作，设定屏幕位置及大小（这些都是随着设备就固定了的），这里的(0,0)还是2维坐标，即屏幕的左上角  
+    // 有意思的是一开始的时候，Ogre就认为iPhone设备是横的。。。。即RenderWnd height: 320    width: 480  
+    // 即状态OR_LANDSCAPELEFT  = OR_DEGREE_270  
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-
-  m_pRenderWnd->reposition(0, 0);
-
-  m_pRenderWnd->resize(m_pRenderWnd->getHeight(), m_pRenderWnd->getWidth());
-
+  m_pRenderWnd->reposition(0, 0);
+  m_pRenderWnd->resize(m_pRenderWnd->getHeight(), m_pRenderWnd->getWidth());
 #endif
+    
+    // 以下是SceneMgr，Camera，Viewport的创建及初始化，与一般的过程一样  
 
-      
-// 以下是SceneMgr，Camera，Viewport的创建及初始化，与一般的过程一样  
+    m_pSceneMgr = m_pRoot->createSceneManager(ST_GENERIC, "SceneManager");
+    m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7, 0.7, 0.7));
+    
+    m_pCamera = m_pSceneMgr->createCamera("Camera");
+    m_pCamera->setPosition(Vector3(0, 60, 60));
+    m_pCamera->lookAt(Vector3(0,0,0));
+    m_pCamera->setNearClipDistance(1);
+    
+    m_pViewport = m_pRenderWnd->addViewport(m_pCamera);
+    m_pViewport->setBackgroundColour(ColourValue(0.8, 0.7, 0.6, 1.0));
+    
+    m_pCamera->setAspectRatio(Real(m_pViewport->getActualWidth()) / Real(m_pViewport->getActualHeight()));
+    
+    m_pViewport->setCamera(m_pCamera);
+    
+    // OIS的部分，构造的方式为了跨平台，所以有些独特^^通过字符串的方式来索引参数创建，  
+    // 传递的参数是窗口的句柄，但是也转换成string了  
 
-    m_pSceneMgr = m_pRoot->createSceneManager(ST_GENERIC, "SceneManager");
-
-    m_pSceneMgr->setAmbientLight(Ogre::ColourValue(0.7, 0.7, 0.7));
-
-    
-
-    m_pCamera = m_pSceneMgr->createCamera("Camera");
-
-    m_pCamera->setPosition(Vector3(0, 60, 60));
-
-    m_pCamera->lookAt(Vector3(0,0,0));
-
-    m_pCamera->setNearClipDistance(1);
-
-    
-
-    m_pViewport = m_pRenderWnd->addViewport(m_pCamera);
-
-    m_pViewport->setBackgroundColour(ColourValue(0.8, 0.7, 0.6, 1.0));
-
-    
-
-    m_pCamera->setAspectRatio(Real(m_pViewport->getActualWidth()) / Real(m_pViewport->getActualHeight()));
-
-    
-
-    m_pViewport->setCamera(m_pCamera);
-
-      
-// OIS的部分，构造的方式为了跨平台，所以有些独特^^通过字符串的方式来索引参数创建，  
-// 传递的参数是窗口的句柄，但是也转换成string了  
-
-    unsigned long hWnd = 0;
-
-    OIS::ParamList paramList;
-
-    m_pRenderWnd->getCustomAttribute("WINDOW", &hWnd);
-
-    
-
-    paramList.insert(OIS::ParamList::value_type("WINDOW", Ogre::StringConverter::toString(hWnd)));
-
-    
-
-    m_pInputMgr = OIS::InputManager::createInputSystem(paramList);
-
-      
-// OIS有MultiTouch的支持，但是在这个框架中还是直接赋值给m_pMouse(这个变量已经根据宏分别创建了)  
+    unsigned long hWnd = 0;
+    OIS::ParamList paramList;
+    m_pRenderWnd->getCustomAttribute("WINDOW", &hWnd);
+    
+    paramList.insert(OIS::ParamList::value_type("WINDOW", Ogre::StringConverter::toString(hWnd)));
+    
+    m_pInputMgr = OIS::InputManager::createInputSystem(paramList);
+    
+    // OIS有MultiTouch的支持，但是在这个框架中还是直接赋值给m_pMouse(这个变量已经根据宏分别创建了)  
 
 #if OGRE_PLATFORM != OGRE_PLATFORM_IPHONE
-
-    m_pKeyboard = static_cast<OIS::Keyboard*>(m_pInputMgr->createInputObject(OIS::OISKeyboard, true));
-
-    m_pMouse = static_cast<OIS::Mouse*>(m_pInputMgr->createInputObject(OIS::OISMouse, true));
-
-    
-
-    m_pMouse->getMouseState().height = m_pRenderWnd->getHeight();
-
-    m_pMouse->getMouseState().width     = m_pRenderWnd->getWidth();
-
+    m_pKeyboard = static_cast<OIS::Keyboard*>(m_pInputMgr->createInputObject(OIS::OISKeyboard, true));
+    m_pMouse = static_cast<OIS::Mouse*>(m_pInputMgr->createInputObject(OIS::OISMouse, true));
+    
+    m_pMouse->getMouseState().height = m_pRenderWnd->getHeight();
+    m_pMouse->getMouseState().width    = m_pRenderWnd->getWidth();
 #else
-
-    m_pMouse = static_cast<OIS::MultiTouch*>(m_pInputMgr->createInputObject(OIS::OISMultiTouch, true));
-
+    m_pMouse = static_cast<OIS::MultiTouch*>(m_pInputMgr->createInputObject(OIS::OISMultiTouch, true));
 #endif
-
-      
-// 这里可以参考此类的构造函数，即允许构造此类的时候，传递外来的输入响应对象。  
+    
+    // 这里可以参考此类的构造函数，即允许构造此类的时候，传递外来的输入响应对象。  
 
 #if OGRE_PLATFORM != OGRE_PLATFORM_IPHONE
-
-    if(pKeyListener == 0)
-
-        m_pKeyboard->setEventCallback(this);
-
-    else
-
-        m_pKeyboard->setEventCallback(pKeyListener);
-
+    if(pKeyListener == 0)
+        m_pKeyboard->setEventCallback(this);
+    else
+        m_pKeyboard->setEventCallback(pKeyListener);
 #endif
 
-    
+    if(pMouseListener == 0)
+        m_pMouse->setEventCallback(this);
+    else
+        m_pMouse->setEventCallback(pMouseListener);
+    
+    // 读取配置，与一般的情况一样，只是多了个m_ResourcePath作为基础目录，为Mac和iPhone准备的。  
+    // 这两个平台因为用了Bundle，所以与PC有些不一样
 
-    if(pMouseListener == 0)
-
-        m_pMouse->setEventCallback(this);
-
-    else
-
-        m_pMouse->setEventCallback(pMouseListener);
-
-      
-// 读取配置，与一般的情况一样，只是多了个m_ResourcePath作为基础目录，为Mac和iPhone准备的。  
-// 这两个平台因为用了Bundle，所以与PC有些不一样  
-
-    Ogre::String secName, typeName, archName;
-
-    Ogre::ConfigFile cf;
-
-    cf.load(m_ResourcePath + "resources.cfg");
-
-    
-
-    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
-
-    while (seci.hasMoreElements())
-
-    {
-
-        secName = seci.peekNextKey();
-
-        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-
-        Ogre::ConfigFile::SettingsMultiMap::iterator i;
-
-        for (i = settings->begin(); i != settings->end(); ++i)
-
-        {
-
-            typeName = i->first;
-
-            archName = i->second;
-
-// 还是为Mac和iPhone进行了一些特殊处理，英文注释很详细了  
+    Ogre::String secName, typeName, archName;
+    Ogre::ConfigFile cf;
+    cf.load(m_ResourcePath + "resources.cfg");
+    
+    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
+    while (seci.hasMoreElements())
+    {
+        secName = seci.peekNextKey();
+        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
+        Ogre::ConfigFile::SettingsMultiMap::iterator i;
+        for (i = settings->begin(); i != settings->end(); ++i)
+        {
+            typeName = i->first;
+            archName = i->second;
+            // 还是为Mac和iPhone进行了一些特殊处理，英文注释很详细了  
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE || OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-
-            // OS X does not set the working directory relative to the app,
-
-            // In order to make things portable on OS X we need to provide
-
-            // the loading with it's own bundle path location
-
-            if (!Ogre::StringUtil::startsWith(archName, "/", false)) // only adjust relative dirs
-
-                archName = Ogre::String(Ogre::macBundlePath() + "/" \+ archName);
-
+            // OS X does not set the working directory relative to the app,
+            // In order to make things portable on OS X we need to provide
+            // the loading with it's own bundle path location
+            if (!Ogre::StringUtil::startsWith(archName, "/", false)) // only adjust relative dirs
+                archName = Ogre::String(Ogre::macBundlePath() + "/" \+ archName);
 #endif
+            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
+        }
+    }
+    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
+    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+    
+    // 创建计时器  
 
-            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
+    m_pTimer = OGRE_NEW Ogre::Timer();
+    m_pTimer->reset();
+    // 获取Debug的Overlay层，用于输出一些调试信息  
 
-        }
-
-    }
-
-    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
-
-    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-
-      
-// 创建计时器  
-
-    m_pTimer = OGRE_NEW Ogre::Timer();
-
-    m_pTimer->reset();
-
-    // 获取Debug的Overlay层，用于输出一些调试信息  
-
-    m_pDebugOverlay = OverlayManager::getSingleton().getByName("Core/DebugOverlay");
-
-    m_pDebugOverlay->show();
-
-    
-
-    m_pRenderWnd->setActive(true);
-
-    
-
-    return true;
-
+    m_pDebugOverlay = OverlayManager::getSingleton().getByName("Core/DebugOverlay");
+    m_pDebugOverlay->show();
+    
+    m_pRenderWnd->setActive(true);
+    
+    return true;
 }
-
- 
+```
 
 这个函数的目的是很单纯的，作为框架性代码，没有像Ogre的基础教程createScene函数一样，添加场景创建的代码，仅仅是初始化了一些相关的对象。而这个函数已经完成了此基础框架希望完成的大部分功能了。
 
@@ -416,93 +320,51 @@ keyPressed，mouseMoved在iPhone中是完全没有什么用了，touch的系列�
 
 此参数定义如下：
 
-    //! Touch Event type
-
-    enum MultiTypeEventTypeID
-
-    {
-
-        MT_None = 0, MT_Pressed, MT_Released, MT_Moved, MT_Cancelled
-
-    };
-
-    class _OISExport MultiTouchState
-
-    {
-
-    public:
-
-        MultiTouchState() : width(50), height(50), touchType(MT_None) {};
-
-        /** Represents the height/width of your display area.. used if touch clipping
-
-        or touch grabbed in case of X11 - defaults to 50.. Make sure to set this
-
-        and change when your size changes.. */
-
-        mutable int width, height;
-
-        //! X Axis component
-
-        Axis X;
-
-        //! Y Axis Component
-
-        Axis Y;
-
-        //! Z Axis Component
-
-        Axis Z;
-
-        int touchType;
-
-        inline bool touchIsType( MultiTypeEventTypeID touch ) const
-
-        {
-
-            return ((touchType & ( 1L << touch )) == 0) ? false : true;
-
-        }
-
-       
-
-        //! Clear all the values
-
-        void clear()
-
-        {
-
-            X.clear();
-
-            Y.clear();
-
-            Z.clear();
-
-            touchType = MT_None;
-
-        }
-
-    };
-
-    /** Specialised for multi-touch events */
-
-    class _OISExport MultiTouchEvent : public EventArg
-
-    {
-
-    public:
-
-        MultiTouchEvent( Object *obj, const MultiTouchState &ms ) : EventArg(obj), state(ms) {}
-
-        virtual ~MultiTouchEvent() {}
-
-        //! The state of the touch - including axes
-
-        const MultiTouchState &state;
-
-    };
-
- 
+```cpp
+//! Touch Event type
+enum MultiTypeEventTypeID
+{
+    MT_None = 0, MT_Pressed, MT_Released, MT_Moved, MT_Cancelled
+};
+class _OISExport MultiTouchState
+{
+public:
+    MultiTouchState() : width(50), height(50), touchType(MT_None) {};
+    /** Represents the height/width of your display area.. used if touch clipping
+    or touch grabbed in case of X11 - defaults to 50.. Make sure to set this
+    and change when your size changes.. */
+    mutable int width, height;
+    //! X Axis component
+    Axis X;
+    //! Y Axis Component
+    Axis Y;
+    //! Z Axis Component
+    Axis Z;
+    int touchType;
+    inline bool touchIsType( MultiTypeEventTypeID touch ) const
+    {
+        return ((touchType & ( 1L << touch )) == 0) ? false : true;
+    }
+    
+    //! Clear all the values
+    void clear()
+    {
+        X.clear();
+        Y.clear();
+        Z.clear();
+        touchType = MT_None;
+    }
+};
+/** Specialised for multi-touch events */
+class _OISExport MultiTouchEvent : public EventArg
+{
+public:
+    MultiTouchEvent( Object *obj, const MultiTouchState &ms ) : EventArg(obj), state(ms) {}
+    virtual ~MultiTouchEvent() {}
+    //! The state of the touch - including axes
+    const MultiTouchState &state;
+};
+```
 
 基本上还是很容易理解的，就是有些奇怪的添加了Z坐标，难道将来会有立体触摸？-_-!OIS的作者想的还真远啊。。。。。。。
 
@@ -512,67 +374,40 @@ keyPressed，mouseMoved在iPhone中是完全没有什么用了，touch的系列�
 
 然后，在touchMoved函数中，实现了camera的旋转。
 
+```cpp
 #if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-
 bool OgreFramework::touchMoved(const OIS::MultiTouchEvent &evt)
-
 {
-
-    OIS::MultiTouchState state = evt.state;
-
-    int origTransX = 0, origTransY = 0;
-
-    switch(m_pCamera->getViewport()->getOrientationMode())
-
-    {
-
-        case Ogre::OR_LANDSCAPELEFT:
-
-            origTransX = state.X.rel;
-
-            origTransY = state.Y.rel;
-
-            state.X.rel = -origTransY;
-
-            state.Y.rel = origTransX;
-
-            break;
-
-            
-
-        case Ogre::OR_LANDSCAPERIGHT:
-
-            origTransX = state.X.rel;
-
-            origTransY = state.Y.rel;
-
-            state.X.rel = origTransY;
-
-            state.Y.rel = origTransX;
-
-            break;
-
-            
-
-            // Portrait doesn't need any change
-
-        case Ogre::OR_PORTRAIT:
-
-        default:
-
-            break;
-
-    }
-
-    m_pCamera->yaw(Degree(state.X.rel * -0.1));
-
-    m_pCamera->pitch(Degree(state.Y.rel * -0.1));
-
-    
-
-    return true;
-
+    OIS::MultiTouchState state = evt.state;
+    int origTransX = 0, origTransY = 0;
+    switch(m_pCamera->getViewport()->getOrientationMode())
+    {
+        case Ogre::OR_LANDSCAPELEFT:
+            origTransX = state.X.rel;
+            origTransY = state.Y.rel;
+            state.X.rel = -origTransY;
+            state.Y.rel = origTransX;
+            break;
+            
+        case Ogre::OR_LANDSCAPERIGHT:
+            origTransX = state.X.rel;
+            origTransY = state.Y.rel;
+            state.X.rel = origTransY;
+            state.Y.rel = origTransX;
+            break;
+            
+            // Portrait doesn't need any change
+        case Ogre::OR_PORTRAIT:
+        default:
+            break;
+    }
+    m_pCamera->yaw(Degree(state.X.rel * -0.1));
+    m_pCamera->pitch(Degree(state.Y.rel * -0.1));
+    
+    return true;
 }
+#endif
+```
 
 大部分代码是为了不同的设备方向而进行的参数调整，其实主要也就是Camera的yaw,pitch旋转而已，有意思的是，touch参数里面的相对值的存在，使得旋转速度的设定非常简洁。
 
@@ -582,69 +417,40 @@ bool OgreFramework::touchMoved(const OIS::MultiTouchEvent &evt)
 
 框架类中剩下的还有点用的东西就是调试信息的输出了，代码如下：
 
+```cpp
 //|||||||||||||||||||||||||||||||||||||||||||||||
-
 void OgreFramework::updateStats() 
-
 { 
-
-    static String currFps = "Current FPS: "; 
-
-    static String avgFps = "Average FPS: "; 
-
-    static String bestFps = "Best FPS: "; 
-
-    static String worstFps = "Worst FPS: "; 
-
-    static String tris = "Triangle Count: "; 
-
-    static String batches = "Batch Count: "; 
-
-    
-
-    OverlayElement* guiAvg = OverlayManager::getSingleton().getOverlayElement("Core/AverageFps"); 
-
-    OverlayElement* guiCurr = OverlayManager::getSingleton().getOverlayElement("Core/CurrFps"); 
-
-    OverlayElement* guiBest = OverlayManager::getSingleton().getOverlayElement("Core/BestFps"); 
-
-    OverlayElement* guiWorst = OverlayManager::getSingleton().getOverlayElement("Core/WorstFps"); 
-
-    
-
-    const RenderTarget::FrameStats& stats = m_pRenderWnd->getStatistics(); 
-
-    guiAvg->setCaption(avgFps + StringConverter::toString(stats.avgFPS)); 
-
-    guiCurr->setCaption(currFps + StringConverter::toString(stats.lastFPS)); 
-
-    guiBest->setCaption(bestFps + StringConverter::toString(stats.bestFPS) 
-
-                        +" "+StringConverter::toString(stats.bestFrameTime)+" ms"); 
-
-    guiWorst->setCaption(worstFps + StringConverter::toString(stats.worstFPS) 
-
-                         +" "+StringConverter::toString(stats.worstFrameTime)+" ms"); 
-
-    
-
-    OverlayElement* guiTris = OverlayManager::getSingleton().getOverlayElement("Core/NumTris"); 
-
-    guiTris->setCaption(tris + StringConverter::toString(stats.triangleCount)); 
-
-    
-
-    OverlayElement* guiBatches = OverlayManager::getSingleton().getOverlayElement("Core/NumBatches"); 
-
-    guiBatches->setCaption(batches + StringConverter::toString(stats.batchCount)); 
-
-    
-
-    OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText"); 
-
-    guiDbg->setCaption("");
-
+    static String currFps = "Current FPS: "; 
+    static String avgFps = "Average FPS: "; 
+    static String bestFps = "Best FPS: "; 
+    static String worstFps = "Worst FPS: "; 
+    static String tris = "Triangle Count: "; 
+    static String batches = "Batch Count: "; 
+    
+    OverlayElement* guiAvg = OverlayManager::getSingleton().getOverlayElement("Core/AverageFps"); 
+    OverlayElement* guiCurr = OverlayManager::getSingleton().getOverlayElement("Core/CurrFps"); 
+    OverlayElement* guiBest = OverlayManager::getSingleton().getOverlayElement("Core/BestFps"); 
+    OverlayElement* guiWorst = OverlayManager::getSingleton().getOverlayElement("Core/WorstFps"); 
+    
+    const RenderTarget::FrameStats& stats = m_pRenderWnd->getStatistics(); 
+    guiAvg->setCaption(avgFps + StringConverter::toString(stats.avgFPS)); 
+    guiCurr->setCaption(currFps + StringConverter::toString(stats.lastFPS)); 
+    guiBest->setCaption(bestFps + StringConverter::toString(stats.bestFPS) 
+                        +" "+StringConverter::toString(stats.bestFrameTime)+" ms"); 
+    guiWorst->setCaption(worstFps + StringConverter::toString(stats.worstFPS) 
+                         +" "+StringConverter::toString(stats.worstFrameTime)+" ms"); 
+    
+    OverlayElement* guiTris = OverlayManager::getSingleton().getOverlayElement("Core/NumTris"); 
+    guiTris->setCaption(tris + StringConverter::toString(stats.triangleCount)); 
+    
+    OverlayElement* guiBatches = OverlayManager::getSingleton().getOverlayElement("Core/NumBatches"); 
+    guiBatches->setCaption(batches + StringConverter::toString(stats.batchCount)); 
+    
+    OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText"); 
+    guiDbg->setCaption("");
 } 
+```
 
 都是获取到响应的UI元素，然后进行输出，没有太多好讲的。
 
@@ -658,39 +464,25 @@ void OgreFramework::updateStats()
 
 ### DemoApp:
 
+```cpp
 class DemoApp : public OIS::KeyListener
-
 {
-
 public:
-
-    DemoApp();
-
-    ~DemoApp();
-
-    void startDemo();
-
-    void setupDemoScene();
-
-    void setShutdown(bool flag) { m_bShutdown = flag; }
-
-    
-
-    bool keyPressed(const OIS::KeyEvent &keyEventRef);
-
-    bool keyReleased(const OIS::KeyEvent &keyEventRef);
-
+    DemoApp();
+    ~DemoApp();
+    void startDemo();
+    void setupDemoScene();
+    void setShutdown(bool flag) { m_bShutdown = flag; }
+    
+    bool keyPressed(const OIS::KeyEvent &keyEventRef);
+    bool keyReleased(const OIS::KeyEvent &keyEventRef);
 private:
-
-    void runDemo();
-
-    Ogre::SceneNode*            m_pCubeNode;
-
-    Ogre::Entity*                m_pCubeEntity;
-
-    bool                        m_bShutdown;
-
+    void runDemo();
+    Ogre::SceneNode*            m_pCubeNode;
+    Ogre::Entity*               m_pCubeEntity;
+    bool                        m_bShutdown;
 };
+```
 
  
 
@@ -706,27 +498,19 @@ private:
 
  
 
+```cpp
 void DemoApp::startDemo()
-
 {
-
-    new OgreFramework();
-
-    if(!OgreFramework::getSingletonPtr()->initOgre("DemoApp v1.0", this, 0))
-
-        return;
-
-    
-
-    m_bShutdown = false;
-
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Demo initialized!");
-
-    setupDemoScene();
-
-    runDemo();
-
+    new OgreFramework();
+    if(!OgreFramework::getSingletonPtr()->initOgre("DemoApp v1.0", this, 0))
+        return;
+    
+    m_bShutdown = false;
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Demo initialized!");
+    setupDemoScene();
+    runDemo();
 }
+```
 
  
 
@@ -736,21 +520,16 @@ void DemoApp::startDemo()
 
  
 
+```cpp
 void DemoApp::setupDemoScene()
-
 {
-
-    OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
-
-    OgreFramework::getSingletonPtr()->m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
-
-    m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("Cube", "ogrehead.mesh");
-
-    m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode");
-
-    m_pCubeNode->attachObject(m_pCubeEntity);
-
+    OgreFramework::getSingletonPtr()->m_pSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
+    OgreFramework::getSingletonPtr()->m_pSceneMgr->createLight("Light")->setPosition(75,75,75);
+    m_pCubeEntity = OgreFramework::getSingletonPtr()->m_pSceneMgr->createEntity("Cube", "ogrehead.mesh");
+    m_pCubeNode = OgreFramework::getSingletonPtr()->m_pSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode");
+    m_pCubeNode->attachObject(m_pCubeEntity);
 }
+```
 
  
 
@@ -758,85 +537,50 @@ void DemoApp::setupDemoScene()
 
  
 
+```cpp
 //|||||||||||||||||||||||||||||||||||||||||||||||
-
 void DemoApp::runDemo()
-
 {
-
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Start main loop...");
-
-    
-
-    double timeSinceLastFrame = 0;
-
-    double startTime = 0;
-
-    OgreFramework::getSingletonPtr()->m_pRenderWnd->resetStatistics();
-
-    
-
-    while(!m_bShutdown && !OgreFramework::getSingletonPtr()->isOgreToBeShutDown()) 
-
-    {
-
-        if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isClosed())m_bShutdown = true;
-
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Start main loop...");
+    
+    double timeSinceLastFrame = 0;
+    double startTime = 0;
+    OgreFramework::getSingletonPtr()->m_pRenderWnd->resetStatistics();
+    
+    while(!m_bShutdown && !OgreFramework::getSingletonPtr()->isOgreToBeShutDown()) 
+    {
+        if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isClosed())m_bShutdown = true;
 #if OGRE_PLATFORM != OGRE_PLATFORM_IPHONE
-
-        Ogre::WindowEventUtilities::messagePump();
-
-#endif    
-
-        if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isActive())
-
-        {
-
-            startTime = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU();
-
-                    
-
+        Ogre::WindowEventUtilities::messagePump();
+#endif        
+        
+        if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isActive())
+        {
+            startTime = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU();
+            
+            
 #if OGRE_PLATFORM != OGRE_PLATFORM_IPHONE
-
-            OgreFramework::getSingletonPtr()->m_pKeyboard->capture();
-
+            OgreFramework::getSingletonPtr()->m_pKeyboard->capture();
 #endif
-
-            OgreFramework::getSingletonPtr()->m_pMouse->capture();
-
-            OgreFramework::getSingletonPtr()->updateOgre(timeSinceLastFrame);
-
-            OgreFramework::getSingletonPtr()->m_pRoot->renderOneFrame();
-
-        
-
-            timeSinceLastFrame = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU() - startTime;
-
-        }
-
-        else
-
-        {
-
+            OgreFramework::getSingletonPtr()->m_pMouse->capture();
+            OgreFramework::getSingletonPtr()->updateOgre(timeSinceLastFrame);
+            OgreFramework::getSingletonPtr()->m_pRoot->renderOneFrame();
+        
+            timeSinceLastFrame = OgreFramework::getSingletonPtr()->m_pTimer->getMillisecondsCPU() - startTime;
+        }
+        else
+        {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-
-           Sleep(1000);
-
+           Sleep(1000);
 #elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-
-           sleep(1000);
-
+           sleep(1000);
 #endif
-
-        }
-
-    }
-
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Main loop quit");
-
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Shutdown OGRE...");
-
+        }
+    }
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Main loop quit");
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Shutdown OGRE...");
 }
+```
 
 看完这里，代码上是没有什么疑问了，主循环嘛。。。。。。。。不过，对于代码实现的问题上，还是有些问题的，从前面的代码来看，主循环通过
 
@@ -866,25 +610,26 @@ if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isActive())
 
 在main函数中，首先看到AppDelegate的使用：
 
+```objc
 int main(int argc, char **argv)
 
 #endif
 
 {
-
 #if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
 
-  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 
-  int retVal = UIApplicationMain(argc, argv, @"UIApplication", @"AppDelegate");
+  int retVal = UIApplicationMain(argc, argv, @"UIApplication", @"AppDelegate");
 
-  [pool release];
+  [pool release];
 
-  return retVal;
+  return retVal;
 
 #else
 
 }
+```
 
 所  
 以，我原本以为AppDelegate就是一个从ObjC到DemoApp的一个小外壳而已，处理一些简单的delegate回调，结果发现根本不是这  
@@ -893,89 +638,57 @@ setup场景的部分而已。原来我也是只猜到了开始，但是猜不到
 
 在applicationDidFinishLaunching中经过了一些在iPhone中必须进行的一些window,view操作后，直接进入了主题，go函数，看看go函数：
 
-\- (void)go {
+```objc
+- (void)go {
+  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 
-  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-
-  try {
-
-    new OgreFramework();
-
-    if(!OgreFramework::getSingletonPtr()->initOgre("DemoApp v1.0", &demo, 0))
-
-      return;
-
-    
-
-    demo.setShutdown(false);
-
-    
-
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Demo initialized!");
-
-    
-
-    demo.setupDemoScene();
-
-    OgreFramework::getSingletonPtr()->m_pRenderWnd->resetStatistics();
-
-    
-
-    if (mDisplayLinkSupported)
-
-    {
-
-       
+  try {
+    new OgreFramework();
+    if(!OgreFramework::getSingletonPtr()->initOgre("DemoApp v1.0", &demo, 0))
+      return;
+    
+    demo.setShutdown(false);
+    
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Demo initialized!");
+    
+    demo.setupDemoScene();
+    OgreFramework::getSingletonPtr()->m_pRenderWnd->resetStatistics();
+    
+    if (mDisplayLinkSupported)
+    {
+      
 // CADisplayLink is API new to iPhone SDK 3.1. Compiling against  
 earlier versions will result in a warning, but can be dismissed
 
-       
+      
 // if the system version runtime check for CADisplayLink exists in  
 -initWithCoder:. The runtime check ensures this code will
 
-      // not be called in system versions earlier than 3.1.
+      // not be called in system versions earlier than 3.1.
 
-      mDate = [[NSDate alloc] init];
+      mDate = [[NSDate alloc] init];
 
-      mLastFrameTime = -[mDate timeIntervalSinceNow];
+      mLastFrameTime = -[mDate timeIntervalSinceNow];
+      
+      mDisplayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(renderOneFrame:)];
+      [mDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    }
+    else
+    {
+      mTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(1.0f / 60.0f) * mLastFrameTime
+                                                target:self
+                                              selector:@selector(renderOneFrame:)
+                                              userInfo:nil
+                                               repeats:YES];
+    }
+  } catch( Ogre::Exception& e ) {
+    std::cerr << "An exception has occurred: " <<
+    e.getFullDescription().c_str() << std::endl;
+  }
 
-      
-
-      mDisplayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(renderOneFrame:)];
-
-      [mDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-
-    }
-
-    else
-
-    {
-
-      mTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(1.0f / 60.0f) * mLastFrameTime
-
-                                                target:self
-
-                                              selector:@selector(renderOneFrame:)
-
-                                              userInfo:nil
-
-                                               repeats:YES];
-
-    }
-
-  } catch( Ogre::Exception& e ) {
-
-    std::cerr << "An exception has occurred: " <<
-
-    e.getFullDescription().c_str() << std::endl;
-
-  }
-
- 
-
-  [pool release];
-
+  [pool release];
 }
+```
 
  
 
@@ -983,59 +696,44 @@ earlier versions will result in a warning, but can be dismissed
 
  
 
-    new OgreFramework();
-
-    if(!OgreFramework::getSingletonPtr()->initOgre("DemoApp v1.0", &demo, 0))
-
-      return;
-
-    
-
-    demo.setShutdown(false);
-
-    
-
-    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Demo initialized!");
-
-    
-
-    demo.setupDemoScene();
-
- 
+```cpp
+    new OgreFramework();
+    if(!OgreFramework::getSingletonPtr()->initOgre("DemoApp v1.0", &demo, 0))
+      return;
+    
+    demo.setShutdown(false);
+    
+    OgreFramework::getSingletonPtr()->m_pLog->logMessage("Demo initialized!");
+    
+    demo.setupDemoScene();
+```
 
 在iPhone版本中，在go函数中进行了OgreFramework的创建及初始化，然后调用demo的setupDemoScene进行场景的创建（前面分析的也就这一部分是对的了。。。。。。其他demo部分分析仅适用于其它版本）。
 
  
 
-    if (mDisplayLinkSupported)
-
-    {
-
-       
+```objc
+    if (mDisplayLinkSupported)
+    {
+      
 // CADisplayLink is API new to iPhone SDK 3.1. Compiling against  
 earlier versions will result in a warning, but can be dismissed
 
-       
+      
 // if the system version runtime check for CADisplayLink exists in  
 -initWithCoder:. The runtime check ensures this code will
 
-      // not be called in system versions earlier than 3.1.
+      // not be called in system versions earlier than 3.1.
 
-      mDate = [[NSDate alloc] init];
+      mDate = [[NSDate alloc] init];
 
-      mLastFrameTime = -[mDate timeIntervalSinceNow];
+      mLastFrameTime = -[mDate timeIntervalSinceNow];
 
-      
+      [mDisplayLink setFrameInterval:mLastFrameTime];
 
-      mDisplayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(renderOneFrame:)];
-
-      [mDisplayLink setFrameInterval:mLastFrameTime];
-
-      [mDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-
-    }
-
- 
+      [mDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    }
+```
 
 可以看到此处是通过iPhone的CADisplayLink类来完成刷新及帧率控制的，（前面还特意检查了版本，以判断当前iPhone版本是否支持此特性，3.1以后才有的东西）而renderOneFrame里面的内容很简单，这里就不讲了。
 
@@ -1051,13 +749,11 @@ synchronize its drawing to the refresh rate of the display.
 
 不过这个代码有个问题：
 
-      mDate = [[NSDate alloc] init];
-
-      mLastFrameTime = -[mDate timeIntervalSinceNow];
-
-      [mDisplayLink setFrameInterval:mLastFrameTime];
-
- 
+```objc
+      mDate = [[NSDate alloc] init];
+      mLastFrameTime = -[mDate timeIntervalSinceNow];
+      [mDisplayLink setFrameInterval:mLastFrameTime];
+```
 
 此时mLastFrameTime一般是个远小于1的变量，而在apple的文档中有如下描述：
 
@@ -1089,17 +785,14 @@ Setting this value to less than 1 results in undefined behavior and is a program
 
 相对的，看Cocos2D for iPhone的代码，现在默认的director类CCDisplayLinkDirector，对DisplayLink的使用实现代码如下：
 
-    int frameInterval = (int) floor(animationInterval_ * 60.0f);
-
-    
-
-    CCLOG(@"cocos2d: Frame interval: %d", frameInterval);
-
-    displayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(preMainLoop:)];
-
-    [displayLink setFrameInterval:frameInterval];
-
-    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+```objc
+    int frameInterval = (int) floor(animationInterval_ * 60.0f);
+    
+    CCLOG(@"cocos2d: Frame interval: %d", frameInterval);
+    displayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(preMainLoop:)];
+    [displayLink setFrameInterval:frameInterval];
+    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+```
 
  
 

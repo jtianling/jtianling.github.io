@@ -23,8 +23,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 在VS中debug时，将未初始化变量都赋值为CC的顿悟  
 
 [write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**  
@@ -42,12 +40,11 @@ CC在汇编代码中表示为int 3，实际表示一个中断，在与硬件中�
 
 比如在[C++函数调用原理理解](<http://www.jtianling.com/archive/2008/06/01/2501238.aspx>)例子中如下：
 
+```asm
 0041136C lea edi,[ebp-0C0h] ;读入[ebp-0C0h]有效地址,即原esp-0C0h,正好是为该函数留出的临时存储区的最低位  
-
 00411372 mov ecx,30h ;ecx = 30h(48),30h*4 = 0C0h  
-
 00411377 mov eax,0CCCCCCCCh ;eax = 0CCCCCCCCh;  
-
-0041137C rep stos dword ptr es:[edi] ;重复在es:[edi]存入30个;0CCCCCCCCh? Debug模式下把Stack上的变量初始化为0xcc，检查未初始化的问题  
+0041137C rep stos dword ptr es:[edi] ;重复在es:[edi]存入30个;0CCCCCCCCh? Debug模式下把Stack上的变量初始化为0xcc，检查未初始化的问题
+```
 
 [write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

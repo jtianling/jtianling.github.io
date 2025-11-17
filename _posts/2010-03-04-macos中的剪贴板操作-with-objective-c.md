@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # **MacOS中的剪贴板操作 With Objective C**
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
@@ -43,10 +41,13 @@ author:
 
 ## 真的开始
 
-参考2指出，MacOS中粘贴板服务是一个独立的进程，名为/usr/bin/pboard，验证一下：   
-$ ps -A | grep pboard   
-81 ?? 0:00.00 /usr/sbin/pboard   
-408 ttys000 0:00.00 grep pboard 
+参考2指出，MacOS中粘贴板服务是一个独立的进程，名为/usr/bin/pboard，验证一下：
+
+```bash
+$ ps -A | grep pboard
+81 ?? 0:00.00 /usr/sbin/pboard
+408 ttys000 0:00.00 grep pboard
+```
 
 看来没有错。   
 先看看基本的使用：   
@@ -56,70 +57,74 @@ $ ps -A | grep pboard
 
 ### MacPasteboardTestAppDelegate.h：
 
-#import Cocoa.h> <br >   
-@interface MacPasteboardTestAppDelegate : NSObject  {   
-NSWindow *window;   
-NSTextField *textField;   
-} 
+```objective-c
+#import Cocoa.h> <br >
+@interface MacPasteboardTestAppDelegate : NSObject  {
+NSWindow *window;
+NSTextField *textField;
+}
 
-@property (assign) IBOutlet NSWindow *window;   
-@property (nonatomic, retain) IBOutlet NSTextField *textField; 
+@property (assign) IBOutlet NSWindow *window;
+@property (nonatomic, retain) IBOutlet NSTextField *textField;
 
-\- (IBAction) cut:(id)sender;   
-\- (IBAction) copy:(id)sender;   
-\- (IBAction) paste:(id)sender; 
+- (IBAction) cut:(id)sender;
+- (IBAction) copy:(id)sender;
+- (IBAction) paste:(id)sender;
 
-@end 
+@end
+```
 
 ### MacPasteboardTestAppDelegate.m
 
-#import "MacPasteboardTestAppDelegate.h" 
+```objective-c
+#import "MacPasteboardTestAppDelegate.h"
 
-@implementation MacPasteboardTestAppDelegate 
+@implementation MacPasteboardTestAppDelegate
 
-@synthesize window;   
-@synthesize textField; 
+@synthesize window;
+@synthesize textField;
 
-\- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {   
-// Insert code here to initialize your application   
-} 
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    // Insert code here to initialize your application
+}
 
-\- (void)writeToPasteboard:(NSPasteboard *)pb withString:string{   
-[pb declareTypes:[NSArray arrayWithObject:NSStringPboardType]   
-owner:self];   
-[pb setString:string forType:NSStringPboardType];   
-} 
+- (void)writeToPasteboard:(NSPasteboard *)pb withString:string{
+    [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType]
+              owner:self];
+    [pb setString:string forType:NSStringPboardType];
+}
 
-\- (BOOL)readFromPasteboard:(NSPasteboard *)pb {   
-NSArray *types = [pb types];   
-if ([types containsObject:NSStringPboardType]) {   
-NSString *value = [pb stringForType:NSStringPboardType];   
-  
-[[self textField] setStringValue:value];   
-return YES;   
-}   
-  
-return NO;   
-} 
+- (BOOL)readFromPasteboard:(NSPasteboard *)pb {
+    NSArray *types = [pb types];
+    if ([types containsObject:NSStringPboardType]) {
+        NSString *value = [pb stringForType:NSStringPboardType];
 
-\- (IBAction)cut:(id)sender {   
-[self copy:sender];   
-[[self textField] setStringValue:@""];   
-} 
+        [[self textField] setStringValue:value];
+        return YES;
+    }
 
-\- (IBAction)copy:(id)sender {   
-NSPasteboard *pb = [NSPasteboard generalPasteboard];   
-[self writeToPasteboard:pb withString:[textField stringValue]];   
-} 
+    return NO;
+}
 
-\- (IBAction)paste:(id)sender {   
-NSPasteboard *pb = [NSPasteboard generalPasteboard];   
-if( ![self readFromPasteboard:pb] ) {   
-NSBeep();   
-}   
-} 
+- (IBAction)cut:(id)sender {
+    [self copy:sender];
+    [[self textField] setStringValue:@""];
+}
 
-@end 
+- (IBAction)copy:(id)sender {
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    [self writeToPasteboard:pb withString:[textField stringValue]];
+}
+
+- (IBAction)paste:(id)sender {
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    if( ![self readFromPasteboard:pb] ) {
+        NSBeep();
+    }
+}
+
+@end
+```
 
 然后，将菜单对应的cut,copy,paste的action都与此委托类的相应action绑定就好了。（类似的话都是对知道的人太多了，对于不知道的人这样说估计还是不懂，推荐不懂的可以去看看某个Hello World教程，那样都会了。）   
 这里，最最主要的就是使用NSPasteboard这个系统类了，所有的剪贴板操作都依赖于它。这样实现后，基本与参考2中21章的程序差不多了，此例中因为觉得考虑Selected字符串等情况较为麻烦，所有的操作都是直接针对控件的整个字符串，所以有点不符合操作习惯，需要注意一下，因为现在的主题是剪贴板，这些就算了。 
@@ -131,50 +136,57 @@ NSBeep();
 Types for Standard Data (Mac OS X 10.5 and earlier)   
 The NSPasteboard class uses the following common pasteboard data types. 
 
-NSString *NSStringPboardType;   
-NSString *NSFilenamesPboardType;   
-NSString *NSPostScriptPboardType;   
-NSString *NSTIFFPboardType;   
-NSString *NSRTFPboardType;   
-NSString *NSTabularTextPboardType;   
-NSString *NSFontPboardType;   
-NSString *NSRulerPboardType;   
-NSString *NSFileContentsPboardType;   
-NSString *NSColorPboardType;   
-NSString *NSRTFDPboardType;   
-NSString *NSHTMLPboardType;   
-NSString *NSPICTPboardType;   
-NSString *NSURLPboardType;   
-NSString *NSPDFPboardType;   
-NSString *NSVCardPboardType;   
-NSString *NSFilesPromisePboardType;   
-NSString *NSMultipleTextSelectionPboardType; 
+```objective-c
+NSString *NSStringPboardType;
+NSString *NSFilenamesPboardType;
+NSString *NSPostScriptPboardType;
+NSString *NSTIFFPboardType;
+NSString *NSRTFPboardType;
+NSString *NSTabularTextPboardType;
+NSString *NSFontPboardType;
+NSString *NSRulerPboardType;
+NSString *NSFileContentsPboardType;
+NSString *NSColorPboardType;
+NSString *NSRTFDPboardType;
+NSString *NSHTMLPboardType;
+NSString *NSPICTPboardType;
+NSString *NSURLPboardType;
+NSString *NSPDFPboardType;
+NSString *NSVCardPboardType;
+NSString *NSFilesPromisePboardType;
+NSString *NSMultipleTextSelectionPboardType;
+```
 
 Types for Standard Data (Mac OS X 10.6 and later)   
 The NSPasteboard class uses the following constants to define UTIs for common pasteboard data types. 
 
-NSString *const NSPasteboardTypeString;   
-NSString *const NSPasteboardTypePDF;   
-NSString *const NSPasteboardTypeTIFF;   
-NSString *const NSPasteboardTypePNG;   
-NSString *const NSPasteboardTypeRTF;   
-NSString *const NSPasteboardTypeRTFD;   
-NSString *const NSPasteboardTypeHTML;   
-NSString *const NSPasteboardTypeTabularText;   
-NSString *const NSPasteboardTypeFont;   
-NSString *const NSPasteboardTypeRuler;   
-NSString *const NSPasteboardTypeColor;   
-NSString *const NSPasteboardTypeSound;   
-NSString *const NSPasteboardTypeMultipleTextSelection;   
-NSString *const NSPasteboardTypeFindPanelSearchOptions; 
+```objective-c
+NSString *const NSPasteboardTypeString;
+NSString *const NSPasteboardTypePDF;
+NSString *const NSPasteboardTypeTIFF;
+NSString *const NSPasteboardTypePNG;
+NSString *const NSPasteboardTypeRTF;
+NSString *const NSPasteboardTypeRTFD;
+NSString *const NSPasteboardTypeHTML;
+NSString *const NSPasteboardTypeTabularText;
+NSString *const NSPasteboardTypeFont;
+NSString *const NSPasteboardTypeRuler;
+NSString *const NSPasteboardTypeColor;
+NSString *const NSPasteboardTypeSound;
+NSString *const NSPasteboardTypeMultipleTextSelection;
+NSString *const NSPasteboardTypeFindPanelSearchOptions;
+```
 
-需要注意的是，NSSring本身就是常量，这里所谓从非常量到常量其实是对该指针值而言的，从NSString *到NSString *const的区别在于，NSString *值的指针可以改变指向（虽然不能改变内容，但是对于系统常量来说还是非常危险啊，这应该算是设计缺陷了，所以MacOS 10.6修改过来了），NSString *const的就是无论内容，指向都不能改了。类似于C++中const *及 const * const的区别。这里展示一下这个危险性（勿学），同时使用HTML类型试试，看能不能达到我想要的与Google Docs兼容的效果。   
-\- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {   
-// Insert code here to initialize your application   
-  
-// notice!It's ugly but legality.   
-NSStringPboardType = NSHTMLPboardType;   
-} 
+需要注意的是，NSSring本身就是常量，这里所谓从非常量到常量其实是对该指针值而言的，从NSString *到NSString *const的区别在于，NSString *值的指针可以改变指向（虽然不能改变内容，但是对于系统常量来说还是非常危险啊，这应该算是设计缺陷了，所以MacOS 10.6修改过来了），NSString *const的就是无论内容，指向都不能改了。类似于C++中const *及 const * const的区别。这里展示一下这个危险性（勿学），同时使用HTML类型试试，看能不能达到我想要的与Google Docs兼容的效果。
+
+```objective-c
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    // Insert code here to initialize your application
+
+    // notice!It's ugly but legality.
+    NSStringPboardType = NSHTMLPboardType;
+}
+```
 
 这样的代码竟然是合法的，你说苹果不改能行吗？   
 
@@ -200,56 +212,58 @@ _// Created by JTianLing on 3/3/10._
 _// Copyright 2010 JTianLing. All rights reserved._   
 _//_
 
+```objective-c
 #import "MacPasteboardTestAppDelegate.h"
 
-**@implementation** MacPasteboardTestAppDelegate 
+@implementation MacPasteboardTestAppDelegate
 
-@synthesize window;   
-@synthesize textField; 
+@synthesize window;
+@synthesize textField;
 
-\- (**void**)applicationDidFinishLaunching:(NSNotification *)aNotification {   
-_// Insert code here to initialize your application_   
-  
-_// notice!It's ugly but legality._   
-NSStringPboardType = NSHTMLPboardType;   
-} 
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    // Insert code here to initialize your application
 
-\- (**void**)writeToPasteboard:(NSPasteboard *)pb withString:string{   
-[pb declareTypes:[NSArray arrayWithObject:NSStringPboardType]   
-owner:**self**];   
-[pb setString:string forType:NSStringPboardType];   
-} 
+    // notice!It's ugly but legality.
+    NSStringPboardType = NSHTMLPboardType;
+}
 
-\- (**BOOL**)readFromPasteboard:(NSPasteboard *)pb {   
-NSArray *types = [pb types];   
-**if** ([types containsObject:NSStringPboardType]) {   
-NSString *value = [pb stringForType:NSStringPboardType];   
-  
-[[**self** textField] setStringValue:value];   
-**return** YES;   
-}   
-  
-**return** NO;   
-} 
+- (void)writeToPasteboard:(NSPasteboard *)pb withString:string{
+    [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType]
+              owner:self];
+    [pb setString:string forType:NSStringPboardType];
+}
 
-\- (IBAction)cut:(**id**)sender {   
-[**self** copy:sender];   
-[[**self** textField] setStringValue:@""];   
-} 
+- (BOOL)readFromPasteboard:(NSPasteboard *)pb {
+    NSArray *types = [pb types];
+    if ([types containsObject:NSStringPboardType]) {
+        NSString *value = [pb stringForType:NSStringPboardType];
 
-\- (IBAction)copy:(**id**)sender {   
-NSPasteboard *pb = [NSPasteboard generalPasteboard];   
-[**self** writeToPasteboard:pb withString:[textField stringValue]];   
-} 
+        [[self textField] setStringValue:value];
+        return YES;
+    }
 
-\- (IBAction)paste:(**id**)sender {   
-NSPasteboard *pb = [NSPasteboard generalPasteboard];   
-**if**( ![**self** readFromPasteboard:pb] ) {   
-NSBeep();   
-}   
-} 
+    return NO;
+}
 
-**@end**
+- (IBAction)cut:(id)sender {
+    [self copy:sender];
+    [[self textField] setStringValue:@""];
+}
+
+- (IBAction)copy:(id)sender {
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    [self writeToPasteboard:pb withString:[textField stringValue]];
+}
+
+- (IBAction)paste:(id)sender {
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    if( ![self readFromPasteboard:pb] ) {
+        NSBeep();
+    }
+}
+
+@end
+```
 
 效果不错吧：）MacOS版本的Code Highlighter已经不远了。。。。。。。呵呵，别流口水啊。   
   

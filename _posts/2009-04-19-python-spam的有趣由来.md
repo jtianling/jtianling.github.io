@@ -21,7 +21,7 @@ author:
   last_name: ''
 ---
 
- 看到Dreaming in code一书中提到这个词，才想起gmail中的字段的确切含义-_-!顺便在网上查了一下：
+看到Dreaming in code一书中提到这个词，才想起gmail中的字段的确切含义-_-!顺便在网上查了一下：
 
 官方版本说，它是“Specially Processed Assorted Meat”特殊加工过的混和肉。这种SPAM肉有段时间非常普及，到了无处不在，令人讨厌的程度.
 

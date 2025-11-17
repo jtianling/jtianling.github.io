@@ -61,5 +61,3 @@ ubuntu 8.10 gcc version 4.2.4 vim+gdb boost 1.36
 另外:
 
 其他工具包括.IBM Rational Rose Realtime(又是习惯问题,虽然不是Realtime的程序,但是因为公司用的是这个,个人沿用此习惯)
-
- 

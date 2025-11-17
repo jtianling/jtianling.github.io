@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # OpenGL in Qt  
 
 [**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
@@ -46,154 +44,160 @@ author:
 
 #### OpenGL.h
 
- 
+ 
 
-#ifndef OPENGL_H  
+```cpp
+#ifndef OPENGL_H
 #define OPENGL_H
 
 #include   
 #include   
 #include "ui_opengl.h"
 
-class OpenGL : public QGLWidget  
-{  
-    Q_OBJECT
+class OpenGL : public QGLWidget
+{
+    Q_OBJECT
 
-public:  
-    OpenGL(QGLWidget *parent = 0);  
-    ~OpenGL();
+public:
+    OpenGL(QGLWidget *parent = 0);
+    ~OpenGL();
 
-    void initializeGL();  
-    void resizeGL(int width, int height);  
-    void paintGL();
+    void initializeGL();
+    void resizeGL(int width, int height);
+    void paintGL();
 
-private:  
-    void draw();
+private:
+    void draw();
 
-private:  
-    Ui::OpenGLClass ui;  
+private:
+    Ui::OpenGLClass ui;
 };
 
 #endif // OPENGL_H
-
- 
+```
 
 #### OpenGL.cpp  
 
+```cpp
 #include "opengl.h"
 
-OpenGL::OpenGL(QGLWidget *parent)  
-    : QGLWidget(parent)  
-{  
-    ui.setupUi(this);  
+OpenGL::OpenGL(QGLWidget *parent)
+    : QGLWidget(parent)
+{
+    ui.setupUi(this);
 }
 
-OpenGL::~OpenGL()  
+OpenGL::~OpenGL()
 {
 
 }
 
-void OpenGL::initializeGL()  
+void OpenGL::initializeGL()
 {
 
 }
 
-void OpenGL::resizeGL(int, int)  
+void OpenGL::resizeGL(int, int)
 {
 
 }
 
-void OpenGL::paintGL()  
-{  
-    glClear(GL_COLOR_BUFFER_BIT);  
-    draw();  
+void OpenGL::paintGL()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    draw();
 }
 
-void OpenGL::draw()  
-{  
-    glColor3f (1.0, 1.0, 1.0);  
-    glBegin(GL_POLYGON);  
-    glVertex3f (-0.5, -0.5, 0.0);  
-    glVertex3f ( 0.5, -0.5, 0.0);  
-    glVertex3f ( 0.5,  0.5, 0.0);  
-    glVertex3f (-0.5,  0.5, 0.0);  
-    glEnd();  
+void OpenGL::draw()
+{
+    glColor3f (1.0, 1.0, 1.0);
+    glBegin(GL_POLYGON);
+    glVertex3f (-0.5, -0.5, 0.0);
+    glVertex3f ( 0.5, -0.5, 0.0);
+    glVertex3f ( 0.5,  0.5, 0.0);
+    glVertex3f (-0.5,  0.5, 0.0);
+    glEnd();
 }
+```
 
     这样就完成了一个利用OpenGL绘制矩形的任务，paintGL中调用的完全是普通的OpenGL函数，一如我们学过的普通OpenGL函数，没有区别。其中最主要的代码就在OpenGL::paintGL()中，这一点需要额外注意，那就是此处与普通的Qt程序是不同的，普通的Qt程序将重绘的工作放在paintEvent中进行，但是，可以想像的是，其实paintGL不过是QGLWidget中paintEvent中调用的一个虚接口，Qt可以在外面做好足够的OpenGL准备工作。initializeGL，resizeGL，paintGL 3个额外的虚接口就构成了一个简单但是强大的OpenGL框架，一如GLUT抽象出的框架及我在Win32 OpenGL学习时建立的框架一样，知道这些以后，可以将OpenGL在Qt中的编程分成两个部分，一个部分就是由initializeGL，resizeGL，paintGL三个虚接口构成的OpenGL的领域，我们可以在其中进行我们习惯的OpenGL操作，而程序的输入等其他GUI相关的处理则还是交由Qt原来的框架去完成。
 
- 
+ 
 
 OpenGL从Win32到Qt
 
     为了说明Qt中对于OpenGL处理的抽象，我将原来在《[Win32 OpenGL编程(5) 顶点数组](<http://www.jtianling.com/archive/2009/10/17/4689516.aspx>)》一文中实现的一个较复杂的例子移植到Qt中。
 
- 
+ 
 
 其实基本上做做copy和paste的操作就OK了。
 
-void OpenGL::initializeGL()  
-{  
-    glClearColor(0.0, 0.0, 0.0, 0.0);  
-    // 启用顶点数组  
-    glEnableClientState(GL_VERTEX_ARRAY);
+```cpp
+void OpenGL::initializeGL()
+{
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    // 启用顶点数组
+    glEnableClientState(GL_VERTEX_ARRAY);
 
-    // 颜色数组也需要启用  
-    glEnableClientState(GL_COLOR_ARRAY);
+    // 颜色数组也需要启用
+    glEnableClientState(GL_COLOR_ARRAY);
 
-    // 默认就是此参数，可忽略，为了明确说明特意指定  
-    glShadeModel(GL_SHADE_MODEL);
+    // 默认就是此参数，可忽略，为了明确说明特意指定
+    glShadeModel(GL_SHADE_MODEL);
 
-    // 顶点数组数据  
-    static GLfloat fVertices[] = {    -0.5, -0.5,  
-                                     0.5, -0.5,  
-                                     0.5,  0.5,  
-                                    -0.5,  0.5,  
-                                     0.0,  0.0};    // 添加的原点
+    // 顶点数组数据
+    static GLfloat fVertices[] = {    -0.5, -0.5,
+                                      0.5, -0.5,
+                                      0.5,  0.5,
+                                     -0.5,  0.5,
+                                      0.0,  0.0};    // 添加的原点
 
-    // 颜色数组  
-    static GLfloat fColor[] = { 1.0, 0.0, 0.0,  
-                                0.0, 1.0, 0.0,  
-                                0.0, 0.0, 1.0,  
-                                0.0, 0.0, 0.0,  
-                                1.0, 1.0, 1.0};        // 原点颜色为白色
+    // 颜色数组
+    static GLfloat fColor[] = { 1.0, 0.0, 0.0,
+                                0.0, 1.0, 0.0,
+                                0.0, 0.0, 1.0,
+                                0.0, 0.0, 0.0,
+                                1.0, 1.0, 1.0};     // 原点颜色为白色
 
-    // 指定顶点数组数据  
-    glVertexPointer(2, GL_FLOAT, 0, fVertices);
+    // 指定顶点数组数据
+    glVertexPointer(2, GL_FLOAT, 0, fVertices);
 
-    // 制定颜色数组  
-    glColorPointer(3, GL_FLOAT, 0, fColor);
+    // 制定颜色数组
+    glColorPointer(3, GL_FLOAT, 0, fColor);
 
 }
+```
 
-void OpenGL::resizeGL(int, int)  
+```cpp
+void OpenGL::resizeGL(int, int)
 {
 
 }
 
-void OpenGL::paintGL()  
-{  
-    draw();  
+void OpenGL::paintGL()
+{
+    draw();
 }
 
-void OpenGL::draw()  
-{  
-    glClear(GL_COLOR_BUFFER_BIT);    // 清空颜色缓冲区
+void OpenGL::draw()
+{
+    glClear(GL_COLOR_BUFFER_BIT);    // 清空颜色缓冲区
 
-    static GLubyte byTopIndices[] = { 2, 3, 4};  
-    static GLubyte byLeftIndices[] = { 3, 0, 4};  
-    static GLubyte byBottomIndices[] = { 0, 1, 4};  
-    static GLubyte byRightIndices[] = { 1, 2, 4};
+    static GLubyte byTopIndices[] = { 2, 3, 4};
+    static GLubyte byLeftIndices[] = { 3, 0, 4};
+    static GLubyte byBottomIndices[] = { 0, 1, 4};
+    static GLubyte byRightIndices[] = { 1, 2, 4};
 
-    // 上述函数调用与下面的效果一样  
-    glPushMatrix();  
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, byTopIndices);  
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, byLeftIndices);  
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, byBottomIndices);  
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, byRightIndices);  
-    glPopMatrix();
+    // 上述函数调用与下面的效果一样
+    glPushMatrix();
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, byTopIndices);
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, byLeftIndices);
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, byBottomIndices);
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, byRightIndices);
+    glPopMatrix();
 
 }
+```
 
  
 
@@ -223,9 +227,3 @@ Mercurial使用方法见《[分布式的，新一代版本控制系统Mercurial�
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
-
- 
-
-  
-  
-

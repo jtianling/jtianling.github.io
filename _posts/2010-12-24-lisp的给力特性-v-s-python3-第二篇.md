@@ -34,6 +34,7 @@ author:
 
 Lisp:
 
+```lisp
 CL-USER> (defvar *nums* (list 0 1 2 3 4 5 6 7 8 9 10))
 
 *NUMS*
@@ -45,6 +46,7 @@ CL-USER> (list (fourth *nums*) (nth 8 *nums*) (butlast *nums*))
 CL-USER> (remove-if-not #'evenp *nums*)
 
 (0 2 4 6 8 10)
+```
 
 在Lisp中几乎什么都是list。。。。比在lua中什么都是table还要过分，因为不仅是数据，任何表达式，函数调用啥的也是表。。。。。不过用惯了[n]形式的我，还是对first,last,rest,butlast,nth n这种获取表中特定索引值的方式有些不适应。但是很明显有一点，Lisp对list的操作是不用循环就支持遍历的，看起来也许你会说不过就是语法糖而已，其实代表了更高层次的抽象，这就象C++中STL的for_each，transform一样,只是，他们的使用有多么不方便，我想每个用C++的人都能体会。
 
@@ -52,6 +54,7 @@ Python中虽然不是什么都是列表，但是Python对于list的处理还算�
 
 Python:
 
+```python
 >>> l = list(range(11))
 
 >>> l
@@ -67,6 +70,7 @@ Python:
 >>> [x for x in l if not x % 2]
 
 [0, 2, 4, 6, 8, 10]
+```
 
 lisp comprehensions（列表解析）这个强大的特性的存在，可以使得Python做类似Lisp的这种不使用外部循环的遍历与Lisp一样的方便。（特别提及，列表解析是用从与Lisp同族的函数语言Haskell学过来的）
 
@@ -74,6 +78,7 @@ lisp comprehensions（列表解析）这个强大的特性的存在，可以使�
 
 Lisp:
 
+```lisp
 CL-USER> (defvar *capital-cities* '((NZ . Wellington)
 
 (AU . Canberra)
@@ -89,11 +94,13 @@ OTTAWA
 CL-USER> (mapcar #'car *capital-cities*)
 
 (NZ AU CA)
+```
 
 关联列表，类似C++中的map,Python中的字典,我并没有感觉有多么强大。。。。。
 
 Python:
 
+```python
 >>> capital_cities = { "NZ" : "Wellington", "AU" : "Canberra", "CA" : "Ottawa"}
 
 >>> capital_cities["CA"]
@@ -103,6 +110,7 @@ Python:
 >>> [ x for x in capital_cities]
 
 ['NZ', 'AU', 'CA']
+```
 
 在Python中，遍历一个dict默认是遍历key，所以用列表解析可以很简单的处理。虽然，Python在这些方面完全不输于Lisp,但是得提到，Python之所以不输给Lisp...是因为它从Haskell学到了列表解析.......
 
@@ -112,6 +120,7 @@ Python:
 
 ### 匿名列表（Lambda lists）:
 
+```lisp
 CL-USER> (defun explode (string &optional (delimiter #/Space))
 
 (let ((pos (position delimiter string)))
@@ -133,6 +142,7 @@ CL-USER> (explode "foo, bar, baz" #/,)
 CL-USER> (explode "foo, bar, baz")
 
 ("foo," "bar," "baz")
+```
 
 Lambda一般童鞋都不会太陌生，说的通俗点叫匿名函数，稍微现代点的语言都有，我以前还尝试过C++的[Boost::Lambda](<http://www.jtianling.com/archive/2009/05/22/4205134.aspx> "Boost::Lambda")
 
@@ -140,6 +150,7 @@ Lambda一般童鞋都不会太陌生，说的通俗点叫匿名函数，稍微�
 
 Python:
 
+```python
 >>> import string
 
 >>> "foo, bar, baz".split(",")
@@ -149,6 +160,7 @@ Python:
 >>> "foo, bar, baz".split()
 
 ['foo,', 'bar,', 'baz']
+```
 
  
 
@@ -158,6 +170,7 @@ Python:
 
 Lisp:
 
+```lisp
 CL-USER> (defvar *foo* 5)
 
 *FOO*
@@ -165,11 +178,13 @@ CL-USER> (defvar *foo* 5)
 CL-USER> (symbol-value '*foo*)
 
 5
+```
 
 听多了第一类值函数，倒是很少听说第一类值符号，在Lisp中，符号可以作为变量的名字，也可以就是作为一个占位符，说白了就有点像不当字符串处理的字符串。Python中应该没有类似概念。。。。。上文说多了Python没有类似的东西的话，惹得一些Python粉丝怒了，这里对我浅薄的Python知识表示抱歉，谨以此娱乐，作为了解Lisp特性的一种消遣，不要太当真，语言真的算不上啥信仰，平台也不是啥信仰，神马都是浮云，用着开心就好。
 
 ### 第一类值包：（First-class packages)
 
+```lisp
 CL-USER> (in-package :foo)
 
 #<Package "FOO">
@@ -185,13 +200,13 @@ FOO> (intern "ARBITRARY"
 FOO2::ARBITRARY
 
 NIL
+```
 
 没有看懂有什么太强的作用，注意上面的代码在使用:foo包后的反应....命令行提示符都变了,同时也明白了，以前的CL-USER其实就是代表CL-USER包，在Lisp中包也就是类似命名空间的作用，虽然说C++的命名空间真的也就是个空间，但是JAVA,Python，Lua中的包已经非常好用了，不仅带命名空间，而且带独立分割的实体。此条不懂，不知道是Lisp的古老特性在现在太流行了，所以变得已经没有什么好奇怪的了，还是说，我太火星了？高手请指教。
 
 ### 特别的变量:(Special variables)
 
-Lisp:
-
+```lisp
 FOO> (with-open-file (file-stream #p "somefile"
 
 :direction :output)
@@ -205,11 +220,13 @@ FOO> (with-open-file (file-stream #p "somefile"
 "And this prints to stdout, not the file."
 
 "And this prints to stdout, not the file."
+```
 
 话说Lisp的变量是动态语法范围的，也就是说你可以将变量的范围动态的从全局变为局部，反之亦然，这个有点反常规。但是就例子中的代码看，就像是重定向功能，是将标准输出定向到某个文件上，这个功能Python也有。
 
 Python:
 
+```python
 >>> import sys
 
 >>> stdoutTemp = sys.stdout
@@ -219,13 +236,13 @@ Python:
 >>> print("This prints to the file from Python, not stdout.")
 
 >>> sys.stdout.close()
+```
 
 ### 控制转移：（Control transfer)
 
 翻译过来有些不好懂，大概的意思就是执行语句从一个地方跳到另一个地方，类似从汇编时代就有的goto语句。
 
-Lisp:
-
+```lisp
 CL-USER> (block early
 
 (loop :for x :from 1 :to 5 :collect x :into xs
@@ -243,11 +260,11 @@ CL-USER> (block early
 :finally (return-from early xs))))
 
 (1 2 3 4 5)
+```
 
 可能有些不好懂，其实此时的return-from就类似于goto,而block就像是C++的以：开头的标识。
 
-Lisp:
-
+```lisp
 CL-USER> (defun throw-range (a b)
 
 (loop :for x :from a :to b :collect x :into xs
@@ -263,6 +280,7 @@ CL-USER> (catch :early
 (throw-range 1 10)))
 
 (1 2 3 4 5 6 7 8 9 10)
+```
 
 Catch/throw语法的跳转，有点像现代语言的异常了，事实也是如此，看看例子中的cath吧，对:early throw出一个xs值，然后后来每次都能catch住，这个有点意思，虽然有点诡异。。。。。。
 
@@ -277,5 +295,3 @@ Catch/throw语法的跳转，有点像现代语言的异常了，事实也是如
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>) **
-
- 

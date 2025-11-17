@@ -25,8 +25,6 @@ author:
   last_name: ''
 ---
 
-    
-
 ## 一天一个C Run-Time Library 函数 (10) atol,atof,atoi, ltoa , itoa,
 
  
@@ -40,60 +38,55 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 Convert strings to double (**atof**), integer (**atoi** ,  
 _**atoi64**), or long (**atol**).
 
-**double  
-atof(**
+```c
+double atof(
+    const char *__string__
+);
+```
 
-**      
-const char ***__string__
+```c
+int atoi(
+    const char *__string__
+);
+```
 
-**);**
+```c
+_int64 _atoi64(
+    const char *__string__
+);
+```
 
- 
-
-**int  
-atoi( **
-
-**    const  
-char ***__string__
-
-**);**
-
- 
-
-**_int64  
-_atoi64( **
-
-**const  
-char ***__string__****
-
-**);**
-
- 
-
-**long  
-atol( **
-
-**const  
-char ***__string__****
-
-**);**
+```c
+long atol(
+    const char *__string__
+);
+```
 
 Converts a long  
 integer to a string. These functions are deprecated because more secure  
 versions are available; see [_ltoa_s, _ltow_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/d7dc61ea-1ccd-412d-b262-555a58647386.htm>).  
   
 ---  
-char *_ltoa(    long _value_ ,    char *_str_ ,    int _radix_ ); wchar_t *_ltow(    long _value_ ,    wchar_t *_str_ ,    int _radix_ ); template <size_t size> char *_ltoa(    long _value_ ,    char (&_str_)[size],    int _radix_ ); // C++ only template <size_t size> wchar_t *_ltow(    long _value_ ,    wchar_t  
-(&_str_)[size],    int _radix_ ); // C++ only  
+
+```cpp
+char *_ltoa(   long _value_ ,   char *_str_ ,   int _radix_ );
+wchar_t *_ltow(   long _value_ ,   wchar_t *_str_ ,   int _radix_ );
+template <size_t size> char *_ltoa(   long _value_ ,   char (&_str_)[size],   int _radix_ ); // C++ only
+template <size_t size> wchar_t *_ltow(   long _value_ ,   wchar_t (&_str_)[size],   int _radix_ ); // C++ only
+```
   
 Converts a  
 long integer to a string. These functions are deprecated because more secure  
 versions are available; see [_ltoa_s, _ltow_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/d7dc61ea-1ccd-412d-b262-555a58647386.htm>).  
   
 ---  
-char *_ltoa(    long _value_ ,    char *_str_ ,    int _radix_ ); wchar_t *_ltow(    long _value_ ,    wchar_t *_str_ ,    int _radix_ ); template <size_t  
-size> char *_ltoa(    long _value_ ,    char (&_str_)[size],    int _radix_ ); // C++ only template <size_t  
-size> wchar_t *_ltow(    long _value_ ,    wchar_t (&_str_)[size],    int _radix_ ); // C++ only  
+
+```cpp
+char *_ltoa(   long _value_ ,   char *_str_ ,   int _radix_ );
+wchar_t *_ltow(   long _value_ ,   wchar_t *_str_ ,   int _radix_ );
+template <size_t size> char *_ltoa(   long _value_ ,   char (&_str_)[size],   int _radix_ ); // C++ only
+template <size_t size> wchar_t *_ltow(   long _value_ ,   wchar_t (&_str_)[size],   int _radix_ ); // C++ only
+```
   
 ** **
 
@@ -119,20 +112,15 @@ MS:
 
 整数的都通过一个更复杂的函数
 
+```c
 static unsigned long __cdecl strtoxl (
-
-        _locale_t  
-plocinfo,
-
-        const char *nptr,
-
-        const char **endptr,
-
-        int ibase,
-
-        int flags
-
-        )
+        _locale_t plocinfo,
+        const char *nptr,
+        const char **endptr,
+        int ibase,
+        int flags
+        )
+```
 
 来实现。随便看了一眼，就像我个人想实现的话会用的方法一样，从字符串到整数，我应该会通过一个一个字符的计算与’0’字符的ascII值的差，然后相应其位置的乘以10^n，累加到一个整数吧。
 
@@ -169,5 +157,3 @@ windows中甚至实现了关于double的此类函数，呵呵，浮点都有两�
 记得，以前看到mysql的一份文档中，mysql的开发人员甚至以自己的整数类型比较多而感到自豪（也许不是自豪吧），进行了类似这样描述，mysql有丰富的整数类型，这样你可以使用更适合你的整数，在数据很大时，这可以为你省下很大的空间。。。。。。。。。。。the same in C/C++.......................
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
-
- 

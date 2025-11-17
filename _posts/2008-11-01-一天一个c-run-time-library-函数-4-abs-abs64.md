@@ -24,8 +24,6 @@ author:
   last_name: ''
 ---
 
-  
-
 ## 一天一个C Run-Time Library 函数(4)  abs _abs64
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
@@ -37,14 +35,18 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 Calculate the absolute value.  
   
 ---  
-int abs(  
-   int _n_ ); long  
-abs(     long _n_ );   // C++ only double  
-abs(     double _n_ );   // C++ only long  
-double abs(    long double _n_ );   // C++ only float  
-abs(    float _n_ );   // C++ only __int64  
-_abs64(     __int64 _n_ );  
-  
+
+
+```cpp
+int abs(
+   int _n_ ); long
+abs(     long _n_ );   // C++ only double
+abs(     double _n_ );   // C++ only long
+double abs(    long double _n_ );   // C++ only float
+abs(    float _n_ );   // C++ only __int64
+_abs64(     __int64 _n_ );
+```
+
 这里要说明的是c++因为有重载的技术，所以都可以用abs来表示，而C语言里面实际还有labs函数，用来表示long类型的绝对值。
 
  
@@ -65,36 +67,40 @@ _abs64(     __int64 _n_ );
 
 MS:
 
+```c
 int __cdecl abs (
 
-        int number
+        int number
 
-        )
+        )
 
 {
 
-        return(  
-number>=0 ? number  
+        return(
+number>=0 ? number
 : -number );
 
 }
+```
 
 gcc:
 
-/* Return  
-the absolute value of I.  */
+```c
+/* Return
+the absolute value of I.  */
 
 int
 
-abs (int  
+abs (int
 i)
 
 {
 
-    return i  
+    return i
 < 0 ? -i : i;
 
 }
+```
 
 再次验证了一件事情，那就是gcc和MS的势不两立，（突然觉得把gcc与MS并称很奇怪，因为根本不是同一类的事物。。。。就以MS代指VC2005吧。。。）
 
@@ -102,63 +108,33 @@ i)
 
 MS:
 
-0041140E  cmp          
-dword ptr [number],0 
-
-00411412  jl           
-MSabs+2Fh (41141Fh) 
-
-00411414  mov          
-eax,dword ptr [number] 
-
-00411417  mov          
-dword ptr [ebp-0C4h],eax 
-
-0041141D  jmp          
-MSabs+3Ah (41142Ah) 
-
-0041141F  mov          
-ecx,dword ptr [number] 
-
-00411422  neg          
-ecx 
-
-00411424  mov          
-dword ptr [ebp-0C4h],ecx 
-
-0041142A  mov          
-eax,dword ptr [ebp-0C4h]
+```asm
+0041140E  cmp         dword ptr [number],0
+00411412  jl          MSabs+2Fh (41141Fh)
+00411414  mov         eax,dword ptr [number]
+00411417  mov         dword ptr [ebp-0C4h],eax
+0041141D  jmp         MSabs+3Ah (41142Ah)
+0041141F  mov         ecx,dword ptr [number]
+00411422  neg         ecx
+00411424  mov         dword ptr [ebp-0C4h],ecx
+0041142A  mov         eax,dword ptr [ebp-0C4h]
+```
 
  
 
 gcc:
 
-004113BE  cmp          
-dword ptr [i],0 
-
-004113C2  jge          
-GCCabs+31h (4113D1h) 
-
-004113C4  mov          
-eax,dword ptr [i] 
-
-004113C7  neg          
-eax 
-
-004113C9  mov          
-dword ptr [ebp-0C4h],eax 
-
-004113CF  jmp          
-GCCabs+3Ah (4113DAh) 
-
-004113D1  mov          
-ecx,dword ptr [i] 
-
-004113D4  mov          
-dword ptr [ebp-0C4h],ecx 
-
-004113DA  mov          
-eax,dword ptr [ebp-0C4h]
+```asm
+004113BE  cmp         dword ptr [i],0
+004113C2  jge         GCCabs+31h (4113D1h)
+004113C4  mov         eax,dword ptr [i]
+004113C7  neg         eax
+004113C9  mov         dword ptr [ebp-0C4h],eax
+004113CF  jmp         GCCabs+3Ah (4113DAh)
+004113D1  mov         ecx,dword ptr [i]
+004113D4  mov         dword ptr [ebp-0C4h],ecx
+004113DA  mov         eax,dword ptr [ebp-0C4h]
+```
 
 DEBUG下才能看到老实的逐句解析的代码，Release下简单的abs函数调用都直接在编译期间就计算完了。说实话，即使在DEBUG版本中我看不出来两者有什么区别。两者在参数为正，或为负的时候都需要一次jmp。唯一也许有不同的可能就是neg eax的时候也许比neg ecx会快一点。（这还是个人猜想，因为毕竟eax是最常用也是CPU设计时提供最快操作的寄存器）
 

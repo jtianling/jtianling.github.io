@@ -45,5 +45,3 @@ Effective Java就是Google的编码风格指导......这个太牛了。提供一
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
 [write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
-
- 

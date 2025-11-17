@@ -23,9 +23,7 @@ author:
   last_name: ''
 ---
 
-  
-
-# windows/linux服务器程序支持库的开发（1）\--UCS-2与UTF8之间的选择（1）
+# windows/linux服务器程序支持库的开发（1）--UCS-2与UTF8之间的选择（1）
 
  
 
@@ -69,7 +67,7 @@ author:
 
 假如初次接触，那么要了解清楚Unicode还不是那么简单的事情，这是实话。当年语言编码混乱的时代，一种语言的软件不能正常的在另外语言的操作系统上显示，编多语言的程序是件非常痛苦的事情，编写一个可以在不同操作系统上都显示正确字符的软件那是高难度的事情。当时呼吁统一编码的呼声很高，原以为Unicode一出，将来的程序员将是无比幸福，甚至都不会了解什么叫编码，什么叫代码页（Codepage），因为已经不用考虑了。
 
-但是，事实是残酷的，当Unicode比较普及了以后，由于历史的原因，光是Unicode本身的实现的种类过多，导致的各个操作系统不兼容的问题，都能够让程序员苦恼痛苦不已，比如，现在要做的UTF-8与UCS-2之间的选择。可能无论哪个初学windows的人都会迷惑于其A,W的函数结尾，初学MFC编程的人都会为其中大量的_T()使用感到莫名奇妙，这些，其实都是历史原因，为了当时一代程序员的理想，用一套源码，实现ASCII和UCS-2两套编码兼容。
+但是，事实是残酷的，当Unicode比较普及了以后，由于历史的原因，光是Unicode本身的实现的种类过多，导致的各个操作系统不兼容的问题，都能够让程序员苦恼痛苦不已，比如，现在要做的UTF-8与UCS-2之间的选择。可能无论哪个初学windows的人都会迷惑于其A,W的函数结尾，初学MFC编程的人都会为其中大量的_T()使用感到莫名其妙，这些，其实都是历史原因，为了当时一代程序员的理想，用一套源码，实现ASCII和UCS-2两套编码兼容。
 
 由于Windows的内核都已经是UTF-16化了，所以实际的开发中，即使不用到除英语以外的语言，使用Unicode其实都是有益的，起码对于现在的速度比内存更重要的时候，一般是有益的，因为使用UCS-2最多是字符多占用了一倍的内存，而使用ASCII实际是影响了所有字符串有关的API函数调用的速度。对于现实中几乎完全不可能去使用ASCII编译程序的中国程序员，还是按照老美们为了他们的习惯去规定的_T()模式，至今，我还感叹不已，毕竟，计算机的教育水平，国外和国内的话语权不是一个量级的，个人也是几乎看着“洋书”成长的，啃过英文原版技术书籍，而且哪怕是中文版的MSDN其实也是英文居多，所以，我们竟然会有这样符合老美们特殊国情的编程习惯-_-!
 
@@ -93,11 +91,13 @@ Welcome! The [Unicode Consortium](<http://www.unicode.org/consortium/consort.htm
 
 现在开发软件用Unicode，当然是没有疑问了。在windows下面直接用UCS-2估计也没有疑问。但是考虑的可移植的时候，问题就来了，目前Linux的内核Unicode实现都是UTF-8的，并且gcc新版的wchar_t已经是新标准的4字节了，这样就算同样的宽字符接口，可能也不一定和windows的wchar_t兼容，要用同一套代码可能还得设置-fshort-wchar的编译选项，看看这样的mannul说明，就知道这样做不是什么长久之计（我们公司一直这样做）：
 
+```text
 -fshort-wchar
 
-Override the underlying type for wchar_t to be short unsigned int           instead of the default for the target.  This option is useful for building programs to run under WINE.
+Override the underlying type for wchar_t to be short unsigned int           instead of the default for the target.  This option is useful for building programs to run under WINE.
 
 Warning: the -fshort-wchar switch causes GCC to generate code that is not inary compatible with code generated without that switch. Use it to conform to a non-default application binary interface.
+```
 
 这样个人感觉也不是什么长久之记，其实还不如用UTF8方便，用UTF8的坏处很明显，那就是处理的函数少一些，而且，字符的长度不一，不如UNICODE好处理。
 
@@ -111,7 +111,7 @@ UTF8:
 
 优点：
 
-1.UCS 字符 U+0000 到 U+007F (ASCII) 被编码为字节 0x00 到 0x7F (ASCII 兼容)。 这意味着只包含 7 位 ASCII 字符的文件在 ASCII 和 UTF-8 两种编码方式下是一样的。意味着完美兼容ASCII。\--《UTF-8 and Unicode FAQ》
+1.UCS 字符 U+0000 到 U+007F (ASCII) 被编码为字节 0x00 到 0x7F (ASCII 兼容)。 这意味着只包含 7 位 ASCII 字符的文件在 ASCII 和 UTF-8 两种编码方式下是一样的。意味着完美兼容ASCII。--《UTF-8 and Unicode FAQ》
 
 2.Linux的内核是UTF88的，意味着在Linux下使用UTF8有得天独厚的优势。而且不仅仅是Linux，大量的开源计划（由于大部分开源计划都是围绕着Linux走的），包括网页，XML等也都是原生UTF-8的，可参考源程序范例更多。
 
@@ -123,9 +123,9 @@ UTF8:
 
 缺点：
 
-1.  大量的组合字符（即用两个以上字节来表示一个字符），使得字符串的处理很不方便。有着和任何变长编码一样的痛苦。并且因为这个原因，当字符超出ASCII范围时，原有的C/C++字符串函数运行结果都不会是你想要的。
+1.  大量的组合字符（即用两个以上字节来表示一个字符），使得字符串的处理很不方便。有着和任何变长编码一样的痛苦。并且因为这个原因，当字符超出ASCII范围时，原有的C/C++字符串函数运行结果都不会是你想要的。
 
-2.  以非ASCII字符为主的数据在存储时，占用空间较大。
+2.  以非ASCII字符为主的数据在存储时，占用空间较大。
 
  
 
@@ -163,7 +163,7 @@ C/C++ 中使用，Python中使用，Lua中使用，正则表达式的使用。
 
 之所以花这么多时间来研究这个问题，出于很多原因，有人说，编程的主要时间是花在进行字符串的处理上了，而现在这样的选择，将会决定以后我大部分时间是否是会更长，还是更短，是更容易，还是更难的问题。而且，对程序的效率，空间占用，肯定也是有影响的。对于初学者来说，一般用ANSI学习就完了，到了真实的使用，这些问题的考虑，甚至比可以想象的还要重要。
 
-对于这个话题，著名开源计划Samba的发起人**Andrew Tridgell** ，曾经在为Samba适应Windows的UCS-2时，提出了一个移植计划，一步一步的将Samba的内核从UTF-8移植到UCS-2.  《[utf8 vs ucs2](<http://lists.samba.org/archive/samba-technical/2001-May/014068.html>)》，颇有味道：）对于同样致力于跨平台程序编写的我，也是指导意义很多。毕竟作为一个不准备在Windows下运行，而是仅仅需要与Windows进行通行的一个程序，最后都需要将内核全面的UCS-2化，而我的程序是不仅仅是需要与Windows下程序通信，并且还需要能够在Windows下运行的，是不是更应该用UCS-2呢？有待研究。另外，我还找到了一个在UNIX/Linux下使用UCS-2的范例：）开源就是好啊。
+对于这个话题，著名开源计划Samba的发起人**Andrew Tridgell** ，曾经在为Samba适应Windows的UCS-2时，提出了一个移植计划，一步一步的将Samba的内核从UTF-8移植到UCS-2.  《[utf8 vs ucs2](<http://lists.samba.org/archive/samba-technical/2001-May/014068.html>)》，颇有味道：）对于同样致力于跨平台程序编写的我，也是指导意义很多。毕竟作为一个不准备在Windows下运行，而是仅仅需要与Windows进行通行的一个程序，最后都需要将内核全面的UCS-2化，而我的程序是不仅仅是需要与Windows下程序通信，并且还需要能够在Windows下运行的，是不是更应该用UCS-2呢？有待研究。另外，我还找到了一个在UNIX/Linux下使用UCS-2的范例：）开源就是好啊。
 
 而我公司使用的是UCS-2，主要是因为客户端是肯定跑在Windows下而且是肯定不需要跑到Linux下的，而作为网络游戏，自然以客户端的效率为主，所以服务器多了一下无谓的字符转换操作也接受了。
 
@@ -186,5 +186,3 @@ UCS-2还是UTF-8，需要继续研究...................................
  
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

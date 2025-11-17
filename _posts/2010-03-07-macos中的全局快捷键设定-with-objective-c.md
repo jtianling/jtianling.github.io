@@ -37,35 +37,43 @@ author:
 
 ## 注册全局快捷键回调函数
 
-回调函数的原型如下：  
-OSStatus MyHotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,  
-void *userData) {  
-}
+回调函数的原型如下：
 
-注册的方式  
-  
-EventTypeSpec eventType;  
-eventType.eventClass=kEventClassKeyboard;  
-eventType.eventKind=kEventHotKeyPressed;  
-InstallApplicationEventHandler(MyHotKeyHandler, 1, &eventType;,NULL, NULL);  
+```c
+OSStatus MyHotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
+void *userData) {
+}
+```
+
+注册的方式
+
+```c
+EventTypeSpec eventType;
+eventType.eventClass=kEventClassKeyboard;
+eventType.eventKind=kEventHotKeyPressed;
+InstallApplicationEventHandler(MyHotKeyHandler, 1, &eventType;,NULL, NULL);
+```
+
 主要的函数是InstallApplicationEventHandler，表示注册相应的回调函数，作为C语言接口，回调的函数原型必须一致。
 
 ## 注册快捷键
 
-  
-EventHotKeyRef gMyHotKeyRef;  
-EventHotKeyID gMyHotKeyID;  
-gMyHotKeyID.signature='rt2h';  
-gMyHotKeyID.id=1;  
-  
-RegisterEventHotKey(6, controlKey, gMyHotKeyID,  
-GetApplicationEventTarget(), 0, &gMyHotKeyRef;);  
-  
-gMyHotKeyID.signature='te2h';  
-gMyHotKeyID.id=2;  
-  
-RegisterEventHotKey(7, controlKey, gMyHotKeyID,  
-GetApplicationEventTarget(), 0, &gMyHotKeyRef;);  
+```c
+EventHotKeyRef gMyHotKeyRef;
+EventHotKeyID gMyHotKeyID;
+gMyHotKeyID.signature='rt2h';
+gMyHotKeyID.id=1;
+
+RegisterEventHotKey(6, controlKey, gMyHotKeyID,
+GetApplicationEventTarget(), 0, &gMyHotKeyRef;);
+
+gMyHotKeyID.signature='te2h';
+gMyHotKeyID.id=2;
+
+RegisterEventHotKey(7, controlKey, gMyHotKeyID,
+GetApplicationEventTarget(), 0, &gMyHotKeyRef;);
+```
+
 注册快捷键，RegisterEventHotKey是整个过程中最重要的接口，第一个参数的数字，代表了最终响应的键值，这里有点奇怪，不是像Windows中那样使用表示虚拟键值的宏，而是直接用按键代表的数字来表示，而且此数字甚为奇怪，我也很为纳闷。比如上面的6，7分别表示Z键和X键。这些数字我只有在《[Program Global Hotkeys in Cocoa Easily](<http://dbachrach.com/blog/2005/11/program-global-hotkeys-in-cocoa-easily/> "Program Global Hotkeys in Cocoa Easily")》一文中提到的[AsyncKeys](<http://www.dbachrach.com/blog/downloads/async.zip> "AsyncKeys")软件中我才能正确的知道。此软件运行时，如下图：
 
 ![](http://docs.google.com/File?id=dhn3dw87_72fzc48cqv_b)
@@ -75,25 +83,26 @@ RegisterEventHotKey第二参数是控制键的设置参数，分别可以为cmdK
 
 ## 实现回调函数
 
-  
-OSStatus MyHotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,  
-void *userData) {  
-EventHotKeyID hkCom;  
-GetEventParameter(theEvent,kEventParamDirectObject,typeEventHotKeyID,NULL,  
-sizeof(hkCom),NULL,&hkCom;);  
-int l = hkCom.id;  
-  
-switch (l) {  
-case 1: //do something  
-convertRtfToHtml();  
-break;  
-case 2: //do something  
-convertTextToHtml();  
-break;  
-}  
-return noErr;  
-}  
-  
+```c
+OSStatus MyHotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
+void *userData) {
+    EventHotKeyID hkCom;
+    GetEventParameter(theEvent,kEventParamDirectObject,typeEventHotKeyID,NULL,
+    sizeof(hkCom),NULL,&hkCom;);
+    int l = hkCom.id;
+
+    switch (l) {
+    case 1: //do something
+        convertRtfToHtml();
+        break;
+    case 2: //do something
+        convertTextToHtml();
+        break;
+    }
+    return noErr;
+}
+```
+
 这里通过GetEventParameter来获取需要的信息，然后通过事件的ID来分辨是哪个快捷键按下。整个过程基本就是这样了。
 
 ## 小结

@@ -28,8 +28,6 @@ author:
   last_name: ''
 ---
 
-   
-
 #   一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记  
 用C++/lua/python/bash的四重实现（7）习题2.8 随机数组的三种生成算法
 
@@ -53,470 +51,382 @@ write by 九天雁翎(JTianLing)
 
 以下为实现部分: 
 
-CPP: 
+CPP:
 
-  1  
-#include  
-<stdio.h>  
-  2 #include  
-<stdlib.h>  
-  3 #include  
-<algorithm>  
-  4 #include  
-<iterator>  
-  5 #include  
-<iostream>  
-  6 **using**  **namespace**  std;  
-  7   
-  8 **int**  randInt(**int**  i, **int**  j)  
-  9 {  
- 10     **if**(i > j)  
- 11     {  
- 12         **int**  temp = i;  
- 13         i  
-= j;  
- 14         j  
-= temp;  
- 15     }  
- 16   
- 17     **return**  rand() % (j-i) + i;  
- 18 }  
- 19   
- 20 **void**  randArr1(**int**  arr[], **int**  n)  
- 21 {  
- 22     **for**(**int**  i=0; i<n; ++i)  
- 23     {  
- 24         **while**(true)  
- 25         {  
- 26             // some thing don't like py  
- 27             // because my randInt is create number  
- 28             // in [0,n) and py is [0,n]  
- 29             **int**  temp = randInt(0, n);  
- 30             **int**  j = 0;  
- 31             **while**(j < i)  
- 32             {  
- 33                 **if**(arr[j] == temp)  
- 34                 {  
- 35                     **break** ;  
- 36                 }  
- 37                 ++j;  
- 38             }  
- 39             **if**(j == i)  
- 40             {  
- 41                 arr[j]  
-= temp;  
- 42                 **break** ;  
- 43             }  
- 44         }  
- 45     }  
- 46 }  
- 47   
- 48 **void**  randArr2(**int**  a[], **int**  n)  
- 49 {  
- 50     **bool**  *lpb = **new**  **bool**[n];  
- 51     memset(lpb,  
-0, n);  
- 52   
- 53     **for**(**int**  i=0; i<n; ++i)  
- 54     {  
- 55         **while**(true)  
- 56         {  
- 57             **int**  temp = randInt(0, n);  
- 58             **if**(!lpb[temp])  
- 59             {  
- 60                 a[i]  
-= temp;  
- 61                 lpb[temp]  
-= true;  
- 62                 **break** ;  
- 63             }  
- 64         }  
- 65   
- 66     }  
- 67   
- 68     **delete**  lpb;  
- 69     lpb = NULL;  
- 70 }  
- 71   
- 72 **void**  swap(**int** & a, **int** &  
-b)  
- 73 {  
- 74     **int**  temp = a;  
- 75     a = b;  
- 76     b = temp;  
- 77 }  
- 78   
- 79 // just  
-for fun,but I like it.  
- 80 // when py  
-could have range and bash could have seq  
- 81 // why cpp  
-couldn't have a seq like this? lol  
- 82 **template** <**typename**  T>  
- 83 **class**  CFBSeq  
- 84 {  
- 85 **public** :  
- 86     CFBSeq(**const**  T& aValue) : mValue(aValue) {  
-}  
- 87   
- 88     T **operator**()()  
- 89     {  
- 90         **return**  mValue++;  
- 91     }  
- 92   
- 93 **private** :  
- 94     T mValue;  
- 95 };  
- 96   
- 97 **void**  randArr3(**int**  a[], **int**  n)  
- 98 {  
- 99     generate(a,  
-a+n, CFBSeq<**int** >(0));  
-100   
-101     **for**(**int**  i=1; i<n; ++i)  
-102     {  
-103         swap(a[i],  
-a[randInt(0,i)]);  
-104     }  
-105   
-106 }  
-107   
-108   
-109   
-110   
-111   
-112 **int**  main(**int**  argc, **char** *  
-argv[])  
-113 {  
-114     **const**  **int**  TIMES=100;  
-115     srand(time(NULL));  
-116     **int**  a[TIMES],b[TIMES],c[TIMES];  
-117     randArr1(a,TIMES);  
-118     copy(a, a+TIMES,  
-ostream_iterator<**int** >(cout," "));  
-119     printf("/n");  
-120     randArr2(b,TIMES);  
-121     copy(b, b+TIMES,  
-ostream_iterator<**int** >(cout," "));  
-122     printf("/n");  
-123     randArr3(c,  
-TIMES);  
-124     copy(c, c+TIMES,  
-ostream_iterator<**int** >(cout," "));  
-125   
-126   
-127   
-128     exit(0);  
-129 }  
-130   
+```cpp
+#include <stdio.h>
+#include <stdlib.h>
+#include <algorithm>
+#include <iterator>
+#include <iostream>
+using namespace std;
 
-LUA: 
+int randInt(int i, int j)
+{
+    if(i > j)
+    {
+        int temp = i;
+        i = j;
+        j = temp;
+    }
 
- 1  
-#!/usr/bin/env  
-lua  
- 2   
- 3 math.randomseed(os.time())  
- 4   
- 5 function randArr1(a,  
-n)  
- 6     **for**  i=1,n  
-**do**  
- 7         **while**  true **do**  
- 8             **local**  temp = math.random(1, n)  
- 9   
-10             **local**  j = 1  
-11             **while**  j < i **do**  
-12                 **if**  a[j] == temp **then**    
-13                     **break**  
-14                 **end**  
-15                 \-- Again damed that There is no ++  
-16                 \-- and even no composite operator += !  
-17                 \-- No one knows that is more concision  
-18                 \-- and more effective?  
-19                 j  
-= j + 1  
-20             **end**  
-21   
-22             **if**  j == i **then**  
-23                 a[i]  
-= temp  
-24                 **break**  
-25             **end**  
-26   
-27         **end**  
-28     **end**  
-29 end  
-30   
-31   
-32 function randArr2(a,  
-n)  
-33     \-- use nil as false as a lua's special hack  
-34     **local**  bt = **{}**  
-35     **for**  i=1,n  
-**do**  
-36         **while**  true **do**  
-37             **local**  temp = math.random(1,n)  
-38             **if**  **not**  bt[temp]  
-**then**  
-39                 a[i]  
-= temp  
-40                 bt[temp]  
-= true  
-41                 **break**  
-42             **end**  
-43         **end**  
-44     **end**  
-45 end  
-46   
-47 function randArr3(a,  
-n)  
-48     **for**  i=1,n  
-**do**  
-49         a[i]  
-= i  
-50     **end**  
-51       
-52     **for**  i=1,n  
-**do**  
-53         **local**  temp = math.random(1,n)  
-54         \-- one of the most things i like in lua&py  
-55         a[i],a[temp]  
-= a[temp],a[i]   
-56     **end**  
-57 end  
-58   
-59   
-60   
-61 \-- Test Code  
-62   
-63 times = 100  
-64 t = **{}**  
-65 randArr1(t, times)  
-66 **for**  i,v **in**  ipairs(t)  
-**do**  
-67     io.write(v .. "  
-")  
-68 **end**  
-69   
-70   
-71 t2 = **{}**  
-72 randArr2(t2, times)  
-73 **for**  i,v **in**  ipairs(t2)  
-**do**  
-74     io.write(v .. "  
-")  
-75 **end**  
-76   
-77   
-78 t3 = **{}**  
-79 randArr3(t3, times)  
-80 **for**  i,v **in**  ipairs(t3)  
-**do**  
-81     io.write(v .. "  
-")  
-82 **end**  
-83   
-84   
-85   
+    return rand() % (j-i) + i;
+}
 
-PYTHON: 
+void randArr1(int arr[], int n)
+{
+    for(int i=0; i<n; ++i)
+    {
+        while(true)
+        {
+            // some thing don't like py
+            // because my randInt is create number
+            // in [0,n) and py is [0,n]
+            int temp = randInt(0, n);
+            int j = 0;
+            while(j < i)
+            {
+                if(arr[j] == temp)
+                {
+                    break ;
+                }
+                ++j;
+            }
+            if(j == i)
+            {
+                arr[j] = temp;
+                break ;
+            }
+        }
+    }
+}
 
- 1  
-#!/usr/bin/env  
-python  
- 2 from random  
-import randint  
- 3   
- 4 **def**  randArr1(a,n):  
- 5     **for**  i **in**  range(n):  
- 6         **while**  True:  
- 7             temp  
-= randint(0, n-1)  
- 8   
- 9             **for**  j **in**  range(i):  
-10                 **if**  a[j] == temp:  
-11                     **break** ;  
-12             # another one of the things I like in py(for else)  
-13             **else** :  
-14                 a.append(temp)  
-15                 **break** ;  
-16   
-17 **def**  randArr2(a,n):  
-18 #surely it is  
-not need be a dict but dict is faster then list  
-19     bd = {}  
-20     **for**  i **in**  range(n):  
-21         **while**  True:  
-22             temp  
-= randint(0, n-1)  
-23             **if**  temp **not**  **in**  tl:  
-24                 a.append(temp)  
-25                 tl[temp]  
-= True  
-26                 **break**  
-27   
-28 **def**  randArr3(a,n):  
-29      a = range(n)  
-30      **for**  i **in**  range(n):  
-31           
-temp = randint(0, n-1)  
-32           
-# like in lua  
-33           
-a[i],a[temp] = a[temp],a[i]  
-34   
-35 **def**  test():  
-36     times = 100  
-37     l = []  
-38     randArr1(l,  
-times)  
-39   
-40     **print**  l  
-41     l2 = []  
-42     randArr1(l2,  
-times)  
-43     **print**  l2  
-44   
-45     l2 = []  
-46     randArr1(l2,  
-times)  
-47     **print**  l2  
-48   
-49   
-50   
-51 **if**  __name__ == '__main__':  
-52     test()  
+void randArr2(int a[], int n)
+{
+    bool *lpb = new bool[n];
+    memset(lpb, 0, n);
 
-BASH: 
+    for(int i=0; i<n; ++i)
+    {
+        while(true)
+        {
+            int temp = randInt(0, n);
+            if(!lpb[temp])
+            {
+                a[i] = temp;
+                lpb[temp] = true;
+                break ;
+            }
+        }
 
-  1  
-#!/usr/bin/env  
-bash  
-  2   
-  3   
-  4 #  
-just for a range rand....let me die....  
-  5 #  
-what I had said? bash is not a good  
-  6 #  
-language for describing algorithms  
-  7 randInt**()**  
-  8 {  
-  9     **local**  a=$1  
- 10     **local**  b=$2  
- 11   
- 12     **if**  (( a  
-**>**  b ))  
- 13     **then**  
- 14         **local**  temp  
- 15         (( temp **=**  a ))  
- 16         (( a **=**  b ))  
- 17         (( b **=**  temp ))  
- 18     **fi**  
- 19   
- 20     **local**  mi  
- 21     **((**  mi **=**  b  
-\- a + 1**))**  
- 22     **local**  **r=** $((RANDOM%${mi}+${a}))  
- 23     **echo**  -n $r  
- 24 }  
- 25   
- 26 randArr1**()**  
- 27 {  
- 28 # only one  
-argument because I hate the  
- 29 # bash's  
-indirect reference  
- 30 # you can  
-reference the (4) binarySearch to  
- 31 # see what  
-I said  
- 32     **local**  n=$1  
- 33     **declare**  -a a  
- 34     **for**  (( i**=** 1**;**  i**< =**n**;**  ++i ))   
- 35     **do**  
- 36         **while  true**  
- 37 **         do**  
- 38             temp=`randInt 1 $n`  
- 39             j=1  
- 40             **while  **(( j**<** i ))  
- 41 **             do**  
- 42                 **if**  (( a**[** j**]**  **==**  temp ))  
- 43                 **then**  
- 44                     **break**  
- 45                 **fi**  
- 46                 **((**  ++j **))**  
- 47             **done**  
- 48             **if**  (( j  
-**==**  i ))  
- 49             **then**  
- 50                 (( a**[** j**]**  **=**  temp ))  
- 51                 **break**  
- 52             **fi**  
- 53         **done**  
- 54     **done**  
- 55   
- 56     **echo**  ${a[*]}  
- 57 }  
- 58   
- 59 randArr2**()**  
- 60 {  
- 61     **local**  n=$1  
- 62     **declare**  -a a  
- 63     # used for bool array  
- 64     **declare**  -a b  
- 65     **for**  (( i**=** 1**;**  i**< =**n**;**  ++i ))  
- 66     **do**  
- 67         **while  true**  
- 68 **         do**  
- 69             **local**  temp=`randInt 1 $n`  
- 70             **if**  **[**  **-z**  ${b[temp]} **]**  
- 71             **then**  
- 72                 (( a**[** i**]**  **=**  temp ))  
- 73                 (( b**[** temp**]**  **=**  true ))  
- 74                 **break**  
- 75             **fi**  
- 76         **done**  
- 77     **done**  
- 78   
- 79     **echo**  ${a[*]}  
- 80 }  
- 81   
- 82 randArr3**()**  
- 83 {  
- 84     **local**  n=$1  
- 85     **for**  (( i**=** 1**;**  i**< =**n**;**  ++i ))  
- 86     **do**  
- 87         **((**  a**[** i**]**  **=**  i  
-**))**  
- 88     **done**  
- 89     **for**  (( i**=** 1**;**  i**< =**n**;**  ++i ))  
- 90     **do**  
- 91         **local**  temp=`randInt 1 $n`  
- 92         **((**  t **=**  a**[** i**]**  **))**  
- 93         **((**  a**[** i**]**  **=**  a**[** temp**]**  **))**  
- 94         **((**  a**[** temp**]**  **=**  t  
-**))**  
- 95     **done**  
- 96   
- 97     **echo**  ${a[*]}  
- 98 }  
- 99   
-100   
-101 # so slow that  
-I can't bear it run 100 times  
-102 randArr1 10  
-103 randArr2 10  
-104 randArr3 10  
-105
+    }
 
- 
+    delete lpb;
+    lpb = NULL;
+}
 
- 
+void swap(int & a, int & b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+// just for fun,but I like it.
+// when py could have range and bash could have seq
+// why cpp couldn't have a seq like this? lol
+template <typename T>
+class CFBSeq
+{
+public :
+    CFBSeq(const T& aValue) : mValue(aValue) { }
+
+    T operator()()
+    {
+        return mValue++;
+    }
+
+private :
+    T mValue;
+};
+
+void randArr3(int a[], int n)
+{
+    generate(a, a+n, CFBSeq<int >(0));
+
+    for(int i=1; i<n; ++i)
+    {
+        swap(a[i], a[randInt(0,i)]);
+    }
+
+}
+
+int main(int argc, char * argv[])
+{
+    const int TIMES=100;
+    srand(time(NULL));
+    int a[TIMES],b[TIMES],c[TIMES];
+    randArr1(a,TIMES);
+    copy(a, a+TIMES, ostream_iterator<int >(cout," "));
+    printf("/n");
+    randArr2(b,TIMES);
+    copy(b, b+TIMES, ostream_iterator<int >(cout," "));
+    printf("/n");
+    randArr3(c, TIMES);
+    copy(c, c+TIMES, ostream_iterator<int >(cout," "));
+
+    exit(0);
+}
+```
+
+LUA:
+
+```lua
+#!/usr/bin/env lua
+
+math.randomseed(os.time())
+
+function randArr1(a, n)
+    for i=1,n do
+        while true do
+            local temp = math.random(1, n)
+
+            local j = 1
+            while j < i do
+                if a[j] == temp then  
+                    break
+                end
+                -- Again damed that There is no ++
+                -- and even no composite operator += !
+                -- No one knows that is more concision
+                -- and more effective?
+                j = j + 1
+            end
+
+            if j == i then
+                a[i] = temp
+                break
+            end
+
+        end
+    end
+end
+
+function randArr2(a, n)
+    -- use nil as false as a lua's special hack
+    local bt = {}
+    for i=1,n do
+        while true do
+            local temp = math.random(1,n)
+            if not bt[temp] then
+                a[i] = temp
+                bt[temp] = true
+                break
+            end
+        end
+    end
+end
+
+function randArr3(a, n)
+    for i=1,n do
+        a[i] = i
+    end
+    
+    for i=1,n do
+        local temp = math.random(1,n)
+        -- one of the most things i like in lua&py
+        a[i],a[temp] = a[temp],a[i]
+    end
+end
+
+
+-- Test Code
+
+times = 100
+t = {}
+randArr1(t, times)
+for i,v in ipairs(t) do
+    io.write(v .. " ")
+end
+
+t2 = {}
+randArr2(t2, times)
+for i,v in ipairs(t2) do
+    io.write(v .. " ")
+end
+
+t3 = {}
+randArr3(t3, times)
+for i,v in ipairs(t3) do
+    io.write(v .. " ")
+end
+```
+
+PYTHON:
+
+```python
+#!/usr/bin/env python
+from random import randint
+
+def randArr1(a,n):
+    for i in range(n):
+        while True:
+            temp = randint(0, n-1)
+
+            for j in range(i):
+                if a[j] == temp:
+                    break ;
+            # another one of the things I like in py(for else)
+            else :
+                a.append(temp)
+                break ;
+
+def randArr2(a,n):
+#surely it is not need be a dict but dict is faster then list
+    bd = {}
+    for i in range(n):
+        while True:
+            temp = randint(0, n-1)
+            if temp not in tl:
+                a.append(temp)
+                tl[temp] = True
+                break
+
+def randArr3(a,n):
+    a = range(n)
+    for i in range(n):
+        
+        temp = randint(0, n-1)
+        
+        # like in lua
+        a[i],a[temp] = a[temp],a[i]
+
+def test():
+    times = 100
+    l = []
+    randArr1(l, times)
+
+    print l
+    l2 = []
+    randArr1(l2, times)
+    print l2
+
+    l2 = []
+    randArr1(l2, times)
+    print l2
+
+
+if __name__ == '__main__':
+    test()
+```
+
+BASH:
+
+```bash
+#!/usr/bin/env bash
+
+# just for a range rand....let me die....
+# what I had said? bash is not a good
+# language for describing algorithms
+randInt()
+{
+    local a=$1
+    local b=$2
+
+    if (( a > b ))
+    then
+        local temp
+        (( temp = a ))
+        (( a = b ))
+        (( b = temp ))
+    fi
+
+    local mi
+    (( mi = b - a + 1 ))
+    local r=$((RANDOM%${mi}+${a}))
+    echo -n $r
+}
+
+randArr1()
+{
+# only one argument because I hate the
+# bash's indirect reference
+# you can reference the (4) binarySearch to
+# see what I said
+    local n=$1
+    declare -a a
+    for (( i=1; i<=n; ++i ))
+    do
+        while true
+        do
+            temp=`randInt 1 $n`
+            j=1
+            while (( j < i ))
+            do
+                if (( a[j] == temp ))
+                then
+                    break
+                fi
+                (( ++j ))
+            done
+            if (( j == i ))
+            then
+                (( a[ j ] = temp ))
+                break
+            fi
+        done
+    done
+
+    echo ${a[*]}
+}
+
+randArr2()
+{
+    local n=$1
+    declare -a a
+    # used for bool array
+    declare -a b
+    for (( i=1; i<=n; ++i ))
+    do
+        while true
+        do
+            local temp=`randInt 1 $n`
+            if [ -z ${b[temp]} ]
+            then
+                (( a[ i ] = temp ))
+                (( b[ temp ] = true ))
+                break
+            fi
+        done
+    done
+
+    echo ${a[*]}
+}
+
+randArr3()
+{
+    local n=$1
+    for (( i=1; i<=n; ++i ))
+    do
+        (( a[ i ] = i ))
+    done
+    for (( i=1; i<=n; ++i ))
+    do
+        local temp=`randInt 1 $n`
+        (( t = a[ i ] ))
+        (( a[ i ] = a[ temp ] ))
+        (( a[ temp ] = t ))
+    done
+
+    echo ${a[*]}
+}
+
+# so slow that I can't bear it run 100 times
+randArr1 10
+randArr2 10
+randArr3 10
+```
 
  
 
 **_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**
-
- 

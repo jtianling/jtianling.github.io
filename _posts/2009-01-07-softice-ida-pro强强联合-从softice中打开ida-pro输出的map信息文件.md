@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # SoftIce,IDA pro强强联合！从SOFTICE中打开IDA Pro输出的map信息文件
 
  

@@ -50,12 +50,14 @@ Lisp(这里特指Common lisp,下同）1978年被设计完成，是个多么古�
 不用当心溢出。
 
 Lisp:  
+```lisp
 CL-USER>  
-  
+
 (expt (expt (expt (expt 10 10) 10) 10) 10)  
-  
-  
+
+
 100000000000000000000000000000000000...  
+```
 
 这个貌似还行，C++虽然是需要通过外部库来处理，（在新标准中有过关于大数的提案，我以前还翻译过一篇《[(N1744)Big Integer Library Proposal for C++0x](<http://www.jtianling.com/archive/2007/08/23/1755273.aspx>)
 
@@ -66,8 +68,10 @@ CL-USER>
 ）呵呵，这点挺符合越新的语言（在Python来看，也就是越新的版本越接近）也就是越接近Lisp的理论。
 
 Python:  
->>> ((((10 ** 10) ** 10) ** 10) ** 10)  
+```python
+>>> ((((10 ** 10) ** 10) ** 10) ** 10)
 1000000000000000000000000000000000000000000
+```
 
 .....
 
@@ -76,22 +80,28 @@ Python:
 保留成比例的形式。
 
 Lisp:  
-CL-USER>  
-(+ 5/9 3/4)  
+```lisp
+CL-USER>
+(+ 5/9 3/4)
 47/36
+```
 
 这个很牛很牛。。。。我目前懂的语言，(C/C++,Lua,Python,Objc以后提及均表示此意）还没有哪个是这样计算分数的，给你的都是浮点数。
 
 特别提及一点，在Python2.x时代，上面的整数运算会像C++中那样，直接变成整数（5/9也就是0），但是新版本中已经不那么扭曲了。  
 Python 2.6.4:  
+```python
 >>> 5 / 9
 
 0
+```
 
 Python3:  
+```python
 >>> 5 / 9
 
-0.5555555555555556  
+0.5555555555555556
+```
 
 我很遗憾的表示，同样的，python3比2.X版本更加像lisp,但是还不是足够像。
 
@@ -100,16 +110,20 @@ Python3:
 内建支持
 
 Lisp:  
-CL-USER>  
+```lisp
+CL-USER>
 (* 2 (+ #c(10 5) 4))
 
-#C(28 10)  
-  
+#C(28 10)
+```
+
 这个也还算方便，虽然我平时好像也用不上，C++中得通过库处理。Python也内建支持。  
 Python:  
+```python
 >>> (((10 + 5j) + 4) * 2)
 
 (28+10j)
+```
 
 相对来说，以近似伪码著称的Python表达还是更加清晰一些。
 
@@ -119,6 +133,7 @@ Python:
 
 Lisp：
 
+```lisp
 CL-USER> (defvar *colours* (list 'red 'green 'blue))
 
 *COLOURS*
@@ -138,6 +153,7 @@ CL-USER> (push 'red (rest *colours*))
 CL-USER> *colours*
 
 (YELLOW RED GREEN BLUE)
+```
 
 Lisp的操作都是使用引用对列表进行操作，你可以改变这个列表，实际操作的是同一个列表，就像你使用了rest操作，并对其进行push，但是实际也还是会改变原来的colours，因为rest返回的也还是引用而不是临时变量，这个特性看起来很有意思，有些特殊，具体的使用范围我还不是太清除（因为毕竟没有lisp编写大型的程序）
 
@@ -145,6 +161,7 @@ Lisp的操作都是使用引用对列表进行操作，你可以改变这个列�
 
 Python:
 
+```python
 >>> l
 
 ['red', 'yellow', 'green', 'blue']
@@ -172,6 +189,7 @@ Python:
 >>> l
 
 ['yellow', 'green', 'blue']
+```
 
 需要注意的是，l[1:].insert(0, "red")操作是不会返回['red','green','blue']的，这样你临时的变量都获取不到，同样的，用切片操作来模拟的话，不仅没有返回值，原列表更不会改变，因为切片后的是临时变量，而不是引用。
 
@@ -179,26 +197,31 @@ Python:
 
 Lisp:
 
+```lisp
 CL-USER> (floor pi)
 
 3
 
 0.14159265358979312D0
+```
 
 有简单的内建语法支持多个值,因此能方便的让函数返回多个值。此点C++就靠其他手段吧，比如异常ugly的用传指针/引用，然后再通过指针/引用传出去，虽然用了这么多年的C++了,这种方式也习惯了，但是一比较，就知道那不过是个因为语言的抽象能力太弱，使用的walk round的办法而已。 Python还是可以的。
 
 虽然，Python的floor不返回两个值。  
 Python：
 
+```python
 >>> import math
 
 >>> math.floor(math.pi)
 
 3
+```
 
 但是，你的确是可以返回多个值。  
 Python：
 
+```python
 >>> def myFloor(x):
 
 return math.floor(x), x - math.floor(x)
@@ -206,13 +229,16 @@ return math.floor(x), x - math.floor(x)
 >>> myFloor(math.pi)
 
 (3, 0.14159265358979312)
+```
 
 但是，需要特别注意的是，这只是个假象......因为实际上是相当于将返回值作为一个tuple返回了。  
 Lisp:
 
+```lisp
 CL-USER> (+ (floor pi) 2)
 
 5
+```
 
 在计算时，让第一个多重值的第一个变量作为计算的变量，所以非常方便。
 
@@ -222,6 +248,7 @@ CL-USER> (+ (floor pi) 2)
 
 Python:
 
+```python
 >>> myFloor(math.pi) + 1
 
 Traceback (most recent call last):
@@ -231,6 +258,7 @@ File "<pyshell#58>", line 1, in <module>
 myFloor(math.pi) + 1
 
 TypeError: can only concatenate tuple (not "int") to tuple
+```
 
   
 
@@ -240,6 +268,7 @@ TypeError: can only concatenate tuple (not "int") to tuple
 
 Lua(5.1.2以下同）：
 
+```lua
 > math.floor(math.pi)
 
 > print(math.floor(math.pi))
@@ -255,6 +284,7 @@ Lua(5.1.2以下同）：
 > print(myFloor(math.pi)+ 1)
 
 4
+```
 
 而且在Lisp中可以很方便的使用多重值的第二个值。(通过multiple-value-bind)
 
@@ -262,6 +292,7 @@ Lua(5.1.2以下同）：
 
 Lisp:
 
+```lisp
 CL-USER> (multiple-value-bind (integral fractional)
 
 (floor pi)
@@ -269,6 +300,7 @@ CL-USER> (multiple-value-bind (integral fractional)
 (+ integral fractional))
 
 3.141592653589793D0
+```
 
   
 
@@ -278,6 +310,7 @@ Python因为返回的是tuple，指定使用其他值倒是很方便，包括第
 
 Python：
 
+```python
 >>> myFloor(math.pi)
 
 (3, 0.14159265358979312)
@@ -285,6 +318,7 @@ Python：
 >>> myFloor(math.pi)[0] + myFloor(math.pi)[1]
 
 3.141592653589793
+```
 
   
 
@@ -297,7 +331,7 @@ lisp的宏有点像其他语言中的函数，但是却是在编译期展开（�
 （语法抽象），同时用于支持元编程，并且认为可以很方便的创造自己的领域语言。目前我不知道到底与C++的宏（其实也是一样的编译期展开），还有比普通函数的优势在哪。（原谅我才学Lisp没有几天）
 
 LOOP宏（The LOOP macro）：  
-  
+```lisp
 Lisp:CL-USER> (defvar *list*
 
 (loop :for x := (random 1000)
@@ -311,11 +345,13 @@ Lisp:CL-USER> (defvar *list*
 CL-USER> *list*
 
 (441 860 581 120 675)
+```
 
 这个我有些不明白，难道在Lisp的那个年代，语言都是循环这个概念的。。。。导致，循环都是一个很牛的特性？
 
 继续往下看就牛了
 
+```lisp
 Lisp:
 
 CL-USER> (loop :for elt :in *list*
@@ -325,9 +361,11 @@ CL-USER> (loop :for elt :in *list*
 :maximizing elt)
 
 675
+```
 
 when,max的类SQL寻找语法
 
+```lisp
 Lisp:
 
 CL-USER> (loop :for elt :in *list*
@@ -347,6 +385,7 @@ CL-USER> (loop :for elt :in *list*
 (6.089045 6.7569323 6.364751 6.514713)
 
 (4.787492)
+```
 
 遍历并且进行分类。
 
@@ -356,6 +395,7 @@ CL-USER> (loop :for elt :in *list*
 
 他表示，语言是从：
 
+```csharp
 Dictionary<string, Grouping> groups = new Dictionary<string, Grouping>();
 
 foreach(Product p in products)
@@ -401,13 +441,13 @@ x.ProductCount < y.ProductCount ? 1 : 0;
 }
 
 );  
-
-  
+```
 
 这种形式到：
 
 LINQ：
 
+```csharp
 var 
 
 result = products
@@ -421,6 +461,7 @@ result = products
 .Select(g => new 
 
 { CategoryName = g.Key, ProductCount = g.Count() });
+```
 
   
 
@@ -436,6 +477,7 @@ result = products
 
 Lisp:
 
+```lisp
 CL-USER> (defun format-names (list)
 
 (format nil "~{~:(~a~)~#[.~; and ~:;, ~]~}" list))
@@ -453,6 +495,7 @@ CL-USER> (format-names '(fry laurie))
 CL-USER> (format-names '(bluebeard))
 
 "Bluebeard."
+```
 
   
 
@@ -462,6 +505,7 @@ Format函数现在的语言基本都有，连C/C++语言都有，为啥值得一
 
 Python:
 
+```python
 >>>import sys
 
 >>>def format_name(list):
@@ -489,6 +533,7 @@ a
 >>> format_name(l[0:2])
 
 a and b
+```
 
 哪个更加简单，一目了然，lisp的format函数的确强大，即使在python3上也无法有可以媲美的东西。（新的format模版也好不到哪里去）
 
@@ -497,11 +542,11 @@ a and b
 函数是第一类值，可以被动态创建，作为参数传入，可以被return，这些特性相当强大。这也算是函数类语言最强大的特点之一了。（也许不需要之一吧）记得
 
 Lisp:  
-  
-  
+```lisp
 CL-USER> (sort (list 4 2 3 1) #'<)
 
 (1 2 3 4)
+```
 
   
 
@@ -533,6 +578,7 @@ sorted
 
 Python:（改自[这里的实现](<http://leejingui.com/blog/2010/11/quick_sort_py/> "这里")）
 
+```python
 >>> def sort(L, f):
 
 if not L:
@@ -572,6 +618,7 @@ return False
 >>> sort(l, greater)
 
 [4, 3, 2, 1]
+```
 
   
 
@@ -585,11 +632,13 @@ return False
 
 Lisp:
 
+```lisp
 CL-USER> (defun foo(n)
 
 (lambda(i)(incf n i)))
 
 FOO
+```
 
 Lisp的实现很简单，但是Python的如下实现：
 
@@ -597,9 +646,11 @@ Lisp的实现很简单，但是Python的如下实现：
 
 Python：
 
+```python
 def foo (n):
 
 return lambda i: n + i
+```
 
 文中说这样的语法是不合法的。。。。。。。于是乎，作者猜想“Python总有一天是会支持这样的语法的”，而事实上，经我测试，现在的Python已经完全支持此语法。。。。。（修正以前文章中的错误，原来的测试有误，  
 这点也印证了程序语言进化的方向。）
@@ -614,5 +665,3 @@ Joel Spolsky属于更为激进的一派，他认为，不良好支持函数抽�
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
 **
-
- 

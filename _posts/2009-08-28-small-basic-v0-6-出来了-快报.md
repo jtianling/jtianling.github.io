@@ -106,7 +106,3 @@ STARGATES的游戏截图如下：（游戏还是一般）
  
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 
-
- 

@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 ## 一天一个C Run-Time Library 函数  __isascii & iswascii & __toascii
 
  
@@ -50,101 +48,55 @@ Determines whether a particular character is an ASCII character.
 
 ## 测试程序：
 
+```cpp
 #include "stdafx.h"
-
 #include "ctype.h"
-
 #include "locale.h"
-
 #include "stdio.h"
 
- 
-
 void CheckCharAndPrint(char acChar)
-
 {
-
     if(__isascii(acChar))
-
     {
-
        printf("char %c is a ascii char./n",acChar);
-
     }
-
     else
-
     {
-
         // 此处无法正常输出中文，没有深入研究了
-
        printf("char %c is not a ascii char./n",acChar);
-
     }
-
 }
-
- 
 
 void CheckWCharAndPrint(wchar_t awcChar)
-
 {
-
     if(iswascii(awcChar))
-
     {
-
        wprintf(L"wchar %c is a ascii char./n",awcChar);
-
     }
-
     else
-
     {
-
        setlocale(LC_ALL,"");
-
        wprintf(L"wchar %c is not a ascii char./n",awcChar);
-
     }
-
 }
-
- 
-
- 
 
 int _tmain(int argc, _TCHAR* argv[])
-
 {
-
     char lcC = 'a';
-
     char lcD = '中';
 
- 
-
     CheckCharAndPrint(lcC);
-
     CheckCharAndPrint(lcD);
 
- 
-
     wchar_t lwcC = L'a';
-
     wchar_t lwcD = L'中';
 
- 
-
     CheckWCharAndPrint(lwcC);
-
     CheckWCharAndPrint(lwcD);
 
- 
-
     return 0;
-
 }
+```
 
  
 
@@ -162,13 +114,16 @@ iswascii这个__isascii函数的宽字节版本，如同很多宽字节版本的
 
 MS:
 
+```c
 #define __isascii(_Char)   ( (unsigned)(_Char) < 0x80 )
-
 inline int __cdecl iswascii(wint_t _C) {return ((unsigned)(_C) < 0x80); }
+```
 
 gcc:
 
+```c
 #define __isascii(c)  (((c) & ~0x7f) == 0)  /* if C is a 7 bit value*/
+```
 
 __isascii都是一个简单的宏。MS的iswascii原理和其__isascii都一样，仅仅是一个内联的函数。
 
@@ -182,97 +137,54 @@ gcc的实现是依赖于字符除低七位外无任何其他值。即先将127(0
 
 ## 效率测试：
 
+```cpp
 #include "jtianling.h"
-
 #define __isasciims(_Char)   ( (unsigned)(_Char) < 0x80 )
-
 #define __isasciigcc(c)  (((c) & ~0x7f) == 0)  /* if C is a 7 bit value*/
-
- 
 
 const int  DEF_TEST_TIMES = 1000000000;
 
- 
-
 void CheckMS(char ac)
-
 {
-
     double ldTimeLast = jtianling::GetTime();
-
     for (int i=0; i<DEF_TEST_TIMES ; ++i)
-
     {
-
- 
 
        __isasciims(ac);
 
- 
-
     }
-
     double ldTimePast = jtianling::GetTime() - ldTimeLast;
 
- 
-
     printf("__isasciims %c run %d times cost %lf secs./n", ac, DEF_TEST_TIMES, ldTimePast);
-
 }
 
- 
-
 void Checkgcc(char ac)
-
 {
-
     double ldTimeLast = jtianling::GetTime();
-
     for (int i=0; i<DEF_TEST_TIMES ; ++i)
-
     {
-
- 
 
        __isasciigcc(ac);
 
- 
-
     }
-
     double ldTimePast = jtianling::GetTime() - ldTimeLast;
 
- 
-
- 
 
     printf("__isasciigcc %c run %d times cost %lf secs./n", ac, DEF_TEST_TIMES, ldTimePast);
-
 }
-
- 
 
 int _tmain(int argc, _TCHAR* argv[])
-
 {
-
     char lc = 'a';
-
     char lc2 = '中';
-
     CheckMS(lc);
-
     Checkgcc(lc);
-
     CheckMS(lc);
-
     Checkgcc(lc2);
 
- 
-
     return 0;
-
 }
+```
 
 至于GetTime函数的意义，请参考我以前写的库，无非就是获取当前时间，不知道也没有关系。你可以用time(NULL)来替代，只不过精度没有这个函数高而已。
 
@@ -286,15 +198,17 @@ msdn:
 
 Converts characters.
 
+```c
 int __toascii(
-
    int c 
-
-); 
+);
+```
 
 这个函数也是一个双前置下划线的函数，MS,gcc中都有实现。而且在此时，实现都是一样的。
 
+```c
 #define __toascii(_Char)   ( (_Char) & 0x7f )
+```
 
 gcc注释到 “mask off high bits.”
 

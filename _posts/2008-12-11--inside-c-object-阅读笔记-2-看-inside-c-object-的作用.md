@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 《Inside C++ Object 》 阅读笔记(2)，看《Inside C++ Object 》的作用
 
  
@@ -41,66 +39,38 @@ blog.csdn.net/vagrxie_**
 
 测试代码如下：
 
- 
-
+```cpp
 #include <stdio.h>
-
 #include <stdlib.h>
-
 #include <iostream>
-
 #include <string>
-
 using namespace std;
 
- 
-
 class X {};
-
 class Y : public virtual X { };
-
 class Z : public virtual X { };
-
 class A : public virtual Z { };
-
- 
 
 #define test(_type) TestSize(sizeof(_type), #_type)
 
- 
-
 void TestSize(int aiSize, string astrType)
-
 {
-
-    cout <<astrType <<"  
+    cout <<astrType <<"  
 : " <<aiSize <<endl;
-
 }
 
- 
-
- 
 
 int main(int argc, char* argv[])
-
 {
 
- 
+    test(X);
+    test(Y);
+    test(Z);
+    test(A);
 
-    test(X);
-
-    test(Y);
-
-    test(Z);
-
-    test(A);
-
- 
-
-    exit(0);
-
+    exit(0);
 }
+```
 
  
 
@@ -108,200 +78,113 @@ int main(int argc, char* argv[])
 
 以下是我的测试源代码：
 
+```cpp
 #include <stdio.h>
-
 #include <stdlib.h>
-
 #include <iostream>
-
 using namespace std;
-
- 
 
 // Plain  
 Ol' Data
 
 class CPoint3dPOD
-
 {
-
 public:
-
-    int x;
-
-    int y;
-
-    int z;
-
+    int x;
+    int y;
+    int z;
 };
-
- 
 
 // Have  
 vptr
 
 class CPoint3dVir
-
 {
-
 public:
-
-    virtual ~CPoint3dVir();
-
-    int x;
-
-    int y;
-
-    int z;
-
+    virtual ~CPoint3dVir();
+    int x;
+    int y;
+    int z;
 };
-
- 
 
 class CPoint2dSD
-
 {
-
 public:
-
-    ~CPoint2dSD() {}
-
-    int x;
-
-    int y;
-
+    ~CPoint2dSD() {}
+    int x;
+    int y;
 };
-
- 
 
 // single  
 Derived
 
 class CPoint3dSD : public CPoint2dSD
-
 {
-
 public:
-
-//  ~CPoint3dSD() {}
-
-    int z;
-
+//  ~CPoint3dSD() {}
+    int z;
 };
-
- 
 
 // double
 
 class CPoint1dDD
-
 {
-
 public:
-
-    int x;
-
+    int x;
 };
-
- 
 
 class CPoint2dDD
-
 {
-
 public:
-
-    int y;
-
-    int z;
-
+    int y;
+    int z;
 };
-
- 
 
 class CPoint3dDD : public CPoint1dDD,public CPoint2dDD
-
 {
 
- 
-
 };
-
- 
 
 class CPoint3dVD : virtual public CPoint1dDD,virtual  
 public CPoint2dDD
-
 {
-
- 
 
 };
 
- 
-
 #define pt(_t) printf("&CPoint3d"#_t" = %p/n", &CPoint3d##_t)
 
- 
-
- 
 
 int main(int , char* argv[])
-
 {
+    pt(POD::x);
+    pt(POD::y);
+    pt(POD::z);
 
-    pt(POD::x);
+    pt(Vir::x);
+    pt(Vir::y);
+    pt(Vir::z);
 
-    pt(POD::y);
+    pt(SD::x);
+    pt(SD::y);
+    pt(SD::z);
 
-    pt(POD::z);
+    pt(DD::x);
+    pt(DD::y);
+    pt(DD::z);
 
- 
+    pt(VD::x);
+    pt(VD::y);
+    pt(VD::z);
 
-    pt(Vir::x);
-
-    pt(Vir::y);
-
-    pt(Vir::z);
-
- 
-
-    pt(SD::x);
-
-    pt(SD::y);
-
-    pt(SD::z);
-
- 
-
-    pt(DD::x);
-
-    pt(DD::y);
-
-    pt(DD::z);
-
- 
-
-    pt(VD::x);
-
-    pt(VD::y);
-
-    pt(VD::z);
-
- 
-
- 
-
- 
-
-    exit(0);
-
+    exit(0);
 }
+```
 
  
 
 G++中结果如下
 
+```text
 &CPoint3dPOD::x  
 = (nil)
 
@@ -346,6 +229,7 @@ G++中结果如下
 
 &CPoint3dVD::z  
 = 0x4
+```
 
  
 
@@ -357,43 +241,25 @@ G++中结果如下
 
 类定义同上，测试代码如下：
 
- 
-
+```cpp
 #define pt(_x) printf("&"#_x" = %p/n", &##_x)
-
 #define pt3(_x) pt(CPoint3d##_x::x);/
+    pt(CPoint3d##_x::y);/
+    pt(CPoint3d##_x::z);
 
-    pt(CPoint3d##_x::y);/
-
-    pt(CPoint3d##_x::z);
-
- 
-
- 
 
 int main(int argc, char* argv[])
-
 {
 
- 
+    pt3(POD);
+    pt3(Vir);
+    pt3(SD);
+    pt3(DD);
+    pt3(VD);
 
-    pt3(POD);
-
-    pt3(Vir);
-
-    pt3(SD);
-
-    pt3(DD);
-
-    pt3(VD);
-
- 
-
- 
-
-    exit(0);
-
+    exit(0);
 }
+```
 
  
 
@@ -443,5 +309,3 @@ POD和trivial constructor,deconstructor,copy constructor等的相关概念，及
 
 **_write by_**** _九天雁翎_**** _(JTianLing) --  
 blog.csdn.net/vagrxie_**
-
- 

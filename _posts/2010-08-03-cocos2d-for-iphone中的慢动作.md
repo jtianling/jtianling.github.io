@@ -21,11 +21,9 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+**[讨论新闻组及文件](http://groups.google.com/group/jiutianfile/)**
 
     慢动作是游戏中常用的特效手法，感觉Cocos2D这样完善的引擎应该原生支持才对，我在网上搜索了一下，竟然没有搜到，（不知道英文是不是该搜索Slow Action，但是原来公司的项目都这样叫的）。  
     于是自己实现了一下，在自己项目的最底层的update中，添加一个slowAction的scale值，设定每次将update的参数ts传进来后，立刻乘以此scale值。只要原来的代码都是时间相关的，可以看到慢动作效果了。刚开始都还好，但是Cocos2D的粒子效果不吃这套，由于粒子系统不受我控制，我没法强行改变其值。本来还想通过全局变量强行改cocos2D的源代码的，在粒子系统的step函数中下了断点，然后通过callback stack中看到了sharedDirector调用了sharedScheduler的tick来实现cocos2d内部的update，并且很惊奇的发现了CCScheduler的timeScale变量。
@@ -35,9 +33,6 @@ author:
 
 同时，这也得原来的代码都是时间相关才能实现的，假如都是按帧走的，那么就哭去吧。。。。。。。。。。。。。所以说，很久很久以前，大家就开始认为时间相关的代码优于帧相关的代码不是没有道理的。。。。。。。。。。
 
- 
-
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

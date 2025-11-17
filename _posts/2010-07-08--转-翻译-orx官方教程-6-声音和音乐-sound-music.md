@@ -84,26 +84,13 @@ file(配置文件)，创建一个viewport,创建一个clock(时钟)并且注册U
 
 接下来我们来创建一个音乐对象并且播放它。
 
-orxSOUND *  
-  
-pstMusic;  
-  
+```c
+orxSOUND *pstMusic;
 
-pstMusic =  
-  
-orxSound_CreateFromConfig(  
-  
-"Music"  
-  
-)  
-;  
-  
-  
-orxSound_Play(  
-  
-pstMusic)  
-;  
-  
+pstMusic = orxSound_CreateFromConfig("Music");
+
+orxSound_Play(pstMusic);
+```
 
 正如我们看到的，音乐和声音都属于orxSOUND类型。主要区别在于音乐是流，而声音是完全加载在内存中。
 
@@ -111,57 +98,32 @@ pstMusic)
 
 初始化函数最后一步:我们添加音频事件响应。
 
- 
-
 orxEvent_AddHandler(orxEVENT_TYPE_SOUND, EventHandler);
-
- 
 
 我们只在音频开始/停止记录日志,相应代码如下：
 
 E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
-  
-  
-
 E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
-  
-  
+```c
 orxSOUND_EVENT_PAYLOAD *pstPayload;
 
 pstPayload = (orxSOUND_EVENT_PAYLOAD *)_pstEvent->pstPayload;
 
-switch  
-(_pstEvent->eID)  
-{  
-  case  
- orxSOUND_EVENT_START:  
-    orxLOG("Sound <  
-%s  
->@<  
-%s  
-> has started!"  
-, pstPayload->zSoundName, orxObject_GetName(orxOBJECT(_pstEvent->hRecipient)));  
-    break  
-;
+switch (_pstEvent->eID)
+{
+  case orxSOUND_EVENT_START:
+    orxLOG("Sound <%s>@<%s> has started!", pstPayload->zSoundName, orxObject_GetName(orxOBJECT(_pstEvent->hRecipient)));
+    break;
 
-  case  
- orxSOUND_EVENT_STOP:  
-    orxLOG("Sound <  
-%s  
->@<  
-%s  
-> has stoped!"  
-, pstPayload->zSoundName, orxObject_GetName(orxOBJECT(_pstEvent->hRecipient)));  
-    break  
-;  
+  case orxSOUND_EVENT_STOP:
+    orxLOG("Sound <%s>@<%s> has stoped!", pstPayload->zSoundName, orxObject_GetName(orxOBJECT(_pstEvent->hRecipient)));
+    break;
 }
 
-return  
- orxSTATUS_SUCCESS;  
-  
-  
+return orxSTATUS_SUCCESS;
+```
 
  
 
@@ -173,19 +135,19 @@ return
 
 E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
-  
-  
-if(orxInput_IsActive("RandomSFX") && orxInput_HasNewStatus("RandomSFX"))  
-{  
-  orxObject_AddSound(pstSoldier, "RandomBip");  
-  orxObject_SetColor(pstSoldier, orxColor_Set(&stColor, orxConfig_GetVector("RandomColor", &v), orxFLOAT_1));  
+```c
+if(orxInput_IsActive("RandomSFX") && orxInput_HasNewStatus("RandomSFX"))
+{
+  orxObject_AddSound(pstSoldier, "RandomBip");
+  orxObject_SetColor(pstSoldier, orxColor_Set(&stColor, orxConfig_GetVector("RandomColor", &v), orxFLOAT_1));
 }
 
-if(orxInput_IsActive("DefaultSFX") && orxInput_HasNewStatus("DefaultSFX"))  
-{  
-  orxObject_AddSound(pstSoldier, "DefaultBip");  
-  orxObject_SetColor(pstSoldier, orxColor_Set(&stColor, &orxVECTOR_WHITE, orxFLOAT_1));  
-}  
+if(orxInput_IsActive("DefaultSFX") && orxInput_HasNewStatus("DefaultSFX"))
+{
+  orxObject_AddSound(pstSoldier, "DefaultBip");
+  orxObject_SetColor(pstSoldier, orxColor_Set(&stColor, &orxVECTOR_WHITE, orxFLOAT_1));
+}
+```
 
  
 
@@ -205,35 +167,29 @@ if(orxInput_IsActive("DefaultSFX") && orxInput_HasNewStatus("DefaultSFX"))
 。（比  
 如从未激活到激活状态，从激活到未激活状态）
 
-再结合 orxInput_IsActive()可以确保当我们只播放声音时，获取的输入是从非激活到激活的。
+再结合 `orxInput_IsActive()` 可以确保当我们只播放声音时，获取的输入是从非激活到激活的。
 
 现在，让我们一起演示一下。
 
-E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html  
- 
+E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
 E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
-if  
-(orxInput_IsActive("ToggleMusic"  
-) && orxInput_HasNewStatus("ToggleMusic"  
-))  
-{  
-  if  
-(orxSound_GetStatus(pstMusic) != orxSOUND_STATUS_PLAY)  
-  {  
-    orxSound_Play(pstMusic);  
-    orxObject_Enable(pstSoldier, orxTRUE);  
-  }  
-  else  
-  
-  {  
-    orxSound_Pause(pstMusic);  
-    orxObject_Enable(pstSoldier, orxFALSE);  
-  }  
-}  
-  
-  
+```c
+if (orxInput_IsActive("ToggleMusic") && orxInput_HasNewStatus("ToggleMusic"))
+{
+  if (orxSound_GetStatus(pstMusic) != orxSOUND_STATUS_PLAY)
+  {
+    orxSound_Play(pstMusic);
+    orxObject_Enable(pstSoldier, orxTRUE);
+  }
+  else
+  {
+    orxSound_Pause(pstMusic);
+    orxObject_Enable(pstSoldier, orxFALSE);
+  }
+}
+```
 
  
 
@@ -248,13 +204,13 @@ if
 
 E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
-  
-  
-if(orxInput_IsActive("PitchUp"))  
-{  
-  orxSound_SetPitch(pstMusic, orxSound_GetPitch(pstMusic) + orx2F(0.01f));  
-  orxObject_SetRotation(pstSoldier, orxObject_GetRotation(pstSoldier) + orx2F(4.0f) * _pstClockInfo->fDT);  
-}  
+```c
+if(orxInput_IsActive("PitchUp"))
+{
+  orxSound_SetPitch(pstMusic, orxSound_GetPitch(pstMusic) + orx2F(0.01f));
+  orxObject_SetRotation(pstSoldier, orxObject_GetRotation(pstSoldier) + orx2F(4.0f) * _pstClockInfo->fDT);
+}
+```
 
  
 
@@ -264,13 +220,13 @@ if(orxInput_IsActive("PitchUp"))
 
 E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
-  
-  
-if(orxInput_IsActive("VolumeDown"))  
-{  
-  orxSound_SetVolume(pstMusic, orxSound_GetVolume(pstMusic) - orx2F(0.05f));  
-  orxObject_SetScale(pstSoldier, orxVector_Mulf(&v, orxObject_GetScale(pstSoldier, &v), orx2F(0.98f)));  
-}  
+```c
+if(orxInput_IsActive("VolumeDown"))
+{
+  orxSound_SetVolume(pstMusic, orxSound_GetVolume(pstMusic) - orx2F(0.05f));
+  orxObject_SetScale(pstSoldier, orxVector_Mulf(&v, orxObject_GetScale(pstSoldier, &v), orx2F(0.98f)));
+}
+```
 
  
 
@@ -292,16 +248,11 @@ if(orxInput_IsActive("VolumeDown"))
 
 E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
-  
-  
-[Music]  
-  
-Music =  
- ../../data/sound/gbloop.ogg  
-Loop  =  
- true  
-
- 
+```ini
+[Music]
+Music = ../../data/sound/gbloop.ogg
+Loop  = true
+```
 
 很容易！如果我们没有明确地定义Loop＝true，音乐就不会循环播放。
 
@@ -309,20 +260,13 @@ Loop  =
 
 E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
-  
-  
-[DefaultBip]  
-  
-Sound       =  
- ../../data/sound/bip.wav  
-KeepInCache =  
- true;  
-Pitch       =  
- 1.0  
-Volume      =  
- 1.0  
-
- 
+```ini
+[DefaultBip]
+Sound       = ../../data/sound/bip.wav
+KeepInCache = true;
+Pitch       = 1.0
+Volume      = 1.0
+```
 
 和以前一样，KeepInCache属性将确保这音频将永远不会被自动从内存中卸载。
 
@@ -330,17 +274,13 @@ Volume      =
 
 最后，让我们来看看我们的RandomBip。
 
-E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html  
-  
-  
-[RandomBip@DefaultBip]  
-  
-Pitch   =  
- 0.1 ~ 3.0  
-Volume  =  
- 0.5 ~ 3.0  
+E:/MyProgram/ClipboardHighlighterVersion0.2/Untitled.html
 
- 
+```ini
+[RandomBip@DefaultBip]
+Pitch   = 0.1 ~ 3.0
+Volume  = 0.5 ~ 3.0
+```
 
 我们可以看到，RandomBip从DefaultBip继承。这意味着，如果我们改变了DefaultBip样本，它也可能改变RandomBip。
 
@@ -360,5 +300,3 @@ RandomBip，它就会有不同的频率和数量，而且，所有的这些都�
 [2)](<http://orx-project.org/wiki/cn/orx/tutorials/sound#fnt__2>)  
 
 译者注：即将其改为时间相关
-
- 

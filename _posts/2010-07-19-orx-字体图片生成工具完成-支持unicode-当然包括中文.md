@@ -65,6 +65,7 @@ orxFontGen.exe -s 32 -f msyh.ttf -o msyhFont -t toolHistory.txt
 
 其二，一段Orx的配置。
 
+```ini
 [msyhFont]
 
 CharacterList = " ()/27IOU_abcdefimnoprstuwxy。一丁上不且世两个中为么义之也了事二于些产人什仅从他以件任会似但体何余作使候借假入其具写决况几利到刻前功加勤半单印历原又受只可史吧周命和善因国图在填复多够大天奋好如始字完定实害家导将尔尝就工己已常应度开引强当很忙怒恼情憾戏成我或所才找拉拥拼持换擎支改效数整文新早时是显晚更最有服末本杂来果标样欧款正此比没洲测深添游源炫点然片版特现理甚生用界白的目直着知码碰示移稳空符第简类系经络绝编网美考者而能自至致英蒙虑虽补被言让许试话该语说谁象越足身转软较迁过还这连道遗那都酷鉴问间难非题高（），"
@@ -72,6 +73,7 @@ CharacterList = " ()/27IOU_abcdefimnoprstuwxy。一丁上不且世两个中为�
 CharacterSize = (32, 32, 0)
 
 Texture = msyhFont.tga
+```
 
 如此，显示这段文字，那就是很简单的事情了。（因为窗口大小问题，只显示了上面文字中的一段）  
 ![](http://hi.csdn.net/attachment/201007/18/0_1279469483OzMo.gif)  

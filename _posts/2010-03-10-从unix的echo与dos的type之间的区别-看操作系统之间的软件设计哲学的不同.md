@@ -53,21 +53,24 @@ Python…………)》一文时的过度发挥，发现插入大段无关文字�
 1.  
 从最简单的开始吧，先以Unix下的Bash为例了。
 
-jtianling$ echo "I'm File A."  
-> a  
-jtianling$ echo "I'm File B." > b  
-jtianling$ ls  
-a    
- b  
-jtianling$ cat a  
-I'm File A.  
-jtianling$ cat b  
-I'm File B.  
-jtianling$  
-cat a b  
-I'm File A.  
-I'm File B.  
-jtianling$   
+```bash
+jtianling$ echo "I'm File A."
+> a
+jtianling$ echo "I'm File B." > b
+jtianling$ ls
+a
+ b
+jtianling$ cat a
+I'm File A.
+jtianling$ cat b
+I'm File B.
+jtianling$
+cat a b
+I'm File A.
+I'm File B.
+jtianling$
+```
+
 好了，cat a  
 b，这样简单的调用，进程创建完成，参数输入完成，显示正常。
 
@@ -78,13 +81,15 @@ b，这样简单的调用，进程创建完成，参数输入完成，显示正�
 2.输出重定向，对于  
 Shell来说实在是小case，那简直可以说是其原生的。
 
-TianLings-MacBook:test jtianling$ cat  
-a b > c  
-jtianling$ cat c  
-I'm File A.  
-I'm File B.  
-jtianling$  
-  
+```bash
+TianLings-MacBook:test jtianling$ cat
+a b > c
+jtianling$ cat c
+I'm File A.
+I'm File B.
+jtianling$
+```
+
 cat a b > c一句而已。
 
   
@@ -94,11 +99,13 @@ cat a b > c一句而已。
 3.管道，还是Shell饭碗里  
 面的内容。
 
-jtianling$ cat a b | cat  
-I'm File A.  
-I'm File B.  
-cat  
-a b | cat还是一句代码而已。  
+```bash
+jtianling$ cat a b | cat
+I'm File A.
+I'm File B.
+cat
+a b | cat还是一句代码而已。
+```
 
   
 
@@ -114,16 +121,18 @@ DOS
 Test1,基本可用，也就是输出嘛，但其实,仔细看看DOS下的  
 type命令,会发现其实输出有些许不同:
 
+```bat
 F:/MySrc/TestProcess>type a b
 
 a
 
-I'm  
+I'm
 File A.
 
 b
 
-I'm File B.  
+I'm File B.
+```
 
   
 直观来看,type a  
@@ -138,23 +147,26 @@ b时自动的将a,b文件按文件名给你排下版,多人性化啊?呵呵,但�
 实践发现，虽然直接的输出会有额外输出，但是type命令的对于重  
 定向时进行了处理:
 
+```bat
 F:/MySrc/TestProcess>type a b > c
 
 a
 
 b
 
-F:/MySrc/TestProcess>type  
-c  
-I'm File A.  
-I'm File B.  
+F:/MySrc/TestProcess>type
+c
+I'm File A.
+I'm File B.
+```
 
 会发现重定向后的结果与cat a b >  
 c完全一样.但是a,b的格式还是输出了，说明a,b格式的输出根本走的不是标准输出通道。那剩下什么？标准错误通道。。。我们测试一下。
 
->type  
-a b 2>d  
-I'm File A  
+```bat
+>type
+a b 2>d
+I'm File A
 I'm File B
 
 >type d
@@ -163,9 +175,8 @@ a
 
 b
 
->  
-
-  
+>
+```
 
 果  
 然如此，当把错误通道重定位到文件d中时，可以看到输出了精简的输出，并且可以看到d中的内容就是附加的输出。用较为复杂的hack手段，（利用错误输出  
@@ -215,5 +226,4 @@ Shell命令都是比较强大，并且协作性非常好（因为那古老的规
 
 **[write by 九天雁翎(JTianLing) --  
 blog.csdn.net/vagrxie](<http://www.jtianling.com>)  
-**  
-
+**

@@ -23,18 +23,14 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 ## 准备
 
-    早就知道Bullet有个比较好的MAYA插件，那是迪斯尼自己的东西，然后开源的，在bullet的网站就有[下载](<http://code.google.com/p/dynamica/downloads/list> "下载")  
-。但是一直一来都是学习3D Max,接触了一下MAYA，感觉不是太习惯，有人说MAYA的操作方式接近设计师的思维。。。。我果然不是个设计师啊。。。。。我甚至都准备转投Blender了，好歹那也是开源免费的东西，而且与Bullet结合的还不错，还有GameKit这个好玩的东西在。我初步的看了一下，感觉GameKit有点类似LOVE这个Lua的2D游戏引擎，以一个数据包作为输入，然后是一个独立的可执行程序，只不过LOVE中的数据包是zip包，集合了一堆的Lua脚本和资源，而GameKit的数据包是由Blender生成的，也可以包含Lua脚本，正在想呢，这个东西是不是太前卫啊？在Blender中通过一堆的UI去弄逻辑？作为程序员，好像还是比较习惯编写代码。。。。。呵呵，为了Bullet，前段时间刚刚了解了一下Blender的2.4x版本，结果发现GameKit支持的blender的新版（有点想3D Max了）界面差异好大啊。。。也是个打击。。。。。就在此时，无意识的（我也不知道为什么）到Bullet的插件独立网站[dynamica  
-](<http://code.google.com/p/dynamica/downloads/list>)  
-中去逛了一下，才发现，原来Bullet已经有3D Max的插件了，改装自Nvidia开源的PhyX的3D Max插件，（感谢伟大的NVidia公司，虽然它为了自家的Cg对OpenGL的GLSL有些冷遇，导致我需要用AMD的显卡来运行RenderMonkey才方便学习，不过因此我都原谅他了-_-!）甚至还有最新的2011版本的。。。。。天哪，我都在费什么劲啊。。。。晃了那么大一圈，果然，人生在于折腾。。。。。暂时告别下MAYA和Blender了，继续弄弄3D Max先。
+    早就知道Bullet有个比较好的MAYA插件，那是迪斯尼自己的东西，然后开源的，在bullet的网站就有[下载](http://code.google.com/p/dynamica/downloads/list "下载")  
+。但是一直一来都是学习3D Max,接触了一下MAYA，感觉不是太习惯，有人说MAYA的操作方式接近设计师的思维。。。。我果然不是个设计师啊。。。。。我甚至都准备转投Blender了，好歹那也是开源免费的东西，而且与Bullet结合的还不错，还有GameKit这个好玩的东西在。我初步的看了一下，感觉GameKit有点类似LOVE这个Lua的2D游戏引擎，以一个数据包作为输入，然后是一个独立的可执行程序，只不过LOVE中的数据包是zip包，集合了一堆的Lua脚本和资源，而GameKit的数据包是由Blender生成的，也可以包含Lua脚本，正在想呢，这个东西是不是太前卫啊？在Blender中通过一堆的UI去弄逻辑？作为程序员，好像还是比较习惯编写代码。。。。。呵呵，为了Bullet，前段时间刚刚了解了一下Blender的2.4x版本，结果发现GameKit支持的blender的新版（有点想3D Max了）界面差异好大啊。。。也是个打击。。。。。就在此时，无意识的（我也不知道为什么）到Bullet的插件独立网站[dynamica](http://code.google.com/p/dynamica/downloads/list)中去逛了一下，才发现，原来Bullet已经有3D Max的插件了，改装自Nvidia开源的PhyX的3D Max插件，（感谢伟大的NVidia公司，虽然它为了自家的Cg对OpenGL的GLSL有些冷遇，导致我需要用AMD的显卡来运行RenderMonkey才方便学习，不过因此我都原谅他了-_-!）甚至还有最新的2011版本的。。。。。天哪，我都在费什么劲啊。。。。晃了那么大一圈，果然，人生在于折腾。。。。。暂时告别下MAYA和Blender了，继续弄弄3D Max先。
 
     安装完插件后，发现Bullet的3D Max插件文档也比MAYA的要丰富啊(MAYA的主要文档就是指向几个教学视频)。。。。。太感谢开源社区了。。。。。。安装后的3D Max效果如图：
 
@@ -70,7 +66,4 @@ author:
 
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
-
- 
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

@@ -21,8 +21,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 对Linker.Lin的 《[备忘]Lua的local是定义不是声明!》的研究
 
 **_write by_**** _九天雁翎(JTianLing) --  
@@ -38,18 +36,22 @@ blog.csdn.net/vagrxie_**
 
 test1:
 
-1 g='hi~'  
-2 **local**  g='hello!'  
-3 **for**  i=1,2 **do**  
-4     **local**  g=g..'1'  
-5 print(g)  
+```lua
+1 g='hi~'
+2 **local**  g='hello!'
+3 **for**  i=1,2 **do**
+4     **local**  g=g..'1'
+5 print(g)
 6 **end**
+```
 
 输出:
 
+```
 hello!1
 
 hello!1
+```
 
  
 
@@ -65,20 +67,24 @@ hello!1
 
 test2:
 
-1 g='hi~'  
-2 **local**  g='hello!'  
-3 **for**  i=1,2 **do**  
-4     g=g..'1'  
-5 print(g)  
-6 **end******
+```lua
+1 g='hi~'
+2 **local**  g='hello!'
+3 **for**  i=1,2 **do**
+4    g=g..'1'
+5 print(g)
+6 **end**
+```
 
  
 
 输出的是
 
+```
 hello!1
 
 hello!11
+```
 
  
 
@@ -90,20 +96,24 @@ hello!11
 
 test3:
 
-1 g='hi~'  
-2 **local**  g='hello!'  
-3 **for**  i=1,2 **do**  
-4     x=g..'1'  
-5 print(x)  
+```lua
+1 g='hi~'
+2 **local**  g='hello!'
+3 **for**  i=1,2 **do**
+4     x=g..'1'
+5 print(x)
 6 **end**
+```
 
  
 
 一样是可以得出
 
+```
 hello!1
 
 hello!1
+```
 
 的和test1一致的输出的，这里x没有local，也是定义
 
@@ -119,21 +129,25 @@ g=g..'1'
 
 test4:
 
-1 g='hi~'  
-2 **local**  g='hello!'  
-3 **for**  i=1,2 **do**  
-4     g = g .. '1'  
-5     print(g)  
-6 **end**  
+```lua
+1 g='hi~'
+2 **local**  g='hello!'
+3 **for**  i=1,2 **do**
+4     g = g .. '1'
+5     print(g)
+6 **end**
 7 print(g)
+```
 
 输出：
 
+```
 hello!1
 
 hello!11
 
 hello!11
+```
 
 证明内部变量g的使用，实际是用了外部的变量g
 
@@ -141,21 +155,24 @@ hello!11
 
 test5:
 
- 1 g='hi~'  
- 2 **local**  g='hello!'  
- 3 **for**  i=1,2 **do**  
- 4     print(x)  
- 5     x = x **and**  x .. '1' **or**  g .. '1'  
- 6     print(x)  
- 7     **local**  x = x .. '1'  
- 8     print(x)  
- 9     **local**  x = x .. '1'  
-10     print(x)  
-11 **end**  
+```lua
+ 1 g='hi~'
+ 2 **local**  g='hello!'
+ 3 **for**  i=1,2 **do**
+ 4     print(x)
+ 5     x = x **and**  x .. '1' **or**  g .. '1'
+ 6     print(x)
+ 7     **local**  x = x .. '1'
+ 8     print(x)
+ 9     **local**  x = x .. '1'
+10     print(x)
+11 **end**
 12 print(x)
+```
 
 输出
 
+```
 nil                               \-- 第一次进入循环输出时，x为nil
 
 hello!1                               \-- 因为x为nil,所以第5行第一次运行后，x为g..’1’，此处x明显也是定义
@@ -170,6 +187,7 @@ hello!11                      \-- 第二次第五行后此�
 hello!111                    \-- 此时local x又重新定义一次，所以等于hello!11 .. ‘1’
 
 hello!11                      \-- 非local的x有超出for的作用域
+```
 
  
 
@@ -177,13 +195,13 @@ hello!11                      \-- 非local的x有超出for�
 
 形成了上述的看似奇怪的输出结果，其实本质上是作用域的特点，仅仅是三个语言特点的叠加效果。
 
-1.       
+1.     
 lua作为动态脚本语言有的自动定义变量特性。
 
-2.       
+2.     
 几乎所有的语言的（起码我知道的那么几种是）都有局部掩盖全局的概念，这是为了更好的局部化，不因为全局的东西影响局部。
 
-3.       
+3.     
 lua比较少见的默认全局特性，这点的确少见（bash也是），因为这是和前一点的好处相违背的，可能属于老的脚本语言的遗留特性。
 
 特性1自动定义特性的结果就是在一个作用域中发现使用一个没有定义的变量（上述例子中为x或g）就自动定义一个来使用，而不需要像静态语言（如C/C++）中一样先确定的定义，再使用。特性2局部掩盖导致在用local声明使用某个局部变量时，lua发现局部没有此变量，就自动定义了一个。并且此local变量的作用域内，再次使用此变量名，优先使用局部的，比如test5第8，10行输出的就是local变量的值，而不是前一个全局的x.
@@ -194,22 +212,20 @@ lua比较少见的默认全局特性，这点的确少见（bash也是），因�
 
 为了对比，看一个C++程序（不调试了啊）
 
+```cpp
 string  
 str = “Hello!”;
 
 for (int  
-i = 0; i  < 2; ++i)
-
+i = 0; i < 2; ++i)
 {
-
-       string str = str + “1”;
-
-       cout <<string;
-
+       string str = str + “1”;
+       cout <<string;
 }
 
 cout  
 <<string;
+```
 
  
 
@@ -236,84 +252,89 @@ end
 
 我尝试这样做
 
- 1 g  
-= **{}**  
- 2 **for**  i=1,2 **do**  
- 3     io.write("global  
-g:")  
- 4     print(g)  
- 5     **local**  g = **{}**  
- 6     io.write("first  
-local g:")  
- 7     print(g)  
- 8     **local**  g = **{}**    
- 9     io.write("second  
-local g:")  
-10     print(g)  
-11 **end**  
+```lua
+ 1 g = **{}**
+ 2 **for**  i=1,2 **do**
+ 3     io.write("global  
+ g:")
+ 4     print(g)
+ 5     **local**  g = **{}**
+ 6     io.write("first  
+ local g:")
+ 7     print(g)
+ 8     **local**  g = **{}**   
+ 9     io.write("second  
+ local g:")
+10     print(g)
+11 **end**
 12 print(g)
+```
 
 毕竟table是可以看到地址的。。。。结果输出的地址是不一样的。我可以确定结论了吗？真是这样也许还草率了一点。这点也许还不一定能够说明问题，因为每次lua都会创建{}，两次的{}可以都是创建出来的，g不过就是对于{}的一个引用，两次输出不同的地址也许仅仅代表了两个不同的{}的地址而已，还是不能说明g的地址。
 
 从普通代码没有办法获得结果，那么借助于其他办法罗，我首先想到的就是调试，没有问题，试试：
 
- 1 #!/usr/bin/env lua  
- 2   
- 3 g = '1'  
- 4 **for**  i=1,2 **do**  
- 5     g = g .. '2'   
- 6     **local**  g = '3'  
- 7     **local**  g = g .. '4'  
- 8     g = g .. '5'  
- 9     **local**  i = 1  
-10     **while**  true **do**  
-11         **local**  name,value = debug.getlocal(1,i)  
-12         **if**  **not**  name  
-**then**    
-13             **break**    
-14         **end**  
-15   
-16         print(name, value)  
-17         i  
-= i + 1  
-18     **end**  
-19 **end******
+```lua
+ 1 #!/usr/bin/env lua
+ 2  
+ 3 g = '1'
+ 4 **for**  i=1,2 **do**
+ 5     g = g .. '2'  
+ 6     **local**  g = '3'
+ 7     **local**  g = g .. '4'
+ 8     g = g .. '5'
+ 9     **local**  i = 1
+10     **while**  true **do**
+11         **local**  name,value = debug.getlocal(1,i)
+12         **if**  **not**  name  
+**then**  
+13             **break**   
+14         **end**
+15
+16         print(name, value)
+17         i  
+= i + 1
+18     **end**
+19 **end**
+```
 
 输出的结果：
 
+```
 (for  
-index)     1
-
-(for  
-limit)     2
+index)     1
 
 (for  
-step)      1
-
-i       1
-
-g       3
-
-g       345
-
-i       7
+limit)     2
 
 (for  
-index)     2
+step)      1
+
+i       1
+
+g       3
+
+g       345
+
+i       7
 
 (for  
-limit)     2
+index)     2
 
 (for  
-step)      1
+limit)     2
 
-i       2
+(for  
+step)      1
 
-g       3
+i       2
 
-g       345
+g       3
 
-i       7
+g       345
+
+i       7
+```
 
  
 
@@ -321,5 +342,3 @@ i       7
 
 **_write by_**** _九天雁翎(JTianLing) --  
 blog.csdn.net/vagrxie_**
-
- 

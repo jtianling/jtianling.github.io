@@ -22,7 +22,7 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
@@ -99,6 +99,6 @@ SAE的目标是实现互联网应用在开发运维上的无缝整合，为App�
 
 ## 
 
-原创文章作者保留版权 转载请注明原作者 并给出链接****
+原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

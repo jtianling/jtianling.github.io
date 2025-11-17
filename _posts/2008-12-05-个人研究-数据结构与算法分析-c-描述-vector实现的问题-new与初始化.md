@@ -24,8 +24,6 @@ author:
   last_name: ''
 ---
 
-  
-
 #  个人研究《数据结构与算法分析-C++描述》Vector实现的问题，new与初始化
 
 **_write by_**** _九天雁翎(JTianLing) --  
@@ -39,313 +37,171 @@ blog.csdn.net/vagrxie_**
 
 原实现大概如下：（我可能修改了一些变量的命名以符合我的习惯）
 
-  
+```cpp
 template<typename T>
-
 class Vector
-
 {
-
 public:
-
-    explicit Vector(unsigned auInitSize  
+    explicit Vector(unsigned auInitSize  
 = 0)
+       : muSize(auInitSize),muCapacity(auInitSize \+ SPARE_CAPACITY)
+    {
+       mpObjects = new T[muCapacity];
+    }
 
-       : muSize(auInitSize),muCapacity(auInitSize \+ SPARE_CAPACITY)
+    Vector(const Vector &aoObject):mpObjects(0)
+    {
+       *this = aoObject;
+    }
 
-    {
+    ~Vector()
+    {
+       delete[] mpObjects;
+    }
 
-       mpObjects = new T[muCapacity];
-
-    }
-
- 
-
-    Vector(const Vector &aoObject):mpObjects(0)
-
-    {
-
-       *this = aoObject;
-
-    }
-
- 
-
-    ~Vector()
-
-    {
-
-       delete[] mpObjects;
-
-    }
-
- 
-
-    const Vector&  
+    const Vector&  
 operator= (const  
 Vector &aoObject)
-
-    {
-
-       if(this  
+    {
+       if(this  
 == &aoObject)
+       {
+           return *this;
+       }
+      
+       delete[] mpObjects;
+       muSize = aoObject.size();
+       muCapacity = aoObject.capacity();
 
-       {
+       mpObjects = new T[ capacity() ];
 
-           return *this;
-
-       }
-
-      
-
-       delete[] mpObjects;
-
-       muSize = aoObject.size();
-
-       muCapacity = aoObject.capacity();
-
- 
-
-       mpObjects = new T[ capacity() ];
-
- 
-
-       for(unsigned  
+       for(unsigned  
 i=0; i!=muSize; ++i)
+       {
+           mpObjects[i] = aoObject[i];
+       }
 
-       {
+       return *this;
+    }
 
-           mpObjects[i] = aoObject[i];
-
-       }
-
- 
-
-       return *this;
-
-    }
-
- 
-
-    void resize(unsigned auNewSize)
-
-    {
-
-       if ( auNewSize  
+    void resize(unsigned auNewSize)
+    {
+       if ( auNewSize  
 > muCapacity )
+       {
+           reserve(auNewSize * 2 + 1);
+       }
+    }
 
-       {
-
-           reserve(auNewSize * 2 + 1);
-
-       }
-
-    }
-
- 
-
-    void reserve(unsigned auNewCapacity)
-
-    {
-
-       if(auNewCapacity  
+    void reserve(unsigned auNewCapacity)
+    {
+       if(auNewCapacity  
 < muSize)
+       {
+           return;
+       }
 
-       {
-
-           return;
-
-       }
-
- 
-
-       T *lpOldArray  
+       T *lpOldArray  
 = mpObjects;
 
- 
-
-       mpObjects = new T[auNewCapacity];
-
-       for(unsigned  
+       mpObjects = new T[auNewCapacity];
+       for(unsigned  
 i=0; i!=muSize; ++i)
+       {
+           mpObjects[i] = lpOldArray[i];
+       }
+      
+       muCapacity = auNewCapacity;
 
-       {
+       delete[] lpOldArray;
+    }
 
-           mpObjects[i] = lpOldArray[i];
+    T& operator[](unsigned auIndex)
+    {
+       return mpObjects[auIndex];
+    }
 
-       }
-
-      
-
-       muCapacity = auNewCapacity;
-
- 
-
-       delete[] lpOldArray;
-
-    }
-
- 
-
-    T& operator[](unsigned auIndex)
-
-    {
-
-       return mpObjects[auIndex];
-
-    }
-
- 
-
-    const T&  
+    const T&  
 operator[](unsigned  
 auIndex) const
+    {
+       return mpObjects[auIndex];
+    }
 
-    {
-
-       return mpObjects[auIndex];
-
-    }
-
- 
-
-    bool empty()  
+    bool empty()  
 const
+    {
+       return (muSize == 0);
+    }
 
-    {
-
-       return (muSize == 0);
-
-    }
-
- 
-
-    unsigned size()  
+    unsigned size()  
 const
+    {
+       return muSize;
+    }
 
-    {
-
-       return muSize;
-
-    }
-
- 
-
-    unsigned capacity()  
+    unsigned capacity()  
 const
+    {
+       return muCapacity;
+    }
 
-    {
-
-       return muCapacity;
-
-    }
-
- 
-
-    void push_back(const T& aoObject)
-
-    {
-
-       if(muSize  
+    void push_back(const T& aoObject)
+    {
+       if(muSize  
 == muCapacity)
+       {
+           reserve(2 * muCapacity \+ 1);
+       }
 
-       {
+       mpObjects[muSize++] = aoObject;
+    }
 
-           reserve(2 * muCapacity \+ 1);
+    void pop_back()
+    {
+       muSize\--;
+    }
 
-       }
-
- 
-
-       mpObjects[muSize++] = aoObject;
-
-    }
-
- 
-
-    void pop_back()
-
-    {
-
-       muSize\--;
-
-    }
-
- 
-
-    const T&  
+    const T&  
 back() const
+    {
+       return mpObjects[muSize-1];
+    }
 
-    {
-
-       return mpObjects[muSize-1];
-
-    }
-
- 
-
-    typedef T*  
+    typedef T*  
 iterator;
-
-    typedef const  
+    typedef const  
 T* const_iterator;
 
- 
+    iterator begin()
+    {
+       return mpObjects;
+    }
 
-    iterator begin()
+    const_iterator begin() const
+    {
+       return mpObjects;
+    }
 
-    {
+    iterator end()
+    {
+       return mpObjects \+ muSize;
+    }
 
-       return mpObjects;
+    const_iterator end() const
+    {
+       return mpObjects \+ muSize;
+    }
 
-    }
-
- 
-
-    const_iterator begin() const
-
-    {
-
-       return mpObjects;
-
-    }
-
- 
-
-    iterator end()
-
-    {
-
-       return mpObjects \+ muSize;
-
-    }
-
- 
-
-    const_iterator end() const
-
-    {
-
-       return mpObjects \+ muSize;
-
-    }
-
- 
-
-    enum { SPARE_CAPACITY  
+    enum { SPARE_CAPACITY  
 = 16 };
 
- 
-
 private:
-
-    unsigned muSize;
-
-    unsigned muCapacity;
-
-    T *mpObjects;
-
+    unsigned muSize;
+    unsigned muCapacity;
+    T *mpObjects;
 };
+```
 
  
 
@@ -353,32 +209,22 @@ private:
 
 但是实际我在Linux下测试的时候发现，g++是会自动将所有new出来的内存初始化的，事实就是如此，这和我在windows下的常识有冲突，所以特意做了一个测试程序来实验。
 
- 
-
+```cpp
 int main( void )
-
 {
-
-    int *lpi  
+    int *lpi  
 = new int[100];
 
- 
-
-    for(int  
+    for(int  
 i=0; i<100;  
 ++i)
+    {
+       printf("%d",lpi[i]);
+    }
 
-    {
-
-       printf("%d",lpi[i]);
-
-    }
-
- 
-
-    return 0;
-
+    return 0;
 }
+```
 
  
 
@@ -399,5 +245,3 @@ ok，也许Mark Allen Weiss的Vector在Linux下可以不出错。。。但是我
 自己Mark一下，原来g++编译的new带初始化的？希望有高人能够给我解答，假如不是g++编译的new带初始化那么是什么情况导致了这样的情况，还有，g++有关掉初始化的选项吗？
 
  **_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**
-
- 

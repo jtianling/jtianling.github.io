@@ -37,39 +37,37 @@ author:
 
 参考《[其实C++比Python更需要lambda语法，可惜没有。。。。](<http://www.jtianling.com/archive/2009/05/21/4205134.aspx>)》一文中的例子比如在Python中，你可以这样：
 
- 
-
- 1   
- 2 **def**  add1(a,b):  **return**  a + b  
- 3 add2 = **lambda**  a,b : a + b  
- 4   
- 5 **class**  Add():  
- 6     **def**  __init__(self):  
- 7         self._i = 0  
- 8   
- 9     **def**  reset(self):  
-10         self._i = 0  
-11           
-12     **def**  add(self, a, b):  
-13         self._i += a + b  
-14         **return**  self._i  
+```python
+ 1   
+ 2 **def**  add1(a,b):  **return**  a + b  
+ 3 add2 = **lambda**  a,b : a + b  
+ 4   
+ 5 **class**  Add():  
+ 6     **def**  __init__(self):  
+ 7         self._i = 0  
+ 8   
+ 9     **def**  reset(self):  
+10         self._i = 0  
+11         
+12     **def**  add(self, a, b):  
+13         self._i += a + b  
+14         **return**  self._i  
 15   
 16 addobj = Add()  
 17 add3 = addobj.add  
 18   
-19 **print**  add1(1,1)  
-20 **print**  add2(1,2)  
-21 **print**  add3(1,3)  
+19 **print**  add1(1,1)  
+20 **print**  add2(1,2)  
+21 **print**  add3(1,3)  
 22 addobj.reset()  
 23   
-24 fun = **lambda**  f,a,b : f(a,b)  
+24 fun = **lambda**  f,a,b : f(a,b)  
 25   
-26 **print**  fun(add1, 1, 1)  
-27 **print**  fun(add2, 1, 2)  
-28 **print**  fun(add3, 1, 3)  
-29 **print**  fun(**lambda**  a,b : a + b, 1, 4)
-
- 
+26 **print**  fun(add1, 1, 1)  
+27 **print**  fun(add2, 1, 2)  
+28 **print**  fun(add3, 1, 3)  
+29 **print**  fun(**lambda**  a,b : a + b, 1, 4)
+```
 
 一个函数一旦定义以后，然后在以后再使用此函数，就像任何普通的函数定义一样，调用此函数并不关心函数实际的定义方式，是用lambda语法还是实际的完整函数定义，甚至是类的一个成员函数也是一样，语法完全一模一样。
 
@@ -79,435 +77,227 @@ author:
 
 例子如下：
 
+```cpp
 #include <list>
-
 #include <iostream>
-
 #include <boost/lambda/lambda.hpp>
-
 #include <boost/bind.hpp>
-
 using namespace std;
-
 using namespace boost;
 
- 
-
- 
-
 int add1(int a, int b)
-
 {
-
-    return a \+ b;
-
+    return a \+ b;
 }
-
- 
 
 class add2
-
 {
-
 public:
-
-    int operator()(int lhs, int rhs)
-
-    {
-
-       return lhs \+ rhs;
-
-    }
-
+    int operator()(int lhs, int rhs)
+    {
+       return lhs \+ rhs;
+    }
 };
-
- 
 
 class CAdd
-
 {
-
 public:
-
-    int add3(int a, int b) { return a \+ b; }
-
+    int add3(int a, int b) { return a \+ b; }
 };
 
- 
-
- 
-
 template<typename FUN, typename T>
-
 T fun(FUN function, T lhs, T rhs)
-
 {
-
-    cout <<typeid(function).name() <<endl;
-
-    return function(lhs, rhs);
-
+    cout <<typeid(function).name() <<endl;
+    return function(lhs, rhs);
 }
-
- 
 
 int add4(int a, int b, int c)
-
 {
-
-    return a+b+c;
-
+    return a+b+c;
 }
-
- 
-
- 
 
 int main() 
-
 {
+    cout << fun(add1, 1, 1) <<endl;
+    cout << fun(add2(), 1, 2) <<endl;
+    cout << fun(lambda::_1+lambda::_2, 1, 3) <<endl;
+    cout << fun(bind(add4, 0, _1, _2), 1, 4) <<endl;
 
-    cout << fun(add1, 1, 1) <<endl;
-
-    cout << fun(add2(), 1, 2) <<endl;
-
-    cout << fun(lambda::_1+lambda::_2, 1, 3) <<endl;
-
-    cout << fun(bind(add4, 0, _1, _2), 1, 4) <<endl;
-
- 
-
-    system("PAUSE");
-
+    system("PAUSE");
 }
-
- 
+```
 
 直到这里，问题都不大，语法也算足够的简洁，模板的强大可见一斑。但是一旦你准备开始使用类的成员函数指针或者碰到需要将lambda生成的对象保存下来，需要将boost::bind生成的对象保存下来重复使用的时候，就碰到问题了，先不说类成员函数指针这种非要看过《Inside C++Object》一书，才能理解个大概，并且违反C++一贯常规的指针行为，甚至大小都可能超过sizeof(void*)的指针，起码在不了解boost这些库的源码的时候，我们又怎么知道bind,lambda生成的是啥吗？我是不知道。我想boost::function给了我们一个较为一致的接口来实现这些内容，虽然说实话，在上面例子中我列出来的情况中boost::function比起单纯的使用模板（如例子中一样）甚至要更加复杂，起码你得指明返回值和参数。（熟称函数签名）
 
 我在上面例子中特意用运行时类型识别输出了lambda和bind生成的类型，分别是一下类型：
 
+```text
 int (__cdecl*)(int,int)
-
 2
-
 class add2
-
 3
-
 class boost::lambda::lambda_functor<class boost::lambda::lambda_functor_base<cl
-
 ss boost::lambda::arithmetic_action<class boost::lambda::plus_action>,class boo
-
 t::tuples::tuple<class boost::lambda::lambda_functor<struct boost::lambda::plac
-
 holder<1> >,class boost::lambda::lambda_functor<struct boost::lambda::placehold
-
 r<2> >,struct boost::tuples::null_type,struct boost::tuples::null_type,struct b
-
 ost::tuples::null_type,struct boost::tuples::null_type,struct boost::tuples::nu
-
 l_type,struct boost::tuples::null_type,struct boost::tuples::null_type,struct b
-
 ost::tuples::null_type> > >
-
 4
-
 class boost::_bi::bind_t<int,int (__cdecl*)(int,int,int),class boost::_bi::list
-
 <class boost::_bi::value<int>,struct boost::arg<1>,struct boost::arg<2> > >
-
 5
-
- 
+```
 
 当我觉得int (*)(int,int)形式的函数指针都觉得复杂的是否。。。怎么样去声明一个个看都看不过来的lambda类型和bind类型啊。。。。。看看同样的用boost::function的例子。
 
- 
-
+```cpp
 #include "stdafx.h"
-
 #include <list>
-
 #include <iostream>
-
 #include <boost/lambda/lambda.hpp>
-
 #include <boost/bind.hpp>
-
 #include <boost/function.hpp>
-
 #include <boost/ref.hpp>
-
 using namespace std;
-
 using namespace boost;
 
- 
-
- 
-
 int add1(int a, int b)
-
 {
-
-    return a \+ b;
-
+    return a \+ b;
 }
-
- 
 
 class add2
-
 {
-
 public:
-
-    int operator()(int lhs, int rhs)
-
-    {
-
-       return lhs \+ rhs;
-
-    }
-
+    int operator()(int lhs, int rhs)
+    {
+       return lhs \+ rhs;
+    }
 };
-
- 
 
 class CAdd
-
 {
-
 public:
-
-    int add3(int a, int b) { return a \+ b; }
-
+    int add3(int a, int b) { return a \+ b; }
 };
 
- 
-
- 
-
 template<typename FUN, typename T>
-
 T fun(FUN function, T lhs, T rhs)
-
 {
-
-    cout <<typeid(function).name() <<endl;
-
-    return function(lhs, rhs);
-
+    cout <<typeid(function).name() <<endl;
+    return function(lhs, rhs);
 }
-
- 
 
 int add4(int a, int b, int c)
-
 {
-
-    return a+b+c;
-
+    return a+b+c;
 }
-
- 
 
 int fun2(boost::function< int(int,int) > function, int a, int b )
-
 {
-
-    cout <<typeid(function).name() <<endl;
-
-    return function(a,b);
-
+    cout <<typeid(function).name() <<endl;
+    return function(a,b);
 }
-
- 
-
- 
 
 int main() 
-
 {
+    cout << fun2(add1, 1, 1) <<endl;
+    cout << fun2(add2(), 1, 2) <<endl;
+    cout << fun2(lambda::_1+lambda::_2, 1, 3) <<endl;
+    cout << fun2(bind(add4, 0, _1, _2), 1, 4) <<endl;
 
-    cout << fun2(add1, 1, 1) <<endl;
-
-    cout << fun2(add2(), 1, 2) <<endl;
-
-    cout << fun2(lambda::_1+lambda::_2, 1, 3) <<endl;
-
-    cout << fun2(bind(add4, 0, _1, _2), 1, 4) <<endl;
-
- 
-
-    system("PAUSE");
-
+    system("PAUSE");
 }
-
- 
-
- 
+```
 
 还是输出了最后函数中识别出来的类型：
 
+```text
 class boost::function<int __cdecl(int,int)>
-
 2
-
 class boost::function<int __cdecl(int,int)>
-
 3
-
 class boost::function<int __cdecl(int,int)>
-
 4
-
 class boost::function<int __cdecl(int,int)>
-
 5
+```
 
 你会看到，当使用了boost::funciton以后，输出的类型得到了完全的统一，输出结果与前一次对比，我简直要用赏心悦目来形容了。特别是，boost::funtion还可以将这些callable(C++中此概念好像不强烈，但是在很多语言中是一个很重要的概念)的东西保存下来，并且以统一的接口调用，这才更加体现了boost::funtion的强大之处，就如我标题所说，将C++中的函数都成为第一类值一样（虽然其实还是不是），并且将callable都统一起来。
 
 例子如下：
 
+```cpp
 #include "stdafx.h"
-
 #include <list>
-
 #include <iostream>
-
 #include <boost/lambda/lambda.hpp>
-
 #include <boost/bind.hpp>
-
 #include <boost/function.hpp>
-
 #include <boost/ref.hpp>
-
 using namespace std;
-
 using namespace boost;
 
- 
-
- 
-
 int add1(int a, int b)
-
 {
-
-    return a \+ b;
-
+    return a \+ b;
 }
-
- 
 
 class add2
-
 {
-
 public:
-
-    int operator()(int lhs, int rhs)
-
-    {
-
-       return lhs \+ rhs;
-
-    }
-
+    int operator()(int lhs, int rhs)
+    {
+       return lhs \+ rhs;
+    }
 };
-
- 
 
 class CAdd
-
 {
-
 public:
-
-    int add3(int a, int b) { return a \+ b; }
-
+    int add3(int a, int b) { return a \+ b; }
 };
 
- 
-
- 
-
 template<typename FUN, typename T>
-
 T fun(FUN function, T lhs, T rhs)
-
 {
-
-    cout <<typeid(function).name() <<endl;
-
-    return function(lhs, rhs);
-
+    cout <<typeid(function).name() <<endl;
+    return function(lhs, rhs);
 }
-
- 
 
 int add4(int a, int b, int c)
-
 {
-
-    return a+b+c;
-
+    return a+b+c;
 }
-
- 
 
 int fun2(boost::function< int(int,int) > function, int a, int b )
-
 {
-
-    cout <<typeid(function).name() <<endl;
-
-    return function(a,b);
-
+    cout <<typeid(function).name() <<endl;
+    return function(a,b);
 }
-
- 
-
- 
 
 int main() 
-
 {
+    boost::function< int(int,int) > padd1 = add1;
+    boost::function< int(int,int) > padd2 = add2();
+    boost::function< int(int,int) > padd3 = lambda::_1+lambda::_2;
+    boost::function< int(int,int) > padd4 = bind(add4, 0, _1, _2);
 
-    boost::function< int(int,int) > padd1 = add1;
+    cout << fun2(padd1, 1, 1) <<endl;
+    cout << fun2(padd2, 1, 2) <<endl;
+    cout << fun2(padd3, 1, 3) <<endl;
+    cout << fun2(padd4, 1, 4) <<endl;
 
-    boost::function< int(int,int) > padd2 = add2();
-
-    boost::function< int(int,int) > padd3 = lambda::_1+lambda::_2;
-
-    boost::function< int(int,int) > padd4 = bind(add4, 0, _1, _2);
-
- 
-
-    cout << fun2(padd1, 1, 1) <<endl;
-
-    cout << fun2(padd2, 1, 2) <<endl;
-
-    cout << fun2(padd3, 1, 3) <<endl;
-
-    cout << fun2(padd4, 1, 4) <<endl;
-
- 
-
-    system("PAUSE");
-
+    system("PAUSE");
 }
-
- 
+```
 
 当你发现你能够这样操作C++中的callable类型的时候，你是不是发现C++的语言特性都似乎更加前进一步了？^^起码我是这样发现，甚至有了在Python,lua中将函数做第一类值使用的感觉。
 
 好消息是。。。bind,function都比较有希望进C++09标准^^至于lambda嘛。。。似乎还有点悬。。。虽然BS还是会一如既往的说，一个好的编程语言绝不是一大堆有用特性的堆积，而是能在特定领域出色完成特定任务，但是。。。多一些功能，总比没有好吧，毕竟，人们还可以选择不用，没有特性。。。则只能通过像boost开发者这样的强人们扭曲的实现了，甚至将C++引入了追求高超技巧的歧途，假如一开始这些特性就有的话，人们何必这样做呢。。。。。。话说回来，那些纯Ｃ的使用者又该发言了。。。心智包袱。。。。呵呵，我倒是很想去体会一下在纯C情况下真实的开发应该是怎么样组织大规模的程序的，然后好好的体会一下没有这样的心智包袱的好处（虽然读过很多纯Ｃ的书籍。。。。但是实际开发中都没有机会用纯C，所以对C的理解其实主要还是停留在C++的层面上，这点颇为遗憾）
-
- 
 
 参考资料：
 
@@ -518,5 +308,3 @@ int main()
 2\. boost.org
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

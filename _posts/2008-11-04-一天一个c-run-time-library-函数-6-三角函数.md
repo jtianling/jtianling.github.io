@@ -22,24 +22,16 @@ author:
   last_name: ''
 ---
 
-  
-
 ## 一天一个C Run-Time Library 函数（6）  三角函数
 
- 
-
 write by 九天雁翎(JTianLing) -- www.jtianling.com
-
- 
 
 ## msdn:
 
 太多，不列举了。包括acos,cos,asin,sin,atan,tan等等  
 ---  
-  
-## 测试程序：
 
- 
+## 测试程序：
 
 ## 说明：
 
@@ -50,8 +42,6 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 MS:
 
 我只看了acos的实现，完全是汇编实现的。并且可以看到sse2的指令集，mmx指令集都有响应的优化。MS也会判断你的机器是否有此指令集。有的话就是用优化后的指令。
-
- 
 
 ## 效率测试：
 
@@ -65,8 +55,4 @@ MS:
 
 对于这么简单的函数自然可以自由使用了。并且在C++下的话通过重载可以更简单的使用。不然就只能记得使用f后缀的使用方式了。比如cosf。。。表示浮点类型的余弦函数。
 
- 
-
 write by 九天雁翎(JTianLing) -- www.jtianling.com
-
- 

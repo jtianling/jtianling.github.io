@@ -48,9 +48,11 @@ author:
 
 1。在批处理的目录下的config.lua文件中，修改如下两行内容：
 
+```lua
 OGRE_PATHS = { "..", "include/OGRE", "lib" }
 
 OIS_PATHS = { "..", "include/OIS", "lib" }
+```
 
 这里第一个字符串的路径根据你将CEGUI解压的地方来配置，我这里由于CEGUI已经解压到OGRE的目录下，所以仅仅使用父目录就可以了。
 
@@ -62,11 +64,11 @@ OGRE_RENDERER = true
 
 我这里是：
 
+```lua
 CEGUI_EXTRA_PATHS = {
-
-     { "../boost_1_42", "", "lib", "CEGUIOgreRenderer" },
-
+     { "../boost_1_42", "", "lib", "CEGUIOgreRenderer" },
 }
+```
 
 此时会发现CEGUI的solution中会多出一个CEGUIOgreRenderer的工程。并且，经过前面的配置，路径都已经配置好了。
 

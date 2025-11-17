@@ -21,8 +21,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 假如说Debug是减少Bug的过程，那么编程就是制造Bug的过程
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
@@ -46,5 +44,3 @@ author:
  
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

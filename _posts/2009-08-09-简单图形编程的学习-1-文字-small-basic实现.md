@@ -59,11 +59,11 @@ author:
 
 small basic graphic ex1:
 
+```smallbasic
 GraphicsWindow.Show()
-
 GraphicsWindow.DrawText(0,0,"Hello World In Graphic Window")
-
 GraphicsWindow.DrawBoundText(0, 100, 100, "Hello World In Graphic Window")
+```
 
 显示效果如插图1。
 
@@ -73,19 +73,21 @@ DrawBoundText的效果很有意思，多只指定了文字的宽度，并且为�
 
 small basic graphic ex2：(Code: [KXK447](<http://smallbasic.com/program/?KXK447>))
 
-GraphicsWindow.show()  
-GraphicsWindow.BackgroundColor = "midnight"  
-GraphicsWindow.DrawText(0,0,"Hello World In Graphic Window")  
-GraphicsWindow.BrushColor = "Red"  
-GraphicsWindow.DrawText(0,50,"Hello World In Graphic Window")  
-GraphicsWindow.FontSize = 30  
-GraphicsWindow.DrawText(0,100,"Hello World In Graphic Window")  
-GraphicsWindow.FontBold = 1  
-GraphicsWindow.DrawText(0,150,"Hello World In Graphic Window")  
-GraphicsWindow.FontItalic = 1  
-GraphicsWindow.DrawText(0,200,"Hello World In Graphic Window")  
-GraphicsWindow.FontName = "新宋体"  
+```smallbasic
+GraphicsWindow.show()
+GraphicsWindow.BackgroundColor = "midnight"
+GraphicsWindow.DrawText(0,0,"Hello World In Graphic Window")
+GraphicsWindow.BrushColor = "Red"
+GraphicsWindow.DrawText(0,50,"Hello World In Graphic Window")
+GraphicsWindow.FontSize = 30
+GraphicsWindow.DrawText(0,100,"Hello World In Graphic Window")
+GraphicsWindow.FontBold = 1
+GraphicsWindow.DrawText(0,150,"Hello World In Graphic Window")
+GraphicsWindow.FontItalic = 1
+GraphicsWindow.DrawText(0,200,"Hello World In Graphic Window")
+GraphicsWindow.FontName = "新宋体"
 GraphicsWindow.DrawText(0,250,"Hello World In Graphic Window")
+```
 
  
 
@@ -97,18 +99,20 @@ GraphicsWindow.DrawText(0,250,"Hello World In Graphic Window")
 
 small basic graphic ex3：(Code:[GDS718](<http://smallbasic.com/program/?GDS718>))
 
-GraphicsWindow.show()  
-GraphicsWindow.BackgroundColor = "midnight"  
-gw = GraphicsWindow.Width  
-gh = GraphicsWindow.Height  
-While ("True")  
-  Program.Delay(100)  
-  GraphicsWindow.BrushColor = GraphicsWindow.GetRandomColor()  
-  GraphicsWindow.FontSize = Math.GetRandomNumber(100)  
-  GraphicsWindow.FontBold = Math.GetRandomNumber(2) - 1  
-  GraphicsWindow.FontItalic = Math.GetRandomNumber(2) - 1  
-  GraphicsWindow.DrawText(Math.GetRandomNumber(gw),Math.GetRandomNumber(gh),"Hello World")  
+```smallbasic
+GraphicsWindow.show()
+GraphicsWindow.BackgroundColor = "midnight"
+gw = GraphicsWindow.Width
+gh = GraphicsWindow.Height
+While ("True")
+  Program.Delay(100)
+  GraphicsWindow.BrushColor = GraphicsWindow.GetRandomColor()
+  GraphicsWindow.FontSize = Math.GetRandomNumber(100)
+  GraphicsWindow.FontBold = Math.GetRandomNumber(2) - 1
+  GraphicsWindow.FontItalic = Math.GetRandomNumber(2) - 1
+  GraphicsWindow.DrawText(Math.GetRandomNumber(gw),Math.GetRandomNumber(gh),"Hello World")
 EndWHile
+```
 
  
 

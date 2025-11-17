@@ -23,11 +23,6 @@ author:
   last_name: ''
 ---
 
-  
-
-  
-  
-
 # 《Inside C++ Object 》 阅读笔记(1)， NRV（Named Return  
 Value）
 
@@ -44,127 +39,63 @@ blog.csdn.net/vagrxie_**
 
 首先在Linux下,我测试了一下。测试代码书上有，我还是贴一下：
 
+```cpp
 #include <stdio.h>
-
 #include <stdlib.h>
-
 #include <memory>
-
 #ifdef _WIN32
-
 #include “jtianling.h”
-
 #endif
-
 using namespace std;
 
- 
-
- 
-
 class CTest
-
 {
-
-    friend CTest  
-foo(double);
+    friend CTest foo(double);
 
 public:
-
-    CTest()
-
-    {
-
-       memset(array, 0, 100*sizeof(double));
-
-    }
-
-// 以下面的语句决定是否进行NRV
-
-    CTest(const  
-CTest&t)
-
-    {
-
-       memcpy(this, &t, sizeof(CTest));
-
-    }
-
- 
+    CTest()
+    {
+       memset(array, 0, 100*sizeof(double));
+    }
+    // 以下面的语句决定是否进行NRV
+    CTest(const CTest&t)
+    {
+       memcpy(this, &t, sizeof(CTest));
+    }
 
 private:
-
-    double array[100];
-
+    double array[100];
 };
 
- 
-
 CTest foo(double val)
-
 {
+    CTest local;
 
-    CTest local;
+    local.array[0] = val;
+    local.array[99] = val;
 
- 
-
-    local.array[0]  
-= val;
-
-    local.array[99]  
-= val;
-
- 
-
-    return local;
-
+    return local;
 }
-
- 
-
- 
 
 int main(int argc, char* argv[])
-
 {
+#ifdef _WIN32
+    double timenow = jtianling::GetTime();
+#endif
+    for(int i=0; i<10000000; ++i)
+    {
+       CTest t = foo(double(i));
+    }
 
 #ifdef _WIN32
+    timenow = jtianling::GetTime() - timenow;
 
-    double timenow  
-= jtianling::GetTime();
-
+    cout <<timenow;
 #endif
-
-    for(int  
-i=0; i<10000000;  
-++i)
-
-    {
-
-       CTest t = foo(double(i));
-
-    }
-
- 
-
- 
-
-#ifdef _WIN32
-
-    timenow = jtianling::GetTime()  
-\- timenow;
-
- 
-
-    cout <<timenow;
-
-#endif
-
-    system("pause");
-
-    exit(0);
-
+    system("pause");
+    exit(0);
 }
+```
 
  
 
@@ -178,177 +109,79 @@ i=0; i<10000000;
 
 罪证拷贝如下：
 
-00401038  call         
-edi 
-
-0040103A  fild         
-qword ptr [esp+30h] 
-
-0040103E  fild         
-qword ptr  
-[___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+8  
-(403390h)] 
-
-00401044  fdivp        
-st(1),st 
-
-     for(int i=0;  
-i<10000000; ++i)
-
-     {
-
-         CTest t =  
-foo(double(i));
-
-     }
-
- 
-
-     timenow =  
-jtianling::GetTime() - timenow;
-
-00401046  mov          
-edx,dword ptr  
-[___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+8  
-(403390h)] 
-
-0040104C  fstp         
-qword ptr [esp+30h] 
-
-00401050  or          edx,dword ptr  
-[___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+0Ch  
-(403394h)] 
-
-00401056  jne          
-main+67h (401067h) 
-
-00401058  push        offset ___@@_PchSym_@00@UnbLwlx
-
- 
+```asm
+00401038  call        edi
+0040103A  fild        qword ptr [esp+30h]
+0040103E  fild        qword ptr [___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+8 (403390h)]
+00401044  fdivp       st(1),st
+00401046  mov         edx,dword ptr [___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+8 (403390h)]
+0040104C  fstp        qword ptr [esp+30h]
+00401050  or          edx,dword ptr [___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+0Ch (403394h)]
+00401056  jne         main+67h (401067h)
+00401058  push        offset ___@@_PchSym_@00@UnbLwlx
+```
 
 会发现循环完全被抛弃掉了，不过虽然影响了测试，但是这个时候我还得承认这是条还算合理的优化，因为在release时，这个循环不能给我们带来任何我们想要的东西。实际上以前就经常碰到这样的问题，MS老是喜欢将它认为无意义的东西直接优化没有，。。。。常常影响测试。。。。。呵呵，今天我是的确想知道，它到底有没有NRV优化，于是，让这个循环有意义吧。
 
 将程序改成如下状态
 
+```cpp
 #include "jtianling.h"
-
 #include <stdio.h>
-
 #include <stdlib.h>
-
 #include <memory>
-
 using namespace std;
 
- 
-
 int gi = 1;
-
 int gj = 1;
 
- 
-
 class CTest
-
 {
-
-    friend CTest  
-foo(double);
+    friend CTest foo(double);
 
 public:
+    CTest()
+    {
+       gj++;
+       memset(array, 0, 100*sizeof(double));
+    }
 
-    CTest()
+    //CTest(const CTest&t)
+    //{
+    //  gj++;
+    //  memcpy(this, &t, sizeof(CTest));
+    //}
 
-    {
-
-       gj++;
-
-       memset(array, 0, 100*sizeof(double));
-
-    }
-
- 
-
-    //CTest(const CTest&t)
-
-    //{
-
-    //  gj++;
-
-    //  memcpy(this,  
-&t, sizeof(CTest));
-
-    //}
-
- 
-
-    double array[100];
-
+    double array[100];
 };
 
- 
-
 CTest foo(double val)
-
 {
+    CTest local;
 
-    CTest local;
+    local.array[0] = val;
+    local.array[99] = val;
 
- 
-
-    local.array[0]  
-= val;
-
-    local.array[99]  
-= val;
-
- 
-
-    return local;
-
+    return local;
 }
-
- 
-
- 
 
 int main(int argc, char* argv[])
-
 {
+    double timenow = jtianling::GetTime();
+    for(int i=0; i<10000000; ++i)
+    {
+       CTest t = foo(double(i));
+       gi = t.array[99];
+    }
 
-    double timenow  
-= jtianling::GetTime();
+    timenow = jtianling::GetTime() - timenow;
 
-    for(int  
-i=0; i<10000000;  
-++i)
+    cout <<timenow <<"/t" <<gi <<"/t" <<gj <<endl;
 
-    {
-
-       CTest t = foo(double(i));
-
-       gi = t.array[99];
-
-    }
-
- 
-
-    timenow = jtianling::GetTime()  
-\- timenow;
-
- 
-
-    cout <<timenow <<"/t"  
-<<gi <<"/t"  
-<<gj <<endl;
-
- 
-
-    system("pause");
-
-    exit(0);
-
+    system("pause");
+    exit(0);
 }
+```
 
  
 
@@ -358,56 +191,22 @@ i=0; i<10000000;
 
 于是我还是从汇编来看，再怎么优化它逃不过我的眼睛：）
 
-     for(int i=0;  
-i<10000000; ++i)
+```asm
+00401337  xor         esi,esi
+00401339  fstp        qword ptr [esp+38h]
+0040133D  add         dword ptr [gj (403024h)],989680h
+00401347  mov         dword ptr [esp+30h],esi
+0040134B  jmp         main+60h (401350h)
+0040134D  lea         ecx,[ecx]
 
-00401337  xor          
-esi,esi 
-
-00401339  fstp         
-qword ptr [esp+38h] 
-
-0040133D  add          
-dword ptr [gj (403024h)],989680h 
-
-00401347  mov          
-dword ptr [esp+30h],esi 
-
-0040134B  jmp          
-main+60h (401350h) 
-
-0040134D  lea          
-ecx,[ecx] 
-
-     {
-
-          CTest t = foo(double(i));
-
-00401350  fild         
-dword ptr [esp+30h] 
-
-         gi =  
-t.array[99];
-
-00401354  call         
-_ftol2_sse (401BE0h) 
-
-00401359  add          
-esi,1 
-
-0040135C  cmp          
-esi,989680h 
-
-00401362  mov          
-dword ptr [gi (403020h)],eax 
-
-00401367  mov          
-dword ptr [esp+30h],esi 
-
-0040136B  jl           
-main+60h (401350h) 
-
-     }
+00401350  fild        dword ptr [esp+30h]
+00401354  call        _ftol2_sse (401BE0h)
+00401359  add         esi,1
+0040135C  cmp         esi,989680h
+00401362  mov         dword ptr [gi (403020h)],eax
+00401367  mov         dword ptr [esp+30h],esi
+0040136B  jl          main+60h (401350h)
+```
 
 Have you seen it?红色部分，当我第一次看到989680h的时候，它的值已经是一千万了，说白了就是MS将原来的废循环中的唯一一条不废的语句抽出来，然后在编译期就算好了这条不废语句应该有的值，然后运行时仅仅进行了一条赋值操作。而且绝的是，编译期的这个值的计算是按NRV优化后的流程进行的，即gj为1千万。。。。。。优化成这样，我不知道该怎么说了。。。。。根本就不会有任何的构造函数和拷贝构造函数的调用。
 
@@ -415,9 +214,5 @@ Have you seen it?红色部分，当我第一次看到989680h的时候，它的�
 
  
 
- 
-
 **_write by_**** _九天雁翎_**** _(JTianLing) --  
 blog.csdn.net/vagrxie_**
-
- 

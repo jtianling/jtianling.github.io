@@ -26,8 +26,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # Windows下的Qt编程环境配置(Eclipse+CDT+MinGW与VS2008+VS Add in) 要点
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**

@@ -43,27 +43,20 @@ type __min(       _type_ _a,_       _type_ _b_ );
   
 ## 测试程序：
 
+```c
 #include <stdlib.h>
 
 #include <stdio.h>
 
- 
-
 int main( void )
-
 {
+   int a = 10;
+   int b = 21;
 
-   int a = 10;
-
-   int b = 21;
-
- 
-
-   printf( "The larger of %d and %d is %d/n",  a, b, __max( a, b ) );
-
-   printf( "The smaller of %d and %d is %d/n", a, b, __min( a, b ) );
-
+   printf( "The larger of %d and %d is %d/n",  a, b, __max( a, b ) );
+   printf( "The smaller of %d and %d is %d/n", a, b, __min( a, b ) );
 }
+```
 
 ## 说明：
 
@@ -81,9 +74,10 @@ gcc无此函数，鉴于此函数的实用性，自然也需要实现一份。
 
 MS:
 
-#define __max(a,b)  (((a) > (b)) ? (a) : (b))
-
-#define __min(a,b)  (((a) < (b)) ? (a) : (b))
+```c
+#define __max(a,b)  (((a) > (b)) ? (a) : (b))
+#define __min(a,b)  (((a) < (b)) ? (a) : (b))
+```
 
 还是简单的宏，对于一个C++程序员来说，我不是太习惯，可能我属于原教义派，看多了Bjarne Stroustrup的书，心中总是对于宏有所排斥，我以前就因为被windows一个简单的宏折磨的够呛。那个宏也是关于最大，最小的,我在[ _http://www.jtianling.com/archive/2007/07/06/1680398.aspx_](<http://www.jtianling.com/archive/2007/07/06/1680398.aspx>)
 
@@ -93,27 +87,19 @@ MS:
 
 不知道新的C语言中有没有inline，实话说，那样要好的多。
 
+```c
 #ifndef NOMINMAX
 
- 
-
 #ifndef max
-
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
-
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
 #endif
-
- 
 
 #ifndef min
-
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
 
- 
-
-#endif  /* NOMINMAX */
+#endif  /* NOMINMAX */
+```
 
 这样的效果是，所有的min,max都会被宏替换，甚至是
 
@@ -121,35 +107,21 @@ std::numeric_limits<T>::min()
 
 或者
 
+```cpp
 #include "windows.h"
 
 class max
-
 {
-
- 
 
 };
 
 int main( void )
-
 {
+    max* lpmax = new max();
 
- 
-
- 
-
-    max* lpmax = new max();
-
-   
-
- 
-
-    return 0;
-
+    return 0;
 }
-
- 
+```
 
 这样的形式都会导致编译通不过，而第一种情况那可是C++标准库使用numeric_limits特性必须的。因为MS也给出了解决的方式。预先定义一个NOMINMAX的宏就能解决问题。
 

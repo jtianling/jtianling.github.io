@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 ## 一天一个C Run-Time Library 函数（3）  abort
 
  
@@ -39,39 +37,30 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 Aborts the current process and returns an error  
 code.  
   
----  
-void  
-abort( void );  
+```c
+void
+abort( void );
+```
   
  
 
 ## 测试程序3.1：
 
+```c
 #include <stdlib.h>
-
 #include <stdio.h>
 
- 
-
 int main()
-
 {
-
- 
-
-    printf("Running/n");
-
- 
-
-    abort();
-
- 
-
-    printf("Still Running/n");
-
-    return 0;
-
+    
+    printf("Running/n");
+    
+    abort();
+    
+    printf("Still Running/n");
+    return 0;
 }
+```
 
 以上函数在windows上输出为Running，然后弹出对话框。点终止即终止程序，点忽略还会输出类似`“``This  
 application has requested the Runtime to terminate it in an unusual way. ``Please contact the  
@@ -95,9 +84,10 @@ signal函数也在这里附带讲了算了，MSDN声明如下：
 
 Sets interrupt signal handling.  
   
----  
-void  
-(__cdecl *signal(    int _sig_ ,     void (__cdecl *_func_ ) (int [, int ] )))     (int);  
+```c
+void
+(__cdecl *signal(   int _sig_ ,    void (__cdecl *_func_ ) (int [, int ] )))   (int);
+```
   
 事实上感觉微软实现消息系统似乎仅仅是为了稍微合乎点ANSI C的标准，因为在众多的消息中，其只实现了六种，而以下的六种其实都是ANSI.我没有去查ANSI C的标准，但是MS在signal函数的实现前有注释说明。
 
@@ -122,47 +112,29 @@ SIGABRT这个由abort函数引发的消息是其中之一。
 
 例子3.2
 
+```c
 #include <stdlib.h>
-
 #include <stdio.h>
-
 #include <signal.h>
 
- 
-
 void Abort(int ai)
-
 {
-
-    printf("catch the SIGABRT and agrument is %d", ai);
-
+    printf("catch the SIGABRT and agrument is %d", ai);
 }
-
- 
 
 int main()
-
 {
-
- 
-
-    printf("Running/n");
-
- 
-
-    signal(SIGABRT, Abort);
-
- 
-
-    abort();
-
- 
-
-    printf("Still Running/n");
-
-    return 0;
-
+    
+    printf("Running/n");
+    
+    signal(SIGABRT, Abort);
+    
+    abort();
+    
+    printf("Still Running/n");
+    return 0;
 }
+```
 
  
 
@@ -174,9 +146,11 @@ catch the SIGABRT and agrument is %d
 
 有所不同的是，在windows下%d为22，linux下为6，不知道为什么windows要特意做的和别人不一样，然后特意声明一个
 
-#define SIGABRT_COMPAT  6        
+```c
+#define SIGABRT_COMPAT  6       
 /* SIGABRT compatible with other platforms,  
 same as SIGABRT */
+```
 
 这一点我比较不解。
 
@@ -199,60 +173,43 @@ environment>一书。
 
 MS:（删除次要部分）
 
+```c
 void __cdecl abort (
-
-        void
-
-        )
-
+        void
+        )
 {
+    _PHNDLR sigabrt_act = SIG_DFL;
 
-    _PHNDLR sigabrt_act = SIG_DFL;
-
- 
-
-    if (__abort_behavior & _WRITE_ABORT_MSG)
-
-    {
-
-        /* write the  
+    if (__abort_behavior & _WRITE_ABORT_MSG)
+    {
+        /* write the  
 abort message */
-
-        _NMSG_WRITE(_RT_ABORT);
-
-    }
-
- 
+        _NMSG_WRITE(_RT_ABORT);
+    }
 
 ................
 
-    /* Check if the  
+    /* Check if the  
 user installed a handler for SIGABRT.
 
-     * We need to read the user handler  
+     * We need to read the user handler  
 atomically in the case
 
-     * another thread is aborting while we  
+     * another thread is aborting while we  
 change the signal
 
-     * handler.
+     * handler.
 
-     */
-
-    sigabrt_act  
+     */
+    sigabrt_act  
 = __get_sigabrt();
-
-    if (sigabrt_act != SIG_DFL)
-
-    {
-
-        raise(SIGABRT);
-
-    }
-
-    _exit(3);
-
+    if (sigabrt_act != SIG_DFL)
+    {
+        raise(SIGABRT);
+    }
+    _exit(3);
 }
+```
 
  
 
@@ -264,237 +221,145 @@ change the signal
 
 gcc:
 
+```c
 /* We must  
-avoid to run in circles.  Therefore we  
+avoid to run in circles.  Therefore we  
 remember how far we
-
 already  
-got.  */
-
+got.  */
 static int stage;
 
- 
-
 /* We  
-should be prepared for multiple threads trying to run abort.  */
-
+should be prepared for multiple threads trying to run abort.  */
 __libc_lock_define_initialized_recursive (static,  
 lock);
 
- 
 
- 
 
 /* Cause an abnormal program  
-termination with core-dump.  */
-
+termination with core-dump.  */
 void abort (void)
-
 {
-
-    struct sigaction  
+    struct sigaction  
 act;
+    sigset_t sigs;
 
-    sigset_t sigs;
+    /* First acquire the lock.  */
+    __libc_lock_lock_recursive (lock);
 
- 
+    /* Now it's for sure we are alone.  But recursive calls are possible.  */
 
-    /* First acquire the lock.  */
-
-    __libc_lock_lock_recursive (lock);
-
- 
-
-    /* Now it's for sure we are alone.  But recursive calls are possible.  */
-
- 
-
-    /* Unlock SIGABRT.  */
-
-    if (stage  
+    /* Unlock SIGABRT.  */
+    if (stage  
 == 0)
-
-    {
-
-       ++stage;
-
-       if (__sigemptyset  
+    {
+       ++stage;
+       if (__sigemptyset  
 (&sigs) == 0 &&
-
-           __sigaddset (&sigs, SIGABRT)  
+           __sigaddset (&sigs, SIGABRT)  
 == 0)
-
-           __sigprocmask (SIG_UNBLOCK, &sigs,  
+           __sigprocmask (SIG_UNBLOCK, &sigs,  
 (sigset_t *) NULL);
+    }
 
-    }
-
- 
-
-    /* Flush all streams.  We cannot close them now because the user
-
-    might have registered a handler for  
-SIGABRT.  */
-
-    if (stage  
+    /* Flush all streams.  We cannot close them now because the user
+    might have registered a handler for  
+SIGABRT.  */
+    if (stage  
 == 1)
+    {
+       ++stage;
+       fflush (NULL);
+    }
 
-    {
-
-       ++stage;
-
-       fflush (NULL);
-
-    }
-
- 
-
-    /* Send signal which possibly calls a  
-user handler.  */
-
-    if (stage  
+    /* Send signal which possibly calls a  
+user handler.  */
+    if (stage  
 == 2)
+    {
 
-    {
-
-        /*  
+        /*  
 This stage is special: we must allow repeated calls of
 
-       `abort' when a user defined handler for  
+       `abort' when a user defined handler for  
 SIGABRT is installed.
 
-       This is risky since the `raise'  
+       This is risky since the `raise'  
 implementation might also
 
-       fail but I don't see another  
-possibility.  */
-
-       int save_stage  
+       fail but I don't see another  
+possibility.  */
+       int save_stage  
 = stage;
 
- 
-
-       stage = 0;
-
-       __libc_lock_unlock_recursive  
+       stage = 0;
+       __libc_lock_unlock_recursive  
 (lock);
 
- 
+       raise (SIGABRT);
 
-       raise (SIGABRT);
-
- 
-
-       __libc_lock_lock_recursive  
+       __libc_lock_lock_recursive  
 (lock);
+       stage = save_stage + 1;
+    }
 
-       stage = save_stage \+ 1;
-
-    }
-
- 
-
-    /* There was a handler installed.  Now remove it.  */
-
-    if (stage  
+    /* There was a handler installed.  Now remove it.  */
+    if (stage  
 == 3)
-
-    {
-
-       ++stage;
-
-       memset (&act, '/0', sizeof (struct sigaction));
-
-       act.sa_handler = SIG_DFL;
-
-       __sigfillset (&act.sa_mask);
-
-       act.sa_flags = 0;
-
-       __sigaction (SIGABRT, &act,  
+    {
+       ++stage;
+       memset (&act, '/0', sizeof (struct sigaction));
+       act.sa_handler = SIG_DFL;
+       __sigfillset (&act.sa_mask);
+       act.sa_flags = 0;
+       __sigaction (SIGABRT, &act,  
 NULL);
+    }
 
-    }
-
- 
-
-    /* Now close the streams which also  
+    /* Now close the streams which also  
 flushes the output the user
-
-    defined handler might has produced.  */
-
-    if (stage  
+    defined handler might has produced.  */
+    if (stage  
 == 4)
+    {
+       ++stage;
+       __fcloseall ();
+    }
 
-    {
-
-       ++stage;
-
-       __fcloseall ();
-
-    }
-
- 
-
-    /* Try again.  */
-
-    if (stage  
+    /* Try again.  */
+    if (stage  
 == 5)
+    {
+       ++stage;
+       raise (SIGABRT);
+    }
 
-    {
-
-       ++stage;
-
-       raise (SIGABRT);
-
-    }
-
- 
-
-    /* Now try to abort using the system  
-specific command.  */
-
-    if (stage  
+    /* Now try to abort using the system  
+specific command.  */
+    if (stage  
 == 6)
+    {
+       ++stage;
+       ABORT_INSTRUCTION;
+    }
 
-    {
-
-       ++stage;
-
-       ABORT_INSTRUCTION;
-
-    }
-
- 
-
-    /* If we can't signal ourselves and the  
-abort instruction failed, exit.  */
-
-    if (stage  
+    /* If we can't signal ourselves and the  
+abort instruction failed, exit.  */
+    if (stage  
 == 7)
+    {
+       ++stage;
+       _exit(127);
+    }
 
-    {
-
-       ++stage;
-
-       _exit (127);
-
-    }
-
- 
-
-    /* If even this fails try to use the  
+    /* If even this fails try to use the  
 provided instruction to crash
-
-    or otherwise make sure we never return.  */
-
-    while (1)
-
-       /* Try for ever and ever.  */
-
-       ABORT_INSTRUCTION;
-
+    or otherwise make sure we never return.  */
+    while (1)
+       /* Try for ever and ever.  */
+       ABORT_INSTRUCTION;
 }
+```
 
  
 

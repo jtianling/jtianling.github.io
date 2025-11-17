@@ -20,8 +20,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 确定Windows XP到底是UCS-2的还是UTF-16的
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****

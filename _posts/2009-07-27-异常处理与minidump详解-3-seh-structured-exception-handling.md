@@ -47,21 +47,17 @@ SEH--Structured Exception Handling，是Windows操作系统使用的异常处理
 
 首先，SEH也有像C++异常一样的语法，及类try-catch语法，在SEH中为__try-except语法，抛出异常从throw改为RaiseException,在MSDN中的语法描述为：
 
-__try 
+```cpp
+__try 
 
 {
-
-   // guarded code
-
+   // guarded code
 }
-
 __except ( _expression_ )
-
 {
-
-   // exception handler code
-
+   // exception handler code
 }
+```
 
  
 
@@ -69,41 +65,26 @@ __except ( _expression_ )
 
 例1：
 
+```cpp
 #include <iostream>
-
 #include <windows.h>
-
 using namespace std;
 
- 
-
 int main()
-
 {
+    __try
+    {
+       RaiseException(0, 0, 0, NULL);
+    }
+    __except(EXCEPTION_EXECUTE_HANDLER)
+    {
+       cout <<"Exception Raised." <<endl;
 
-    __try
+    }
 
-    {
-
-       RaiseException(0, 0, 0, NULL);
-
-    }
-
-    __except(EXCEPTION_EXECUTE_HANDLER)
-
-    {
-
-       cout <<"Exception Raised." <<endl;
-
- 
-
-    }
-
- 
-
-    cout <<"Continue running" <<endl;
-
+    cout <<"Continue running" <<endl;
 }
+```
 
  
 
@@ -125,179 +106,110 @@ Continue running
 
  
 
+```cpp
 #include <iostream>
-
 #include <windows.h>
-
 using namespace std;
 
- 
-
 int main()
-
 {
+    __try
+    { 
 
-    __try
+       __try
+       {
+           RaiseException(0, 0, 0, NULL);
+       }
+       __finally
+       {
+          cout <<"finally here." <<endl;
 
-    { 
+       }
+    }
+    __except(1)
+    {
 
- 
+    }
 
-       __try
+    __try
+    { 
 
-       {
+       __try
+       {
+           int i;
+       }
+       __finally
+       {
+           cout <<"finally here." <<endl;
 
-           RaiseException(0, 0, 0, NULL);
+       }
+    }
+    __except(1)
+    {
 
-       }
-
-       __finally
-
-       {
-
-           cout <<"finally here." <<endl;
-
- 
-
-       }
-
-    }
-
-    __except(1)
-
-    {
-
- 
-
-    }
-
- 
-
-    __try
-
-    { 
-
- 
-
-       __try
-
-       {
-
-           int i;
-
-       }
-
-       __finally
-
-       {
-
-           cout <<"finally here." <<endl;
-
- 
-
-       }
-
-    }
-
-    __except(1)
-
-    {
-
- 
-
-    }
-
-    cout <<"Continue running" <<endl;
-
-    getchar();
-
+    }
+    cout <<"Continue running" <<endl;
+    getchar();
 }
+```
 
  
-
 这个实例看起来过于奇怪，因为没有将各个try-finally放入独立的模块之中，但是说明了问题：
 
-1.     finally的语句总是会执行，无论是否异常finally here总是会输出。
+1.     finally的语句总是会执行，无论是否异常finally here总是会输出。
 
-2.     finally仅仅是一条保证finally语句执行的块，并不是异常处理的handle语句（与except不同），所以，假如光是有finally语句块的话，实际效果就是异常会继续向上抛出。（异常处理过程也还是继续）
+2.     finally仅仅是一条保证finally语句执行的块，并不是异常处理的handle语句（与except不同），所以，假如光是有finally语句块的话，实际效果就是异常会继续向上抛出。（异常处理过程也还是继续）
 
-3.     finally执行后还可以用except继续处理异常，但是SEH奇怪的语法在于finally与except无法同时使用，不然会报编译错误。
+3.     finally执行后还可以用except继续处理异常，但是SEH奇怪的语法在于finally与except无法同时使用，不然会报编译错误。
 
 如下例：
 
-    __try
+```cpp
+    __try
+    {
+       RaiseException(0, 0, 0, NULL);
+    }
+    __except(1)
+    {
 
-    {
+    }
+    __finally
+    {
+       cout <<"finally here." <<endl;
 
-       RaiseException(0, 0, 0, NULL);
-
-    }
-
-    __except(1)
-
-    {
-
- 
-
-    }
-
-    __finally
-
-    {
-
-       cout <<"finally here." <<endl;
+    }
+```
 
  
-
-    }
-
- 
-
 VS2005会报告
 
 error C3274: __finally 没有匹配的try
 
 这点其实很奇怪，难道因为SEH设计过于老了？-_-!因为在现在的语言中finally都是允许与except（或类似的块，比如catch）同时使用的。C#，JAVA,Python都是如此，甚至在MS为C++做的托管扩展中都是允许的。如下例：(来自MSDN中对finally keyword [C++]的描述)
 
+```cpp
 using namespace System;
-
- 
 
 ref class MyException: public System::Exception{};
 
- 
-
 void ThrowMyException() {
-
-    throw gcnew MyException;
-
+    throw gcnew MyException;
 }
-
- 
 
 int main() {
-
-    try {
-
-       ThrowMyException();
-
-    }
-
-    catch ( MyException^ e ) {
-
-       Console::WriteLine(  "in catch" );
-
-       Console::WriteLine( e->GetType() );
-
-    }
-
-    finally {
-
-       Console::WriteLine(  "in finally" );
-
-    }
+    try {
+       ThrowMyException();
+    }
+    catch ( MyException^ e ) {
+       Console::WriteLine(  "in catch" );
+       Console::WriteLine( e->GetType() );
+    }
+    finally {
+       Console::WriteLine(  "in finally" );
+    }
 
 }
+```
 
  
 
@@ -311,49 +223,28 @@ Allows for immediate termination of the __try block without causing abnormal ter
 
 简而言之就是类似goto语句的抛出异常方式，所谓的没有性能损失是什么意思呢？看看下面的例子：
 
+```cpp
 #include <iostream>
-
 #include <windows.h>
-
 using namespace std;
 
- 
-
 int main()
-
 {
+    int i = 0;
+    __try
+    {
+       __leave;
+       i = 1;
+    }
+    __finally
+    {
+       cout <<"i: " <<i <<" finally here." <<endl;
+    }
 
-    int i = 0;
-
-    __try
-
-    {
-
-       __leave;
-
-       i = 1;
-
-    }
-
-    __finally
-
-    {
-
-       cout <<"i: " <<i <<" finally here." <<endl;
-
-    }
-
- 
-
- 
-
-    cout <<"Continue running" <<endl;
-
-    getchar();
-
+    cout <<"Continue running" <<endl;
+    getchar();
 }
-
- 
+```
 
  
 
@@ -368,7 +259,6 @@ Continue running
 MSDN解释如下：
 
 The __leave keyword
-
 The __leave keyword is valid within a try-finally statement block. The effect of __leave is to jump to the end of the try-finally block. The termination handler is immediately executed. Although a goto statement can be used to accomplish the same result, a goto statement causes stack unwinding. The __leave statement is more efficient because it does not involve stack unwinding. 
 
  
@@ -377,55 +267,32 @@ The __leave keyword is valid within a try-finally statement block. The effect of
 
  
 
+```cpp
 #include <iostream>
-
 #include <windows.h>
-
 using namespace std;
 
- 
-
- 
 
 void fun()
-
 {
-
-    __leave;
-
+    __leave;
 }
-
- 
 
 int main()
-
 {
+    __try
+    {
+       fun();
+    }
+    __finally
+    {
+       cout <<" finally here." <<endl;
+    }
 
-    __try
-
-    {
-
-       fun();
-
-    }
-
-    __finally
-
-    {
-
-       cout <<" finally here." <<endl;
-
-    }
-
- 
-
- 
-
-    cout <<"Continue running" <<endl;
-
-    getchar();
-
+    cout <<"Continue running" <<endl;
+    getchar();
 }
+```
 
  
 
@@ -433,65 +300,42 @@ int main()
 
 ## 1.      SEH的优点
 
-1)    一个很大的优点就是其对异常进程的完全控制，这一点是C++异常所没有的，因为其遵循的是所谓的终止设定。
+1)    一个很大的优点就是其对异常进程的完全控制，这一点是C++异常所没有的，因为其遵循的是所谓的终止设定。
 
 这一点是通过except中的表达式来控制的（在前面的例子中我都是用1表示，实际也就是使用了**EXCEPTION_EXECUTE_HANDLER****方式。**
 
-**EXCEPTION_CONTINUE_EXECUTION ( –1)**   表示在异常发生的地方继续执行，表示处理过后，程序可以继续执行下去。 C++中没有此语义。
+**EXCEPTION_CONTINUE_EXECUTION ( –1)**   表示在异常发生的地方继续执行，表示处理过后，程序可以继续执行下去。 C++中没有此语义。
 
-**EXCEPTION_CONTINUE_SEARCH (0)**    异常没有处理，继续向上抛出。类似C++的throw; 
+**EXCEPTION_CONTINUE_SEARCH (0)**    异常没有处理，继续向上抛出。类似C++的throw; 
 
-**EXCEPTION_EXECUTE_HANDLER (1)**   异常被处理，从异常处理这一层开始继续执行。 类似C++处理异常后不再抛出。
-
- 
+**EXCEPTION_EXECUTE_HANDLER (1)**    异常被处理，从异常处理这一层开始继续执行。 类似C++处理异常后不再抛出。
 
  
 
-2)    操作系统特性，不仅仅意味着你可以在更多场合使用SEH（甚至在汇编语言中使用），实际对异常处理的功能也更加强大，甚至是程序的严重错误也能恢复（不仅仅是一般的异常），比如，除0错误，访问非法地址（包括空指针的使用）等。这里可以用一个例子来说明：
+ 
+2)    操作系统特性，不仅仅意味着你可以在更多场合使用SEH（甚至在汇编语言中使用），实际对异常处理的功能也更加强大，甚至是程序的严重错误也能恢复（不仅仅是一般的异常），比如，除0错误，访问非法地址（包括空指针的使用）等。这里可以用一个例子来说明：
 
+```cpp
 #include <iostream>
-
 #include <windows.h>
-
 using namespace std;
 
- 
-
- 
-
- 
-
 int main()
-
 {
+    __try
+    {
+       int *p = NULL;
+       *p = 0;
+    }
+    __except(1)
+    {
+       cout <<"catch that" <<endl;
+    }
 
-    __try
-
-    {
-
-       int *p = NULL;
-
-       *p = 0;
-
-    }
-
-    __except(1)
-
-    {
-
-       cout <<"catch that" <<endl;
-
-    }
-
- 
-
- 
-
-    cout <<"Continue running" <<endl;
-
-    getchar();
-
+    cout <<"Continue running" <<endl;
+    getchar();
 }
+```
 
  
 
@@ -517,73 +361,42 @@ Continue running
 
 例一：
 
+```cpp
 int main()
-
 {
+    CMyClass o;
+    __try
+    {
+    }
+    __except(1)
+    {
+       cout <<"catch that" <<endl;
+    }
 
-    CMyClass o;
-
-    __try
-
-    {
-
-    }
-
-    __except(1)
-
-    {
-
-       cout <<"catch that" <<endl;
-
-    }
-
- 
-
- 
-
-    cout <<"Continue running" <<endl;
-
-    getchar();
-
+    cout <<"Continue running" <<endl;
+    getchar();
 }
+```
 
  
-
 例二：
 
- 
-
+```cpp
 int main()
-
 {
+    __try
+    {
+       CMyClass o;
+    }
+    __except(1)
+    {
+       cout <<"catch that" <<endl;
+    }
 
-    __try
-
-    {
-
-       CMyClass o;
-
-    }
-
-    __except(1)
-
-    {
-
-       cout <<"catch that" <<endl;
-
-    }
-
- 
-
- 
-
-    cout <<"Continue running" <<endl;
-
-    getchar();
-
+    cout <<"Continue running" <<endl;
+    getchar();
 }
-
- 
+```
 
  
 
@@ -599,69 +412,43 @@ error C2712: 无法在要求对象展开的函数中使用__try
 
 这个类利用了上节的CResourceObserver类，
 
+```cpp
 class CMyClass : public CResourceObserver<CMyClass>
-
 {
-
- 
 
 };
+```
 
- 
-
+```cpp
 void fun()
-
 {
-
-    CMyClass o;
-
+    CMyClass o;
 }
+```
 
  
 
- 
-
+```cpp
 #include <iostream>
-
 #include <windows.h>
-
 using namespace std;
 
- 
-
- 
 
 int main()
-
 {
+    __try
+    {
+       fun();
+    }
+    __except(1)
+    {
+       cout <<"catch that" <<endl;
+    }
 
-    __try
-
-    {
-
-       fun();
-
-    }
-
-    __except(1)
-
-    {
-
-       cout <<"catch that" <<endl;
-
-    }
-
- 
-
- 
-
-    cout <<"Continue running" <<endl;
-
-    getchar();
-
+    cout <<"Continue running" <<endl;
+    getchar();
 }
-
- 
+```
 
  
 
@@ -681,13 +468,13 @@ Continue running
 
 # 四、   参考资料
 
-1.     Windows核心编程（Programming Applications for Microsoft Windows）,第4版，Jeffrey Richter著，黄陇，李虎译，机械工业出版社
+1.     Windows核心编程（Programming Applications for Microsoft Windows）,第4版，Jeffrey Richter著，黄陇，李虎译，机械工业出版社
 
-2.     MSDN—Visual Studio 2005 附带版,Microsoft
+2.     MSDN—Visual Studio 2005 附带版,Microsoft
 
-3.     加密与解密，段钢编著，电子工业出版社
+3.     加密与解密，段钢编著，电子工业出版社
 
-4.     Windows用户态程序高效排错，熊力著，电子工业出版社
+4.     Windows用户态程序高效排错，熊力著，电子工业出版社
 
 5.****[ 错误处理(Error-Handling)：为何、何时、如何(rev#2)，刘未鹏(pongba)著](<http://blog.csdn.net/pongba/archive/2007/10/08/1815742.aspx>)
 
@@ -698,5 +485,3 @@ Continue running
   
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

@@ -52,7 +52,7 @@ $$
 $$
 在irrlicht中获取向量模的函数是vector3d的成员函数
 
-~~~ C++
+```cpp
 //! Get length of the vector.
 T getLength() const { return core::squareroot( X*X + Y*Y + Z*Z ); }
 
@@ -60,12 +60,12 @@ T getLength() const { return core::squareroot( X*X + Y*Y + Z*Z ); }
 /** This is useful because it is much faster than getLength().
 /return Squared length of the vector. */
 T getLengthSQ() const { return X*X + Y*Y + Z*Z; }
-~~~
+```
 
 可以看出公式的实现, 其中getLengthSQ用于某些时候使用不开根号, 直接使用平方值的方法来优化代码.  
 DirectX中的实现差不多一样, 只是使用的是C风格的接口没有使用C++的类而已.  
 
-~~~ C++
+```cpp
 D3DXINLINE FLOAT D3DXVec3Length( CONST D3DXVECTOR3 *pV )
 {
 #ifdef D3DX_DEBUG
@@ -89,11 +89,11 @@ D3DXINLINE FLOAT D3DXVec3LengthSq( CONST D3DXVECTOR3 *pV )
 
 	return pV->x * pV->x + pV->y * pV->y + pV->z * pV->z;
 }
-~~~
+```
 
 MATLAB中用norm函数取模:
 
-~~~ MATLAB
+```matlab
 >> a = [1, 1, 1]
 
 a =
@@ -105,7 +105,7 @@ a =
 b =
 
     1.7321
-~~~
+```
 
 # 三维空间中两点的距离
 
@@ -117,7 +117,7 @@ $$
 
 Irrlich的实现:
 
-~~~ C++
+```cpp
 //! Get distance from another point.
 /** Here, the vector is interpreted as point in 3 dimensional space. */
 T getDistanceFrom(const vector3d<T>& other) const
@@ -131,7 +131,7 @@ T getDistanceFromSQ(const vector3d<T>& other) const
 {
 	return vector3d<T>(X - other.X, Y - other.Y, Z - other.Z).getLengthSQ();
 }
-~~~
+```
 也有距离的平方的SQ函数版本.
 
 # 向量的规范化
@@ -146,7 +146,7 @@ $$
 
 在irrlicht中的调用函数及实现：
 
-~~~ C++
+```cpp
 //! Normalizes the vector.
 /** In case of the 0 vector the result is still 0, otherwise
 	the length of the vector will be 1.
@@ -163,15 +163,15 @@ vector3d<T>& normalize()
 	Z = (T)(Z * length);
 	return *this;
 }
-~~~
+```
 
 上述代码中首先计算length以防其为0, 然后直接计算\\( \frac{1}{\||u||} \\), （这样做的目的从代码实现上来看是因为SSE,Nviadia都有可以直接计算此值的能力） 然后再分别与各坐标值进行乘法运算.  
 
 DirectX中的API：(无实现可看）
 
-~~~ C++
+```cpp
 D3DXVECTOR3* WINAPI D3DXVec3Normalize ( D3DXVECTOR3 *pOut, CONST D3DXVECTOR3 *pV );
-~~~
+```
 
 # 向量的加减法, 数乘
 
@@ -263,16 +263,16 @@ V0.v1>0 =》两个向量的夹角小于90度
 V0.v1<0 =》两个向量的夹角大于90度
 
 Irrlicht中的实现: (很简单的公式, 很直白的实现)
-~~~ C++
+```cpp
 //! Get the dot product with another vector.
 T dotProduct(const vector3d<T>& other) const
 {
 	return X*other.X + Y*other.Y + Z*other.Z;
 }
-~~~
+```
 
 DirectX中的实现：（很简单的公式, 也是很直白的实现）
-~~~ C++
+```cpp
 D3DXINLINE FLOAT D3DXVec3Dot( CONST D3DXVECTOR3 *pV1, CONST D3DXVECTOR3 *pV2 )
 {
 #ifdef D3DX_DEBUG
@@ -282,7 +282,7 @@ D3DXINLINE FLOAT D3DXVec3Dot( CONST D3DXVECTOR3 *pV1, CONST D3DXVECTOR3 *pV2 )
 
 	return pV1->x * pV2->x + pV1->y * pV2->y + pV1->z * pV2->z;
 }
-~~~
+```
 
 # 叉积(cross product): 也称向量积
 
@@ -302,7 +302,7 @@ $$
 叉乘的一个重要应用就是求三角形的法向量.  
 
 Irrlicht的实现:
-~~~ C++
+```cpp
 //! Calculates the cross product with another vector.
 /** /param p Vector to multiply with.
 	/return Crossproduct of this vector with p. */
@@ -310,10 +310,10 @@ vector3d<T> crossProduct(const vector3d<T>& p) const
 {
 	return vector3d<T>(Y * p.Z - Z * p.Y, Z * p.X - X * p.Z, X * p.Y - Y * p.X);
 }
-~~~
+```
 
 DirectX的实现:
-~~~ C++
+```cpp
 D3DXINLINE D3DXVECTOR3* D3DXVec3Cross
 	( D3DXVECTOR3 *pOut, CONST D3DXVECTOR3 *pV1, CONST D3DXVECTOR3 *pV2 )
 {
@@ -331,14 +331,14 @@ D3DXINLINE D3DXVECTOR3* D3DXVec3Cross
 	*pOut = v;
 	return pOut;
 }
-~~~
+```
 
 基本上也就是按公式来了.  
 
 
 MATLAB中叉积用的是cross函数:
 
-~~~ MATLAB
+```matlab
 >> a = [2,2,1]
 
 a =
@@ -356,7 +356,7 @@ b =
 c =
 
      1    -2     2
-~~~
+```
 
 作为最后一个概念, 这里用代码实践一下.  
 
@@ -364,7 +364,7 @@ c =
 
 Irrlicht版本:
 
-~~~ C++
+```cpp
 #include <stdio.h>
 #include <irrlicht.h>
 using namespace irr::core;
@@ -380,14 +380,14 @@ int _tmain(int argc, _TCHAR* argv[])
 
     return 0;
 }
-~~~
+```
 
 输出：
 
 c = (1.000000, -2.000000, 2.000000)
 
 DirectX版本:
-~~~ C++
+```cpp
 #include <stdio.h>
 #include <d3dx9.h>
 
@@ -403,8 +403,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	return 0;
 }
-
-~~~
+```
 
 输出：
 

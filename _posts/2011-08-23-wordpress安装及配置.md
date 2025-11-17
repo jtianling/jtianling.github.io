@@ -123,7 +123,7 @@ chown -R www-data:www-data /var/www
 
 来修改文件本身所属的组和用户（我没有实验该操作）
 
-解压后，wordpress目录还没有`wp-config.php配置文件，一种方法是直接用wp-config-sample.php修改成wp-config.php，[见此文档](<http://codex.wordpress.org/zh-cn:%E5%AE%89%E8%A3%85WordPress>)。`
+解压后，wordpress目录还没有 `wp-config.php` 配置文件，一种方法是直接用 `wp-config-sample.php` 修改成 `wp-config.php`，[见此文档](<http://codex.wordpress.org/zh-cn:%E5%AE%89%E8%A3%85WordPress>)。
 
 事实上在此时直接用浏览器访问wordpress所在的地址，就能有自动安装的配置页面引导安装，如下图：
 

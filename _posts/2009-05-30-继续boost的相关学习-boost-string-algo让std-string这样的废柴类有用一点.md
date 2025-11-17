@@ -54,87 +54,54 @@ string_algo我粗略的看了一下，相对而言还是比较强大，实现了
 
 ## 1.      大小写转换
 
+```cpp
 void CaseChange()
-
 {
+    string lstr("abcDEF");
+    string lstr2(lstr);
 
-    string lstr("abcDEF");
+    // 标准形式
+    transform(lstr.begin(), lstr.end(), lstr.begin(), tolower);
+    cout <<lstr <<endl;
 
-    string lstr2(lstr);
+    // string_algo
+    to_lower(lstr2);
 
- 
-
-    // 标准形式
-
-    transform(lstr.begin(), lstr.end(), lstr.begin(), tolower);
-
-    cout <<lstr <<endl;
-
- 
-
-    // string_algo
-
-    to_lower(lstr2);
-
- 
-
-    cout <<lstr2 <<endl;
-
+    cout <<lstr2 <<endl;
 }
+```
 
 比较奇怪的就是，为啥to_lower这样的函数不返回转换后的字符串，这样可以支持很方便的操作，难道也是出于不为可能不需要的操作付出代价的原则考虑？。。。。。。很有可能，想想标准的map.erase函数吧，看看《C++ STL Library》中相关的评价及说明。这是C++程序员的一贯作风。
 
 ## 2.      大小写不敏感的比较
 
+```cpp
 void CaseIComp()
-
 {
+    string lstrToComp("ABCdef");
+    string lstr("abcDEF");
+    string lstr2(lstr);
 
-    string lstrToComp("ABCdef");
+    string lstrTemp;
+    string lstrTemp2;
+    // 标准形式worst ways
+    transform(lstr.begin(), lstr.end(), back_inserter(lstrTemp), tolower);
+    transform(lstrToComp.begin(), lstrToComp.end(), back_inserter(lstrTemp2), tolower);
+    cout <<(lstrTemp == lstrTemp2) <<endl;
 
-    string lstr("abcDEF");
+    // 标准形式
+    cout << !stricmp(lstr.c_str(), lstrToComp.c_str()) <<endl;
 
-    string lstr2(lstr);
+    // string_algo 1
+    cout << (to_lower_copy(lstr2) == to_lower_copy(lstrToComp)) <<endl;
 
- 
+    // no changed to original values
+    cout << lstr2 <<" " <<lstrToComp <<endl;
 
-    string lstrTemp;
-
-    string lstrTemp2;
-
-    // 标准形式worst ways
-
-    transform(lstr.begin(), lstr.end(), back_inserter(lstrTemp), tolower);
-
-    transform(lstrToComp.begin(), lstrToComp.end(), back_inserter(lstrTemp2), tolower);
-
-    cout <<(lstrTemp == lstrTemp2) <<endl;
-
- 
-
-    // 标准形式
-
-    cout << !stricmp(lstr.c_str(), lstrToComp.c_str()) <<endl;
-
- 
-
-    // string_algo 1
-
-    cout << (to_lower_copy(lstr2) == to_lower_copy(lstrToComp)) <<endl;
-
- 
-
-    // no changed to original values
-
-    cout << lstr2 <<" " <<lstrToComp <<endl;
-
- 
-
-    // string_algo 2 best ways
-
-    cout << iequals(lstr2, lstrToComp) <<endl;
-
+    // string_algo 2 best ways
+    cout << iequals(lstr2, lstrToComp) <<endl;
 }
+```
 
  
 
@@ -144,61 +111,36 @@ void CaseIComp()
 
 ## 3.      修剪
 
+```cpp
 void TrimUsage()
-
 {
+    // 仅以trim左边来示例了，trim两边和右边类似
+    string strToTrim="     hello world!";
 
-    // 仅以trim左边来示例了，trim两边和右边类似
+    cout <<"Orig string:[" <<strToTrim <<"]" <<endl;
 
-    string strToTrim="     hello world!";
+    // 标准形式:
+    string str1;
+    for(int i = 0; i < strToTrim.size(); ++i)
+    {
+       if(strToTrim[i] != ' ')
+       {
+           // str1 = &(strToTrim[i]);  at most time is right,but not be assured in std
+           str1 = strToTrim.c_str() + i; 
+           break;
+       }
+    }
+    cout <<"Std trim string:[" <<str1 <<"]" <<endl;
+   
+    // string_algo 1
+    string str2 = trim_left_copy(strToTrim); 
+    cout <<"string_algo string:[" <<str2 <<"]" <<endl;
 
- 
-
-    cout <<"Orig string:[" <<strToTrim <<"]" <<endl;
-
- 
-
-    // 标准形式:
-
-    string str1;
-
-    for(int i = 0; i < strToTrim.size(); ++i)
-
-    {
-
-       if(strToTrim[i] != ' ')
-
-       {
-
-           // str1 = &(strToTrim[i]);  at most time is right,but not be assured in std
-
-           str1 = strToTrim.c_str() + i; 
-
-           break;
-
-       }
-
-    }
-
-    cout <<"Std trim string:[" <<str1 <<"]" <<endl;
-
-   
-
-    // string_algo 1
-
-    string str2 = trim_left_copy(strToTrim); 
-
-    cout <<"string_algo string:[" <<str2 <<"]" <<endl;
-
- 
-
-    // string_algo 2
-
-    string str3 = trim_left_copy_if(strToTrim, is_any_of(" "));
-
-    cout <<"string_algo string2:[" <<str3 <<"]" <<endl;
-
+    // string_algo 2
+    string str3 = trim_left_copy_if(strToTrim, is_any_of(" "));
+    cout <<"string_algo string2:[" <<str3 <<"]" <<endl;
 }
+```
 
  
 
@@ -214,77 +156,44 @@ void TrimUsage()
 
 示例：
 
+```cpp
 void SplitUsage()
-
 {
+    // 这是一个典型的CSV类型数据
+    string strToSplit("hello,world,goodbye,goodbye,");
 
-    // 这是一个典型的CSV类型数据
+    typedef vector< string > SplitVec_t;
+    SplitVec_t splitVec1;
+    // std algo 无论在任何时候string原生的搜寻算法都是通过index返回而不是通过iterator返回，总是觉得突兀
+    // 还不如使用标准库的算法呢，总怀疑因为string和STL的分别设计，是不是string刚开始设计的时候,还没有加入迭代器？
+    string::size_type liWordBegin = 0;
+    string::size_type liFind = strToSplit.find(',');
+    string lstrTemp;
+    while(liFind != string::npos)
+    {
+       lstrTemp.assign(strToSplit, liWordBegin, liFind \- liWordBegin);
+       splitVec1.push_back(lstrTemp);
+       liWordBegin = liFind+1;
+       liFind = strToSplit.find(',', liWordBegin);
+    }
+    lstrTemp.assign(strToSplit, liWordBegin, liFind \- liWordBegin);
+    splitVec1.push_back(lstrTemp);
 
-    string strToSplit("hello,world,goodbye,goodbye,");
+    BOOST_FOREACH(string str, splitVec1)
+    {
+       cout <<" split string:" <<str <<endl;
+    }
 
- 
+    // string_algo
+    SplitVec_t splitVec2; 
+    split( splitVec2, strToSplit, is_any_of(",") ); 
 
-    typedef vector< string > SplitVec_t;
-
-    SplitVec_t splitVec1;
-
-    // std algo 无论在任何时候string原生的搜寻算法都是通过index返回而不是通过iterator返回，总是觉得突兀
-
-    // 还不如使用标准库的算法呢，总怀疑因为string和STL的分别设计，是不是string刚开始设计的时候,还没有加入迭代器？
-
-    string::size_type liWordBegin = 0;
-
-    string::size_type liFind = strToSplit.find(',');
-
-    string lstrTemp;
-
-    while(liFind != string::npos)
-
-    {
-
-       lstrTemp.assign(strToSplit, liWordBegin, liFind \- liWordBegin);
-
-       splitVec1.push_back(lstrTemp);
-
-       liWordBegin = liFind+1;
-
-       liFind = strToSplit.find(',', liWordBegin);
-
-    }
-
-    lstrTemp.assign(strToSplit, liWordBegin, liFind \- liWordBegin);
-
-    splitVec1.push_back(lstrTemp);
-
- 
-
-    BOOST_FOREACH(string str, splitVec1)
-
-    {
-
-       cout <<" split string:" <<str <<endl;
-
-    }
-
- 
-
-    // string_algo
-
-    SplitVec_t splitVec2; 
-
-    split( splitVec2, strToSplit, is_any_of(",") ); 
-
- 
-
-    BOOST_FOREACH(string str, splitVec2)
-
-    {
-
-       cout <<" split string:" <<str <<endl;
-
-    }
-
+    BOOST_FOREACH(string str, splitVec2)
+    {
+       cout <<" split string:" <<str <<endl;
+    }
 }
+```
 
  
 
@@ -305,5 +214,3 @@ void SplitUsage()
  
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

@@ -36,12 +36,13 @@ Ubuntu 之所以好用，就是因为它继承了 debian 的 apt 系统，这一
 
 在 interfaces 中添加以下内容：
 
-> 
->     auto eth0
->     iface eth0 inet static
->     address _202.113.235.181_
->     netmask _255.255.255.0_
->     gateway _202.113.235.1_
+```conf
+    auto eth0
+    iface eth0 inet static
+    address _202.113.235.181_
+    netmask _255.255.255.0_
+    gateway _202.113.235.1_
+```
 
 这其中，斜体部分标注的 IP 地址是我服务器的设置，您需要根据您的具体情况修改。当然，如果您的服务器使用的是 DHCP 来分配 IP 地址，只需要写上 iface eth0 inet dhcp 就可以了，无需设置 address/netmask/gateway。
 
@@ -51,9 +52,10 @@ Ubuntu 之所以好用，就是因为它继承了 debian 的 apt 系统，这一
 
 添加您的 DNS 服务器地址：
 
-> 
->     nameserver _202.113.16.10_
->     nameserver _202.113.16.11_
+```conf
+    nameserver _202.113.16.10_
+    nameserver _202.113.16.11_
+```
 
 完成后，重新启动 networking 服务：
 
@@ -77,9 +79,10 @@ Ubuntu 下安装 OpenSSH Server 是无比轻松的一件事情，需要的命令
 
 找到 GSSAPI options 这一节，将下面两行注释掉：
 
-> 
->     #GSSAPIAuthentication yes
->     #GSSAPIDelegateCredentials no
+```conf
+    #GSSAPIAuthentication yes
+    #GSSAPIDelegateCredentials no
+```
 
 然后重新启动 ssh 服务即可：
 
@@ -93,10 +96,11 @@ SSH 服务中，所有的内容都是加密传输的，安全性基本有保证�
 
 首先修改 sshd_config 文件，开启证书认证选项：
 
-> 
->     RSAAuthentication yes
->     PubkeyAuthentication yes
->     AuthorizedKeysFile %h/.ssh/authorized_keys
+```conf
+    RSAAuthentication yes
+    PubkeyAuthentication yes
+    AuthorizedKeysFile %h/.ssh/authorized_keys
+```
 
 修改完成后重新启动 ssh 服务。
 
@@ -108,9 +112,10 @@ SSH 服务中，所有的内容都是加密传输的，安全性基本有保证�
 
 ssh-keygen 命令会生成两个密钥，首先我们需要将公钥改名留在服务器上：
 
-> 
->     cd ~/.ssh
->     mv id_rsa.pub authorized_keys
+```bash
+    cd ~/.ssh
+    mv id_rsa.pub authorized_keys
+```
 
 然后将私钥 id_rsa 从服务器上复制出来，并删除掉服务器上的 id_rsa 文件。
 

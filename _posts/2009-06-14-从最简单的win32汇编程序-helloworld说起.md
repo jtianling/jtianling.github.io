@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 从最简单的Win32汇编程序，HelloWorld说起  
 
 [write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**  
@@ -35,6 +33,7 @@ author:
 
 书中的例子很简单，源代码如下：
 
+```asm
 **.486** ; create 32 bit code  
 **.model** flat, **stdcall** ; 32 bit memory model  
 **option** casemap :none ; case sensitive
@@ -55,11 +54,12 @@ szText **db** "Hello,World !",0
 **.code**
 
 start:  
-**invoke** MessageBox,NULL,**offset** szText,/  
-**offset** szCaption,MB_OK  
-**invoke** ExitProcess,NULL
+    **invoke** MessageBox,NULL,**offset** szText,/  
+    **offset** szCaption,MB_OK  
+    **invoke** ExitProcess,NULL
 
-**end** start  
+**end** start
+```
 
 然后编个makefile:  
 
@@ -67,6 +67,7 @@ start:
 
 makefile:  
 
+```make
 1 basename = helloWorld  
 2 exe = helloWorld.exe  
 3 obj = helloWorld.obj  
@@ -75,6 +76,7 @@ makefile:
 6  link /subsystem:windows /map:$(**basename**).map /out:$(exe) $(obj)  
 7 $(obj) : $(files)  
 8  ml /c /coff /Zi $(files)  
+```
 
 这个makefile写的有点复杂了-_-!呵呵，还好例子简单。。。。。  
 
@@ -84,6 +86,7 @@ makefile:
 
 回到主题，于是我先看了一下生成的exe文件，发现无缘无故多了.rdata区段,虽然我并没有用，所以程序达到了4k(好像是普通不修改PE文件时最小的一个可执行程序的大小)，反汇编一下生成的exe文件（还能叫反汇编吗-_-!）
 
+```asm
 00401000 >/$ 6A 00 push 0 ; /Style = MB_OK|MB_APPLMODAL
 
 00401002 |. 68 00304000 push 00403000 ; |Title = "A MessageBox !"
@@ -101,6 +104,7 @@ makefile:
 0040101A > $- FF25 08204000 jmp dword ptr [<&user32.MessageBoxA;>] ; _MessageBoxA@16 0040101a f user32:user32.dll
 
 00401020 > .- FF25 00204000 jmp dword ptr [<&kernel32.ExitProcess;>] ; _ExitProcess@4 00401020 f kernel32:kernel32.dll
+```
 
 我只能说，总算在我们程序背后没有什么在偷偷摸摸进行了，一切就像我们的源代码一样，这正是我们需要的境界。。。。。用汇编这点还是好（其他高级语言使用者基本可以忽视此句）
 

@@ -78,13 +78,13 @@ mTrayMgr->createButton(TL_TOPLEFT, "Quit", "Quit");
 
 查询状态：（在你的循环逻辑中调用啊，比如frameRenderingQueued）
 
+```cpp
 Button* bt = (Button*)mTrayMgr->getWidget("Quit");
 
 if (bt->getState() == BS_DOWN) {
-
-// put your codes here
-
+    // put your codes here
 }
+```
 
 比如进度条：
 
@@ -96,9 +96,11 @@ mTrayMgr->createProgressBar(TL_TOPLEFT, "LoadingControl", "Loading", 200.0, 250.
 
 设置进度：（半分比，以0到1的浮点数来表示）
 
+```cpp
 ProgressBar* pb = mTrayMgr->createProgressBar(TL_TOPLEFT, "LoadingControl", "Loading", 200.0, 250.0);
 
 pb->setProgress(.5); // 50%
+```
 
 控件的使用是比较简单的，但是有几个需要注意的地方：
 
@@ -135,6 +137,7 @@ Ogre::FontManager::getSingleton().getByName("SdkTrays/Caption")->load();
 Ogre对UI的支持在Overlay这一层（有个OverlayManager），demo的UI就是从这里开始的。  
 事件的响应全部通过下列listener的回调，你也能看出大概此套UI关注哪些事件。
 
+```cpp
 /*  
 =============================================================================
 
@@ -143,53 +146,24 @@ Ogre对UI的支持在Overlay这一层（有个OverlayManager），demo的UI就�
 =============================================================================  
 */
 
-class  
-SdkTrayListener
-
+class SdkTrayListener
 {
-
-public  
-:
-
-virtual  
-~SdkTrayListener() {}
-
-virtual  
-void  
-buttonHit(Button* button) {}
-
-virtual  
-void  
-itemSelected(SelectMenu* menu) {}
-
-virtual  
-void  
-labelHit(Label* label) {}
-
-virtual  
-void  
-sliderMoved(Slider* slider) {}
-
-virtual  
-void  
-checkBoxToggled(CheckBox* box) {}
-
-virtual  
-void  
-okDialogClosed(const  
-Ogre::DisplayString& message) {}
-
-virtual  
-void  
-yesNoDialogClosed(const  
-Ogre::DisplayString& question, bool  
-yesHit) {}
-
+public:
+    virtual ~SdkTrayListener() {}
+    virtual void buttonHit(Button* button) {}
+    virtual void itemSelected(SelectMenu* menu) {}
+    virtual void labelHit(Label* label) {}
+    virtual void sliderMoved(Slider* slider) {}
+    virtual void checkBoxToggled(CheckBox* box) {}
+    virtual void okDialogClosed(const Ogre::DisplayString& message) {}
+    virtual void yesNoDialogClosed(const Ogre::DisplayString& question, bool yesHit) {}
 };
+```
 
 SdkTrayManager  
 是从此listener继承来的：
 
+```cpp
 /*  
 =============================================================================
 
@@ -198,10 +172,8 @@ SdkTrayManager
 =============================================================================  
 */
 
-class  
-SdkTrayManager : public  
-SdkTrayListener, public  
-Ogre::ResourceGroupListener
+class SdkTrayManager : public SdkTrayListener, public Ogre::ResourceGroupListener
+```
 
 虽然SdkTrayManager的主要功能可能与OverlayManager类似，但是因为OverlayManager是个单件，（所以实际也就决定了不方便继承使用）所以，实际每次用到的时候直接获取此类的对象然后使用即可。
 
@@ -221,31 +193,22 @@ OverlayElement自然是与OverlayManager配合使用的，TrayLocation用于表�
 
 具体的控件，以按钮为例：
 
+```cpp
 class Button : public Widget
-
-按钮继承自Widget，有下列成员变量：
-
-ButtonState mState;
-
-Ogre::BorderPanelOverlayElement* mBP;
-
-Ogre::TextAreaOverlayElement* mTextArea;
-
-bool mFitToContents;
-
-mState自然表示按钮的状态：
+{
+    ButtonState mState;
+    Ogre::BorderPanelOverlayElement* mBP;
+    Ogre::TextAreaOverlayElement* mTextArea;
+    bool mFitToContents;
+};
 
 enum ButtonState // enumerator values for button states
-
 {
-
-BS_UP,
-
-BS_OVER,
-
-BS_DOWN
-
+    BS_UP,
+    BS_OVER,
+    BS_DOWN
 };
+```
 
 BorderPanelOverlayElement提供了一个有边框的Overlay元素。（因为Widget已经包含了一个OverlayElement，可以看出此UI的设计上还是有些问题，可能毕竟是仅仅设计给Demo用的东西吧）
 
@@ -269,5 +232,3 @@ if (mFitToContents) mElement->setWidth(getCaptionWidth(caption, mTextArea) + mEl
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
 **
-
- 

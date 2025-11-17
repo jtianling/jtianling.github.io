@@ -45,6 +45,7 @@ author:
 
 example1：
 
+```java
 **package** com.JTianLing;
 
  
@@ -114,6 +115,7 @@ example1：
     }
 
 }
+```
 
 运行效果见插图1，点击按钮的时候弹出一个Toast,为啥叫这个，我也不明白。类似于一个Notice的效果，可以自动消隐。
 
@@ -123,6 +125,7 @@ example1：
 
 Example2:
 
+```java
 **package** com.JTianLing;
 
  
@@ -224,6 +227,7 @@ Example2:
     }
 
 }
+```
 
 还是单击那个伟大的按钮，才能弹出对话框，效果如插图2。
 
@@ -256,7 +260,3 @@ Example2:
  
 
 [write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
-
-  
-  
-

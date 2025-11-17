@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # VMWare虚拟机安装，SoftIce在虚拟机中的安装  
   
   
@@ -43,9 +41,13 @@ VMWare算是比较好的虚拟机了，虚拟机的领军人物。
 1.首先的安装VMWare Tools，这在客户端虚拟机启动的时候，选择VMWare的虚拟机菜单，选择安装VMWare Tools就可以安装了。（碰到过点击没有反应的情况，这个时候你可以选择在Host载入VMWare安装盘下的windows.iso镜像，那么也就可  
 以在客户端虚拟机安装了，这是windows版的VMWare Tools，不过要说明的是，不要在你虚拟出来的机器上装DaeMon,就我实验，那样会和SoftIce冲突，据说3.9以下版本不会，你可以去试 试）。  
 2.安装SoftIce或者Driver Studio，反正都包含有SoftIce,选择显卡的时候，配置不需要改动，只是点击Test试试，只要第一步没有问题，这时候test应该也可以成功，没有第一步的话必然失败。  
-3.关闭虚拟机，打开虚拟机的配置文件（你新建的虚拟机所在的目录），VMX后缀的文件，在最后添加  
-vmmouse.present = "FALSE"  
-svga.maxFullscreenRefreshTick = "5"  
+3.关闭虚拟机，打开虚拟机的配置文件（你新建的虚拟机所在的目录），VMX后缀的文件，在最后添加
+
+```ini
+vmmouse.present = "FALSE"
+svga.maxFullscreenRefreshTick = "5"
+```
+
 两行，再重新启动，选择开始菜单中SoftIce的Start  
 SoftIce，然后就可以按CTRL-D看看是否能够正常运行了，应该没有问题。
 

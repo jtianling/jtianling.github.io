@@ -139,279 +139,280 @@ JsonCpp是我本人非常喜欢的一个Json解析库，有读写模块，实现
 这里我以某些参数显示某个图片为例，介绍json/jsoncpp的用法。
 
 首先，原来的例子：  
-  
+
+```cpp
 #include   
 <stdlib.h>  
-  
+
 #include   
 <stdio.h>  
-  
+
 #include   
 <tchar.h>  
-  
+
 #include   
 "SDL.h"  
-  
+
 #include   
 "SDL_opengl.h"  
-  
+
 #include   
 "SDL_image.h"
 
 #define WINDOW_WIDTH   
 300  
-  
+
 #define WINDOW_HEIGHT   
 300
 
-GLuint gTexName;  
-//OpenGL初始化开始  
-  
-void  
- SceneInit(int  
-  w,int  
-  h)
+GLuint gTexName;
+//OpenGL初始化开始
+
+void
+ SceneInit(int  
+  w,int  
+  h)
 
 {
 
-  gluOrtho2D(-1.0  
+  gluOrtho2D(-1.0  
 , 1.0  
 , -1.0  
 , 1.0  
 );
 
-  glShadeModel(GL_FLAT);
+  glShadeModel(GL_FLAT);
 
-  SDL_Surface *surface = IMG_Load("dragon.png"  
+  SDL_Surface *surface = IMG_Load("dragon.png"  
 );
 
-  if  
- (!surface)
+  if  
+(!surface)
 
-  {
+  {
 
-    printf("Load the picture failed."  
+    printf("Load the picture failed."  
 );
 
-    exit(1  
+    exit(1  
 );
 
-  }
+  }
 
-  GLenum texture_format;
+  GLenum texture_format;
 
-  // get the number of channels in the SDL surface  
+  // get the number of channels in the SDL surface  
 
-  GLint nOfColors = surface->format->BytesPerPixel;
+  GLint nOfColors = surface->format->BytesPerPixel;
 
-  if  
- (nOfColors == 4  
-)     // contains an alpha channel  
+  if  
+(nOfColors == 4  
+)     // contains an alpha channel
 
-  {
+  {
 
-    if  
- (surface->format->Rmask == 0x000000ff  
+    if  
+(surface->format->Rmask == 0x000000ff  
 )
 
-      texture_format = GL_RGBA;
+      texture_format = GL_RGBA;
 
-    else  
+    else
 
-      texture_format = GL_BGRA;
+      texture_format = GL_BGRA;
 
-  } else  
- if  
- (nOfColors == 3  
-)     // no alpha channel  
+  } else  
+if  
+(nOfColors == 3  
+)     // no alpha channel
 
-  {
+  {
 
-    if  
- (surface->format->Rmask == 0x000000ff  
+    if  
+(surface->format->Rmask == 0x000000ff  
 )
 
-      texture_format = GL_RGB;
+      texture_format = GL_RGB;
 
-    else  
+    else
 
-      texture_format = GL_BGR;
+      texture_format = GL_BGR;
 
-  } else  
- {
+  } else
+{
 
-    printf("warning: the image is not truecolor..  this will probably break  
+    printf("warning: the image is not truecolor..  this will probably break  
 /n  
 "  
 );
 
-    exit(1  
+    exit(1  
 );
 
-  }
+  }
 
-  glGenTextures(1  
-  , &gTexName);
+  glGenTextures(1  
+  , &gTexName);
 
-  glBindTexture(GL_TEXTURE_2D, gTexName);
+  glBindTexture(GL_TEXTURE_2D, gTexName);
 
-  // Specify filtering and edge actions  
+  // Specify filtering and edge actions  
 
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
-  glTexImage2D( GL_TEXTURE_2D, 0  
+  glTexImage2D( GL_TEXTURE_2D, 0  
 , nOfColors, surface->w, surface->h, 0  
 ,
 
-    texture_format, GL_UNSIGNED_BYTE, surface->pixels );
+    texture_format, GL_UNSIGNED_BYTE, surface->pixels );
 
-  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_DEPTH_TEST);
 
-  glEnable( GL_TEXTURE_2D );
+  glEnable( GL_TEXTURE_2D );
 
-  //Free the loaded image  
+  //Free the loaded image  
 
-  SDL_FreeSurface( surface ); 
+  SDL_FreeSurface( surface ); 
 
 }
 
 // display  
-  
-void  
-  SceneShow(GLvoid) {
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void
+  SceneShow(GLvoid) {
 
-  glBindTexture(GL_TEXTURE_2D, gTexName);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  glBegin(GL_QUADS);
+  glBindTexture(GL_TEXTURE_2D, gTexName);
 
-  glTexCoord2f(0.0  
- , 1.0  
- ); glVertex3f(-1.0  
- , -1.0  
- , 0.0  
- );
+  glBegin(GL_QUADS);
 
-  glTexCoord2f(1.0  
- , 1.0  
- ); glVertex3f(1.0  
- , -1.0  
- , 0.0  
- );
+  glTexCoord2f(0.0  
+  , 1.0  
+  ); glVertex3f(-1.0  
+  , -1.0  
+  , 0.0  
+  );
 
-  glTexCoord2f(1.0  
- , 0.0  
- ); glVertex3f(1.0  
- , 1.0  
- , 0.0  
- );
+  glTexCoord2f(1.0  
+  , 1.0  
+  ); glVertex3f(1.0  
+  , -1.0  
+  , 0.0  
+  );
 
-  glTexCoord2f(0.0  
- , 0.0  
- ); glVertex3f(-1.0  
- , 1.0  
- , 0.0  
- );
+  glTexCoord2f(1.0  
+  , 0.0  
+  ); glVertex3f(1.0  
+  , 1.0  
+  , 0.0  
+  );
 
-  glEnd();
+  glTexCoord2f(0.0  
+  , 0.0  
+  ); glVertex3f(-1.0  
+  , 1.0  
+  , 0.0  
+  );
 
-}  
+  glEnd();
+
+}  
 
 int  
- _tmain(int  
- argc, _TCHAR* argv[])
+ _tmain(int  
+ argc, _TCHAR* argv[])
 
 {
 
-  if  
- ( SDL_Init(SDL_INIT_VIDEO) < 0  
- ) 
+  if  
+ ( SDL_Init(SDL_INIT_VIDEO) < 0  
+ ) 
 
-  {
+  {
 
-    printf("Unable to initialize SDL:   
+    printf("Unable to initialize SDL:   
 %s  
 /n  
 "  
 , SDL_GetError());
 
-    exit(1  
+    exit(1  
 );
 
-  }
+  }
 
-  atexit(SDL_Quit);
+  atexit(SDL_Quit);
 
-  if  
-  (IMG_Init(IMG_INIT_PNG) == 0  
-  ) {
+  if  
+  (IMG_Init(IMG_INIT_PNG) == 0  
+  ) {
 
-    printf("Unable to initialize SDL_image"  
- );
-
-    exit(1  
+    printf("Unable to initialize SDL_image"  
 );
 
-  }
+    exit(1  
+);
 
-  // use these two lines instead of the commented one  
+  }
 
-  SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1  
- ); // *new*  
+  // use these two lines instead of the commented one  
 
-  SDL_Surface* screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16  
+  SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1  
+  ); // *new*  
+
+  SDL_Surface* screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16  
 , SDL_OPENGL); // *changed* 
 
-  SceneInit(WINDOW_WIDTH, WINDOW_HEIGHT);
+  SceneInit(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-  // main loop  
+  // main loop  
 
-  bool  
- running = true  
+  bool  
+ running = true  
 ;
 
-  while  
- (running) {
+  while  
+ (running) {
 
-    //While there's an event to handle   
+    //While there's an event to handle   
 
-    SDL_Event event; 
+    SDL_Event event; 
 
-    while  
+    while  
 ( SDL_PollEvent( &event ) ) { 
 
-      if  
- (event.type == SDL_QUIT) {
+      if  
+ (event.type == SDL_QUIT) {
 
-        running = false  
+        running = false  
 ;
 
-      }
+      }
 
-    }
+    }
 
-    SceneShow();
+    SceneShow();
 
-    //Update Screen   
+    //Update Screen   
 
-    SDL_GL_SwapBuffers();
+    SDL_GL_SwapBuffers();
 
-    // delay, 50 for simple  
+    // delay, 50 for simple  
 
-    SDL_Delay( 50  
- ); 
+    SDL_Delay( 50  
+ ); 
 
-  }
+  }
 
-    return  
- 1  
+    return  
+ 1  
 ;
 
-}  
-  
+}
+```
 
 代码主要就是SDL+OpenGL，很浅显易懂，可以参考原来的文章。《[GLFW 简单入门学习](<http://www.jtianling.com/archive/2010/07/15/5738421.aspx>)  
 》，《[SDL 简单入门学习](<http://www.jtianling.com/archive/2010/07/15/5735979.aspx>)  
@@ -427,69 +428,63 @@ int
 这是原图，现在我希望将其显示加入一定的属性配置，以达到我的显示要求， 这里将配置放到Json中完成。
 
 构建一段最简单的Json文件：  
-  
-**{**  
-  
 
-    "name"  
- : "dragon.png"  
-,
-
-    "rotation"  
- : 180  
-**}**  
-  
-  
-  
+```json
+{
+    "name" : "dragon.png",
+    "rotation" : 180
+}
+```
 
 里面只有图片名字和旋转度数。顺便以此例解释下Json的语法，前面提到过Json的格式总的来说就是Key : value.如上所示，所有的key都是字符串，value可以是各种值，包括整数，boolean，字符串，数组，甚至是一个{ }表示的object。上例中，name表示图片的名字，rotation表示图片旋转的度数，这里的度数按照OpenGL的规范，以逆时针为正。
 
 JsonCpp的使用就非常简单了。比如我用下列代码来解析上述Json文件：  
-  
-struct  
- PictureInfo {
 
-  string name;
+```cpp
+struct
+ PictureInfo {
 
-  float  
+  string name;
+
+ float
 rotation;
 
 }gPictureInfo;
 
-void  
- PictureInit()
+void
+ PictureInit()
 
 {
 
-  Json::Reader reader;
+  Json::Reader reader;
 
-  ifstream file("picture.json"  
+  ifstream file("picture.json"  
 );
 
-  assert(file.is_open());
+  assert(file.is_open());
 
-  Json::Value root;
+  Json::Value root;
 
-  if  
- (!reader.parse(file, root, false  
+  if  
+(!reader.parse(file, root, false  
 )) {
 
-    printf("Parse error"  
+    printf("Parse error"  
 );
 
-    exit(1  
+    exit(1  
 );
 
-  }
+  }
 
-  gPictureInfo.name = root["name"  
+  gPictureInfo.name = root["name"  
 ].asString();
 
-  gPictureInfo.rotation = root["rotation"  
+  gPictureInfo.rotation = root["rotation"  
 ].asDouble();
 
-}  
-  
+}
+```
 
 虽然已经如此简单，但还是解释一下：
 
@@ -498,72 +493,70 @@ reader是用于parse Json文件的jsoncpp类，传入打开的ifstream文件对�
 通过上述方式，获得了图片名字，图片的rotation。以此来完成新的图片的显示。
 
 将SceneShow部分改成如下代码：  
-  
-// display  
-  
-void  
-  SceneShow(GLvoid) {
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+```cpp
+// display
 
-  glBindTexture(GL_TEXTURE_2D, gTexName);
+void
+  SceneShow(GLvoid) {
 
-  glMatrixMode(GL_MODELVIEW);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  glPushMatrix();
+  glBindTexture(GL_TEXTURE_2D, gTexName);
 
-  glRotatef(gPictureInfo.rotation, 0.0  
+ glMatrixMode(GL_MODELVIEW);
+
+  glPushMatrix();
+
+  glRotatef(gPictureInfo.rotation, 0.0  
 , 0.0  
 , 1.0  
 );
 
-  glBegin(GL_QUADS);
+  glBegin(GL_QUADS);
 
-  glTexCoord2f(0.0  
- , 1.0  
- ); glVertex3f(-1.0  
- , -1.0  
- , 0.0  
- );
+  glTexCoord2f(0.0  
+  , 1.0  
+  ); glVertex3f(-1.0  
+  , -1.0  
+  , 0.0  
+  );
 
-  glTexCoord2f(1.0  
- , 1.0  
- ); glVertex3f(1.0  
- , -1.0  
- , 0.0  
- );
+  glTexCoord2f(1.0  
+  , 1.0  
+  ); glVertex3f(1.0  
+  , -1.0  
+  , 0.0  
+  );
 
-  glTexCoord2f(1.0  
- , 0.0  
- ); glVertex3f(1.0  
- , 1.0  
- , 0.0  
- );
+  glTexCoord2f(1.0  
+  , 0.0  
+  ); glVertex3f(1.0  
+  , 1.0  
+  , 0.0  
+  );
 
-  glTexCoord2f(0.0  
- , 0.0  
- ); glVertex3f(-1.0  
- , 1.0  
- , 0.0  
- );
+  glTexCoord2f(0.0  
+  , 0.0  
+  ); glVertex3f(-1.0  
+  , 1.0  
+  , 0.0  
+  );
 
-  glEnd();
+  glEnd();
 
-  glPopMatrix();
+  glPopMatrix();
 
-}    
-  
+}
+```
 
 添加了 
 
+```cpp
 glPushMatrix();
-
-glRotatef(gPictureInfo.rotation, 0.0  
-, 0.0  
-, 1.0  
-);  
-  
-glPopMatrix();  
+glRotatef(gPictureInfo.rotation, 0.0, 0.0, 1.0);
+glPopMatrix();
+```
 
 3句来进行模型矩阵变换，来完成旋转。
 
@@ -580,215 +573,186 @@ glPopMatrix();
 这里再添加一些其他的要素，比如scale,position。（这里没有使用一般2D引擎中用的屏幕坐标，还是用OpenGL坐标）
 
 Json配置：  
-  
-**{**  
-  
 
-    "name"  
- : "dragon.png"  
-,
-
-    "rotation"  
- : 0,
-
-    "positionX"  
- : -0.5,
-
-    "positionY"  
- : 0.0,
-
-    "scaleX"  
- : 0.3,
-
-    "scaleY"  
- : 1.0  
-**}**  
-  
-  
-  
+```json
+{
+    "name" : "dragon.png",
+    "rotation" : 0,
+    "positionX" : -0.5,
+    "positionY" : 0.0,
+    "scaleX" : 0.3,
+    "scaleY" : 1.0
+}
+```
 
 代码改动部分：  
-  
-struct  
- PictureInfo {
 
-  string name;
+```cpp
+struct
+ PictureInfo {
 
-  float  
- rotation;
+  string name;
 
-  float  
- positionX;
+  float
+ rotation;
 
-  float  
- positionY;
+  float
+ positionX;
 
-  float  
- scaleX;
+  float
+ positionY;
 
-  float  
- scaleY;
+  float
+ scaleX;
 
-  // can't read from config,read from surface  
+  float
+ scaleY;
 
-  int  
- width;
+  // can't read from config,read from surface
 
-  int  
- height;
+  int
+ width;
+
+  int
+ height;
 
 }gPictureInfo;
 
-void  
- ReadPictureInfo() {
+void
+ ReadPictureInfo() {
 
-  Json::Reader reader;
+  Json::Reader reader;
 
-  ifstream file("picture.json"  
+  ifstream file("picture.json"  
 );
 
-  assert(file.is_open());
+  assert(file.is_open());
 
-  Json::Value root;
+  Json::Value root;
 
-  if  
- (!reader.parse(file, root, false  
+  if  
+(!reader.parse(file, root, false  
 )) {
 
-    printf("Parse error"  
+    printf("Parse error"  
 );
 
-    exit(1  
+    exit(1  
 );
 
-  }
+  }
 
-  gPictureInfo.name = root["name"  
+  gPictureInfo.name = root["name"  
 ].asString();
 
-  gPictureInfo.rotation = (float  
+  gPictureInfo.rotation = (float  
 )root["rotation"  
 ].asDouble();
 
-  gPictureInfo.positionX = (float  
+  gPictureInfo.positionX = (float  
 )root["positionX"  
 ].asDouble();
 
-  gPictureInfo.positionY = (float  
+  gPictureInfo.positionY = (float  
 )root["positionY"  
 ].asDouble();
 
-  gPictureInfo.scaleX = (float  
+  gPictureInfo.scaleX = (float  
 )root["scaleX"  
 ].asDouble();
 
-  gPictureInfo.scaleY = (float  
+  gPictureInfo.scaleY = (float  
 )root["scaleY"  
 ].asDouble();
 
 }
 
-void  
- PictureInit() {
+void
+ PictureInit() {
 
-  ReadPictureInfo();
+  ReadPictureInfo();
 
-}  
-  
-  
-  
-// display  
-  
-void  
-  SceneShow(GLvoid) {
+}
+```
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+```cpp
+// display
 
-  glBindTexture(GL_TEXTURE_2D, gTexName);
+void
+  SceneShow(GLvoid) {
 
-  glPushMatrix();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  glMatrixMode(GL_MODELVIEW);
+  glBindTexture(GL_TEXTURE_2D, gTexName);
 
-  glTranslatef(gPictureInfo.positionX, gPictureInfo.positionY, 0  
+  glPushMatrix();
+
+  glMatrixMode(GL_MODELVIEW);
+
+  glTranslatef(gPictureInfo.positionX, gPictureInfo.positionY, 0  
 );
 
-  glScalef(gPictureInfo.scaleX, gPictureInfo.scaleY, 0.0  
+  glScalef(gPictureInfo.scaleX, gPictureInfo.scaleY, 0.0  
 );
 
-  glRotatef(gPictureInfo.rotation, 0  
+  glRotatef(gPictureInfo.rotation, 0  
 , 0  
 , 1.0  
 );
 
-  glBegin(GL_QUADS);
+  glBegin(GL_QUADS);
 
-  glTexCoord2f(0.0  
- , 1.0  
- ); glVertex3f(-1.0  
- , -1.0  
- , 0.0  
- );
+  glTexCoord2f(0.0  
+  , 1.0  
+  ); glVertex3f(-1.0  
+  , -1.0  
+  , 0.0  
+  );
 
-  glTexCoord2f(1.0  
- , 1.0  
- ); glVertex3f(1.0  
- , -1.0  
- , 0.0  
- );
+  glTexCoord2f(1.0  
+  , 1.0  
+  ); glVertex3f(1.0  
+  , -1.0  
+  , 0.0  
+  );
 
-  glTexCoord2f(1.0  
- , 0.0  
- ); glVertex3f(1.0  
- , 1.0  
- , 0.0  
- );
+  glTexCoord2f(1.0  
+  , 0.0  
+  ); glVertex3f(1.0  
+  , 1.0  
+  , 0.0  
+  );
 
-  glTexCoord2f(0.0  
- , 0.0  
- ); glVertex3f(-1.0  
- , 1.0  
- , 0.0  
- );
+  glTexCoord2f(0.0  
+  , 0.0  
+  ); glVertex3f(-1.0  
+  , 1.0  
+  , 0.0  
+  );
 
-  glEnd();
+  glEnd();
 
-  glPopMatrix();
+  glPopMatrix();
 
-}    
-  
+}
+```
 
 添加了相应的读取代码而已，并在模型矩阵变换的时候添加了scale和rotate相关的代码，其实都没有什么新鲜的。 
 
 ![](http://hi.csdn.net/attachment/201007/21/0_1279740380maVy.gif)  
 
 这里的乐趣在于，你可以不改变任何代码，通过配置实现很多改变了，虽然仅仅是这么一幅图。比如：  
-  
-**{**  
-  
 
-    "name"  
- : "dragon.png"  
-,
-
-    "rotation"  
- : 0,
-
-    "positionX"  
- : 0.5,
-
-    "positionY"  
- : 0.0,
-
-    "scaleX"  
- : -0.3,
-
-    "scaleY"  
- : 1.0  
-**}**  
-  
-  
-  
+```json
+{
+    "name" : "dragon.png",
+    "rotation" : 0,
+    "positionX" : 0.5,
+    "positionY" : 0.0,
+    "scaleX" : -0.3,
+    "scaleY" : 1.0
+}
+```
 
 会得到如下的图：
 
@@ -797,379 +761,351 @@ void
 ### Json数组
 
     其实讲了上面的两个例子，我是想说明怎么样同时显示上述两幅图，都通过配置。这需要用到Json中的数组的概念，当然，懂一点编程的人对此都不会太陌生。配置如下：  
-  
-**[**  
-  
-  
-**{**  
-  
 
-    "name"  
- : "dragon.png"  
-,
-
-        "rotation"  
- : 0,
-
-        "positionX"  
- : -0.5,
-
-        "positionY"  
- : 0.0,
-
-        "scaleX"  
- : 0.3,
-
-        "scaleY"  
- : 1.0  
-**}**  
-  
-,  
-**{**  
-  
-
-    "name"  
- : "dragon.png"  
-,
-
-    "rotation"  
- : 0,
-
-    "positionX"  
- : 0.5,
-
-    "positionY"  
- : 0.0,
-
-    "scaleX"  
- : -0.3,
-
-    "scaleY"  
- : 1.0  
-**}**  
-  
-  
-**]**  
+```json
+[
+  {
+    "name" : "dragon.png",
+    "rotation" : 0,
+    "positionX" : -0.5,
+    "positionY" : 0.0,
+    "scaleX" : 0.3,
+    "scaleY" : 1.0
+  },
+  {
+    "name" : "dragon.png",
+    "rotation" : 0,
+    "positionX" : 0.5,
+    "positionY" : 0.0,
+    "scaleX" : -0.3,
+    "scaleY" : 1.0
+  }
+]
+```
 
 同时，代码的改动可能有些大，因为需要在任意地方都将原来的全局对象改为全局vector.实际的新内容除了解析Json那一部分，倒是几乎完全没有。解析Json数组时，与用普通的字符串key来索引value的差别仅仅在于此时只需要用整数来索引即可。
 
 如下：  
-  
-  
-  
-using  
- namespace  
- std;  
-struct  
- PictureInfo {
 
-  string name;
+```cpp
+using
+ namespace
+ std;
+struct
+ PictureInfo {
 
-  float  
- rotation;
+  string name;
 
-  float  
- positionX;
+  float
+ rotation;
 
-  float  
- positionY;
+  float
+ positionX;
 
-  float  
- scaleX;
+  float
+ positionY;
 
-  float  
- scaleY;
+  float
+ scaleX;
 
-  // can't read from config,read from surface  
+  float
+ scaleY;
 
-  int  
- width;
+  // can't read from config,read from surface
 
-  int  
- height;
+  int
+ width;
 
-  GLuint texName;
+  int
+ height;
+
+  GLuint texName;
 
 };
 
-// didn't care about efficiency too much as a demo  
+// didn't care about efficiency too much as a demo
 
 vector<PictureInfo> gPictureInfoVec;
 
-void  
- ReadPictureInfo() {
+void
+ ReadPictureInfo() {
 
-  Json::Reader reader;
+  Json::Reader reader;
 
-  ifstream file("picture.json"  
+  ifstream file("picture.json"  
 );
 
-  assert(file.is_open());
+  assert(file.is_open());
 
-  Json::Value root;
+  Json::Value root;
 
-  if  
- (!reader.parse(file, root, false  
+  if  
+(!reader.parse(file, root, false  
 )) {
 
-    printf("Parse error"  
+    printf("Parse error"  
 );
 
-    exit(1  
+    exit(1  
 );
 
-  }
+  }
 
-  assert(root.isArray());
+  assert(root.isArray());
 
-  PictureInfo info;
+  PictureInfo info;
 
-  int  
- size = root.size();
+  int
+ size = root.size();
 
-  for  
- (int  
- i = 0  
+  for
+ (int
+  i = 0
 ; i < size; ++i) {
 
-    Json::Value &current = root[i];
+    Json::Value &current = root[i];
 
-    info.name = current["name"  
+    info.name = current["name"  
 ].asString();
 
-    info.rotation = (float  
+    info.rotation = (float  
 )current["rotation"  
 ].asDouble();
 
-    info.positionX = (float  
+    info.positionX = (float  
 )current["positionX"  
 ].asDouble();
 
-    info.positionY = (float  
+    info.positionY = (float  
 )current["positionY"  
 ].asDouble();
 
-    info.scaleX = (float  
+    info.scaleX = (float  
 )current["scaleX"  
 ].asDouble();
 
-    info.scaleY = (float  
+    info.scaleY = (float  
 )current["scaleY"  
 ].asDouble();
 
-    gPictureInfoVec.push_back(info);
+    gPictureInfoVec.push_back(info);
 
-  }
+  }
 
 }
+```
 
 上面这段for循环中的内容，root[i]的使用方式就是JsonCpp中索引Json数组的方式，很简单是吧？
 
 于是，添加相应的显示代码后（其实也没有新内容，就是原来的东西变成数组）  
-  
-//OpenGL初始化开始  
-  
-void  
- SceneInit(int  
-  w,int  
-  h)
+
+```cpp
+//OpenGL初始化开始
+
+void
+ SceneInit(int
+  w,int
+  h)
 
 {
 
-  glClearColor (1.0f  
- , 1.0f  
- , 1.0f  
- , 0.0  
- );
+  glClearColor (1.0f
+  , 1.0f
+  , 1.0f
+  , 0.0
+  );
 
-  glViewport(0  
-, 0  
+  glViewport(0
+, 0
 , w, h);
 
-  glShadeModel(GL_FLAT);
+  glShadeModel(GL_FLAT);
 
-  for  
- (vector<PictureInfo>::iterator it = gPictureInfoVec.begin();
+  for
+ (vector<PictureInfo>::iterator it = gPictureInfoVec.begin();
 
-    it != gPictureInfoVec.end();
+    it != gPictureInfoVec.end();
 
-    ++it) {
+    ++it) {
 
-      PictureInfo& info = *it;
+      PictureInfo& info = *it;
 
-      SDL_Surface *surface = IMG_Load(info.name.c_str());
+      SDL_Surface *surface = IMG_Load(info.name.c_str());
 
-      if  
- (!surface)
+      if
+ (!surface)
 
-      {
+      {
 
-        printf("Load the picture failed:  
+        printf("Load the picture failed:  
 %s  
 "  
 ,info.name.c_str());
 
-        exit(1  
+        exit(1  
 );
 
-      }
+      }
 
-      info.width = surface->w;
+      info.width = surface->w;
 
-      info.height = surface->h;
+      info.height = surface->h;
 
-      GLenum texture_format;
+      GLenum texture_format;
 
-      // get the number of channels in the SDL surface  
+      // get the number of channels in the SDL surface  
 
-      GLint nOfColors = surface->format->BytesPerPixel;
+      GLint nOfColors = surface->format->BytesPerPixel;
 
-      if  
- (nOfColors == 4  
-)     // contains an alpha channel  
+      if
+ (nOfColors == 4  
+)     // contains an alpha channel
 
-      {
+      {
 
-        if  
- (surface->format->Rmask == 0x000000ff  
+        if
+ (surface->format->Rmask == 0x000000ff  
 )
 
-          texture_format = GL_RGBA;
+          texture_format = GL_RGBA;
 
-        else  
+        else
 
-          texture_format = GL_BGRA;
+          texture_format = GL_BGRA;
 
-      } else  
- if  
- (nOfColors == 3  
-)     // no alpha channel  
+      } else
+ if
+ (nOfColors == 3  
+)     // no alpha channel
 
-      {
+      {
 
-        if  
- (surface->format->Rmask == 0x000000ff  
+        if
+ (surface->format->Rmask == 0x000000ff  
 )
 
-          texture_format = GL_RGB;
+          texture_format = GL_RGB;
 
-        else  
+        else
 
-          texture_format = GL_BGR;
+          texture_format = GL_BGR;
 
-      } else  
- {
+      } else
+ {
 
-        printf("warning: the image is not truecolor..  this will probably break  
+        printf("warning: the image is not truecolor..  this will probably break  
 /n  
 "  
 );
 
-        exit(1  
+        exit(1  
 );
 
-      }
+      }
 
-      glGenTextures(1  
-  , &info.texName);
+      glGenTextures(1
+  , &info.texName);
 
-      glBindTexture(GL_TEXTURE_2D, info.texName);
+      glBindTexture(GL_TEXTURE_2D, info.texName);
 
-      glTexImage2D( GL_TEXTURE_2D, 0  
-, nOfColors, surface->w, surface->h, 0  
+      glTexImage2D( GL_TEXTURE_2D, 0
+, nOfColors, surface->w, surface->h, 0
 ,
 
-        texture_format, GL_UNSIGNED_BYTE, surface->pixels );
+        texture_format, GL_UNSIGNED_BYTE, surface->pixels );
 
-      // Specify filtering and edge actions  
+      // Specify filtering and edge actions  
 
-      glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 
-      glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
-      //Free the loaded image  
+      //Free the loaded image  
 
-      SDL_FreeSurface( surface ); 
+      SDL_FreeSurface( surface ); 
 
-  }
+  }
 
-  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_DEPTH_TEST);
 
-  glEnable( GL_TEXTURE_2D );
+  glEnable( GL_TEXTURE_2D );
 
 }
+```
 
-// display  
-  
-void  
-  SceneShow(GLvoid) {
+```cpp
+// display
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void
+  SceneShow(GLvoid) {
 
-  for  
- (vector<PictureInfo>::const_iterator it = gPictureInfoVec.begin();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    it != gPictureInfoVec.end();
+  for
+ (vector<PictureInfo>::const_iterator it = gPictureInfoVec.begin();
 
-    ++it) {
+    it != gPictureInfoVec.end();
 
-      const  
- PictureInfo& info = *it;
+    ++it) {
 
-      glBindTexture(GL_TEXTURE_2D, info.texName);
+      const
+ PictureInfo& info = *it;
 
-      glPushMatrix();
+      glBindTexture(GL_TEXTURE_2D, info.texName);
 
-      glMatrixMode(GL_MODELVIEW);
+      glPushMatrix();
 
-      glTranslatef(info.positionX, info.positionY, 0  
+      glMatrixMode(GL_MODELVIEW);
+
+      glTranslatef(info.positionX, info.positionY, 0  
 );
 
-      glScalef(info.scaleX, info.scaleY, 0.0  
+      glScalef(info.scaleX, info.scaleY, 0.0  
 );
 
-      glRotatef(info.rotation, 0  
-, 0  
+      glRotatef(info.rotation, 0
+, 0
 , 1.0  
 );
 
-      glBegin(GL_QUADS);
+      glBegin(GL_QUADS);
 
-      glTexCoord2f(0.0  
- , 1.0  
- ); glVertex3f(-1.0  
- , -1.0  
- , 0.0  
- );
+      glTexCoord2f(0.0
+  , 1.0
+  ); glVertex3f(-1.0
+  , -1.0
+  , 0.0
+  );
 
-      glTexCoord2f(1.0  
- , 1.0  
- ); glVertex3f(1.0  
- , -1.0  
- , 0.0  
- );
+      glTexCoord2f(1.0
+  , 1.0
+  ); glVertex3f(1.0
+  , -1.0
+  , 0.0
+  );
 
-      glTexCoord2f(1.0  
- , 0.0  
- ); glVertex3f(1.0  
- , 1.0  
- , 0.0  
- );
+      glTexCoord2f(1.0
+  , 0.0
+  ); glVertex3f(1.0
+  , 1.0
+  , 0.0
+  );
 
-      glTexCoord2f(0.0  
- , 0.0  
- ); glVertex3f(-1.0  
- , 1.0  
- , 0.0  
- );
+      glTexCoord2f(0.0
+  , 0.0
+  ); glVertex3f(-1.0
+  , 1.0
+  , 0.0
+  );
 
-      glEnd();
+      glEnd();
 
-      glPopMatrix();
+      glPopMatrix();
 
-  }
+  }
 
-}  
+}
+```
 
 可以看到一个很有意思的图^^当然，中间要是再加个球那就更好了。  
 

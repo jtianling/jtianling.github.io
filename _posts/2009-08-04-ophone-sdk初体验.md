@@ -113,29 +113,20 @@ java -jar ophone-sdk_windows-1.0-setup.jar
 
 要小的多，这也体现了中移动对于Android的优化，（从体积上都能看出来），体现了二次开发的成果。最后我通过比较，两者唯一相似的仅仅是Tools的名字及一些库了，相同的库如下： 
 
-/tools/lib/jcommon-1.0.12.jar 
-
-/tools/lib/jfreechart-1.0.9-swt.jar 
-
-/tools/lib/jfreechart-1.0.9.jar 
-
-/tools/lib/org.eclipse.core.commands_3.2.0.I20060605-1400.jar 
-
-/tools/lib/org.eclipse.equinox.common_3.2.0.v20060603.jar 
-
-/tools/lib/org.eclipse.jface_3.2.0.I20060605-1400.jar 
-
-/tools/lib/swing-worker-1.1.jar 
-
-/tools/lib/swt-awt-win32-3236.dll 
-
-/tools/lib/swt-gdip-win32-3236.dll 
-
-/tools/lib/swt-wgl-win32-3236.dll 
-
-/tools/lib/swt-win32-3236.dll 
-
-/tools/lib/swt.jar 
+```bash
+/tools/lib/jcommon-1.0.12.jar
+/tools/lib/jfreechart-1.0.9-swt.jar
+/tools/lib/jfreechart-1.0.9.jar
+/tools/lib/org.eclipse.core.commands_3.2.0.I20060605-1400.jar
+/tools/lib/org.eclipse.equinox.common_3.2.0.v20060603.jar
+/tools/lib/org.eclipse.jface_3.2.0.I20060605-1400.jar
+/tools/lib/swing-worker-1.1.jar
+/tools/lib/swt-awt-win32-3236.dll
+/tools/lib/swt-gdip-win32-3236.dll
+/tools/lib/swt-wgl-win32-3236.dll
+/tools/lib/swt-win32-3236.dll
+/tools/lib/swt.jar
+```
 
 可以看到，为了方便大家，也为了更好的体现开源共享的精神，中移动原封不移动的使用了google的jcommon,core等核心库，使用了swing,swt等界面库，实在是广大开发者的福音。更近一步的坚定了我追随中移动的步伐。 
 
@@ -217,8 +208,4 @@ Local Search这样重要的功能也有了，了不起，Mail这样的功能自�
 
 # 展望 
 
-太强大了！！！！OPhone是兼容Android API的，伟大的设计啊。。。大家都知道，Android手机是有一些优点的，OPhone又是与之兼容的，那么我们买了一个OPhone手机，就相当于同时又买了一个Android手机，简直就是买一个顶两个，开发难度却相当于一个，这简直#@%#@%#@%太强大了，无论对于普通用户还是对于程序开发者都是天大的好消息，从此后，开发OPhone应用程序，不回头。 
-
-  
-  
-
+太强大了！！！！OPhone是兼容Android API的，伟大的设计啊。。。大家都知道，Android手机是有一些优点的，OPhone又是与之兼容的，那么我们买了一个OPhone手机，就相当于同时又买了一个Android手机，简直就是买一个顶两个，开发难度却相当于一个，这简直#@%#@%#@%太强大了，无论对于普通用户还是对于程序开发者都是天大的好消息，从此后，开发OPhone应用程序，不回头。

@@ -61,97 +61,54 @@ _set_purecall_handler(HandlePureVirtualCall)确定纯虚函数调用发生时调
 
 ExceptionExample:
 
+```cpp
 #include <windows.h>
-
 #include <Dbghelp.h>
 
 using namespace std;
 
- 
-
 #pragma auto_inline (off)
-
 #pragma comment( lib, "DbgHelp" )
 
- 
-
 // 为了程序的简洁和集中关注关心的东西，按示例程序的惯例忽略错误检查，实际使用时请注意
-
 LONG WINAPI MyUnhandledExceptionFilter(
-
 struct _EXCEPTION_POINTERS* ExceptionInfo
-
-    )
-
+    )
 {
+    HANDLE lhDumpFile = CreateFile(_T("DumpFile.dmp"), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL ,NULL);
 
-    HANDLE lhDumpFile = CreateFile(_T("DumpFile.dmp"), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL ,NULL);
+    MINIDUMP_EXCEPTION_INFORMATION loExceptionInfo;
+    loExceptionInfo.ExceptionPointers = ExceptionInfo;
+    loExceptionInfo.ThreadId = GetCurrentThreadId();
+    loExceptionInfo.ClientPointers = TRUE;
+    MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),lhDumpFile, MiniDumpNormal, &loExceptionInfo, NULL, NULL);
 
- 
+    CloseHandle(lhDumpFile);
 
-    MINIDUMP_EXCEPTION_INFORMATION loExceptionInfo;
-
-    loExceptionInfo.ExceptionPointers = ExceptionInfo;
-
-    loExceptionInfo.ThreadId = GetCurrentThreadId();
-
-    loExceptionInfo.ClientPointers = TRUE;
-
-    MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),lhDumpFile, MiniDumpNormal, &loExceptionInfo, NULL, NULL);
-
- 
-
-    CloseHandle(lhDumpFile);
-
- 
-
-    return EXCEPTION_EXECUTE_HANDLER;
-
+    return EXCEPTION_EXECUTE_HANDLER;
 }
 
- 
-
- 
 
 void Fun2()
-
 {
-
-    int *p = NULL;
-
-    *p = 0;
-
+    int *p = NULL;
+    *p = 0;
 }
-
- 
 
 void Fun()
-
 {
-
-    Fun2();
-
+    Fun2();
 }
-
- 
 
 int main()
-
 {
+    SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
 
-    SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
+    Fun();
 
- 
-
-    Fun();
-
- 
-
-    return 1;
-
+    return 1;
 }
-
- 
+```
 
 API的调用仅仅作为释放，查看下MSDN就知道使用方法了，
 
@@ -177,19 +134,12 @@ Dump文件的在Windows下的使用非常简单，但是就是因为太过于简
 
 在上例中，堆栈信息是：
 
->     Exception.exe!Fun2()  行36       C++
-
-      Exception.exe!main()  行50 C++
-
-      Exception.exe!__tmainCRTStartup()  行597 + 0x17 字节       C
-
-      kernel32.dll!7c817077()       
-
-      [下面的框架可能不正确和/或缺失，没有为 kernel32.dll 加载符号]   
-
-      ntdll.dll!7c93005d()  
-
- 
+>     Exception.exe!Fun2()  行36       C++
+>      Exception.exe!main()  行50 C++
+>      Exception.exe!__tmainCRTStartup()  行597 + 0x17 字节       C
+>      kernel32.dll!7c817077()       
+>      [下面的框架可能不正确和/或缺失，没有为 kernel32.dll 加载符号]   
+>      ntdll.dll!7c93005d()  
 
 然后，寄存器的值为：
 
@@ -225,151 +175,85 @@ The Microsoft C/C++ Optimizing Compiler interprets this function as a keyword, a
 
 事实上，刚开始我使用的时候，哪个地方都试遍了，果然都是报编译错误。因为此函数使用方式如此奇怪，并且没有example。。。。。最后在绝望中。。。看到了Platform Builder for Microsoft Windows CE 5.0的词函数的说明，里面有个说明，然后我吐血了。。。。
 
+```cpp
 try 
-
 { 
-
-    // try block 
-
+    // try block 
 } 
-
 except (FilterFunction(GetExceptionInformation()) 
-
 { 
-
-    // exception handler block 
-
+    // exception handler block 
 }
-
- 
+```
 
 原来是这样使用的啊。。。。。。。。。。晕
 
 HandleWithoutCrash例子：
 
+```cpp
 #include <windows.h>
-
 #include <Dbghelp.h>
 
 using namespace std;
 
- 
-
 #pragma auto_inline (off)
-
 #pragma comment( lib, "DbgHelp" )
 
- 
-
 // 为了程序的简洁和集中关注关心的东西，按示例程序的惯例忽略错误检查，实际使用时请注意
-
 LONG WINAPI MyUnhandledExceptionFilter(
-
 struct _EXCEPTION_POINTERS* ExceptionInfo
-
-    )
-
+    )
 {
+    HANDLE lhDumpFile = CreateFile(_T("DumpFile.dmp"), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL ,NULL);
 
-    HANDLE lhDumpFile = CreateFile(_T("DumpFile.dmp"), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL ,NULL);
+    MINIDUMP_EXCEPTION_INFORMATION loExceptionInfo;
+    loExceptionInfo.ExceptionPointers = ExceptionInfo;
+    loExceptionInfo.ThreadId = GetCurrentThreadId();
+    loExceptionInfo.ClientPointers = TRUE;
+    MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),lhDumpFile, MiniDumpNormal, &loExceptionInfo, NULL, NULL);
 
- 
+    CloseHandle(lhDumpFile);
 
-    MINIDUMP_EXCEPTION_INFORMATION loExceptionInfo;
-
-    loExceptionInfo.ExceptionPointers = ExceptionInfo;
-
-    loExceptionInfo.ThreadId = GetCurrentThreadId();
-
-    loExceptionInfo.ClientPointers = TRUE;
-
-    MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),lhDumpFile, MiniDumpNormal, &loExceptionInfo, NULL, NULL);
-
- 
-
-    CloseHandle(lhDumpFile);
-
- 
-
-    return EXCEPTION_EXECUTE_HANDLER;
-
+    return EXCEPTION_EXECUTE_HANDLER;
 }
 
- 
-
- 
 
 void Fun2()
-
 {
+    __try
+    {
+       static bool b = false;
+      
+       if(!b)
+       {
+           b = true;
+           int *p = NULL;
+           *p = 0;
+        }
+       else
+       {
+           MessageBox(NULL, _T("Here"), _T(""), MB_OK);
+       }
 
-    __try
-
-    {
-
-       static bool b = false;
-
-      
-
-       if(!b)
-
-       {
-
-           b = true;
-
-           int *p = NULL;
-
-           *p = 0;
-
-        }
-
-       else
-
-       {
-
-           MessageBox(NULL, _T("Here"), _T(""), MB_OK);
-
-       }
-
- 
-
-    }
-
-    __except(MyUnhandledExceptionFilter(GetExceptionInformation()))
-
-    {
-
-    }
-
+    }
+    __except(MyUnhandledExceptionFilter(GetExceptionInformation()))
+    {
+    }
 }
-
- 
 
 void Fun()
-
 {
-
-    Fun2();
-
+    Fun2();
 }
-
- 
 
 int main()
-
 {
+    Fun();
+    Fun();
 
-    Fun();
-
-    Fun();
-
- 
-
-    return 1;
-
+    return 1;
 }
-
- 
+```
 
 这里例子中，你可以调试程序了，因为程序不会崩溃，这样VS不会和你抢异常的控制。同时，看到dump文件的同时，也可以看到，程序实际上是继续运行了下去，因为MessageBox还是弹出来了。这。。。就是我们想要的。。。。。
 
@@ -398,5 +282,3 @@ int main()
   
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
- 

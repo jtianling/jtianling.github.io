@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 ## 一天一个C Run-Time Library 函数 (7)  asctime（时间函数）
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
@@ -37,52 +35,29 @@ string. These functions are deprecated because more secure versions are
 available; see _asctime_s,_  
   
 ---  
-char  
-*asctime(     const struct tm *_timeptr_ );  
-  
+```c
+char
+*asctime(     const struct tm *_timeptr_ );
+```
+
 ## 测试程序：
 
+```c
 #include <stdio.h>
-
 #include <time.h>
 
- 
-
- 
-
- 
-
 int main( void )
-
 {
+    time_t ltNow = time(NULL);
+    struct tm* lptmNow = localtime(&ltNow);
 
- 
+    const char* lpszNow = asctime(lptmNow);
 
-    time_t ltNow = time(NULL);
+    printf("%s",lpszNow);
 
-    struct tm*  
-lptmNow = localtime(&ltNow);
-
- 
-
-    const char*  
-lpszNow = asctime(lptmNow);
-
- 
-
-   
-
-    printf("%s",lpszNow);
-
- 
-
- 
-
-    return 0;
-
+    return 0;
 }
-
- 
+```
 
  
 
@@ -94,99 +69,46 @@ lpszNow = asctime(lptmNow);
 
 ##  实现：
 
+```c
 static _TSCHAR * __cdecl store_dt (
-
-    REG1 _TSCHAR *p,
-
-    REG2 int val
-
-    )
-
+    REG1 _TSCHAR *p,
+    REG2 int val
+    )
 {
-
-    *p++ = (_TSCHAR)(_T('0') + val /  
-10);
-
-    *p++ = (_TSCHAR)(_T('0') + val %  
-10);
-
-    return(p);
-
+    *p++ = (_TSCHAR)(_T('0') + val / 10);
+    *p++ = (_TSCHAR)(_T('0') + val % 10);
+    return(p);
 }
 
- 
+REG2 _TSCHAR *p = buffer;
+int day, mon;
+int i;
+day = tb->tm_wday * 3;     /* index to correct day string */
+mon = tb->tm_mon * 3;       /* index to correct month string */
 
-    REG2 _TSCHAR *p = buffer;
+for (i=0; i < 3; i++,p++) {
+    *p = *(__dnames + day + i);
+    *(p+4) = *(__mnames + mon + i);
+}
 
-    int day, mon;
+*p = _T(' ');           /* blank between day and month */
 
-    int i;
+p += 4;
 
-    day = tb->tm_wday  
-* 3;      /*  
-index to correct day string */
-
-    mon = tb->tm_mon *  
-3;       /*  
-index to correct month string */
-
-    for (i=0; i < 3; i++,p++) {
-
-        *p =  
-*(__dnames \+ day  
-\+ i);
-
-        *(p+4)  
-= *(__mnames \+ mon  
-\+ i);
-
-    }
-
- 
-
-    *p = _T(' ');           /* blank  
-between day and month */
-
- 
-
-    p += 4;
-
- 
-
-    *p++ = _T(' ');
-
-    p = store_dt(p, tb->tm_mday);   /* day of the  
-month (1-31) */
-
-    *p++ = _T(' ');
-
-    p = store_dt(p, tb->tm_hour);   /* hours (0-23) */
-
-    *p++ = _T(':');
-
-    p = store_dt(p, tb->tm_min);    /* minutes (0-59)  
-*/
-
-    *p++ = _T(':');
-
-    p = store_dt(p, tb->tm_sec);    /* seconds (0-59)  
-*/
-
-    *p++ = _T(' ');
-
-    p = store_dt(p, 19  
-\+ (tb->tm_year/100));  
-/* year (after 1900) */
-
-    p = store_dt(p, tb->tm_year%100);
-
-    *p++ = _T('/n');
-
-    *p = _T('/0');
-
- 
-
- 
+*p++ = _T(' ');
+p = store_dt(p, tb->tm_mday);   /* day of the month (1-31) */
+*p++ = _T(' ');
+p = store_dt(p, tb->tm_hour);   /* hours (0-23) */
+*p++ = _T(':');
+p = store_dt(p, tb->tm_min);    /* minutes (0-59) */
+*p++ = _T(':');
+p = store_dt(p, tb->tm_sec);    /* seconds (0-59) */
+*p++ = _T(' ');
+p = store_dt(p, 19 + (tb->tm_year/100));  /* year (after 1900) */
+p = store_dt(p, tb->tm_year%100);
+*p++ = _T('/n');
+*p = _T('/0');
+```
 
  
 
@@ -196,29 +118,21 @@ MS:
 
 很有意思的代码，淋漓尽致的体现了C语言指针的灵活。
 
+```c
 for (i=0; i < 3; i++,p++) {
-
-        *p =  
-*(__dnames \+ day  
-\+ i);
-
-        *(p+4)  
-= *(__mnames \+ mon  
-\+ i);
-
-    }
+    *p = *(__dnames + day + i);
+    *(p+4) = *(__mnames + mon + i);
+}
+```
 
 通过对月和星期的buf,用这个循环完成的6个字符的拷贝更是很让我欣赏：）
 
 通过val/10的加上’0’的asc值的方式完成的默认前置0的赋值也是很有意思的技巧。
 
-    *p++ = (_TSCHAR)(_T('0') + val /  
-10);
-
-*p++ = (_TSCHAR)(_T('0') + val %  
-10);
-
- 
+```c
+*p++ = (_TSCHAR)(_T('0') + val / 10);
+*p++ = (_TSCHAR)(_T('0') + val % 10);
+```
 
  
 
@@ -237,7 +151,6 @@ gcc:
  
 
  
-
 ## 相关函数：
 
 gmtime,  localtime,  ctime, time, 
@@ -249,5 +162,3 @@ gmtime,  localtime,  ctime, time,
  
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
-
- 

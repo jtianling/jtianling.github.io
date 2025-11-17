@@ -21,8 +21,6 @@ author:
   last_name: ''
 ---
 
-  
-
 ### 懒惰是程序员的美德! 懒惰程序员的最爱AutoHotkey 尝鲜
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**
@@ -79,15 +77,19 @@ AutoHotkey自然对Hotkey又特别支持啦，脚本中用符号表示快捷键�
 
 事实上，一个快捷键可以对应多个命令，也可以多个快捷键对应一个命令，格式有点不多，见下例。
 
-#space::   
-Run <http://www.jtianling.com>   
-Run <http://hi.csdn.net/vagrxie>   
-return 
-
-#^a::   
-#^b::   
-Run <http://www.jtianling.com>   
+```ahk
+#space::
+Run http://www.jtianling.com
+Run http://hi.csdn.net/vagrxie
 return
+```
+
+```ahk
+#^a::
+#^b::
+Run http://www.jtianling.com
+return
+```
 
 此例即是在按下Win + space时打开我的CSDN博客和空间两个网页，并且CTRL + WIN + A与CTRL + WIN + B都是打开我的博客。举这两个例子主要是告诉大家AutoHotkey的格式相对比较灵活，比如这里的一对多和多对一。当不是一对一并且写在一行时，需要以return来表示脚本的结束。
 
@@ -101,11 +103,13 @@ MsgBox Text
 
 可以通过MsgBox弹出Yes Or No等选项，并获取，以判断分支执行程序。
 
-MsgBox, 4,?,Yes or No?   
-ifMsgBox Yes   
-MsgBox You Said Yes!   
-else   
+```ahk
+MsgBox, 4,?,Yes or No?
+ifMsgBox Yes
+MsgBox You Said Yes!
+else
 MsgBox You Said No?
+```
 
 分支执行的语法比较奇怪，通过if结合MsgBox构成一个IfMsgBox特别应对MsgBox的选择。
 
@@ -113,18 +117,20 @@ MsgBox You Said No?
 
 个人感觉，对窗口的控制是AutoHotkey的精髓所在，这也是为什么我将其比作GUI下的bash。这里我还是通过从简单到复杂的例子来描述。比如，我现在在编辑文档的时候常常会需要打开AutoHotkey的帮助文档查看，一般我的操作是用鼠标点击其最小化的窗口以激活，或者我也会需要开启gvim以编辑示例程序，也是需要用鼠标去激活，因为用atl+Tab的方式还不如用鼠标快，有了AutoHotkey，我们就有更方便的Hotkey去完成这样的任务了。
 
-SetTitleMatchMode 2   
-#tab::   
-ifWinNotExist, GVIM   
-{   
-MsgBox GVIM is not running   
-return   
-}   
-IfWinNotActive,GVIM   
-WinActivate,GVIM   
-else   
-WinActivate,Windows Live Writer   
+```ahk
+SetTitleMatchMode 2
+#tab::
+ifWinNotExist, GVIM
+{
+    MsgBox GVIM is not running
+    return
+}
+IfWinNotActive,GVIM
+    WinActivate,GVIM
+else
+    WinActivate,Windows Live Writer
 return
+```
 
 如上脚本，先判断是否有标题包含GVIM的窗口存在，不存在则报告GVIM没有运行，不然WIN+TAB键的效果就是在GVim与Windows Live Writer之间切换，非常方便。ifWinNotExist如其名，用于判断一个窗口是否存在，ifWinNotActive也如其名用于判断一个窗口是否激活，第一个参数都是表示窗口标题文字的匹配，匹配模式由SetTitleMatchMode决定。
 
@@ -136,16 +142,18 @@ return
 
 实际上AutoHotkey对窗口的控制还有很多强大的功能，一篇小文无法一一尽数，这里再举个例子：
 
-SetTitleMatchMode 2   
-Loop, 10   
-{   
-Random, x, 0, 50   
-Random, y, 0, 50   
-WinMove,GVIM,, %x%, %y%   
-WinHide,GVIM   
-Sleep, 100   
-WinShow,GVIM   
+```ahk
+SetTitleMatchMode 2
+Loop, 10
+{
+    Random, x, 0, 50
+    Random, y, 0, 50
+    WinMove,GVIM,, %x%, %y%
+    WinHide,GVIM
+    Sleep, 100
+    WinShow,GVIM
 }
+```
 
 上述程序运行后，GVIM窗口会变的疯狂。。。WinMove,WinHide,WinShow的意思都很明显，分别是移动，隐藏，显示窗口，这里有两个有新意的地方，一个是Random和x,y，有点编程知识的人都看出来了，AutoHotkey是允许设定变量的，此处的x,y就是，引用变量的方式是前后各1个百分号，与windows批处理程序的一样。另外就是Loop,10表示的循环结构了。
 
@@ -155,28 +163,30 @@ WinShow,GVIM
 
 [![image](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image_thumb_633917609499527500.png)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image_2_633917609392965000.png>) 点击左上角的Record按钮就开始记录键盘鼠标的操作了。然后通过点击录制时屏幕左上角的Stop停止录制。上面的脚本是我录制的一段激活Windows live Writer和最小化Windows live Writer的过程。
 
-WinWait, ,   
-IfWinNotActive, , , WinActivate, ,   
-WinWaitActive, ,   
-MouseClick, left, 1159, 889   
-Sleep, 100   
-WinWait, xfsdlaf.ahk (E:/work) - GVIM,   
-IfWinNotActive, xfsdlaf.ahk (E:/work) - GVIM, , WinActivate, xfsdlaf.ahk (E:/work) - GVIM,   
-WinWaitActive, xfsdlaf.ahk (E:/work) - GVIM,   
-MouseClick, left, 908, 17   
-Sleep, 100   
-WinWait, ,   
-IfWinNotActive, , , WinActivate, ,   
-WinWaitActive, ,   
-MouseClick, left, 33216, 32891   
-Sleep, 100   
-WinWait, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer,   
-IfWinNotActive, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer, , WinActivate, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer,   
-WinWaitActive, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer,   
-MouseClick, left, 1362, 10   
-Sleep, 100   
-MouseClick, left, 1387, 10   
-Sleep, 100 
+```ahk
+WinWait, ,
+IfWinNotActive, , , WinActivate, ,
+WinWaitActive, ,
+MouseClick, left, 1159, 889
+Sleep, 100
+WinWait, xfsdlaf.ahk (E:/work) - GVIM
+IfWinNotActive, xfsdlaf.ahk (E:/work) - GVIM, , WinActivate, xfsdlaf.ahk (E:/work) - GVIM
+WinWaitActive, xfsdlaf.ahk (E:/work) - GVIM
+MouseClick, left, 908, 17
+Sleep, 100
+WinWait, ,
+IfWinNotActive, , , WinActivate, ,
+WinWaitActive, ,
+MouseClick, left, 33216, 32891
+Sleep, 100
+WinWait, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer
+IfWinNotActive, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer, , WinActivate, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer
+WinWaitActive, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer
+MouseClick, left, 1362, 10
+Sleep, 100
+MouseClick, left, 1387, 10
+Sleep, 100
+```
 
 会发现自动生成的代码较人工的代码还是乱了很多-_-!机器嘛，不是那么聪明。上面代码很重要的一个就是通过MouseClick来模拟鼠标的点击，有了这个功能，想干什么都可以了………………顺便提及一下，也可以通过
 
@@ -188,14 +198,16 @@ SendEvent Keys
 
 来模拟键盘的输入。下面是一个当你暂时离开机器却有不想锁屏时可以提出警告的脚本。：）
 
-SetTitleMatchMode 2   
-SetKeyDelay 50   
-Words = WARNING{!} DO NOT OPERATE MY COMPUTER{!} 
+```ahk
+SetTitleMatchMode 2
+SetKeyDelay 50
+Words = WARNING{!} DO NOT OPERATE MY COMPUTER{!}
 
-KeyWait, LButton, D   
-run,gvim YouAreUnderMonitored,,Max   
-WinWait,YouAreUnderMonitored   
+KeyWait, LButton, D
+run,gvim YouAreUnderMonitored,,Max
+WinWait,YouAreUnderMonitored
 Send i%Words%{Esc}
+```
 
 此脚本等待鼠标左键单击，然后自动开启gvim并最大化，然后一个字一个字输入警告信息^^不明就里的人一看估计碰鬼了。
 

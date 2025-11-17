@@ -22,8 +22,6 @@ author:
   last_name: ''
 ---
 
-  
-
 # 《Inside C++ Object 》 阅读笔记(3)，实践是检验真理的唯一标准
 
  
@@ -88,6 +86,7 @@ local2(1.0, 1.0, 1.0)；
 
 我测试的时候都写在一起了，源代码如下：
 
+```cpp
 #include <stdio.h>
 
 #include <stdlib.h>
@@ -98,144 +97,82 @@ local2(1.0, 1.0, 1.0)；
 
 using namespace std;
 
- 
-
 class CPoint
-
 {
-
 public:
-
-    CPoint(int aiX = 0, int aiY = 0, int aiZ = 0)
-
-       : miX(aiX), miY(aiY), miZ(aiZ)
-
-    {
-
-       //  miX  
+    CPoint(int aiX = 0, int aiY = 0, int aiZ = 0)
+       : miX(aiX), miY(aiY), miZ(aiZ)
+    {
+       //  miX  
 = 0;
-
-       //  miY  
+       //  miY  
 = 0;
-
-       //  miZ  
+       //  miZ  
 = 0;
+    }
 
-    }
-
- 
-
-    friend ostream&  
+    friend ostream&  
 operator<< (ostream&  
 aos, const CPoint& aoPoint);
-
-    //private:
+    //private:
 
 public:
-
-    int miX;
-
-    int miY;
-
-    int miZ;
-
+    int miX;
+    int miY;
+    int miZ;
 };
-
- 
 
 struct SPoint
-
 {
-
-    int miX;
-
-    int miY;
-
-    int miZ;
-
+    int miX;
+    int miY;
+    int miZ;
 };
 
- 
-
- 
 
 ostream& operator<<  
 (ostream& aos,  
 const CPoint&  
 aoPoint)
-
 {
-
-    aos <<"miX: " <<aoPoint.miX <<"/t"
-
-       <<"miY: "  
+    aos <<"miX: " <<aoPoint.miX <<"/t"
+       <<"miY: "  
 <<aoPoint.miY  
 <<"/t"
-
-       <<"miZ: "  
+       <<"miZ: "  
 <<aoPoint.miZ  
 <<"/t";
 
- 
-
-    return aos;
-
+    return aos;
 }
-
 int main(int argc, char* argv[])
-
 {
-
-    // reference to temp is valid
-
-    const string  
+    // reference to temp is valid
+    const string  
 &str= string("good");
 
- 
+    cout <<str <<endl;
 
-    cout <<str <<endl;
-
- 
-
-    // pointer to temp is not valid
-
-    const string  
+    // pointer to temp is not valid
+    const string  
 *pstr = &string("good");
 
- 
+    cout <<*pstr <<endl;
 
-    cout <<*pstr <<endl;
+    CPoint loPoint(1,2,3);
 
- 
-
- 
-
-    CPoint loPoint(1,2,3);
-
- 
-
-    // line below this is not allowed
-
-    // if CPoint have any function it is  
+    // line below this is not allowed
+    // if CPoint have any function it is  
 not a POD
+    //CPoint loPoint = { 1, 2, 3 };
 
-    //CPoint loPoint = { 1, 2, 3 };
+    SPoint lsPoint = { 1, 2, 3};
 
- 
+    //cout <<loPoint <<endl;
 
-    SPoint lsPoint = { 1, 2, 3};
-
- 
-
-    //cout <<loPoint <<endl;
-
- 
-
-    exit(0);
-
+    exit(0);
 }
-
- 
+```
 
 虽然这边文章有点太考究书本和语法了。。。。。但是其实也再次的给我巩固了一个道理，那就是实践才是检验真理的唯一标准，哪怕侯捷的翻译，lippman的经典著作，一样可能有问题，再经典的书籍，也不能全信，要经过实验，我才能确信。
 
@@ -247,5 +184,3 @@ not a POD
 
 **_write by_**** _九天雁翎_**** _(JTianLing) --  
 blog.csdn.net/vagrxie_**
-
- 

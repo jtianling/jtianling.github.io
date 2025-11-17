@@ -73,27 +73,34 @@ author:
 
     display是其中最主要需要了解的。
 
+```ini
 [ Display]   
-Decoration = <bool>  ;是否显示窗体的外观，比如标题，边框等。   
+Decoration = <bool>  ;是否显示窗体的外观，比如标题，边框等。   
 FullScreen = <bool>   
 ScreenWidth = <int>   
 ScreenHeight = <int>   
 ScreenDepth = <nt>   
-Smoothing = <bool>  ;是否扛锯齿   
+Smoothing = <bool>  ;是否扛锯齿   
 Title = <string>   
 VSync = <bool>
+```
 
 其他的都很好理解了。
 
 ### 其他辅助配置
 
+```ini
 [Render]  
 ShowFPS = true; NB: Displays current FPS in the top left corner of the screen;
+```
 
 简单的用于显示FPS。太方便了。。。。。。。。。。。我不知道在不同场合用不同的方法实现此功能多少次了，iarwain能将此功能整合进引擎，实在是善莫大焉。
 
+```ini
 [Clock]  
-MainClockFrequency = 20  
+MainClockFrequency = 20
+```
+
 只用于没有垂直同步的情况。不然一旦设置，会消耗大量的CPU，一般情况不要有此配置段即可。
 
 有了上面这些，我们已经可以创建一个窗体了。。。。。。。  
@@ -103,8 +110,9 @@ orx_Execute(argc, argv, Init, Run, Exit);
 
 我这里给其包装了一下，全部整合进一个单件的GameApp中。
 
-全部源代码可以整合进一个文件中，也不大：  
-  
+全部源代码可以整合进一个文件中，也不大：
+
+```cpp
 #include "orx.h"
 
 #include <iostream>
@@ -112,109 +120,110 @@ orx_Execute(argc, argv, Init, Run, Exit);
 class GameApp  
 {  
 public :  
-  static  orxSTATUS orxFASTCALL  EventHandler(const  orxEVENT *_pstEvent);  
-  static  orxSTATUS orxFASTCALL  Init();  
-  static  void  orxFASTCALL       Exit();  
-  static  orxSTATUS orxFASTCALL  Run();
+  static  orxSTATUS orxFASTCALL  EventHandler(const  orxEVENT *_pstEvent);  
+  static  orxSTATUS orxFASTCALL  Init();  
+  static  void  orxFASTCALL       Exit();  
+  static  orxSTATUS orxFASTCALL  Run();
 
-  GameApp() {};  
-  ~GameApp() {};
+  GameApp() {};  
+  ~GameApp() {};
 
-  static  GameApp* Instance() {  
-      static  GameApp instance;  
-      return  &instance;  
-  }
+  static  GameApp* Instance() {  
+      static  GameApp instance;  
+      return  &instance;  
+  }
 
 private :  
-  orxSTATUS                     InitGame();  
+  orxSTATUS                     InitGame();  
 };
 
 // Init game function   
 orxSTATUS GameApp::InitGame()  
 {  
-  orxSTATUS eResult = orxSTATUS_SUCCESS;  
-    
-  // Creates viewport   
-  if  ( orxViewport_CreateFromConfig("Viewport" ) == NULL  ) {  
-      eResult = orxSTATUS_FAILURE;  
-  }
+  orxSTATUS eResult = orxSTATUS_SUCCESS;  
+   
+  // Creates viewport   
+  if  ( orxViewport_CreateFromConfig("Viewport" ) == NULL  ) {  
+      eResult = orxSTATUS_FAILURE;  
+  }
 
-  // Done!   
-  return  eResult;  
+  // Done!   
+  return  eResult;  
 }
 
 // Event handler   
-orxSTATUS orxFASTCALL GameApp::EventHandler(const  orxEVENT *_pstEvent)  
+orxSTATUS orxFASTCALL GameApp::EventHandler(const  orxEVENT *_pstEvent)  
 {
 
-  // Done!   
-  return  orxSTATUS_SUCCESS;  
+  // Done!   
+  return  orxSTATUS_SUCCESS;  
 }
 
 // Init function   
 orxSTATUS GameApp::Init()  
 {  
-  orxSTATUS     eResult;  
-  orxINPUT_TYPE eType;  
-  orxENUM       eID;
+  orxSTATUS     eResult;  
+  orxINPUT_TYPE eType;  
+  orxENUM       eID;
 
-  /*  Gets input binding names */   
-  orxInput_GetBinding("Quit" , 0 , &eType, &eID);  
-  const  orxSTRING zInputQuit = orxInput_GetBindingName(eType, eID);
+  /*  Gets input binding names */   
+  orxInput_GetBinding("Quit" , 0 , &eType, &eID);  
+  const  orxSTRING zInputQuit = orxInput_GetBindingName(eType, eID);
 
-  // Logs   
-  orxLOG(" /n \- ' %s ' will exit from this tutorial"   
-         " /n * The legend under the logo is always displayed in the current language" , zInputQuit );
+  // Logs   
+  orxLOG(" /n \- ' %s ' will exit from this tutorial"   
+         " /n * The legend under the logo is always displayed in the current language" , zInputQuit );
 
-  orxLOG("Init() called!" );
+  orxLOG("Init() called!" );
 
-  // Inits our stand alone game   
-  eResult = GameApp::Instance()->InitGame();
+  // Inits our stand alone game   
+  eResult = GameApp::Instance()->InitGame();
 
-  // Done!   
-  return  eResult;  
+  // Done!   
+  return  eResult;  
 }
 
 // Exit function   
-void  GameApp::Exit()  
+void  GameApp::Exit()  
 {
 
-  // Logs   
-  orxLOG("Exit() called!" );  
+  // Logs   
+  orxLOG("Exit() called!" );  
 }
 
 // Run function   
 orxSTATUS GameApp::Run()  
 {  
-  orxSTATUS eResult = orxSTATUS_SUCCESS;
+  orxSTATUS eResult = orxSTATUS_SUCCESS;
 
-  // Done!   
-  return  eResult;  
+  // Done!   
+  return  eResult;  
 }
 
 // Main program function   
-int  main(int  argc, char  **argv)  
+int  main(int  argc, char  **argv)  
 {  
-  // Inits and runs orx using our self-defined functions   
-  orx_Execute(argc, argv, GameApp::Init, GameApp::Run, GameApp::Exit);
+  // Inits and runs orx using our self-defined functions   
+  orx_Execute(argc, argv, GameApp::Init, GameApp::Run, GameApp::Exit);
 
-  // Done!   
-  return  EXIT_SUCCESS ;  
+  // Done!   
+  return  EXIT_SUCCESS ;  
 }
 
 #ifdef __orxMSVC__
 
 // Here's an example for a console-less program under windows with visual studio   
-int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int  nCmdShow)  
+int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int  nCmdShow)  
 {  
-  // Inits and executes orx   
-  orx_WinExecute(GameApp::Init, GameApp::Run, GameApp::Exit);
+  // Inits and executes orx   
+  orx_WinExecute(GameApp::Init, GameApp::Run, GameApp::Exit);
 
-  // Done!   
-  return  EXIT_SUCCESS ;  
+  // Done!   
+  return  EXIT_SUCCESS ;  
 }
 
-#endif  // __orxMSVC__   
+#endif  // __orxMSVC__
+```
 
 并且，封装后，使用起来就像传统的C++方式了，另外，还可以通过clock来添加Update函数，当然，这是后话。  
 并且，上面演示了不从命令行运行的方式，即开启宏__orxMSVC__ 的方式，此方式下，会失去命令行，作为发布。但是也失去了日志输出，所以推荐调试时还是有命令行的为好。  
@@ -224,32 +233,34 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
     Orx中的viewport如同3D中的viewport概念，可以参考《[Win32 OpenGL编程(10) 视口变换](<http://www.jtianling.com/archive/2009/10/29/4741527.aspx>) 》，Orx WIKI中的[配置详细讲解](<http://orx-project.org/wiki/en/orx/config/settings_structure/orxviewport> "配置详细讲解") 。
 
-  
+```ini
 [ViewportTemplate]   
-BackgroundClear =  <bool>  
-BackgroundColor =  <vector>  
-Camera =  CameraTemplate;  
-RelativePosition =  left | right | top | bottom  
-Position =  <vector>  
-RelativeSize =  <vector>  
-Size =  <vector>  
-ShaderList =  ShaderTemplate1#ShaderTemplate2  
-Texture =  path/to/TextureFile  
+BackgroundClear =  <bool>  
+BackgroundColor =  <vector>  
+Camera =  CameraTemplate;  
+RelativePosition =  left | right | top | bottom  
+Position =  <vector>  
+RelativeSize =  <vector>  
+Size =  <vector>  
+ShaderList =  ShaderTemplate1#ShaderTemplate2  
+Texture =  path/to/TextureFile  
+```
 
     同样的，也可以通过viewport来实现一屏的多显。达到《[Win32 OpenGL编程(10) 视口变换](<http://www.jtianling.com/archive/2009/10/29/4741527.aspx>) 》中的效果，而且iarwain的官方教程中就有这样的例子。（[例5](<http://orx-project.org/wiki/en/orx/tutorials/viewport> "例5") ）  
 要想在屏幕上显示个什么东西，确定viewport是必须的，不然Orx不知道该在哪个位置显示，但是，实际的使用会更加简单，因为Orx中的配置都是有默认值的，比如viewport一般而言。可以使用默认值，也就是说，当前的全窗口作为viewport。后面会讲到一些更复杂的应用，这里暂时一笔带过吧，毕竟还是Hello World阶段。。。。。。。。。。简单的说，viewport就是描述了在什么地方显示图形的问题。
 
 ### camera
 
-  
+```ini
 [CameraTemplate]   
-FrustumHeight =  <float>  
-FrustumWidth =  <float>  
-FrustumNear =  <float>  
-FrustumFar =  <float>  
-Position =  <vector>  
-Rotation =  <float>  
-Zoom =  <float>  
+FrustumHeight =  <float>  
+FrustumWidth =  <float>  
+FrustumNear =  <float>  
+FrustumFar =  <float>  
+Position =  <vector>  
+Rotation =  <float>  
+Zoom =  <float>  
+```
 
     Orx WIKI中的[配置详细讲解](<http://orx-project.org/wiki/en/orx/config/settings_structure/orxcamera> "配置详细讲解") 。  
     viewport配置中会绑定一个camera，此camera决定了前后剪裁面等信息（如上配置所示），因为Orx是2D引擎，事实上是没有使用透视投影的，Orx使用的是正投影。前后剪裁面的设定决定了视景体剪裁的范围，这些与一般的概念类似。不明白的推荐看看OpenGL相关的知识。简单的说就是在此范围外的东西根本就不会显示。这里Orx将一些3D概念引入了2D引擎，其实增加了一般人的理解负担，个人认为绝大部分情况，其实一般的2D游戏开发者可以暂时忽略这部分，然后稍微将视景体的前后剪裁平面调大点，平时设置Object的时候注意Z轴的坐标位置不要超过此区域即可。
@@ -264,57 +275,64 @@ Zoom =  <float>
 
  
 
-一般时候，如下的配置就已经很合适了。  
+一般时候，如下的配置就已经很合适了。
+
+```ini
 [Viewport]   
-Camera          =  Camera  
-BackgroundColor =  (0, 0, 0)
+Camera          =  Camera  
+BackgroundColor =  (0, 0, 0)
 
 [Camera]   
 ; We use the same size for the camera than our display on screen so as to obtain a 1:1 ratio   
-FrustumWidth  =  @Display.ScreenWidth  
-FrustumHeight =  @Display.ScreenHeight  
-FrustumNear   =  0  
-FrustumFar    =  2.0  
-Position      =  (0.0, 0.0, -1.0)  
-Zoom          =  1.0  
-  
+FrustumWidth  =  @Display.ScreenWidth  
+FrustumHeight =  @Display.ScreenHeight  
+FrustumNear   =  0  
+FrustumFar    =  2.0  
+Position      =  (0.0, 0.0, -1.0)  
+Zoom          =  1.0  
+```
+
 在上面的例子中，Camera的显示范围大小就是在Display中设置的屏幕大小，前后剪裁面分别是距离摄像头0, 2.0，这是个相对值，相对于摄像头的位置而言的Z轴， 也就是说，上面的配置中，因为Camera的位置是-1.0，所以，其实前后剪裁面的Z轴绝对位置是-1.0和1.0。 需要特别注意。 只要在设置object位置的时候，保证在此范围内，就没有问题。
 
 ### Text显示
 
     天哪，当我需要来讲解Orx的时候，我才发现其复杂性。。。。。。因为大量的东西可配置，所以大量的东西都需要配置，这是很郁闷的，事实上，也许说明了Orx还不够成熟，默认配置还不是足够的好。总算可以开始显示文字了，到这个部分也还不简单啊。一个Hello World需要下面3段配置。  
-  
+
+```ini
 [HelloWorld]   
-Graphic              =  HelloWorldGraphic
+Graphic              =  HelloWorldGraphic
 
 [HelloWorldGraphic]   
-Text                 =  HelloWorldString  
-Color                =  (255.0, 0.0, 0.0)
+Text                 =  HelloWorldString  
+Color                =  (255.0, 0.0, 0.0)
 
 [HelloWorldString]   
-String               =  "HelloWorld"  
-  
+String               =  "HelloWorld"
+```
+
 配置讲了那么多，其实整个的游戏代码可以非常少。。。。。。  
 真正需要的是在Init的时候用下面几行代码即可。  
-  
+
+```cpp
 // Init game function   
 orxSTATUS GameApp::InitGame()  
 {  
-  orxSTATUS eResult = orxSTATUS_SUCCESS;  
-    
-  // Creates viewport   
-  if  ( orxViewport_CreateFromConfig("Viewport" ) == NULL  ) {  
-      eResult = orxSTATUS_FAILURE;  
-  }
+  orxSTATUS eResult = orxSTATUS_SUCCESS;  
+   
+  // Creates viewport   
+  if  ( orxViewport_CreateFromConfig("Viewport" ) == NULL  ) {  
+      eResult = orxSTATUS_FAILURE;  
+  }
 
-  if  ( orxObject_CreateFromConfig("HelloWorld" ) == NULL ) {  
-      eResult = orxSTATUS_FAILURE;  
-  }
+  if  ( orxObject_CreateFromConfig("HelloWorld" ) == NULL ) {  
+      eResult = orxSTATUS_FAILURE;  
+  }
 
-  // Done!   
-  return  eResult;  
-}  
-  
+  // Done!   
+  return  eResult;  
+}
+```
+
 orxViewport_CreateFromConfig 用于从配置中创建Viewport,orxObject_CreateFromConfig 用于从配置中创建Text。  
 至此，Hello World算是完成了.
 
@@ -337,5 +355,3 @@ orxViewport_CreateFromConfig 用于从配置中创建Viewport,orxObject_CreateFr
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>) **
-
- 

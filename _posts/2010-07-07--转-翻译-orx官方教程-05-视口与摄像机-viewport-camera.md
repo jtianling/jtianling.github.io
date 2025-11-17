@@ -76,16 +76,12 @@ Viewport中。
   
   虽然这次我们创建了4个视口，却没有什么新东西，仅仅是以下4行代码。
 
- 
-
-pstViewport =  
-orxViewport_CreateFromConfig("Viewport1");
-
+```c
+pstViewport = orxViewport_CreateFromConfig("Viewport1");
 orxViewport_CreateFromConfig("Viewport2");
-
 orxViewport_CreateFromConfig("Viewport3");
-
 orxViewport_CreateFromConfig("Viewport4");
+```
 
  
 
@@ -99,32 +95,19 @@ Viewport1的引用，以便后面进行操作。
 tutorial里实现过了。这里我们做了一样的事情，但在4个视口中工作的都很完美。当鼠标离开视口时，世界坐标的指针，将被orxNull值所代替，  
 也就不会触发士兵的移动了。
 
+```c
 orxVECTOR vPos;
 
- 
-
-if(orxRender_GetWorldPosition(orxMouse_GetPosition(&vPos),  
-&vPos) != orxNULL)
-
+if(orxRender_GetWorldPosition(orxMouse_GetPosition(&vPos), &vPos) != orxNULL)
 {
+    orxVECTOR vSoldierPos;
 
- orxVECTOR  
-vSoldierPos;
+    orxObject_GetWorldPosition(pstSoldier, &vSoldierPos);
+    vPos.fZ = vSoldierPos.fZ;
 
- 
-
-  
- orxObject_GetWorldPosition(pstSoldier, &vSoldierPos);
-
- vPos.fZ =  
-vSoldierPos.fZ;
-
- 
-
- orxObject_SetPosition(pstSoldier,  
-&vPos);
-
+    orxObject_SetPosition(pstSoldier, &vPos);
 }
+```
 
 在操作视口之前，我们先关注下视口所关联的摄像机，我们可以移动，旋转和缩放它。获  
 取摄像机的代码如下所示：
@@ -136,15 +119,12 @@ orxViewport_GetCamera(pstViewport);
   
 ((其他方向仅仅只有部分代码，但是逻辑是一样的)).
 
+```c
 if(orxInput_IsActive("CameraRotateLeft"))
-
 {
-
-  
- orxCamera_SetRotation(pstCamera, orxCamera_GetRotation(pstCamera) +  
-orx2F(-4.0f) * _pstClockInfo->fDT);
-
+    orxCamera_SetRotation(pstCamera, orxCamera_GetRotation(pstCamera) + orx2F(-4.0f) * _pstClockInfo->fDT);
 }
+```
 
 我们再次看到旋转的角度时间并  
 不依赖于FPS而且可以做时间的伸缩控制（译者注：比代码依然很简单。
@@ -157,15 +137,12 @@ orx2F(-4.0f) * _pstClockInfo->fDT);
 
 实现缩放如下：
 
+```c
 if(orxInput_IsActive("CameraZoomIn"))
-
 {
-
-  
- orxCamera_SetZoom(pstCamera, orxCamera_GetZoom(pstCamera) *  
-orx2F(1.02f));
-
+    orxCamera_SetZoom(pstCamera, orxCamera_GetZoom(pstCamera) * orx2F(1.02f));
 }
+```
 
  
 
@@ -173,24 +150,16 @@ orx2F(1.02f));
 
 最后让我们移动摄像机。
 
-orxCamera_GetPosition(pstCamera,  
-&vPos);
-
- 
+```c
+orxCamera_GetPosition(pstCamera, &vPos);
 
 if(orxInput_IsActive("CameraRight"))
-
 {
-
- vPos.fX +=  
-orx2F(500) * _pstClockInfo->fDT;
-
+    vPos.fX += orx2F(500) * _pstClockInfo->fDT;
 }
 
- 
-
-orxCamera_SetPosition(pstCamera,  
-&vPos);
+orxCamera_SetPosition(pstCamera, &vPos);
+```
 
 好  
 了，与摄像机有关的先到这里吧。
@@ -200,52 +169,28 @@ orxCamera_SetPosition(pstCamera,
 
 我们可以直接修改视口的位置和尺寸，如下所示：
 
-orxFLOAT  
-fWidth, fHeight, fX, fY;
+```c
+orxFLOAT fWidth, fHeight, fX, fY;
 
- 
-
-orxViewport_GetRelativeSize(pstViewport,  
-&fWidth, &fHeight);
-
- 
+orxViewport_GetRelativeSize(pstViewport, &fWidth, &fHeight);
 
 if(orxInput_IsActive("ViewportScaleUp"))
-
 {
-
- fWidth *=  
-orx2F(1.02f);
-
- fHeight*= orx2F(1.02f);
-
+    fWidth *= orx2F(1.02f);
+    fHeight*= orx2F(1.02f);
 }
 
- 
+orxViewport_SetRelativeSize(pstViewport, fWidth, fHeight);
 
-orxViewport_SetRelativeSize(pstViewport,  
-fWidth, fHeight);
-
- 
-
-orxViewport_GetPosition(pstViewport,  
-&fX, &fY);
-
- 
+orxViewport_GetPosition(pstViewport, &fX, &fY);
 
 if(orxInput_IsActive("ViewportRight"))
-
 {
-
- fX +=  
-orx2F(500) * _pstClockInfo->fDT;
-
+    fX += orx2F(500) * _pstClockInfo->fDT;
 }
 
- 
-
-orxViewport_SetPosition(pstViewport,  
-fX, fY);
+orxViewport_SetPosition(pstViewport, fX, fY);
+```
 
  
 
@@ -256,62 +201,31 @@ viewport的配置方面的东西。
 
  
 
+```ini
 [Viewport1]
-
-Camera  
-           = Camera1
-
-RelativeSize      = (0.5, 0.5, 0.0)
-
-RelativePosition  
- = top left
-
-BackgroundColor   = (0, 100, 0) ~ (0, 255, 0)
-
- 
+Camera           = Camera1
+RelativeSize     = (0.5, 0.5, 0.0)
+RelativePosition = top left
+BackgroundColor  = (0, 100, 0) ~ (0, 255, 0)
 
 [Viewport2]
-
-Camera  
-           = Camera2
-
-RelativeSize      = @Viewport1
-
-RelativePosition  
- = top right
-
-BackgroundColor   = (100, 0, 0) ~ (255, 0, 0)
-
- 
+Camera           = Camera2
+RelativeSize     = @Viewport1
+RelativePosition = top right
+BackgroundColor  = (100, 0, 0) ~ (255, 0, 0)
 
 [Viewport3]
-
-Camera  
-           = Camera3
-
-RelativeSize      = @Viewport1
-
-RelativePosition  
- = bottom left
-
-BackgroundColor   = (0, 0, 100) ~ (0, 0, 255)
-
- 
+Camera           = Camera3
+RelativeSize     = @Viewport1
+RelativePosition = bottom left
+BackgroundColor  = (0, 0, 100) ~ (0, 0, 255)
 
 [Viewport4]
-
-Camera  
-           = @Viewport1
-
-RelativeSize      = @Viewport1
-
-RelativePosition  
- = bottom right
-
-BackgroundColor   = (255, 255, 0)#(0, 255,  
-255)#(255, 0, 255)
-
- 
+Camera           = @Viewport1
+RelativeSize     = @Viewport1
+RelativePosition = bottom right
+BackgroundColor  = (255, 255, 0)#(0, 255, 255)#(255, 0, 255)
+```
 
 一共有3个摄像机，它们关联了4个视口，其中Camera1关联了  
 Viewport1和Viewport4。
@@ -336,48 +250,29 @@ BackgroundColor
 如果我们希望通过准确的随机颜色进行设置，可以使用一下列表的形式设置，随机的颜色  
 分别为黄、青和品红，设置如下：
 
-BackgroundColor = (255, 255, 0)#(0, 255,  
-255)#(255, 0, 255)
+BackgroundColor = (255, 255, 0)#(0, 255, 255)#(255, 0, 255)
 
 这种使用方式是相当于在三个颜色（黄色，蓝绿色，品红）中进行随机。
 
 最后让我们关注摄像机的设置。
 
+```ini
 [Camera1]
-
-FrustumWidth  
- = @Display.ScreenWidth
-
+FrustumWidth  = @Display.ScreenWidth
 FrustumHeight = @Display.ScreenHeight
-
-FrustumFar  
-   = 1.0
-
-FrustumNear   = 0.0
-
-Position  
-     = (0.0, 0.0, -1.0)
-
- 
+FrustumFar    = 1.0
+FrustumNear   = 0.0
+Position      = (0.0, 0.0, -1.0)
 
 [Camera2]
-
-FrustumWidth  
- = 400.0
-
+FrustumWidth  = 400.0
 FrustumHeight = 300.0
-
-FrustumFar  
-   = 1.0
-
-FrustumNear   = 0.0
-
-Position  
-     = (0.0, 0.0, -1.0)
-
- 
+FrustumFar    = 1.0
+FrustumNear   = 0.0
+Position      = (0.0, 0.0, -1.0)
 
 [Camera3@Camera1]
+```
 
   
 
