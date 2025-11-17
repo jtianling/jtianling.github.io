@@ -30,5 +30,3 @@ author:
 有下，因为是MFC程序，比较大，我一般不列出来了。来个程序截图。
 
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/Boost Regex Tester 0.2.jpg)
-
- 

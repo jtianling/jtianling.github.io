@@ -126,7 +126,7 @@ author:
 
     低层API提供了五个主要的函数：RegisterCallback, GetMice, UnGet- Mouse, SuspendMouse,和 UnSuspendMouse。低层API包含了一些更多的函数，但是它们对于理解这个API并不是那么重要。RegisterCallback负责注册一个回调函数给应用程序。回调函数是一个在任何已经加了钩子的鼠标发送事件的时候被调用的函数。所有鼠标只有一个回调函数可以被注册，而且在所有加钩子的鼠标中应该多路传输。假如不能接受这些，不得不实现另外一个低层的API。GetMice函数用来得到一个给定数量的鼠标，或者当给参数0的时候得到所有可用的鼠标。API的用户没有任何办法控制哪个鼠标被加钩子。这些看起来都不是主要问题，作为一个应用程序将可能总是给所有可用的鼠标加钩子，并且，最终被一个框架程序支持，以让用户决定哪个鼠标被用来干什么。GetMice函数返回实际得到鼠标的数量。我们实际得到的鼠标将被编号。当稍后利用UnGetting函数使鼠标给更高层程序负责时，任何记录都是需要的。当一个鼠标已经通过调用这个函数被加了钩子，事件就通过注册的回调函数来响应。假如没有回调函数被注册，新的事件将被忽略。UnGetMouse, SuspendMouse, 和 UnSuspendMouse 函数基于特定的鼠标调用，假如它已经通过GetMice函数被加了钩子的话。
 
-这个API不是线程安全的，也就是说，假如它们在不同的线程里面，函数的调用必须被互斥保护。这些是可以接受的，因为它假设那些函数将被单线程程序或程序初始化时调用。这些API确保了注册的回调函数的正常连续调用，所以它也没有保证线程安全。
+这个API不是线程安全的，也就是说，假如它们在不同的线程里面，函数的调用必须被互斥保护。这些是可以接受的因为它假设那些函数将被单线程程序或程序初始化时调用。这些API确保了注册的回调函数的正常连续调用，所以它也没有保证线程安全。
 
  
 
@@ -251,5 +251,3 @@ http://www.microsoft.com/ddk/W2kDDK.asp.
 16.Anatoly Vorobey.User mode APCs.   http://www.cmkrnl.com/arc- userapc.html, May 1997.
 
 17.WorkSPACE: Distributed Work support through component based SPAtial Computing En- vironments. http://www.daimi.au.dk/workspace/index.shtml.
-
- 

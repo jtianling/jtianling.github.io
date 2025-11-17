@@ -28,238 +28,123 @@ author:
 
 ChineseChessBoard.h
 
- 
-
+```cpp
 class CMyApp : public CWinApp
-
 {
-
 public:
-
-      virtual BOOL InitInstance();
-
+      virtual BOOL InitInstance();
 };
-
- 
 
 class CMainWindow : public CFrameWnd
-
 {
-
 public:
-
-      CMainWindow();
-
- 
+      CMainWindow();
 
 protected:
-
-      afx_msg void  OnPaint();
-
-      DECLARE_MESSAGE_MAP()
-
+      afx_msg void  OnPaint();
+      DECLARE_MESSAGE_MAP()
 };
+```
 
  
 
 ChineseChessBoard.cpp
 
- 
-
+```cpp
 #include <afxwin.h>
-
 #include <cmath>
-
 #include "Hello.h"
-
- 
 
 CMyApp myApp;
 
- 
-
 //CMyApp member functions
 
- 
-
 BOOL CMyApp::InitInstance()
-
 {
-
-      m_pMainWnd = new CMainWindow;
-
-      m_pMainWnd->ShowWindow(SW_SHOWMAXIMIZED);
-
-      m_pMainWnd->UpdateWindow();
-
-      return TRUE;
-
+      m_pMainWnd = new CMainWindow;
+      m_pMainWnd->ShowWindow(SW_SHOWMAXIMIZED);
+      m_pMainWnd->UpdateWindow();
+      return TRUE;
 }
 
- 
 
- 
-
- 
-
- 
 
 BEGIN_MESSAGE_MAP(CMainWindow,CFrameWnd)
-
-      ON_WM_PAINT()
-
+      ON_WM_PAINT()
 END_MESSAGE_MAP()
 
- 
-
 CMainWindow::CMainWindow()
-
 {
-
-      Create(NULL,_T("象棋棋盘"),WS_OVERLAPPEDWINDOW);
-
+      Create(NULL,_T("象棋棋盘"),WS_OVERLAPPEDWINDOW);
 }
-
- 
 
 //CMainWindow mesage map and member functions
-
 void CMainWindow::OnPaint()
-
 {
-
-      CPaintDC dc(this);
-
- 
-
-      CRect rect;
-
-      GetClientRect(&rect);
-
- 
-
-      //画背景
-
-      CBrush bkBrush(RGB(192,192,192));
-
-      dc.FillRect(rect,&bkBrush);
-
-     
-
-      //确定画象棋棋盘的范围
-
-      rect.DeflateRect(200,30);
-
-      rect.OffsetRect(0,15);
-
- 
-
-      //画下象棋棋盘的背景
-
-      CBrush brush(RGB(128,128,128));
-
-      dc.FillRect(rect,&brush);
-
- 
-
-      //无聊，给点立体感
-
-      rect.InflateRect(2,2);
-
-      dc.Draw3dRect(rect,RGB(255,255,255),RGB(255,255,255));
-
-      rect.DeflateRect(2,2);
-
- 
-
-      //开始画纵横线
-
-      CPen pen(PS_SOLID,2,RGB(0,0,0));
-
-      CPen *pOldPen = dc.SelectObject(&pen);
-
-      int nGridWidth = rect.Width()/8;  //横向宽度，共格
-
-      int nGridHeight = rect.Height()/9;  //纵向宽度，共格
-
- 
-
-      for(int i = 0; i < 10; ++i)   //画横线,10笔
-
-      {
-
-           int y = (nGridHeight * i) + rect.top;
-
-           dc.MoveTo(rect.left,y);
-
-           dc.LineTo(rect.right,y);
-
-      }
-
- 
-
-      for(int i = 0; i < 8; ++i)   //画竖线，画笔，空下最右的竖线
-
-      {
-
-           int x = (nGridWidth * i) + rect.left;
-
-     
-
-           //中间为界限，无竖线
-
-           dc.MoveTo(x,rect.top);
-
-           dc.LineTo(x,rect.top + nGridHeight * 4);
-
-           dc.MoveTo(x,rect.top + nGridHeight * 5);
-
-           dc.LineTo(x,rect.bottom);
-
-      }
-
-     
-
-      //补上左界限的竖笔及最右的竖线，此以rect.right画最右竖线，最重合
-
-      dc.MoveTo(rect.left,rect.top + nGridHeight * 4);
-
-      dc.LineTo(rect.left,rect.top + nGridHeight * 5);
-
-      dc.MoveTo(rect.right,rect.top);
-
-      dc.LineTo(rect.right,rect.bottom);
-
-     
-
-      //输出文字“楚河汉界”
-
-      dc.SelectObject(pOldPen);
-
-      CRect textRect(rect.left,rect.top + nGridHeight * 4,
-
-                         rect.right,rect.top + nGridHeight * 5);
-
-      CFont font;
-
-      font.CreatePointFont(520,_T("宋体"));
-
-      CFont *pOldFont = dc.SelectObject(&font);
-
-     
-
-      dc.SetBkMode(TRANSPARENT);
-
-      dc.DrawText(_T("楚河    汉界"),-1,textRect,
-
-           DT_SINGLELINE | DT_CENTER | DT_VCENTER);
-
-      dc.SelectObject(pOldFont);
-
- 
+      CPaintDC dc(this);
+
+      CRect rect;
+      GetClientRect(&rect);
+
+      //画背景
+      CBrush bkBrush(RGB(192,192,192));
+      dc.FillRect(rect,&bkBrush);
+     
+      //确定画象棋棋盘的范围
+      rect.DeflateRect(200,30);
+      rect.OffsetRect(0,15);
+
+      //画下象棋棋盘的背景
+      CBrush brush(RGB(128,128,128));
+      dc.FillRect(rect,&brush);
+
+      //无聊，给点立体感
+      rect.InflateRect(2,2);
+      dc.Draw3dRect(rect,RGB(255,255,255),RGB(255,255,255));
+      rect.DeflateRect(2,2);
+
+      //开始画纵横线
+      CPen pen(PS_SOLID,2,RGB(0,0,0));
+      CPen *pOldPen = dc.SelectObject(&pen);
+      int nGridWidth = rect.Width()/8;  //横向宽度，共格
+      int nGridHeight = rect.Height()/9;  //纵向宽度，共格
+
+      for(int i = 0; i < 10; ++i)   //画横线,10笔
+      {
+           int y = (nGridHeight * i) + rect.top;
+           dc.MoveTo(rect.left,y);
+           dc.LineTo(rect.right,y);
+      }
+
+      for(int i = 0; i < 8; ++i)   //画竖线，画笔，空下最右的竖线
+      {
+           int x = (nGridWidth * i) + rect.left;
+      
+           //中间为界限，无竖线
+           dc.MoveTo(x,rect.top);
+           dc.LineTo(x,rect.top + nGridHeight * 4);
+           dc.MoveTo(x,rect.top + nGridHeight * 5);
+           dc.LineTo(x,rect.bottom);
+      }
+     
+      //补上左界限的竖笔及最右的竖线，此以rect.right画最右竖线，最重合
+      dc.MoveTo(rect.left,rect.top + nGridHeight * 4);
+      dc.LineTo(rect.left,rect.top + nGridHeight * 5);
+      dc.MoveTo(rect.right,rect.top);
+      dc.LineTo(rect.right,rect.bottom);
+     
+      //输出文字“楚河汉界”
+      dc.SelectObject(pOldPen);
+      CRect textRect(rect.left,rect.top + nGridHeight * 4,
+                     rect.right,rect.top + nGridHeight * 5);
+      CFont font;
+      font.CreatePointFont(520,_T("宋体"));
+      CFont *pOldFont = dc.SelectObject(&font);
+     
+      dc.SetBkMode(TRANSPARENT);
+      dc.DrawText(_T("楚河    汉界"),-1,textRect,
+           DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+      dc.SelectObject(pOldFont);
 
 }
-
- 
-
- 
+```

@@ -42,255 +42,134 @@ Approach B: define inside loop – n constructors + n destructors
 
  
 
+```cpp
 //Create By 九天雁翎（jtianling） Email:jtianling@gmail.com
-
 //博客：blog.jtianling.cn
 
 #include <vector>
-
 #include <string>
-
 #include "jtianling/jtianling.h"
 
 using namespace std;
 
- 
-
 void ApproachA1(int n);
-
 void ApproachB1(int n);
-
 void ApproachA2(int n);
-
 void ApproachB2(int n);
-
 void ApproachA3(int n);
-
 void ApproachB3(int n);
-
 void ApproachA4(int n);
-
 void ApproachB4(int n);
 
 int main()
-
 {
-
-    const int n = 8;
-
-    vector<jtianling::pfI> pfIVec;
-
-    pfIVec.push_back(ApproachA1);
-
-    pfIVec.push_back(ApproachB1);
-
-    pfIVec.push_back(ApproachA2);
-
-    pfIVec.push_back(ApproachB2);
-
-    pfIVec.push_back(ApproachA3);
-
-    pfIVec.push_back(ApproachB3);
-
-    pfIVec.push_back(ApproachA4);
-
-    pfIVec.push_back(ApproachB4);
-
-    vector<int> iVec;
-
-    iVec.push_back(10);
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       iVec.push_back(iVec[i]*5);
-
-    }
-
-    jtianling::CompareAlgorithmI(pfIVec, iVec);
-
- 
-
+    const int n = 8;
+    vector<jtianling::pfI> pfIVec;
+    pfIVec.push_back(ApproachA1);
+    pfIVec.push_back(ApproachB1);
+    pfIVec.push_back(ApproachA2);
+    pfIVec.push_back(ApproachB2);
+    pfIVec.push_back(ApproachA3);
+    pfIVec.push_back(ApproachB3);
+    pfIVec.push_back(ApproachA4);
+    pfIVec.push_back(ApproachB4);
+    vector<int> iVec;
+    iVec.push_back(10);
+    for(int i=0; i<n; ++i)
+    {
+       iVec.push_back(iVec[i]*5);
+    }
+    jtianling::CompareAlgorithmI(pfIVec, iVec);
 }
-
- 
 
 //比较int x
-
-void ApproachA1(int n)  
-
+void ApproachA1(int n)
 {
-
-    int x;
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       x = i;
-
-    }
-
+    int x;
+    for(int i=0; i<n; ++i)
+    {
+       x = i;
+    }
 }
-
- 
 
 void ApproachB1(int n)
-
 {
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       int x = i;
-
-    }
-
+    for(int i=0; i<n; ++i)
+    {
+       int x = i;
+    }
 }
-
- 
 
 //比较string
-
 void ApproachA2(int n)
-
 {
-
-    string s;
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       s = "good";
-
-    }
-
+    string s;
+    for(int i=0; i<n; ++i)
+    {
+       s = "good";
+    }
 }
-
- 
 
 void ApproachB2(int n)
-
 {
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       string s("good");
-
-    }
-
+    for(int i=0; i<n; ++i)
+    {
+       string s("good");
+    }
 }
-
- 
 
 //比较vector
-
 void ApproachA3(int n)
-
 {
-
-    vector<int> vec(n);
-
-    vector<int> vec2(n,1); 
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       vec[i] = vec2[i];
-
-    }
-
+    vector<int> vec(n);
+    vector<int> vec2(n,1);
+    for(int i=0; i<n; ++i)
+    {
+       vec[i] = vec2[i];
+    }
 }
-
- 
 
 void ApproachB3(int n)
-
 {
-
-    vector<int> vec2(n,1);      //抵消ApproachA3中的一次建构析构.
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       vector<int> vec(1,i);
-
-    }
-
+    vector<int> vec2(n,1);     //抵消ApproachA3中的一次建构析构.
+    for(int i=0; i<n; ++i)
+    {
+       vector<int> vec(1,i);
+    }
 }
-
- 
 
 void ApproachA4(int n)
-
 {
-
-    int *a = new int[n];
-
-    int *b = new int[n];
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       b[i] = i;
-
-    }
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       a[i] = b[i];
-
-    }
-
-    delete a;
-
-    delete b;
-
+    int *a = new int[n];
+    int *b = new int[n];
+    for(int i=0; i<n; ++i)
+    {
+       b[i] = i;
+    }
+    for(int i=0; i<n; ++i)
+    {
+       a[i] = b[i];
+    }
+    delete a;
+    delete b;
 }
-
- 
 
 void ApproachB4(int n)
-
 {
-
-    //以下过程抵消ApproachA4相关过程
-
-    int *b = new int[n];
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       b[i] = i;
-
-    }
-
-    for(int i=0; i<n; ++i)
-
-    {
-
-       int *a = new int();
-
-       delete a;
-
-    }
-
-    delete b;
-
+    //以下过程抵消ApproachA4相关过程
+    int *b = new int[n];
+    for(int i=0; i<n; ++i)
+    {
+       b[i] = i;
+    }
+    for(int i=0; i<n; ++i)
+    {
+       int *a = new int();
+       delete a;
+    }
+    delete b;
 }
-
- 
+```
 
 测试的一次结果如下：
 

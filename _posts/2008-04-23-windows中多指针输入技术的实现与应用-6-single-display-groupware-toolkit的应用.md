@@ -55,11 +55,10 @@ Windows中多指针输入技术的实现与应用（6 Single Display Groupware T
 
        在程序中添加了SdgManager后，不改动任何数据，也即所有的参数都使用默认值，此时程序可以被正常的编译运行，且SDG Toolkit已完成了不同鼠标指针的绘制。但是此时程序无法响应任何鼠标输入的事件，甚至连系统原有的事件都无法响应。因为我们此时没有指明到底系统应该响应哪个鼠标的，首先应该将SdgManager的RelativeTo属性更改为Form1,表示这个SdgManager的鼠标响应与Form1相关，然后代码中InitializeComponet后添加进如下两条语句:
 
- 
-
-sdgManager1.EmulateSystemMouseMode =  Sdgt.EmulateSystemMouseModes.FollowMouse;
-
-            sdgManager1.MouseToFollow = 0;
+```csharp
+sdgManager1.EmulateSystemMouseMode =  Sdgt.EmulateSystemMouseModes.FollowMouse;
+sdgManager1.MouseToFollow = 0;
+```
 
  
 
@@ -67,7 +66,7 @@ sdgManager1.EmulateSystemMouseMode =  Sdgt.EmulateSystemMouseModes.FollowMouse;
 
        添加这两条语句之后，此程序就可以响应第一个鼠标引发的系统事件，即把第一个鼠标当作系统鼠标来操作。这里要提醒的是，系统所辨识的第一个鼠标为Windows中GetRawInputDeviceList函数所标识的Device 0，并且依此类推，而不是指用户接入的第一个鼠标。这是因为上面所提及的，SDG Toolkit是利用带ID的RawInput技术所实现。另外需要非常注意的是，假如需要让程序在只有一个鼠标的情况下能够运行，那么此值就必须设为0，即第一个鼠标，因为只有一个鼠标的时候设为0以外的数值属于数组越界的情况，会导致程序的崩溃。
 
-       此时会发现3个鼠标的指针完全相同，这样会导致用户不知道自己控制的是哪一个。这也是多鼠标输入需要解决的问题之一，SDG Toolkit提供了很多种方法以解决此问题。在SDG Toolkit中，可以利用鼠标指针样式的不同，鼠标指针的透明度不同，鼠标指针的文字标识以使用户很容易的识别自己所操作的鼠标指针。已经说过，在SDG Toolkit中把每一个鼠标的指针属性，数据信息和相关操作都放在一个为名为Mouse的类里面，多加一个鼠标，就在sdgManager下的Mice动态数组中多添加一个mouse类成员。因此对以上几种方法的实现都是通过更改sdgManager的Mice数组成员不同的属性来完成的。比如更改sdgManager.Mice[i].Cursor为改变鼠标指针的类型，只要符合Windows的标准，也可以是自定义指针；改变sdgManager.Mice[i].Opacity改变鼠标指针的透明度；sdgManager.Mice[i].Text为定义鼠标指针的文字标识，系统默认在鼠标指针的右下角显示。还可以通过改变sdgManager.Mice[i]的TextBrush来改变文字标识的颜色，TextFont来改变文字标识的字体，TextLocation来改变文字标识的位置。另外，上面介绍过，SDG Toolkit为考虑在多人使用触摸屏时站在屏幕不同的角度，所以加入了指针的方向特性。只需要改变sdgManager.Mice[i]的DegreeRotation属性就可以实现。改变鼠标指针的方向不仅仅是为了识别，此时鼠标的移动也是以所在屏幕的方向为基准，这点真的是很符合特定情况的需要。在上文中，[i]表示的是第i个成员，i为鼠标的ID号，其分配也是以GetRawInputDeviceList为准。详细示例代码如下所示。
+       此时会发现3个鼠标的指针完全相同，这样会导致用户不知道自己控制的是哪一个。这也是多鼠标输入需要解决的问题之一，SDG Toolkit提供了很多种方法以解决此问题。在SDG Toolkit中，可以利用鼠标指针样式的不同，鼠标指针的透明度不同，鼠标指针的文字标识以使用户很容易的识别自己所操作的鼠标指针。已经说过，在SDG Toolkit中把每一个鼠标的指针属性，数据信息和相关操作都放在一个为名为Mouse的类里面，多加一个鼠标，就在sdgManager下的Mice动态数组中多添加一个mouse类成员。因此对以上几种方法的实现都是通过更改sdgManager的Mice数组成员不同的属性来完成的。比如更改sdgManager.Mice[i].Cursor为改变鼠标指针的类型，只要符合Windows的标准，也可以是自定义指针；改变sdgManager.Mice[i].Opacity改变鼠标指针的透明度；sdgManager.Mice[i].Text为定义鼠标指针的文字标识，系统默认在鼠标指针的右下角显示。还可以通过改变sdgManager.Mice[i]的TextBrush来改变文字标识的颜色，TextFont来改变文字标识的字体，TextLocation来改变文字标识的位置。另外，上面介绍过，SDG Toolkit为考虑在多人使用触摸屏时站在屏幕不同的角度，所以加入了指针的方向特性。只需要改变sdgManager.Mice[i].DegreeRotation属性就可以实现。改变鼠标指针的方向不仅仅是为了识别，此时鼠标的移动也是以所在屏幕的方向为基准，这点真的是很符合特定情况的需要。在上文中，[i]表示的是第i个成员，i为鼠标的ID号，其分配也是以GetRawInputDeviceList为准。详细示例代码如下所示。
 
   
 
@@ -77,85 +76,49 @@ sdgManager1.EmulateSystemMouseMode =  Sdgt.EmulateSystemMouseModes.FollowMouse;
 
 SDG鼠标指针绘制及改变测试程序具体代码（以下代码在VS .NET 2005 上编译通过）
 
+```csharp
 using System;
-
 using System.Collections.Generic;
-
 using System.ComponentModel;
-
 using System.Data;
-
 using System.Drawing;
-
 using System.Text;
-
 using System.Windows.Forms;
 
 namespace SDG_TEST
-
 {
-
-    public partial class Form1 : Form
-
-    {
-
-        public Form1()
-
-        {
-
-            InitializeComponent();
-
-            //设置鼠标指针样式
-
-            Cursor[] sdgCursors = { Cursors.IBeam, Cursors.Hand, Cursors.Default };
-
-            //设置鼠标文字标识内容
-
-            String[] sdgText = { "Mouse 1", "Mouse 2", "Mouse 3" };
-
-            //设置鼠标文字标识颜色
-
-            Color[] sdgColor = { Color.Blue, Color.Red, Color.Black };
-
-            //设置鼠标指针透明度
-
-            double[] sdgOpacity = { 0.4, 0.6, 1 };
-
-            //设置鼠标指针方向
-
-            int[] sdgDegreeRotations = {90, 45, 0};
-
-            //迭代遍历所有鼠标，这里以3个鼠标为例
-
-               for (int i=0; i < sdgManager1.Mice.Count && i < 3; ++i)
-
-            {
-
-                   sdgManager1.Mice[i].Cursor = sdgCursors[i];
-
-                    sdgManager1.Mice[i].Text = sdgText[i];
-
-                sdgManager1.Mice[i].Opacity = sdgOpacity[i];
-
-                sdgManager1.Mice[i].TextBrush = new SolidBrush(sdgColor[i]);
-
-                   sdgManager1.Mice[i].DegreeRotation = sdgDegreeRotations[i];
-
-               }
-
-            //改变系统鼠标模式为跟随模式
-
-            sdgManager1.EmulateSystemMouseMode = Sdgt.EmulateSystemMouseModes.FollowMouse;
-
-            //制定第1个鼠标为系统鼠标
-
-            sdgManager1.MouseToFollow = 0;
-
-        }
-
-    }
-
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            //设置鼠标指针样式
+            Cursor[] sdgCursors = { Cursors.IBeam, Cursors.Hand, Cursors.Default };
+            //设置鼠标文字标识内容
+            String[] sdgText = { "Mouse 1", "Mouse 2", "Mouse 3" };
+            //设置鼠标文字标识颜色
+            Color[] sdgColor = { Color.Blue, Color.Red, Color.Black };
+            //设置鼠标指针透明度
+            double[] sdgOpacity = { 0.4, 0.6, 1 };
+            //设置鼠标指针方向
+            int[] sdgDegreeRotations = {90, 45, 0};
+            //迭代遍历所有鼠标，这里以3个鼠标为例
+            for (int i=0; i < sdgManager1.Mice.Count && i < 3; ++i)
+            {
+                sdgManager1.Mice[i].Cursor = sdgCursors[i];
+                sdgManager1.Mice[i].Text = sdgText[i];
+                sdgManager1.Mice[i].Opacity = sdgOpacity[i];
+                sdgManager1.Mice[i].TextBrush = new SolidBrush(sdgColor[i]);
+                sdgManager1.Mice[i].DegreeRotation = sdgDegreeRotations[i];
+            }
+            //改变系统鼠标模式为跟随模式
+            sdgManager1.EmulateSystemMouseMode = Sdgt.EmulateSystemMouseModes.FollowMouse;
+            //制定第1个鼠标为系统鼠标
+            sdgManager1.MouseToFollow = 0;
+        }
+    }
 }
+```
 
  
 
@@ -181,363 +144,192 @@ namespace SDG_TEST
 
 SDG不同鼠标输入数据的识别及与Windows标准控件的交互（以下代码在VS .NET 2005 上编译通过）
 
+```csharp
 using System;
-
 using System.Collections.Generic;
-
 using System.ComponentModel;
-
 using System.Data;
-
 using System.Drawing;
-
 using System.Text;
-
 using System.Windows.Forms;
 
- 
-
 namespace SDG_TEST
-
 {
-
-    public partial class Form1 : Form
-
-    {
-
-        public Form1()
-
-        {
-
-            InitializeComponent();
-
-            //设置鼠标文字标识内容, 此例仅以文字标识区别不同鼠标
-
-            String[] sdgText = { "Mouse 1", "Mouse 2", "Mouse 3" };
-
-            //迭代遍历所有鼠标，这里以3个鼠标为例
-
-               for (int i=0; i < sdgManager1.Mice.Count && i < 3; ++i)
-
-            {
-
-                    sdgManager1.Mice[i].Text = sdgText[i];
-
-               }
-
-            //改变系统鼠标模式为跟随模式
-
-            sdgManager1.EmulateSystemMouseMode = Sdgt.EmulateSystemMouseModes.FollowMouse;
-
-            //制定第1个鼠标为系统鼠标
-
-            sdgManager1.MouseToFollow = 1;
-
-        }
-
-        //鼠标移动的事件响应
-
-        private void sdgManager1_MouseMove(object sender, Sdgt.SdgMouseEventArgs e)
-
-        {
-
-            //通过识别不同的鼠标ID来改变不同的textBox属性
-
-            switch (e.ID)
-
-            {
-
-                case 0:
-
-                    this.tB_mouse1.Text = "X " \+ e.X + " Y " \+ e.Y;
-
-                    break;
-
-                case 1:
-
-                    this.tB_mouse2.Text = "X " \+ e.X + " Y " \+ e.Y;
-
-                    break;
-
-                case 2:
-
-                    this.tB_mouse3.Text = "X " \+ e.X + " Y " \+ e.Y;
-
-                    break;
-
-                default:
-
-                    break;
-
-            }
-
-        }
-
- 
-
-        //有鼠标键按下时的事件响应
-
-        private void sdgManager1_MouseDown(object sender, Sdgt.SdgMouseEventArgs e)
-
-        {
-
-            //首先识别鼠标ID
-
-            switch (e.ID)
-
-            {
-
-                case 0:
-
-                    //识别不同按键来改变不同的checkBox值为选中
-
-                    if (e.Button == MouseButtons.Left)
-
-                        this.cb_mouse1L.Checked = true;
-
-                    if (e.Button == MouseButtons.Middle)
-
-                        this.cb_mouse1M.Checked = true;
-
-                    if (e.Button == MouseButtons.Right)
-
-                        this.cb_mouse1R.Checked = true;
-
-                    break;
-
-                case 1:
-
-                    //识别不同按键来改变不同的checkBox值为选中
-
-                    if (e.Button == MouseButtons.Left)
-
-                        this.cb_mouse2L.Checked = true;
-
-                    if (e.Button == MouseButtons.Middle)
-
-                        this.cb_mouse2M.Checked = true;
-
-                    if (e.Button == MouseButtons.Right)
-
-                        this.cb_mouse2R.Checked = true;
-
-                    break;
-
-                case 2:
-
-                    //识别不同按键来改变不同的checkBox值为选中
-
-                    if (e.Button == MouseButtons.Left)
-
-                        this.cb_mouse3L.Checked = true;
-
-                    if (e.Button == MouseButtons.Middle)
-
-                        this.cb_mouse3M.Checked = true;
-
-                    if (e.Button == MouseButtons.Right)
-
-                        this.cb_mouse3R.Checked = true;
-
-                    break;
-
-                default:
-
-                    break;
-
-            }
-
-        }
-
-       
-
-        //有鼠标键松开时的事件响应
-
-        private void sdgManager1_MouseUp(object sender, Sdgt.SdgMouseEventArgs e)
-
-        {
-
-            //首先识别鼠标ID
-
-            switch (e.ID)
-
-            {
-
-                case 0:
-
-                    //识别不同按键来改变不同的checkBox值为取消选中
-
-                    if (e.Button == MouseButtons.Left)
-
-                        this.cb_mouse1L.Checked = false;
-
-                    if (e.Button == MouseButtons.Middle)
-
-                        this.cb_mouse1M.Checked = false;
-
-                    if (e.Button == MouseButtons.Right)
-
-                        this.cb_mouse1R.Checked = false;
-
-                    break;
-
-                case 1:
-
-                    //识别不同按键来改变不同的checkBox值为取消选中
-
-                    if (e.Button == MouseButtons.Left)
-
-                        this.cb_mouse2L.Checked = false;
-
-                    if (e.Button == MouseButtons.Middle)
-
-                        this.cb_mouse2M.Checked = false;
-
-                    if (e.Button == MouseButtons.Right)
-
-                        this.cb_mouse2R.Checked = false;
-
-                    break;
-
-                case 2:
-
-                    //识别不同按键来改变不同的checkBox值为取消选中
-
-                    if (e.Button == MouseButtons.Left)
-
-                        this.cb_mouse3L.Checked = false;
-
-                    if (e.Button == MouseButtons.Middle)
-
-                        this.cb_mouse3M.Checked = false;
-
-                    if (e.Button == MouseButtons.Right)
-
-                        this.cb_mouse3R.Checked = false;
-
-                    break;
-
-                default:
-
-                    break;
-
-            }
-
-        }
-
- 
-
-        private void sdgManager1_MouseWheel(object sender, Sdgt.SdgMouseEventArgs e)
-
-        {
-
-            //首先识别鼠标ID
-
-            switch (e.ID)
-
-            {
-
-                case 0:
-
-                    //当progressBar控件没有超出范围时，进行操作
-
-                    if (this.pb_mouse1.Value == this.pb_mouse1.Minimum
-
-                        && e.Delta < 0) break;
-
-                    if (this.pb_mouse1.Value == this.pb_mouse1.Maximum
-
-                        && e.Delta > 0) break;
-
-                    this.pb_mouse1.Value += e.Delta / 120;
-
-                    break;
-
-                case 1:
-
-                    //当progressBar控件没有超出范围时，进行操作
-
-                    if (this.pb_mouse2.Value == this.pb_mouse2.Minimum
-
-                        && e.Delta < 0) break;
-
-                    if (this.pb_mouse2.Value == this.pb_mouse2.Maximum
-
-                        && e.Delta > 0) break;
-
-                    this.pb_mouse2.Value += e.Delta / 120;
-
-                    break;
-
-                case 2:
-
-                    //当progressBar控件没有超出范围时，进行操作
-
-                    if (this.pb_mouse3.Value == this.pb_mouse3.Minimum
-
-                        && e.Delta < 0) break;
-
-                    if (this.pb_mouse3.Value == this.pb_mouse3.Maximum
-
-                        && e.Delta > 0) break;
-
-                    this.pb_mouse3.Value += e.Delta / 120;
-
-                    break;
-
-                default:
-
-                    break;
-
-            } 
-
-        }
-
-    }
-
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            //设置鼠标文字标识内容, 此例仅以文字标识区别不同鼠标
+            String[] sdgText = { "Mouse 1", "Mouse 2", "Mouse 3" };
+            //迭代遍历所有鼠标，这里以3个鼠标为例
+            for (int i=0; i < sdgManager1.Mice.Count && i < 3; ++i)
+            {
+                sdgManager1.Mice[i].Text = sdgText[i];
+            }
+            //改变系统鼠标模式为跟随模式
+            sdgManager1.EmulateSystemMouseMode = Sdgt.EmulateSystemMouseModes.FollowMouse;
+            //制定第1个鼠标为系统鼠标
+            sdgManager1.MouseToFollow = 1;
+        }
+        //鼠标移动的事件响应
+        private void sdgManager1_MouseMove(object sender, Sdgt.SdgMouseEventArgs e)
+        {
+            //通过识别不同的鼠标ID来改变不同的textBox属性
+            switch (e.ID)
+            {
+                case 0:
+                    this.tB_mouse1.Text = "X " \+ e.X + " Y " \+ e.Y;
+                    break;
+                case 1:
+                    this.tB_mouse2.Text = "X " \+ e.X + " Y " \+ e.Y;
+                    break;
+                case 2:
+                    this.tB_mouse3.Text = "X " \+ e.X + " Y " \+ e.Y;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        //有鼠标键按下时的事件响应
+        private void sdgManager1_MouseDown(object sender, Sdgt.SdgMouseEventArgs e)
+        {
+            //首先识别鼠标ID
+            switch (e.ID)
+            {
+                case 0:
+                    //识别不同按键来改变不同的checkBox值为选中
+                    if (e.Button == MouseButtons.Left)
+                        this.cb_mouse1L.Checked = true;
+                    if (e.Button == MouseButtons.Middle)
+                        this.cb_mouse1M.Checked = true;
+                    if (e.Button == MouseButtons.Right)
+                        this.cb_mouse1R.Checked = true;
+                    break;
+                case 1:
+                    //识别不同按键来改变不同的checkBox值为选中
+                    if (e.Button == MouseButtons.Left)
+                        this.cb_mouse2L.Checked = true;
+                    if (e.Button == MouseButtons.Middle)
+                        this.cb_mouse2M.Checked = true;
+                    if (e.Button == MouseButtons.Right)
+                        this.cb_mouse2R.Checked = true;
+                    break;
+                case 2:
+                    //识别不同按键来改变不同的checkBox值为选中
+                    if (e.Button == MouseButtons.Left)
+                        this.cb_mouse3L.Checked = true;
+                    if (e.Button == MouseButtons.Middle)
+                        this.cb_mouse3M.Checked = true;
+                    if (e.Button == MouseButtons.Right)
+                        this.cb_mouse3R.Checked = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+       
+        //有鼠标键松开时的事件响应
+        private void sdgManager1_MouseUp(object sender, Sdgt.SdgMouseEventArgs e)
+        {
+            //首先识别鼠标ID
+            switch (e.ID)
+            {
+                case 0:
+                    //识别不同按键来改变不同的checkBox值为取消选中
+                    if (e.Button == MouseButtons.Left)
+                        this.cb_mouse1L.Checked = false;
+                    if (e.Button == MouseButtons.Middle)
+                        this.cb_mouse1M.Checked = false;
+                    if (e.Button == MouseButtons.Right)
+                        this.cb_mouse1R.Checked = false;
+                    break;
+                case 1:
+                    //识别不同按键来改变不同的checkBox值为取消选中
+                    if (e.Button == MouseButtons.Left)
+                        this.cb_mouse2L.Checked = false;
+                    if (e.Button == MouseButtons.Middle)
+                        this.cb_mouse2M.Checked = false;
+                    if (e.Button == MouseButtons.Right)
+                        this.cb_mouse2R.Checked = false;
+                    break;
+                case 2:
+                    //识别不同按键来改变不同的checkBox值为取消选中
+                    if (e.Button == MouseButtons.Left)
+                        this.cb_mouse3L.Checked = false;
+                    if (e.Button == MouseButtons.Middle)
+                        this.cb_mouse3M.Checked = false;
+                    if (e.Button == MouseButtons.Right)
+                        this.cb_mouse3R.Checked = false;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void sdgManager1_MouseWheel(object sender, Sdgt.SdgMouseEventArgs e)
+        {
+            //首先识别鼠标ID
+            switch (e.ID)
+            {
+                case 0:
+                    //当progressBar控件没有超出范围时，进行操作
+                    if (this.pb_mouse1.Value == this.pb_mouse1.Minimum
+                        && e.Delta < 0) break;
+                    if (this.pb_mouse1.Value == this.pb_mouse1.Maximum
+                        && e.Delta > 0) break;
+                    this.pb_mouse1.Value += e.Delta / 120;
+                    break;
+                case 1:
+                    //当progressBar控件没有超出范围时，进行操作
+                    if (this.pb_mouse2.Value == this.pb_mouse2.Minimum
+                        && e.Delta < 0) break;
+                    if (this.pb_mouse2.Value == this.pb_mouse2.Maximum
+                        && e.Delta > 0) break;
+                    this.pb_mouse2.Value += e.Delta / 120;
+                    break;
+                case 2:
+                    //当progressBar控件没有超出范围时，进行操作
+                    if (this.pb_mouse3.Value == this.pb_mouse3.Minimum
+                        && e.Delta < 0) break;
+                    if (this.pb_mouse3.Value == this.pb_mouse3.Maximum
+                        && e.Delta > 0) break;
+                    this.pb_mouse3.Value += e.Delta / 120;
+                    break;
+                default:
+                    break;
+            } 
+        }
+    }
 }
+```
 
  
 
 以下为各控件在Form1.Designer.cs中的声明：
 
-        private Sdgt.SdgManager sdgManager1;
-
-        private System.Windows.Forms.Label label2;
-
-        private System.Windows.Forms.Label label1;
-
-        private System.Windows.Forms.TextBox tB_mouse3;
-
-        private System.Windows.Forms.TextBox tB_mouse2;
-
-        private System.Windows.Forms.TextBox tB_mouse1;
-
-        private System.Windows.Forms.Label label3;
-
-        private System.Windows.Forms.CheckBox cb_mouse1R;
-
-        private System.Windows.Forms.CheckBox cb_mouse1M;
-
-        private System.Windows.Forms.CheckBox cb_mouse1L;
-
-        private System.Windows.Forms.CheckBox cb_mouse3R;
-
-        private System.Windows.Forms.CheckBox cb_mouse2R;
-
-        private System.Windows.Forms.CheckBox cb_mouse3M;
-
-        private System.Windows.Forms.CheckBox cb_mouse2M;
-
-        private System.Windows.Forms.CheckBox cb_mouse3L;
-
-        private System.Windows.Forms.CheckBox cb_mouse2L;
-
-        private System.Windows.Forms.ProgressBar pb_mouse1;
-
-        private System.Windows.Forms.ProgressBar pb_mouse3;
-
-        private System.Windows.Forms.ProgressBar pb_mouse2;
+```csharp
+        private Sdgt.SdgManager sdgManager1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tB_mouse3;
+        private System.Windows.Forms.TextBox tB_mouse2;
+        private System.Windows.Forms.TextBox tB_mouse1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox cb_mouse1R;
+        private System.Windows.Forms.CheckBox cb_mouse1M;
+        private System.Windows.Forms.CheckBox cb_mouse1L;
+        private System.Windows.Forms.CheckBox cb_mouse3R;
+        private System.Windows.Forms.CheckBox cb_mouse2R;
+        private System.Windows.Forms.CheckBox cb_mouse3M;
+        private System.Windows.Forms.CheckBox cb_mouse2M;
+        private System.Windows.Forms.CheckBox cb_mouse3L;
+        private System.Windows.Forms.CheckBox cb_mouse2L;
+        private System.Windows.Forms.ProgressBar pb_mouse1;
+        private System.Windows.Forms.ProgressBar pb_mouse3;
+        private System.Windows.Forms.ProgressBar pb_mouse2;
+```
 
  
 

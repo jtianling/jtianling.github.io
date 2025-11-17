@@ -157,9 +157,11 @@ Such errors are reported as overflow _e r r o r exceptions(as available memory d
 
 这个整数类表示一个整数。
 
+```text
 _[__Not e:this_ ___is_ ___n ot_ ___a_ ___f_ _u ndamental_ ___typ e,____a_ _n_ _d_ ___t herefore_ ___n_ _o_ _t_ ___a_ ___si gned_ ___i nteger_ ___t_ _y_ _p_ _e_ ___i_ _n_ ___t he_ ___s ense_ ___o_ _f_ ___3_ _. 9.1_ ___– end_ ___N ote]_
 
 _[__要点_ _：_ ___这个不是一个基础类型_ _，_ _因此一个带符号整数类在_ _3.9.1_ _最后的要点中是没有意义的_ _]_
+```
 
 D. Renumber 26.5 C library to become 26.6:
 
@@ -287,7 +289,7 @@ The &= , |= and ^= operators operate as if the shortest of their operands has le
 
 因此，类似的技术可以对它们应用。
 
-In particular, the common form a*b+c could be optimized by returning an intermediate type from operator* and adding overloads for that type to operator+.This proposal does not allow this,but since no internal representation is mandated a run­time equivalent technique can be used.
+In particular, the common form a*b+c could be optimized by returning an intermediate type from operator* and adding overloads for that type to operator+.This proposal does not allow this,but since no internal representation is mandated a run­time equivalent technique can be used。
 
 特别的，普通的a*b+c形式可能以从operator*返回一个中间值的形式优化，而加重operator+的负担。这个提案不允许这样，但是因为没有内在的表示法被要求，一个运行时相同的技术可以被使用。
 
@@ -316,5 +318,3 @@ This is not an explicit decision, and the LWG might consider adding it.
                
 
 原文 Copyright Michiel Salters / Nederlands Normalisatie Institute.
-
- 

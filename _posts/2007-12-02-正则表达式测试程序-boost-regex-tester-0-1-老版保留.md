@@ -25,14 +25,8 @@ author:
 
 最后发现，正确的使用boost.regex 难度远远比正确使用regex还高，我没有见过设计的这么复杂的类和函数。硬是仔细的看了几遍在线文档才摸清头绪，最终好不容易完成了这个小程序。使用上没有什么好说的，上面输入正则表达式，下面为查找的字符串。另外，对于此boost库还有很多不明白的，比如不知道匹配的字符串在原字符串的位置怎么定位？
 
- 
-
 正则表达式 /bsss/b 可以匹配 ssss sss 中的最后三个sss，可是我怎么能从regex_search函数返回值中得到这样的结果呢？因为match_results中并没有包含位置信息，只有最后查到的字符串而已。因为这点不明，所以我没有办法把程序做成Windows中查找程序那样的结果表示方式。
 
- 
+编译好的程序和源代码都还是在[http://groups.google.com/group/jiutianfile/files](http://groups.google.com/group/jiutianfile/files)中有下载
 
-编译好的程序和源代码都还是在[http://groups.google.com/group/jiutianfile/files](<http://groups.google.com/group/jiutianfile/files>)中有下载
-
- 程序截图如下：![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/Boost Regex Tester.jpg)
-
- 
+程序截图如下：![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/Boost Regex Tester.jpg)

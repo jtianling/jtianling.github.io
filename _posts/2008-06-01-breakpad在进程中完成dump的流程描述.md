@@ -57,27 +57,18 @@ ExceptionHandler构造函数调用Initialize函数完成初始化.
 
  
 
-       if (handler_types & HANDLER_EXCEPTION)
+```cpp
+if (handler_types & HANDLER_EXCEPTION)
+    previous_filter_ = SetUnhandledExceptionFilter(HandleException);
 
-           previous_filter_ = SetUnhandledExceptionFilter(HandleException);
+#if _MSC_VER >= 1400  // MSVC 2005/8
+if (handler_types & HANDLER_INVALID_PARAMETER)
+    previous_iph_ = _set_invalid_parameter_handler(HandleInvalidParameter);
+#endif  // _MSC_VER >= 1400
 
- 
-
-#if _MSC_VER >= 1400  // MSVC 2005/8
-
-       if (handler_types & HANDLER_INVALID_PARAMETER)
-
-           previous_iph_ = _set_invalid_parameter_handler(HandleInvalidParameter);
-
-#endif  // _MSC_VER >= 1400
-
- 
-
-       if (handler_types & HANDLER_PURECALL)
-
-           previous_pch_ = _set_purecall_handler(HandlePureVirtualCall);
-
- 
+if (handler_types & HANDLER_PURECALL)
+    previous_pch_ = _set_purecall_handler(HandlePureVirtualCall);
+```
 
 以上三个函数的含义分别是
 
@@ -108,9 +99,3 @@ _set_purecall_handler(HandlePureVirtualCall)确定纯虚函数调用发生时调
  
 
 以上基本就是不使用CrashGeneration在进程中完成dump的流程
-
- 
-
- 
-
- 

@@ -137,177 +137,98 @@ Strassen FFT            \-                      N lo
 
 integer类的需求由包含在提案头文件的界面（interface）提供。这些断言（assertion）和之前之后的情况(pre/post-condition)都是很明显的，对于平均复杂度的需要也提供了，N 是数据的十进制或二进制位数：
 
- 
-
+```cpp
 class integer
-
 {
-
 private:
-
-unsigned int *data, *maxdata;
-
-signed char thesign;
-
+    unsigned int *data, *maxdata;
+    signed char thesign;
 public: // Complexity:
-
-integer(); // 1
-
-integer( int ); // 1
-
-integer( double ); // 1
-
-integer( const char * ); // < N^2 (see 3.4)
-
-integer( const string & ); // < N^2 (see 3.4)
-
-integer( const integer & ); // N
-
-virtual ~integer(); // 1
-
-const unsigned int size() const; // 1
-
-integer &operator=( const integer & ); // N
-
-integer &negate(); // 1
-
-integer &abs(); // 1
-
-integer &operator++(); // 1
-
-integer &operator\--(); // 1
-
-const integer operator++( int ); // N
-
-const integer operator\--( int ); // N
-
-integer &operator|=( const integer & ); // N
-
-integer &operator&=( const integer & ); // N
-
-integer &operator^=( const integer & ); // N
-
-integer &operator<<=( unsigned int ); // N
-
-integer &operator>>=( unsigned int ); // N
-
-integer &operator+=( const integer & ); // N
-
-integer &operator-=( const integer & ); // N
-
-integer &operator*=( const integer & ); // < N^2 (see 3.4)
-
-integer &operator/=( const integer & ); // < N^2 (see 3.4)
-
-integer &operator%=( const integer & ); // < N^2 (see 3.4)
-
-const integer operator-() const; // N
-
-const integer operator<<( unsigned int ) const; // N
-
-const integer operator>>( unsigned int ) const; // N
-
+    integer(); // 1
+    integer( int ); // 1
+    integer( double ); // 1
+    integer( const char * ); // < N^2 (see 3.4)
+    integer( const string & ); // < N^2 (see 3.4)
+    integer( const integer & ); // N
+    virtual ~integer(); // 1
+    const unsigned int size() const; // 1
+    integer &operator=( const integer & ); // N
+    integer &negate(); // 1
+    integer &abs(); // 1
+    integer &operator++(); // 1
+    integer &operator\--(); // 1
+    const integer operator++( int ); // N
+    const integer operator\--( int ); // N
+    integer &operator|=( const integer & ); // N
+    integer &operator&=( const integer & ); // N
+    integer &operator^=( const integer & ); // N
+    integer &operator<<=( unsigned int ); // N
+    integer &operator>>=( unsigned int ); // N
+    integer &operator+=( const integer & ); // N
+    integer &operator-=( const integer & ); // N
+    integer &operator*=( const integer & ); // < N^2 (see 3.4)
+    integer &operator/=( const integer & ); // < N^2 (see 3.4)
+    integer &operator%=( const integer & ); // < N^2 (see 3.4)
+    const integer operator-() const; // N
+    const integer operator<<( unsigned int ) const; // N
+    const integer operator>>( unsigned int ) const; // N
 };
 
 const bool operator==( const integer &, const integer & ); // N
-
 const bool operator!=( const integer &, const integer & ); // N
-
 const bool operator>( const integer &, const integer & ); // N
-
 const bool operator>=( const integer &, const integer & ); // N
-
 const bool operator<( const integer &, const integer & ); // N
-
 const bool operator<=( const integer &, const integer & ); // N
-
 const integer operator|( const integer &, const integer & ); // N
-
 const integer operator&( const integer &, const integer & ); // N
-
 const integer operator^( const integer &, const integer & ); // N
-
 const integer operator+( const integer &, const integer & ); // N
-
 const integer operator-( const integer &, const integer & ); // N
-
 const integer operator*( const integer &, const integer & ); // < N^2 see 3.4)
-
 const integer operator/( const integer &, const integer & ); // < N^2 see 3.4)
-
 const integer operator%( const integer &, const integer & ); // < N^2 see 3.4)
 
 const integer gcd( const integer &, const integer & ); // ?
-
 const integer lcm( const integer &, const integer & ); // ?
-
 ostream & operator<<( ostream &, const integer & ); // < N^2 (see 3.4)
-
 istream & operator>>( istream &, integer & ); // < N^2 (see 3.4)
-
 const int sign( const integer & ); // 1
-
 const bool even( const integer & ); // 1
-
 const bool odd( const integer & ); // 1
-
 const bool getbit( const integer &, unsigned int ); // 1
-
 void setbit( integer &, unsigned int ); // 1
-
 void clearbit( integer &, unsigned int ); // 1
-
 const unsigned int lowestbit( const integer & ); // 1
-
 const unsigned int highestbit( const integer & ); // 1
-
 const integer abs( const integer & ); // N
-
 const integer sqr( const integer & ); // < N^2 (see 3.4)
-
 const integer pow( const integer &, const integer & ); // ?
-
 const integer factorial( const integer & ); // ?
-
-// floor of the square root, like int sqrt( int )
-
+    // floor of the square root, like int sqrt( int )
 const integer sqrt( const integer & ); // ?
-
-// random integer >= first and < second argument
-
+    // random integer >= first and < second argument
 const integer random( const integer &, const integer & ); // ?
-
 const int toint( const integer & ); // 1
-
 const double todouble( const integer & ); // 1
-
- 
+```
 
 为了错误控制，可能需要创建一个独立的exception类:
 
+```cpp
 class integer_exception : public exception
-
 { public:
-
-enum type_of_error {
-
-error_unknown, error_overflow,
-
-error_divbyzero, error_memalloc, ...
-
-};
-
-integer_exception( type_of_error = error_unknown, ... );
-
-virtual const char * what () const;
-
+    enum type_of_error {
+        error_unknown, error_overflow,
+        error_divbyzero, error_memalloc, ...
+    };
+    integer_exception( type_of_error = error_unknown, ... );
+    virtual const char * what () const;
 private:
-
-type_of_error error_type;
-
-string error_description;
-
+    type_of_error error_type;
+    string error_description;
 };
+```
 
 5           没有解决的问题
 
@@ -334,7 +255,3 @@ string error_description;
 6\. http://www.swox.com/gmp
 
 7\. http://www.math.utah.edu/docs/info/libg++ 20.html
-
- 
-
- 
