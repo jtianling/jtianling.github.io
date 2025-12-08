@@ -494,4 +494,4 @@ JavaScript本身设计的时候是一门简单的语言, 所以没有加入类�
 [*JavaScript The Definitive Guide*][] 5th Edition,(我看的是[影印版](http://www.amazon.cn/JavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97-David-Flanagan/dp/B006RRAZGE/ref=sr_1_14?ie=UTF8&qid=1358533289&sr=8-14_), 上面链接是最新的第6版. David Flanagan著, OREILLY
 [*JavaScript高级程序设计*(第2版)](http://www.amazon.cn/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-%E6%B3%BD%E5%8D%A1%E6%96%AF/dp/B007OQQVMY/ref=sr_1_1?ie=UTF8&qid=1358533289&sr=8-1),(上面链接的是最新的第3版) Nicholas C.Zakas著, 人民邮电出版社  
 [*A re-introduction to JavaScript (JS Tutorial)*](https://developer.mozilla.org/cn/docs/A_re-introduction_to_JavaScript?redirect=no)
-[*JavaScript The Definitive Guide*]: http://www.amazon.cn/O-Reilly%E7%B2%BE%E5%93%81%E5%9B%BE%E4%B9%A6%E7%B3%BB%E5%88%97-JavaScript%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97-%E5%BC%97%E5%85%B0%E7%BA%B3%E6%A0%B9/dp/B007VISQ1Y/ref=sr_1_2?ie=UTF8&qid=1358533289&sr=8-2
+[*JavaScript The Definitive Guide*](https://item.jd.com/10974436.html)
