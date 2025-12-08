@@ -11,7 +11,7 @@ tags:
 - 数学
 ---
 
-接上一篇讲[向量的文章](http://www.jtianling.com/math-in-3d-graphics(1)-vector.html), 继续讲3D图形编程中的数学中最关键的概念, 矩阵.
+接上一篇讲[向量的文章](/math-in-3d-graphics(1)-vector.html), 继续讲3D图形编程中的数学中最关键的概念, 矩阵.
 
 <!-- more -->
 <!-- toc-begin -->
@@ -48,7 +48,7 @@ $$
 
 某矩阵 A 的第 i 行第 j 列, 或 i, j 位, 通常记为 \\( A[i , j] \\)或 \\( A_{i, j} \\).  在上述例子中 \\( A[2, 3] = 7 \\). (来自wikipedia)
 
-当一个矩阵仅包含单行或单列时, 这样的矩阵就称为行向量或列向量. 相关概念可参考上一篇[**3D 编程的数学基础(1) 向量及其运算**](http://www.jtianling.com/math-in-3d-graphics(1)-vector.html)
+当一个矩阵仅包含单行或单列时, 这样的矩阵就称为行向量或列向量. 相关概念可参考上一篇[**3D 编程的数学基础(1) 向量及其运算**](/math-in-3d-graphics(1)-vector.html)
 下面演示用 Matlab 生成一个 4*4 的矩阵.  
 ```matlab
 >> A = [ 16 2 3 13

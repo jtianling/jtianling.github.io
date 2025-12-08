@@ -21,7 +21,7 @@ author:
   last_name: ''
 ---
 
-# [windows/linux服务器程序支持库的开发](http://www.jtianling.com/archive/2009/03/01/3947195.aspx)（2）--序列化支持(1)
+# [windows/linux服务器程序支持库的开发](/gnu的幽默.html)（2）--序列化支持(1)
 
 [**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 

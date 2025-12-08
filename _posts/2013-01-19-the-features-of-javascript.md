@@ -396,7 +396,7 @@ console.log(rect.area());
 ## 模拟class-based的继承
 相关内容见Douglas Crockford的[*Classical Inheritance in JavaScript*](http://JavaScript.crockford.com/inheritance.html).  我个人因为对这种奇怪的方式比较反感, 所以不太想去使用, 这里就不进行描述了.  需要提及的是, 假如真的需要class-based的继承的话, 在最新版的JavaScript 2.0规范(ECMAScript 5)中你能找到你想要的真正的类.  虽然相关标准还在进行当中, 可能还需要几年才能实际使用.  
 语言的发展道路基本上是趋同的, 程序社区有较为公认的标准,  所以PHP也在新的版本中加入了完整的面向对象支持, 而C++在11标准里面加入了闭包.  而Java和C#在新版本中不仅加入了闭包, 还增加了模版.  
-当JavaScript 2.0加入了class以后, 可能将来使用JavaScript就和C++等语言区别不大了.  可能会更像[UnityScript](http://www.jtianling.com/articles/179.html).
+当JavaScript 2.0加入了class以后, 可能将来使用JavaScript就和C++等语言区别不大了.  可能会更像[UnityScript](/unityscript-programming-language.html).
 
 ## 基于原型的继承
 这种继承方式和class-based的继承不一样, 直接使用了JavaScript的prototype特性, 在真正的class没有出来之前, 我个人对这样的方式好感更多.  主要可以参考的还是Douglas Crockford的文章, 见[*Prototypal Inheritance in JavaScript*](http://JavaScript.crockford.com/prototypal.html)  

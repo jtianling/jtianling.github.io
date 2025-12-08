@@ -30,7 +30,7 @@ tags:
 目录的链接基于Redcarpet这个生成工具生成的HTML, 在分析目录的时候, 会跳过`~~~`标注的代码(其他形式的代码块, 要是是类似Ruby这种注释也是#开头的, 会把代码的注释看作是文章的标题.)
 
 实现的方式是在`<!-- more -->`标签后, 添加成对的`<!-- toc-begin -->`, `<!-- toc-end -->`标签, 实际目录在两个标签中.  
-通过jeklly生成以后的效果(也就是Github Pages实际的效果)可以参考本文的目录, 更复杂的可以去本博客的其他文章中查看(新写的都添加了), 比如这篇[那篇文章](http://www.jtianling.com/write-blog-with-jekyll-and-github-pages.html), 效果我还算满意.
+通过jeklly生成以后的效果(也就是Github Pages实际的效果)可以参考本文的目录, 更复杂的可以去本博客的其他文章中查看(新写的都添加了), 比如这篇[那篇文章](/write-blog-with-jekyll-and-github-pages.html), 效果我还算满意.
 
 # 安装及使用
 

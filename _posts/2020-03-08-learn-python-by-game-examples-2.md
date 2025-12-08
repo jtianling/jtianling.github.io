@@ -17,7 +17,7 @@ tags:
 <!-- more -->
 
 # 主角就绪
-参考[教程的第一篇](http://www.jtianling.com/learn-python-by-game-examples-1.html)及[第一篇课后的答案](http://www.jtianling.com/learn-python-by-game-examples-1-answer.html), 我们已经获得了一个操作上较为靠谱的主角, 暂时用一个小圆点来表示.
+参考[教程的第一篇](/learn-python-by-game-examples-1.html)及[第一篇课后的答案](/learn-python-by-game-examples-1-answer.html), 我们已经获得了一个操作上较为靠谱的主角, 暂时用一个小圆点来表示.
 再次回顾一下代码:
 
 ```python

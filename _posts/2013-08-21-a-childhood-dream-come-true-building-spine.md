@@ -7,7 +7,7 @@ categories: 随笔
 tags: Spine 故事 翻译
 ---
 
-Spine是一个2D的骨骼动画编辑器, 因为其良好的UI设计及完整的功能, 在kickstarter上发布以后立即收到追捧, 作为一个几乎只有游戏开发者才会使用的小众工具, 募集了远超目标5倍的资金, 共计6.7W多美元.  以前我写过博客介绍了一些[Spine的基本用法](http://www.jtianling.com/articles/2220.html).  [官方的网站](http://esotericsoftware.com/)上有更详细的介绍, 还有一段特性介绍的视频.
+Spine是一个2D的骨骼动画编辑器, 因为其良好的UI设计及完整的功能, 在kickstarter上发布以后立即收到追捧, 作为一个几乎只有游戏开发者才会使用的小众工具, 募集了远超目标5倍的资金, 共计6.7W多美元.  以前我写过博客介绍了一些[Spine的基本用法](/use-spine-with-cocos2d-x.html).  [官方的网站](http://esotericsoftware.com/)上有更详细的介绍, 还有一段特性介绍的视频.
 Spine的作者最近(2013-08-13)在自己的博客上写了一些关于[Spine背后的故事](http://esotericsoftware.com/spine/building-spine/), 我感觉很有意思, 在这里跟大家分享一下, 因为精力有限, 也不做全文的翻译, 主要翻译故事部分, 关于技术部分就不详细翻译, 只是写个概要了.
 
 <!-- more -->

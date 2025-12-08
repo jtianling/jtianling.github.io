@@ -33,7 +33,7 @@ tags: REPL
 
 # 原生不带REPL的语言
 ## JavaScript
-类似JavaScript这种量级的脚本语言本来应该都是有REPL的, 可是JavaScript是个一般在浏览器中运行的语言, 所以有些特殊了.  不过有一些实现.  比如Mozilla的[*Rhino*](https://developer.mozilla.org/en-US/docs/Rhino), 以前我写过一个*Rhnio*在[Mac下安装的教程](http://www.jtianling.com/articles/2057.html), 这里不再重复了.  
+类似JavaScript这种量级的脚本语言本来应该都是有REPL的, 可是JavaScript是个一般在浏览器中运行的语言, 所以有些特殊了.  不过有一些实现.  比如Mozilla的[*Rhino*](https://developer.mozilla.org/en-US/docs/Rhino).  
 另外, 我推荐使用最近流行的[node.js](http://nodejs.org/)来做REPL, 虽然node.js一般都被认为是一个服务端的脚本环境, 但是本身就是个很不错的REPL环境, 还自带一些common JavaScript的库环境, 同时支持npm, 比Rhnio要更加强大一些.    在Mac下简单的使用node.js方法是用*brew*, 虽然版本可能有些老.  
 
 ## PHP
