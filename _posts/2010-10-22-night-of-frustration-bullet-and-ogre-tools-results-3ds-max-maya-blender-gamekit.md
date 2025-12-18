@@ -34,6 +34,10 @@ author:
 
 1\. Blender， 开源产品，我寄予了厚望，结果却是大大的失望，Blender的Ogre插件那个弱。。。。。Mesh导出还算可用，但是不能一次导出多个，要导出多个你就去吐血吧。而Scene导出插件简直就是跟你开国际玩笑，只能导出scene文件，需要你自己用Mesh插件导出所有的模型，于是乎，两者合作的结果是，你需要一个一个的导出mesh，然后再用Scene导出插件导出Scene。（不过经测试，的确可用）这个就算了，Blender内置bullet物理支持，编辑非常方便，在自己的Game Engine中模拟也是几乎完美，还支持constraints，我都惊叹了。。。。结果是，无法导出.bullet文件，用了erwin提供的改版blender,发现没有菜单，于是乎，google出了下列脚本：
 
+
+<!-- more -->
+ 
+
 ```python
 import PhysicsConstraints
 PhysicsConstraints.exportBullet("testFile.bullet")

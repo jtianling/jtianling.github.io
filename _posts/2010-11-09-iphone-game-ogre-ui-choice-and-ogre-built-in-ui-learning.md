@@ -32,11 +32,14 @@ author:
 首先说需求，很明显做iPhone游戏，特别是比较简单的iPhone游戏，对UI的需求比做网游要求还是少的，对于我来说，按钮与文字的显示就已经能够包含90%以上的需求了，要是按钮还能够多点定制的灵活性，文字还能够显示中文，然后还有个进度条（用于loading）就完美了，没有其他更多的需求。唯一
 
 知道需求后，就会发现，**[CEGUI](<http://www.cegui.org.uk/wiki/index.php/Main_Page>)  
-**  
 这个成熟并且有足够灵活性的UI是很多公司开发网游的最爱，但是还是太庞大，太复杂了一些。再加上这里有个人总结过[iphone下UI的选择](<http://www.ogre3d.org/forums/viewtopic.php?f=1&t=58492> "iphone下UI的选择")  
 ，谈到了CEGUI在iPhone下的问题，所以不予考虑。（虽然这个我以前用过，可能上手会快一些）我认为在前面提及文章中作者最后选择的MyGUI可能都复杂了，加上在网上找了找相关的信息，发现iPhone下也会有[一些问题](<http://www.ogre3d.org/addonforums/viewtopic.php?f=17&t=12180> "一些问题")  
 。并且，我发现[官方版本的MyGUI](<http://mygui.info/> "官方版本的MyGUI")  
 甚至没有MacOS版本。这个问题太严重了，我还是不想再做吃螃蟹的人了，我需要的东西是那么简单。。。。于是，我决定尝试Ogre的内置UI，（可惜文档太少）假如内置UI不能解决问题，再去考虑其他的UI。
+
+
+<!-- more -->
+
 
 ### Ogre内置的UI
 

@@ -21,11 +21,6 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
-
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
 
 ## 前言
 
@@ -33,7 +28,12 @@ author:
 
     前段时间简单的学习了一下Bullet,牵涉到图形部分的时候主要都是研究Bullet与Ogre的结合，所以使用了OgreBullet这个Ogre的Addon，其实真正的学习当然还是直接利用Bullet本身附带的简单的debug OpenGL绘制就好了。本文就完全以Bullet本身的Debug功能来学习，虽然简陋，但是可以排除干扰，专注于bullet。也许除了本文，会有个额外的文章，稍微研究下Ogre与Bullet的整合和分析一下OgreBullet的源码。
 
-   
+<!-- more -->
+
+**目录**:
+
+* TOC
+{:toc}
 
 ## Bullet介绍
 
@@ -631,9 +631,6 @@ void   setUserPointer(void * userPointer)
 3.[Bullet Bullet Documentation](<http://bulletphysics.com/Bullet/BulletFull/> "Bullet Bullet Documentation")  
 ，Bullet的文档，自动生成的，也就只能在写代码的时候可能有些用，很难靠这个学习。
 
- 
-
- 
 
 ## 我写的关于Bullet的文章
 
@@ -645,12 +642,3 @@ void   setUserPointer(void * userPointer)
 
 最后，因为本文较长，为方便查看，提供了[pdf版](<http://bullet-sample.jtianling.googlecode.com/hg/bullet-not-complete-guide.pdf>)  
 方便大家查看。
-
- 
-
- 
-
-原创文章作者保留版权 转载请注明原作者 并给出链接
-
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**

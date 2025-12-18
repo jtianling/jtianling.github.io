@@ -22,18 +22,12 @@ author:
   last_name: ''
 ---
 
-# **直线的光栅化算法**  
-
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
-
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
-
 看"参考1"碰到的第一个算法，有点意思，总结一下，特别是因为"参考1"没有找到随书的源码下载（Pearson的源码都要教师申请才能下载），自己写点源码，也算是桩乐事。
 
 因为在我们画图的时候，都是以vertex为基础的，所以算法都是以直线（实际是数学中的线段）的起点（x0,y0)加终点(xEnd,yEnd)作为输入来绘制直线的。
 
+
+<!-- more -->
  
 
 ## 基础知识
@@ -404,10 +398,4 @@ void drawLineWithDDA(int x0, int y0, int xEnd, int yEnd) {
 6.[Algorithm for computer control of a digital plotter](<http://intranet.cs.man.ac.uk/Study_subweb/courses/COMP20072/papers/ibmsjIVRIC.pdf> "Algorithm for computer control of a digital plotter")
 
 ，J. E. Bresenham的关于Bresenham算法的原始论文，IBM Systems Journal 1965
-
  
-
-原创文章作者保留版权 转载请注明原作者 并给出链接
-
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**

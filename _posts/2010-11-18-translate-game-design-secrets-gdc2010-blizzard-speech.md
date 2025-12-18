@@ -21,8 +21,6 @@ author:
   last_name: ''
 ---
 
-# 游戏设计的秘密——翻译GDC2010 blizzard的一个演讲
-
 转自：http://blog.sina.com.cn/s/blog_62c6329f0100hmia.html
 翻译了一篇blizzard在GDC2010上的演讲。感谢cyndi的校正和粽子的润色。有不对的地方，还请大家指出。
 
