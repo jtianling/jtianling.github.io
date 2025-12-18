@@ -24,7 +24,9 @@ author:
 
 来自：<http://blog.csdn.net/nnnnyyyy/archive/2011/05/10/6410554.aspx>
 
- 
+
+<!-- more -->
+
 
 最欣赏的是这个：
 

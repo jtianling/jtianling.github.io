@@ -37,6 +37,10 @@ iOS: Apple LLVM compiler 3.0（Clang)
 
 本文所描述的C++ 11特性仅在上述三个平台，所写的版本号中有效，请先确认这点。
 
+
+<!-- more -->
+
+
 在[apache的WIKI](<http://wiki.apache.org/stdcxx/C%2B%2B0xCompilerSupport>)上有个较为详细的列表。可以看到，现在能用的特性其实不怎么多：
 
   1. auto

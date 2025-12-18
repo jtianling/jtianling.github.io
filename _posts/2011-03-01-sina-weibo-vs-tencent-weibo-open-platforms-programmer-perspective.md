@@ -22,10 +22,11 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**[**  
-**](<http://groups.google.com/group/jiutianfile/>)
 
-**[新浪微博](<http://t.sina.com.cn/jtianling> "新浪微博") \-- [腾讯微博](<http://t.qq.com/jtianling> "腾讯微博") \-- [讨论新闻组](<http://groups.google.com/group/jiutianfile> "讨论新闻组")** \-- [代码库](<http://code.google.com/p/jtianling/> "代码库") \-- [豆瓣](<http://www.douban.com/people/JTianLing/> "豆瓣")  
+简单看了一下新浪微博和腾讯微信的 API, 看看他们的设计.
+
+<!-- more -->
+
 
 ## [新浪微博](<http://open.t.sina.com.cn/> "新浪微博开放平台")
 
@@ -84,10 +85,7 @@ NSURLConnection *connection = [request asyncRequestWithUrl:url httpMethod:@"POST
 
     再结合这个[权限的设置](<http://open.t.qq.com/resource.php?i=1,3> "权限的设置")，真是受不了啊。有人来做开发者，对平台是有好处，最后好像是开发者求你？我联想到最近的“[You Win, Rim](<http://blog.jamiemurai.com/2011/02/you-win-rim/> "You Win, Rim")”的事件，套用其原话，此时此刻，千言万语汇成一句话：你赢了，腾讯。做开放平台难道是来给开发人员添堵的吗？姿态开放而心态不开放的开放很明显是假的开放。最后的效果也很明显，目前新浪微博平台上的应用很繁荣，而腾讯微博平台的应用几乎没有，这可不全都是因为慢了一步而已。
 
-小结：,,
+小结:
 
     假如不允许批评，那么所有的赞美都没有意义。我较为苛刻，对两个微博的SDK都提出了一些看法。我的感觉，新浪需要的是加强技术，腾讯需要的是改变心态。但是无论是新浪还是腾讯，只要能够真的拥抱开放，我想不仅是两个公司的平台能够做的越大越强，同时也能给个人和小团队提供新的机会，让大家在中国这片神奇的国土上，也能做点符合自己理想的事情，同时，获得一定的收益，那样，也算是中国互联网在不停的倒退的时候的一点进步吧。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
-
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

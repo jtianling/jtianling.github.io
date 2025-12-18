@@ -25,6 +25,10 @@ author:
 
 [Texture packer](<http://www.texturepacker.com/>)的确比Zwoptex更加强大，功能更多，跨平台，在使用cocos2d-x在win32下开发的时候，能够在win32下使用的优点就更加明显了。何况Zwoptex以前是完全免费的，在用户多了以后坑爹般的开始收费了，连个可用的免费版本都没有（只有自己保留的老版本可用），而Texture packer一直有可用的免费版本，虽然Pro版本贵的离谱（对于中国人来说,100多块钱的工具太贵了，但是对于美国人来说又很便宜）。另外，假如你是博客作者或者是框架开发者，可以向作者申请免费的license,我的确收到了。有意思的是，作者后来以做SEO为由，要求我添加以[Sprite Sheet Maker](<http://texturepacker.com/sprite-sheet>)为文字的链接，链接到他们网站，真让人感叹，天下没有免费的午餐啊~~~~
 
+
+<!-- more -->
+
+
 Texture packer的主界面如下：
 
 [![](http://184.82.230.158/wp-content/uploads/2011/08/texturepacker1-1024x695.png)](<http://www.jtianling.com/wp-content/uploads/2011/08/texturepacker1.png>)

@@ -35,6 +35,10 @@ Mono: AssemblyAssets/Scripts/Example/JTianLingExample.js(1,1): BCE0172: `UnitySc
 
 在网上找到了litjson库，通过这个支持.Net的库来曲线救国，折腾了一下，基本搞定。看网上讲litjson的资料很少，并且以C#居多，我这里就记录一下。
 
+
+<!-- more -->
+
+
 ## LitJson配置步骤
 
 1.讲litjson的源代码中所有.cs文件放到Unity3d的assets中的plugins目录下，当然，在plugins下再建一个目录最好。Unity3D文档描述中plugins目录中的脚本会先运行，这样保证在我们写其他脚本的时候，litjson已经加载并运行好了。不然的话，等着报这种错误吧：  
@@ -81,7 +85,3 @@ Mono: Image addref Mono.Cecil 0x1757740 -> /Applications/Unity/Unity.app/Content
 
 另外，我们读取配置文件的时候常常是从文件中读取，我发现用Unity3D读取文件也值得单独写写，这个下次再讲。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接  
-[九天雁翎(JTianLing) -- www.jtianling.com](<www.jtianling.com>)
-
- 

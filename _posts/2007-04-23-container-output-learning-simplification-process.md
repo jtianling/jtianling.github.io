@@ -23,6 +23,8 @@ author:
 
 在学习C++标准库的过程中，各种容器是很大一块，每次验证自己的结果输出容器的时候除了string 可以简单的cout<<输出以外，其他的都要for()循环用迭代器遍历，比如输出vector<int> vec容器就要这样
 
+<!-- more -->
+
 ```cpp
 for(vector<int>::iterator it = vec.begin(); it != vec.end(),++it)
     cout<<*it<<" :;

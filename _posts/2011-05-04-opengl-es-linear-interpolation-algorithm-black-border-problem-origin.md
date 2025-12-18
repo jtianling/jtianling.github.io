@@ -40,7 +40,9 @@ interpolation）。
 ，  
 [线性过滤算法参考](<http://en.wikipedia.org/wiki/Linear_interpolation>)  
   
-。
+
+<!-- more -->
+
 
 简单的讲，最近点过滤算法就是用最靠近像素中心的那个纹理单元进行放大和缩小，效率更高，效果不好，锯齿严重。
 

@@ -23,6 +23,10 @@ author:
 
 用一个周末总算在ubuntu下把www.jtianling.com博客搭建好了，这里分享一些不成熟的经验。
 
+
+<!-- more -->
+
+
 ## 准备工作
 
 安装wordpress前需要安装的软件如下：

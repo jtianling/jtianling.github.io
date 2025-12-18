@@ -23,6 +23,10 @@ author:
 
 三个乔布斯相关的视频，“谨献给我们这个时代的疯子，那个真的改变这个世界的人” — Steve Jobs。
 
+
+<!-- more -->
+
+
 ## [乔布斯在斯坦福大学的演讲视频](<http://www.tudou.com/programs/view/dS0wNIaiWT4/>)
 
 > I'm convinced that the only thing that kept me going was that I loved what I did.

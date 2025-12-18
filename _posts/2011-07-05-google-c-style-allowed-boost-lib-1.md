@@ -23,17 +23,14 @@ author:
   last_name: ''
 ---
 
-[_**write by 九天雁翎(JTianLing) -- blog.jtianling.com**_](<http://blog.jtianling.com/>)[](<http://www.jtianling.com>)
-
-[_**新浪微博**_](<http://t.sina.com.cn/jtianling>)**  \-- **[_**讨论新闻组**_](<http://groups.google.com/group/jiutianfile>)  \-- [_代码库_](<http://code.google.com/p/jtianling/>)  \-- [_豆瓣_](<http://www.douban.com/people/JTianLing/>)
-
-  
-  
-
 ## **前言**
 
 作为系列的第一篇，如同往常一样唠叨几句吧，好久不写这种单纯语言相关的（特别是C++）文章了，因为慢慢觉得这些东西自己学学就OK，实际写出来的价值有限，因为思想少，技巧/知识多。因为前段时间做了半年多的Object C和JAVA了，并且C++ 0x标准就要出来了，语言改变还挺大，趁这个节骨眼，顺便再回头学习/总结一些我感兴趣的C++知识吧，不过应该持续时间不会太长，这个系列也不会太长，因为语言已经不是我关注的重点~~~~  
 [_Google的C++ Style Guide_](<http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml>) 是我自己写东西的时候遵循的C++代码风格规范，前段时间看到李开复说他才发现Google的C++规范已经公开了，说这是世界上最好的C++规范，我感到很惊讶，因为N年前这个规范已经就公开了-_-!事实上，Google的 C++ Style Guide远不仅是一个传统意义上的代码书写风格指导，对于C++的方方面面做出了Google的解释和使用建议，包括每个规则给出时，较为详细的讲了这个规则好的一面和不好的一面，最最激进的规则甚至有禁用C++的异常，以及除了Google规范的Interface作为基类外，禁用多重继承，在绝大部分情况下禁用默认参数等内容。在很大程度上，Google是想把C++打造成效率高的JAVA来使用~~~~  
+
+
+<!-- more -->
+
 [_Google的C++ Style Guide_](<http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml>) 有关于[ _Boost的一节_](<http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml#Boost>) ，允许使用的Boost库如下：  
   
 [ _Call Traits_](<http://www.boost.org/libs/utility/call_traits.htm>)  from boost/call_traits.hpp  
@@ -208,11 +205,3 @@ for (boost::array<int, 100>::iterator it = intArray.begin();
 
 原则是，有利于抽象和源代码易读性的用，否则不用.............
 
-  
-
-原创文章作者保留版权 转载请注明原作者 并给出链接
-
-[_**write by 九天雁翎(JTianLing) -- blog.jtianling.com**_](<http://blog.jtianling.com/>)[](<http://www.jtianling.com>)
-
-[](<http://www.jtianling.com>)  
-[](<http://www.jtianling.com>)

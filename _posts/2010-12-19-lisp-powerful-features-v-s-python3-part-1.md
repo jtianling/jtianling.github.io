@@ -10,22 +10,11 @@ tags:
 status: publish
 type: post
 published: true
-meta:
-  ks_metadata: a:7:{s:4:"lang";s:2:"en";s:8:"keywords";s:0:"";s:19:"keywords_autoupdate";s:1:"1";s:11:"description";s:0:"";s:22:"description_autoupdate";s:1:"1";s:5:"title";s:48:"Lisp的给力特性(V.S.
-    Python3） -- 第一篇";s:6:"robots";s:12:"index,follow";}
-  _edit_last: '1'
-  _wp_old_slug: "%0d%0a%20%20%20%20%20%20%20%20lisp%e7%9a%84%e7%bb%99%e5%8a%9b%e7%89%b9%e6%80%a7%28v-s-%20python3%ef%bc%89%20-%20%e7%ac%ac%e4%b8%80%e7%af%87%0d%0a%20%20%20%20%20%20%20%20"
-  ratings_users: '0'
-  ratings_score: '0'
-  ratings_average: '0'
-  views: '50'
-author:
-  login: jtianling
-  email: jtianling@gmail.com
-  display_name: jtianling
-  first_name: ''
-  last_name: ''
 ---
+
+学了 Lisp 以后, 作为一个 C++ 程序员对 Lisp 的特性的一些简单碎碎念, 第一篇.
+
+<!-- more -->
 
 ## BS，Gosling，Anders,Guido都要被打屁股？
 
@@ -660,8 +649,3 @@ return lambda i: n + i
 Joel Spolsky属于更为激进的一派，他认为，不良好支持函数抽象的语言根本不值的学习。（这里的函数抽象不是指有函数，而是指类似上面的形式。）现在的语言，从Ruby,Javascript，甚至Perl 5，都已经支持类似的函数编程语法，同时也感叹，能够进化的语言，你的学习总是不会白费的^^比如总是给我惊喜的Python。
 
 未完,待续......................
-
-原创文章作者保留版权 转载请注明原作者 并给出链接
-
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**

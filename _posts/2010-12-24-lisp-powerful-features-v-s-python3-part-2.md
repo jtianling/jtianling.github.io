@@ -26,7 +26,11 @@ author:
   last_name: ''
 ---
 
-[前一篇](<http://www.jtianling.com/articles/1172.html> "前一篇")在这里。
+
+学了 Lisp 以后, 作为一个 C++ 程序员对 Lisp 的特性的一些简单碎碎念, 第二篇.
+
+<!-- more -->
+
 
 ## Lisp特性列表
 
@@ -292,6 +296,3 @@ Catch/throw语法的跳转，有点像现代语言的异常了，事实也是如
 
 最后，感觉后来的Lisp特性就没有前面的那么特异和突出了，有些平淡，再加上晚餐喝了几两二锅头，所以现在也不多写了，待续吧。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
-
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>) **

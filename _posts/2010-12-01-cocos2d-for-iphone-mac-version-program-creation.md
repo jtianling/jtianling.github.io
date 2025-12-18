@@ -21,12 +21,6 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
-
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
-
 最新的版本是[cocos2d-iphone-0.99.5-rc1.tar.gz](<http://cocos2d-iphone.googlecode.com/files/cocos2d-iphone-0.99.5-rc1.tar.gz>)  
 ,里面包含cocos2d-mac工程，直接运行，可以看到Mac下Cocos2D运行的效果，happy......
 
@@ -45,9 +39,3 @@ author:
   
 ![](http://hi.csdn.net/attachment/201012/1/0_1291188978XR3W.gif)  
 
- 
-
-原创文章作者保留版权 转载请注明原作者 并给出链接
-
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
