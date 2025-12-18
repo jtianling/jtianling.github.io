@@ -27,6 +27,7 @@ keep_files:  ['.git','.svn']
 plugins: [jekyll-paginate]
 timezone:    Asia/Shanghai
 encoding:    utf-8
+comments: true
 
 future:      true
 show_drafts: nil
