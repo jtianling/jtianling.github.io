@@ -22,12 +22,6 @@ author:
   last_name: ''
 ---
 
-**[    write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
-
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
-
     在Orx1.2版本中新增了对Unicode和自定义字体的支持，至此，Orx可以支持中文的显示了。在"[Uni-code to rule them all?](<http://orx-project.org/component/content/article/1-orx/63-uni-code-to-rule-them-all>)  
 "一文中作者有所提及。这可是主要就是为了中国用户才添加的功能，我自然需要大力支持罗。
 
@@ -158,9 +152,3 @@ LocalizedFont =
 
 而且，因为没有合适的工具，我在Photoshop中做出来的图其实还是有问题的。。。。。。。后面的空太长，字切的不准。。。。同时，这也反映了教程中作者提出来的问题，所有的自定义字体必须是等宽字体（不然怎么切啊？）
 
- 
-
-原创文章作者保留版权 转载请注明原作者 并给出链接
-
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**

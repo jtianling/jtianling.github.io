@@ -37,11 +37,7 @@ author:
 
 ## Bullet介绍
 
-    Bullet的[主页](<http://bulletphysics.org/wordpress/> "主页")  
-。最新版本在这里[下载](<http://code.google.com/p/bullet/downloads/list> "下载")  
-。简单的中文介绍见[百度百科](<http://baike.baidu.com/view/449998.htm> "百度百科")  
-。一些也许可以促使你选择Bullet的小故事在以前的文章中有提及，参考[这里](<http://www.jtianling.com/archive/2010/10/09/5928695.aspx> "这里")  
-的开头--为什么选择Bullet。很遗憾的是前几天看到的一篇很详细的bullet中文介绍找不到了，将来也许补上。
+    Bullet的[主页](<http://bulletphysics.org/wordpress/> "主页")  。最新版本在这里[下载](<http://code.google.com/p/bullet/downloads/list> "下载")  。简单的中文介绍见[百度百科](<http://baike.baidu.com/view/449998.htm> "百度百科")  。一些也许可以促使你选择Bullet的小故事在以前的文章中有提及，参考[这里](<http://www.jtianling.com/archive/2010/10/09/5928695.aspx> "这里")  的开头--为什么选择Bullet。很遗憾的是前几天看到的一篇很详细的bullet中文介绍找不到了，将来也许补上。
 
 ## 安装
 
@@ -52,28 +48,18 @@ author:
 。
 
 ## Hello World Application  
-
-    在学习之前，没有接触过物理引擎的可以参考一下这个[术语表](<http://bulletphysics.org/mediawiki-1.5.8/index.php/Glossary_of_Terms> "术语表")  
-。
-
+    在学习之前，没有接触过物理引擎的可以参考一下这个[术语表](<http://bulletphysics.org/mediawiki-1.5.8/index.php/Glossary_of_Terms> "术语表")  。
     [这里](<http://bulletphysics.org/mediawiki-1.5.8/index.php/Hello_World> "这里")  
 有个较为详细的教程。也包含在Bullet本身的一个名叫 AppHelloWorld 的Demo中。（注释也很详细，但是和WIKI上的版本略有不同）可以大概的对Bullet有个感觉。
-
     其实Bullet与Ogre走的一条路线，为了灵活，增加了很多使用的复杂性。（真怀念Box2D和Irrlicht的简单啊）其实即使希望通过strategy模式来增加灵活度，让用户可以自由的选择各类算法和解决方案，但是我还是感觉首先提供默认解决方案，用户需要不同方案的时候通过Set方式改变(甚至也可以new的时候修改）但是大牛们研究这些东西那么透，总是会觉得这个世界上不存在默认方案。。。。。因为没有方案是最优的，是适合大多数情况的，所以导致Bullet的HelloWorld程序源代码都已经超过100行。。。。。。。。。。-_-!发了点牢骚。。。。。
-
     通过HelloWorld程序，我们大概可以知道一些东西，比如建立一个Bullet物理世界的步骤，比如Bullet的类以bt（变态-_-!)开头，比如Bullet与Box2D这样的2D物理引擎一样，专注于数据的计算，本身没有图形输出，比如创建一个物理实体的时候也有shape的概念，然后通过一个结构作为参数(BodyConstructionInfo）来创建真实的物体，大概的熟悉一下就好，具体的细节还不懂，没有关系，一步一步来。
-
     另外，建议趁这个机会，确定自己机器使用Bullet的环境，特别是Win32下，我的使用方法是，利用BULLET_HOME环境变量指明Bullet安装的位置，BULLTE_LIBS指明最后编译完的静态库的位置，工程中利用这两个环境变量来确定位置。（这种用法很适合屏蔽各机器的环境不同）最后的Hello World工程见https://bullet-sample.jtianling.googlecode.com/hg/中的Bullet-HelloWorld。
-
     请确保该Hello World程序能够运行（无论是你自己的还是用我的）然后才继续下面的内容。
 
 ## 让你坐在司机的位置上
-
     该怎么学习的问题，向来都是各执一词，有人认为该从最基础的学起，就像建房子一样打好地基，有人会更加推崇自上而下的学习(Top-Down Approach），我属于后一派，能先写有用的可以摸到的程序，然后一层一层的向下学习，这样会更加有趣味性，并且学习曲线也会更加平缓，假如你是前一派，那么推荐你先看完Bullet的User Manual，然后是Bullet所有的[Tutorial Articles](<http://bulletphysics.org/mediawiki-1.5.8/index.php/Tutorial_Articles> "Tutorial Articles")  
 ，然后再自己一个一个看Demo。
-
     在Hello World的例子中你已经可以看到文本数据的输出，能够看到球/Box的落下了，但是很明显太不直观了，得益于Bullet良好的debug输出支持，我们要先能直观的通过图形看到球的落下！先坐在司机的位置上才能学会开车^^你也不至于被乏味的汽车/交通理论闷死。
-
     Bullet像Ogre一样，提供了一个DemoApplication类，方便我们学习，我们先看看Bullet的DemoApplication是怎么样的。先看看Bullet自己提供的AppBasicDemo这个Demo。忽略那些作者用#if 0关闭的内容和hashmap的测试内容，看看DemoApplication的用法。
 
 首先是BasicDemo类，从class BasicDemo : public PlatformDemoApplication可以看到，DemoApplication是给你继承使用的，这里的PlatformDemoApplication实际是GlutDemoApplication。（Win32那个作者好像只是预留的）
@@ -82,18 +68,13 @@ author:
 
 ```cpp
 GLDebugDrawer   gDebugDrawer;
-
 BasicDemo ccdDemo;
-
 ccdDemo.initPhysics();
-
 ccdDemo.getDynamicsWorld()->setDebugDrawer(&gDebugDrawer);
-
 glutmain(argc, argv,640,480,"Bullet Physics Demo. http://bulletphysics.com",&ccdDemo);
 ```
 
 实际就这5句，很简单，构造debug,BasicDemo，调用initPhysics函数，设定debug，调用glutmain这个函数，参数也一目了然。这里就不看了。看实现一个有用的DemoApplication的过程。
-
     大概看看DemoApplication这个基类和GlutDemoApplication知道必须要实现的两个纯虚函数是
 
 ```cpp
@@ -103,21 +84,15 @@ virtual void clientMoveAndDisplay() = 0;
 ```
 
 看BasicDemo的实现后，知道还需要实现displayCallback这个现实回调，基本上就没有其他东西了，理解起来也还算容易。
-
 initPhysics的部分，一看就知道，与HelloWorld中过程几乎一致，也就是实际构建物理世界的过程。只是多了    
 
 setTexturing(true);
-
 setShadows(true);
-
 setCameraDistance(btScalar(SCALING*50.));
 
 这三个与显示有关的东西（其实这些代码放到myinit中去也可以，毕竟与物理无关）
-
 最后还多了个clientResetScene的调用，我们知道这个过程就好，具体函数的实现先不管。
-
 clientMoveAndDisplay和displayCallback部分
-
 其实非常简单，几乎可以直接放到glutExampleApplication中去。（事实上不从灵活性考虑，我觉得放到glutExampleApplication中更好）
 
 原来的程序有些代码重复，其实只要下列代码就够了：（一般的程序也不需要修改）  
@@ -149,44 +124,24 @@ void BasicDemo::displayCallback(void) {
 ```
 
 运行该程序能够看到中间一个很多Box堆起来的大方块，点击鼠标右键还能发射一个方块出去。
-
 了解这个Demo以后，我们就可以直接来用Bullet构建我们自己的物理世界了，暂时不用考虑图形的问题，甚至不用知道Bullet使用[GLUT](<http://www.opengl.org/resources/libraries/glut/> "GLUI")  
 作为debug图形的输出，[GLUI](<http://glui.sourceforge.net/> "GLUI")  
 做界面，都不用知道，只需要知道上面demoApplication的使用和在initPhysics函数中完成构建物理世界的代码。另外，你愿意的话，也可以先看看exitPhysics的内容，用于分配资源的释放，作为C++程序，一开始就关注资源的释放问题是个好习惯。虽然对于我们这样简单的demo程序来说是无所谓的。
 
 看过上面Demo后，也许你已经有些了解，也许你还是一头雾水，不管怎么样，Bullet的Demo毕竟还是别人的东西，现在，从零开始，构建一个HelloWorld程序描述的世界。先自己尝试一下！假如你成功了，那么直接跳过一下的内容，失败了，再回头了看看，提醒你步骤：
-
 1.继承DemoApplication，拷贝上面clientMoveAndDisplay和displayCallback部分的代码，实现这两个函数。
-
 2.在initPhysics函数中完成构建物理世界的代码。（构建过程参考HelloWorld）
-
 3.Main中的使用代码：
 
 ```cpp
 GLDebugDrawer   gDebugDrawer;
-
 BasicDemo ccdDemo;
-
 ccdDemo.initPhysics();
-
 ccdDemo.getDynamicsWorld()->setDebugDrawer(&gDebugDrawer);
-
 glutmain(argc, argv,640,480,"Bullet Physics Demo. http://bulletphysics.com",&ccdDemo);
 ```
 
-4.注意工程需要多包含$(BULLET_HOME)/Demos/OpenGL的头文件目录
-
-和库：
-
-$(BULLET_HOME)/Glut/glut32.lib
-
-opengl32.lib
-
-glu32.lib
-
-麻烦点的是glut是个动态库，你需要将dll文件拷贝到你工程的运行目录。
-
-现在应该成功了吧？
+4.注意工程需要多包含$(BULLET_HOME)/Demos/OpenGL的头文件目录 和库： $(BULLET_HOME)/Glut/glut32.lib opengl32.lib glu32.lib 麻烦点的是glut是个动态库，你需要将dll文件拷贝到你工程的运行目录。 现在应该成功了吧？
 
 我实现的工程见https://bullet-sample.jtianling.googlecode.com/hg/中的Bullet-WithGL。
 
@@ -205,11 +160,8 @@ glu32.lib
 ## 与显示的整合，MotionState
 
     一个只有数据运算的物理引擎，一般而言只能为显示引擎提供数据，这就牵涉到与图形引擎整合的问题，像Box2D这样的物理引擎就是直接需要直接向各个物理实体去查询位置，然后更新显示，这种方式虽然简单，但是我感觉非常不好，因为难免在update中去更新这种东西，导致游戏逻辑部分需要处理物理引擎+图形引擎两部分的内容。（可以参考Box2D与Cocos2D for iPhone的整合）而且，对于完全没有移动的物体也会进行一次查询和移动操作。（即使优化，对不移动物体也是进行了两次查询）
-
     Bullet为了解决此问题，提供了新的解决方案，MotionState。其实就是当活动物体状态改变时提供一种回调，而且就Bullet的文档中说明，此种回调还带有适当的插值以优化显示。通过这种方法，在MotionState部分就已经可以完成显示的更新，不用再需要在update中添加这种更新的代码。而且，注意，仅仅对活动物体状态改变时才会进行回调，这样完全避免了不活动物体的性能损失。
-
     首先看看ExampleApplication中是怎么利用default的MotionState来显示上面的图形的，然后再看看复杂点的例子，与Ogre的整合。
-
 先看看回调接口：
 
 ```cpp
@@ -267,9 +219,7 @@ struct  btDefaultMotionState : public  btMotionState
 };
 ```
 
-这个默认的MotionState实现了这两个接口，但是还引入了质心  
-（center Of Mass应该是指质心  
-吧）的概念，与外部交互时，以质心位置表示实际物体所在位置。
+这个默认的MotionState实现了这两个接口，但是还引入了质心  （center Of Mass应该是指质心  吧）的概念，与外部交互时，以质心位置表示实际物体所在位置。
 
 在一般rigitBody的构造函数中可以看到下列代码：
 
@@ -307,9 +257,7 @@ void btDiscreteDynamicsWorld::synchronizeSingleMotionState(btRigidBody* body)
 }
 ```
 
-也就是同步状态的时候调用。此过程发生在调用bullet的btDynamicsWorld::stepSimulation函数调用时。
-
-然后可以参考DemoApplication的DemoApplication::renderscene(int pass)函数：
+也就是同步状态的时候调用。此过程发生在调用bullet的btDynamicsWorld::stepSimulation函数调用时。 然后可以参考DemoApplication的DemoApplication::renderscene(int pass)函数：
 
 ```cpp
 btScalar    m[16];
@@ -329,9 +277,7 @@ for (int i=0;i<numObjects;i++)
 }
 ```
 
-实际也就是再通过获取motionState然后获取到图形的位置了，这种defaultMotion的使用就类似Box2D中的使用了。
-
-既然是回调，那么就可以让函数不仅仅做赋值那么简单的事情，回头来再做一次轮询全部物体的查询，官网的WIKI中为Ogre编写的MotionState就比较合乎推荐的MotionState用法，代码如下：
+实际也就是再通过获取motionState然后获取到图形的位置了，这种defaultMotion的使用就类似Box2D中的使用了。 既然是回调，那么就可以让函数不仅仅做赋值那么简单的事情，回头来再做一次轮询全部物体的查询，官网的WIKI中为Ogre编写的MotionState就比较合乎推荐的MotionState用法，代码如下：
 
 ```cpp
 lass MyMotionState : public  btMotionState {  
@@ -371,12 +317,7 @@ protected :
 注意，这里的使用直接在set回调中直接设置了物体的位置。如此使用MotionState后，update只需要关心逻辑即可，不用再去手动查询物体的位置，然后更新物体的位置并刷新显示。
 
 ## 碰撞检测
-
-    物理引擎不仅仅包括模拟真实物理实现的一些运动，碰撞，应该还提供方式供检测碰撞情况，bullet也不例外。
-
-    AppCollisionInterfaceDemo展示了怎么直接通过btCollisionWorld来检测碰撞而不模拟物理。
-
-而官方的WIKI对于碰撞检测的描述也过于简单，只给下列的示例代码，但是却没有详细的解释。
+物理引擎不仅仅包括模拟真实物理实现的一些运动，碰撞，应该还提供方式供检测碰撞情况，bullet也不例外。AppCollisionInterfaceDemo展示了怎么直接通过btCollisionWorld来检测碰撞而不模拟物理。而官方的WIKI对于碰撞检测的描述也过于简单，只给下列的示例代码，但是却没有详细的解释。
 
 ```cpp
 //Assume world->stepSimulation or world->performDiscreteCollisionDetection has been called
@@ -404,20 +345,14 @@ for (int i=0;i<numManifolds;i++)
 
 以上代码的主要内容就是  
 int numManifolds = world->getDispatcher()->getNumManifolds();
-
 btPersistentManifold* contactManifold =  world->getDispatcher()->getManifoldByIndexInternal(i);
 
 两句。
-
     而btPersistentManifold类表示一个Manifold，其中包含了body0,body1表示Manifold的两个物体。
-
 这里特别提及的是,Manifold并不直接表示碰撞，其真实的含义大概是重叠，在不同的情况下可能表示不同的含义，比如在Box2D中，手册的描述大概是（凭记忆）为了快速的检测碰撞，在2D中一般先经过AABB盒的检测过滤，而只有AABB盒重叠的才有可能碰撞，而Manifold在Box2D中就表示AABB盒重叠的两个物体，而我看Bullet有不同的Broadphase,在实际中，也重叠也应该会有不同的情况，因为我没有看源码，所以不能确定，但是，总而言之，可以理解Manifold为接近碰撞的情况。
-
 所以无论在Box2D还是Bullet中，都有额外的表示碰撞的概念，那就是contact（接触）。上述示例代码：  
 int numContacts = contactManifold->getNumContacts();
-
 就表示查看接触点的数量，假如接触点为0，那么自然表示两个物体接近于碰撞，而实际没有碰撞。而上述代码中的Distance的判断应该是防止误差，因为我输出了一个盒子和地面发生碰撞的全部过程的distance，发现绝大部分情况，只要有contact，那么距离就小于0，可是在一次盒子离开地面的过程中，distance还真有过一次0.00x的正值。。。。。。。
-
 当你开始放心大胆的使用上述代码后，也许你总是用来模拟物体的其他效果，也许都不会有问题，直到某一天你希望在碰撞检测后删除掉发生碰撞的问题，你的程序crash了。。。。你却不知道为什么。用前面的demo来展示碰撞检测的方法，并且删除掉发生碰撞的物体。一般先写出的代码都会类似下面这样：
 
 ```cpp
@@ -479,12 +414,9 @@ m_collisionObjects.clear();
 上述m_collisionObjects是std::list类型的成员变量。
 
 ## 碰撞过滤
-
     [Bullet的wiki](<http://bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Filtering> "Bullet的wiki")  
 提到了3个方法，这里只讲述最简单的mask（掩码）过滤方法。
-
     mask的使用相信大家基本都接触过，无非就是通过一个整数各个2进制位来表示一些bool值。比如Unix/Linux中文件权限的掩码。在bullet中的碰撞mask的使用非常简单，主要在addRigidBody时候指定。（需要注意的是，只有btDiscreteDynamicsWorld类才有这个函数，btDynamicsWorld并没有，所以demoApplication中的成员变量dynamicWorld不能直接使用。）
-
 WIKI中的代码已经很能说明问题了：
 
 ```cpp
@@ -571,65 +503,55 @@ void   setUserPointer(void * userPointer)
 但是就我的经验，这两个函数的作用是巨大的，你可以将你需要的一切都设置进去。。。。。。。。然后取出来，就上面的碰撞检测过滤而言，你完全可以实现自己的一套碰撞检测mask，只要你想，一切皆有可能。这些例子的完整源代码见https://bullet-sample.jtianling.googlecode.com/hg/中的Bullet-CollideDetection工程。
 
 ## 约束(Constraints)和连接(Joints)
-
     一个一个单独的物理实体已经可以构建一个有意思的物理世界了，但是显示世界有很多东西（最典型的就是绳子连接的物体）不是单独的物理实体可以模拟的，物理引擎中使用约束来模拟类似的东西/现象。
-
     （待补充）
 
 ## 软体
-
-   因为我的使用暂时不需要用到软体，暂时未学习此部分内容，欢迎大家补充。
+因为我的使用暂时不需要用到软体，暂时未学习此部分内容，欢迎大家补充。
 
 ## 有用的工具
 
-1\. [MAYA,3D Max的插件](<http://code.google.com/p/dynamica/downloads/list> "MAYA,3D Max的插件")  
+1. [MAYA,3D Max的插件](<http://code.google.com/p/dynamica/downloads/list> "MAYA,3D Max的插件")  
 
-2\. [Blender](<http://www.blender.org/> "Blender")  
-，开源的3D建模工具，内建的Game Engine有直接的Bullet支持，还有[Erwin提供的改版](<http://code.google.com/p/bullet-physics-editor/downloads/list> "Erwin提供的改版")  
+2. [Blender](<http://www.blender.org/> "Blender")  
+开源的3D建模工具，内建的Game Engine有直接的Bullet支持，还有[Erwin提供的改版](<http://code.google.com/p/bullet-physics-editor/downloads/list> "Erwin提供的改版")  
 可以直接导出.bullet文件。
 
 ## 使用了Bullet的其他有用工程
 
-1\. [GameKit](<http://code.google.com/p/gamekit/> "GameKit")  
-,Erwin Coumans自己发起的整合Ogre/Irrlicht和Bullet的游戏引擎，与Blender结合的也很好。
+1. [GameKit](<http://code.google.com/p/gamekit/> "GameKit")  
+Erwin Coumans自己发起的整合Ogre/Irrlicht和Bullet的游戏引擎，与Blender结合的也很好。
 
-2\. [oolongengine](<http://code.google.com/p/oolongengine/> "oolongengine")  
-,乌龙引擎，[wolfgang.engel](<http://code.google.com/u/wolfgang.engel/>)  
-（[他的博客](<http://www.wolfgang-engel.info/blogs/> "他的博客")  
-）这个大牛（到底有多牛可以[参考这里](<http://www.linkedin.com/in/wolfgangengel> "参考这里")  
-）发起的iPhone平台引擎项目，使用了Bullet，也为Bullet能够流畅的运行于iPhone平台做出了很大贡献。（优化了浮点运算）为什么写乌龙引擎？wolfgang自己有个解释，[见这里](<http://www.jtianling.com/archive/2010/10/11/5933822.aspx> "见这里")  
-。
+2. [oolongengine](<http://code.google.com/p/oolongengine/> "oolongengine")  
+乌龙引擎，[wolfgang.engel](<http://code.google.com/u/wolfgang.engel/>)  （[他的博客](<http://www.wolfgang-engel.info/blogs/> "他的博客")  ）这个大牛（到底有多牛可以[参考这里](<http://www.linkedin.com/in/wolfgangengel> "参考这里")  ）发起的iPhone平台引擎项目，使用了Bullet，也为Bullet能够流畅的运行于iPhone平台做出了很大贡献。（优化了浮点运算）为什么写乌龙引擎？wolfgang自己有个解释，[见这里](<http://www.jtianling.com/archive/2010/10/11/5933822.aspx> "见这里")。
 
-3\. [Dynamica](<http://code.google.com/p/dynamica> "Dynamica")  
-, Erwin建立的工程，开发bullet的Maya,3D Max插件。
+3. [Dynamica](<http://code.google.com/p/dynamica> "Dynamica")  
+Erwin建立的工程，开发bullet的Maya,3D Max插件。
 
 4. [bullet-physics-editor](<http://code.google.com/p/bullet-physics-editor/> "bullet-physics-editor")  
-, Erwin自己发起的一个bullet编辑器工程，目前还处于前期开发阶段。但是项目中同时包含一些能够到处.Bullet文件的[Blender改版](<http://code.google.com/p/bullet-physics-editor/downloads/list> "Blender改版")  
-。
+Erwin自己发起的一个bullet编辑器工程，目前还处于前期开发阶段。但是项目中同时包含一些能够到处.Bullet文件的[Blender改版](<http://code.google.com/p/bullet-physics-editor/downloads/list> "Blender改版")。
 
 ## Bullet的实现原理
 
 1.[Physics Pipeline Implementation](<http://bulletphysics.org/mediawiki-1.5.8/index.php/Physics_Pipeline_Implementation> "Physics Pipeline Implementation")  
-,应该是一个在爱尔兰的中国人写的，并发布在WIKI上，这里是他的[博客](<http://iphonephysics.com/> "博客")  
-。
+应该是一个在爱尔兰的中国人写的，并发布在WIKI上，这里是他的[博客](<http://iphonephysics.com/> "博客")  。
 
 2.[SIGGRAPH 2010 course slides, high-level overview on Bullet collision detection](<http://bullet.googlecode.com/files/GDC10_Coumans_Erwin_Contact.pdf> "SIGGRAPH 2010 course slides, high-level overview on Bullet collision detection")  
 
 3.[GDC 2010 presentation about contact generation](<http://bullet.googlecode.com/files/GDC10_Coumans_Erwin_Contact.pdf> "GDC 2010 presentation about contact generation")  
 
-4.最大的资料自然就是Bullet的[源代码](<http://code.google.com/p/bullet/downloads/list> "源代码")  
-啦。。。。。。慢慢研究吧。
+4.最大的资料自然就是Bullet的[源代码](<http://code.google.com/p/bullet/downloads/list> "源代码") 啦。。。。。。慢慢研究吧。
 
 ## 参考资料
 
 1.[Bullet 2.76 Physics SDK Manual](<http://bulletphysics.com/ftp/pub/test/physics/Bullet_User_Manual.pdf> "Bullet 2.76 Physics SDK Manual")  
-，Bullet的项目发起人，目前的负责人Erwin Coumans所写，（就WIKI资料显示，这哥们现在在SONY)算是官方的Manual了，源码包中就有pdf。
+Bullet的项目发起人，目前的负责人Erwin Coumans所写，（就WIKI资料显示，这哥们现在在SONY)算是官方的Manual了，源码包中就有pdf。
 
 2.[Bullet WIKI Tutorial Articles](<http://bulletphysics.org/mediawiki-1.5.8/index.php/Tutorial_Articles> "Bullet WIKI Tutorial Articles")  
-，算是第2个能够找到的稍微好点的关于Bullet的东西了，就是有点散乱。
+算是第2个能够找到的稍微好点的关于Bullet的东西了，就是有点散乱。
 
 3.[Bullet Bullet Documentation](<http://bulletphysics.com/Bullet/BulletFull/> "Bullet Bullet Documentation")  
-，Bullet的文档，自动生成的，也就只能在写代码的时候可能有些用，很难靠这个学习。
+Bullet的文档，自动生成的，也就只能在写代码的时候可能有些用，很难靠这个学习。
 
 
 ## 我写的关于Bullet的文章
