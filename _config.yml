@@ -27,7 +27,6 @@ keep_files:  ['.git','.svn']
 plugins: [jekyll-paginate]
 timezone:    Asia/Shanghai
 encoding:    utf-8
-comments: true
 
 future:      true
 show_drafts: nil
@@ -47,3 +46,10 @@ excerpt_separator: "<!-- more -->"
 host:        127.0.0.1
 port:        8080
 baseurl:     /
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      comments: true
