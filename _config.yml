@@ -34,7 +34,7 @@ limit_posts: 0
 syntax_highlighter: rouge
 
 permalink:     /:title.html
-paginate_path: 'page:num'
+paginate_path: '/page:num'
 paginate:      10
 
 markdown_ext:  md
