@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20090106/T1N1.jpg)  
 
-```asm
+```plaintext
 00401063     /74 0D         JE      SHORT JustForH.00401072
 00401065  |. |A1 60204000   MOV     EAX, DWORD PTR [<&MSVCP80.std::c>
 0040106A  |. |68 64214000   PUSH    JustForH.00402164                ;  ASCII "wrong  password",LF
@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
 
 使用IDA Pro，直接载入文件，分析完毕，按书中提示，打开数据段(data)，可是这个程序似乎不和书中一样，相关数据存储在(.rdata)中，如下所示，而不是.data中，因为目前对于PE文件格式还不是太熟悉（熟悉PE格式就是我下一步需要做的工作）还不知道出现与书中不一致情况的原因。
 
-```asm
+```plaintext
 .rdata:0040211C  ; struct _EXCEPTION_POINTERS ExceptionInfo
 .rdata:0040211C  ExceptionInfo   _EXCEPTION_POINTERS  <offset dword_403040, offset dword_403098>
 .rdata:0040211C                           ; DATA XREF: sub_4013A2+390o
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
 
 OK,还是找到了wrong password，然后用IDA Pro的交叉引用，OK一样搞定了，一样可以找到wrong number被引用的地址，看到相关的源代码（其实应该说是反汇编代码）：
 
-```asm
+```plaintext
 .text:00401063                 jz     short loc_401072
 .text:00401065                 mov     eax,  ds:?cout@std@@3V?$basic_ostream@DU?$char_traits@D@std@@@1@A ;  std::basic_ostream<char,std::char_traits<char>> std::cout
 .text:0040106A                 push    offset aWrongPassword ; "wrong  password/n"
@@ -161,7 +161,7 @@ HIEW32是个命令行工具，打开文件后，一堆乱码。。。。书中�
 
 记下地址00402160，按F5 0 enter跳转到文件头，再搜寻哪个地方使用到了这个字符串的地址，搜寻的时候因为0x86是小头机，搜寻60 21 40 00，搜到后，按F4 切入Decode模式，这是HIEW比WinHex强大的地方了。。。。WinHex不带反汇编功能。。。。不过我奇怪的是。。作者最终还是用到了工具来反汇编，然后理解。。。仅仅因为自己多搜寻了两下地址。。。这就体现了技术了？-_-!
 
-```asm
+```plaintext
 .00401047:  50                         push        eax
 .00401048:  FF1558204000               call        ??$?5DU?$char_traits@D@std@
 .0040104E:  83C410                     add         esp,010 ;" "
@@ -193,7 +193,7 @@ HIEW32是个命令行工具，打开文件后，一堆乱码。。。。书中�
 
 这里说下在HIEW中的改法，按F3进入编辑模式，直接将00401063这行改为第二排那样，按F9 Update，再按F10退出，再运行，就发现怎么都是正确的了。
 
-```asm
+```plaintext
 .00401063:  740D                       je          .000401072  \---  (3)
 .00401063:  EB0D                       jmps        .000401072  \---  (3)
 ```
@@ -202,7 +202,7 @@ HIEW32是个命令行工具，打开文件后，一堆乱码。。。。书中�
 
 原地修改嘛，起码得给自己的语句腾出位置，但是不伤害其他的原有语句。比如改成下面这样：
 
-```asm
+```plaintext
 0040105F   . /EB 11         JMP     SHORT JustForH.00401072
 ```
 

@@ -127,7 +127,7 @@ author:
 
 这里需要说明的是
 
-```asm
+```nasm
 call $+5  
 pop eax
 ```

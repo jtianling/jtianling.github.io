@@ -32,7 +32,7 @@ author:
 
 基本原理可以讲讲，其实就是一个max(int*,int*)的函数，将大的值放入第一个参数返回，原书可能是在debug下编译的版本，我是在release下编译的，反汇编结果如下：
 
-```asm
+```plaintext
 .text:00401040 ; void __cdecl max(int *, int *)
 
 .text:00401040 void __cdecl max(int *, int *) proc near ; CODE XREF: _main+1Dp
@@ -74,7 +74,7 @@ author:
 
 这里唯一需要注意的就是这4句了，先将一个地址传入，eax/ecx，然后通过[eax]/[ecx]取值，就相当于dereference的操作，即相当于*操作符的作用。
 
-```asm
+```plaintext
 mov eax, [esp+arg_4]
 mov ecx, [esp+arg_0]
 mov eax, [eax]

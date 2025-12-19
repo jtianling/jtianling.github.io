@@ -45,7 +45,7 @@ author:
 
 汇编代码：
 
-```asm
+```nasm
 PUBLIC GetArgument
 
 .486                      ; create 32 bit code
@@ -100,7 +100,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 直接改变函数名：
 
-```asm
+```nasm
 PUBLIC _GetArgument
 
 .486                      ; create 32 bit code
@@ -126,7 +126,7 @@ END
 
 改变.model声明：
 
-```asm
+```nasm
 PUBLIC GetArgument
 
 .486                      ; create 32 bit code
@@ -176,7 +176,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 将汇编语言的.model声明改成下面这样：
 
-```asm
+```nasm
 .model flat,c,stdcall       ; 32 bit memory model
 ```
 
@@ -194,7 +194,7 @@ extern "C" int __stdcall GetArgument(int);
 
 改成如下形式：
 
-```asm
+```nasm
 PUBLIC GetArgument
 
 .486                      ; create 32 bit code
@@ -222,7 +222,7 @@ END
 
 看看原因：
 
-```asm
+```plaintext
 GetArgument PROC x:DWORD
 
 00401030  push        ebp 
@@ -235,7 +235,7 @@ GetArgument PROC x:DWORD
 
 很明显汇编编译后自动加了push        ebp；mov         ebp,esp这两句来保护栈指针esp，问题是却没有自动生成还原的代码。。。那还不崩溃？典型的栈错误。可以用下面的方式修复
 
-```asm
+```nasm
 GetArgument PROC x:DWORD
 
     MOV EAX, x
@@ -253,7 +253,7 @@ RETN 4
 
 汇编代码如下：
 
-```asm
+```nasm
 PUBLIC GetArgument2
 
 .486                      ; create 32 bit code

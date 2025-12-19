@@ -40,7 +40,7 @@ CC在汇编代码中表示为int 3，实际表示一个中断，在与硬件中�
 
 比如在[C++函数调用原理理解](<http://www.jtianling.com/archive/2008/06/01/2501238.aspx>)例子中如下：
 
-```asm
+```plaintext
 0041136C lea edi,[ebp-0C0h] ;读入[ebp-0C0h]有效地址,即原esp-0C0h,正好是为该函数留出的临时存储区的最低位  
 00411372 mov ecx,30h ;ecx = 30h(48),30h*4 = 0C0h  
 00411377 mov eax,0CCCCCCCCh ;eax = 0CCCCCCCCh;  

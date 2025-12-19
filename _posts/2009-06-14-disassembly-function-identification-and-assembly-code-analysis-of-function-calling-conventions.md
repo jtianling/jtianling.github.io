@@ -73,7 +73,7 @@ http://www.jtianling.com/archive/2008/12/09/3486211.aspx
 
 Release编译后，反汇编代码及其注释如下：
 
-```asm
+```plaintext
 .text:00401030 ; main函数
 
 .text:00401030
@@ -173,7 +173,7 @@ Release编译后，反汇编代码及其注释如下：
 
 Release编译后，反汇编代码及其注释如下：
 
-```asm
+```plaintext
 .text:00401030 ; main函数
 
 .text:00401030
@@ -251,7 +251,7 @@ Release编译后，反汇编代码及其注释如下：
 
 一下具体看看各个Add函数的内容
 
-```asm
+```plaintext
 .text:00401000 Add1 proc near ; CODE XREF: _main+5p
 
 .text:00401000
@@ -373,7 +373,7 @@ Release编译后，反汇编代码及其注释如下：
 
 反汇编：
 
-```asm
+```plaintext
 .text:00401020 ; int __cdecl main(int argc, const char **argv, const char *envp)
 
 .text:00401020 _main proc near ; CODE XREF: _mainCRTStartup+AFp
@@ -429,7 +429,7 @@ Release编译后，反汇编代码及其注释如下：
 
 Add函数：
 
-```asm
+```plaintext
 .text:00401000 ; =============== S U B R O U T I N E =======================================
 
 .text:00401000

@@ -33,7 +33,7 @@ author:
 
 书中的例子很简单，源代码如下：
 
-```asm
+```nasm
 **.486** ; create 32 bit code  
 **.model** flat, **stdcall** ; 32 bit memory model  
 **option** casemap :none ; case sensitive
@@ -86,7 +86,7 @@ makefile:
 
 回到主题，于是我先看了一下生成的exe文件，发现无缘无故多了.rdata区段,虽然我并没有用，所以程序达到了4k(好像是普通不修改PE文件时最小的一个可执行程序的大小)，反汇编一下生成的exe文件（还能叫反汇编吗-_-!）
 
-```asm
+```plaintext
 00401000 >/$ 6A 00 push 0 ; /Style = MB_OK|MB_APPLMODAL
 
 00401002 |. 68 00304000 push 00403000 ; |Title = "A MessageBox !"

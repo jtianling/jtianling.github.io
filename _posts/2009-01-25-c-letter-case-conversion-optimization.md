@@ -114,7 +114,7 @@ void wayTwo()
 
 将原来一大堆的代码，转化成了反汇编只有4句的程序：
 
-```asm
+```plaintext
 00401020 80 08 20         or          byte ptr [eax],20h 
 00401023 83 C0 01         add         eax,1 
 00401026 80 38 00         cmp         byte ptr [eax],0 
@@ -157,7 +157,7 @@ lpc = (char*)lp;*lpc!=0; ++lpc)
 
 第一个循环汇编代码如下:
 
-```asm
+```plaintext
 00401040 81 08 20 20 20 20 or          dword ptr [eax],20202020h 
 00401046 83 C0 04         add         eax,4 
 00401049 80 38 00         cmp         byte ptr [eax],0 

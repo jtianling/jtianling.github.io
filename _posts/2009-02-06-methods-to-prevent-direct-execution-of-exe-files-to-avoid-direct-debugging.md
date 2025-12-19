@@ -37,7 +37,7 @@ author:
 
 原程序源代码：
 
-```asm
+```nasm
 **.486**                          ; create 32 bit code  
 **.model**  flat, **stdcall**               ; 32 bit memory model  
 **option**  casemap :none               ; case sensitive
@@ -67,7 +67,7 @@ start:
 
 反汇编的代码：
 
-```asm
+```plaintext
 00401000 >/$  6A 00         PUSH    0                                ; /Style = MB_OK|MB_APPLMODAL
 
 00401002  |.  68 00304000   PUSH    helloWor.00403000                ; |Title = "A MessageBox !"
@@ -89,7 +89,7 @@ start:
 
 这里我将其前一个字节改为55，那么其前三句将会解析成如下形式：
 
-```asm
+```plaintext
 00401000 >/$  55            PUSH    EBP                               ; |Title = ""
 
 00401001  |.  0068 00       ADD     BYTE PTR [EAX], CH                ; |

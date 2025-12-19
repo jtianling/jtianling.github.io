@@ -96,7 +96,7 @@ int main()
 
 主函数：
 
-```asm
+```plaintext
  1 .text:00401010 ; int __cdecl main(int argc, const char **argv, const char *envp)  
  2 .text:00401010 _main           **proc**  **near**                ; CODE XREF: __tmainCRTStartup+10A^Yp  
  3 .text:00401010  
@@ -151,7 +151,7 @@ int main()
 
 虚表：
 
-```asm
+```plaintext
 1 .rdata:00402114                 **dd**  **offset**  const CTestThisPointer::`RTTI Complete Object Locator' ;  
 2 .rdata:00402114                                         ; 这就是CTestThisPointer的RTTI信息  
 3 .rdata:00402114                                         ; 正好在虚表前，由编译器静态分配，但是动态获取  
@@ -287,7 +287,7 @@ int main()
 
 主程序：
 
-```asm
+```plaintext
 .text:00401070 ; int __cdecl main(int argc, const char **argv, const char *envp)  
 .text:00401070 _main           **proc**  **near**                ; CODE XREF: __tmainCRTStartup+10A^Yp  
 .text:00401070  
@@ -373,7 +373,7 @@ int main()
 
 虚表。。。这才是符合主题的部分：
 
-```asm
+```plaintext
 .rdata:00402124                 **dd**  **offset**  const CTestThisPointer::`RTTI Complete Object Locator'  
 .rdata:00402128 const CTestThisPointer::`vftable' **dd**  **offset**  CTestThisPointer__Add  
 .rdata:00402128                                         ; DATA XREF: CTestThisPointer___CTestThisPointer^Xo  
@@ -392,7 +392,7 @@ int main()
 
 以下是__type_info_node的链表。。。。。。。。。,没有上色了。。。
 
-```asm
+```plaintext
 .rdata:00402274 dd offset CTestBase::`RTTI Class Hierarchy Descriptor' 
 
 .rdata:00402278 const CTestThisPointer::`RTTI Complete Object Locator' db 0 

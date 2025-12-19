@@ -35,7 +35,7 @@ author:
 
 关键函数如下：调用环境其实可知lpString1为用户输入的key,lpString2为用户输入的用户名，aiLen为长度
 
-```asm
+```plaintext
 .text:00401340 ; int __cdecl KeyGenAndCompare(LPCSTR lpString1, LPSTR lpString2, int aiLen)
 
 .text:00401340 KeyGenAndCompare proc near ; CODE XREF: DialogFunc+115p

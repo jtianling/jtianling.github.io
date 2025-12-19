@@ -60,7 +60,7 @@ author:
 
 反汇编：
 
-```asm
+```plaintext
 .text:00401000 ; int __cdecl main(int argc, const char **argv, const char *envp)
 
 .text:00401000 _main proc near ; CODE XREF: _mainCRTStartup+AFp
@@ -120,7 +120,7 @@ author:
 
 构造函数：
 
-```asm
+```plaintext
 .text:00401030 CTestThisPointer__CTestThisPointer proc near ; CODE XREF: _main+9p
 
 .text:00401030
@@ -168,7 +168,7 @@ author:
 
 Add函数：
 
-```asm
+```plaintext
 .text:00401050 CTestThisPointer__Add proc near ; CODE XREF: _main+13p
 
 .text:00401050

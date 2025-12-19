@@ -27,7 +27,7 @@ author:
 
 以下为我保存CMOS信息的源代码，大家可以放心尝试一下，假如你的结果和我说的不一样，请告诉我，比如在改动BIOS中Alarm后，生成的文件中各时间位后是否真的有响应变化。
 
-```asm
+```nasm
 assume cs:code,ds:data;,ss:stack
 
 ;stack segment stack

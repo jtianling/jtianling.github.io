@@ -69,7 +69,7 @@ VC6默认优化release编译
 
 main函数
 
-```asm
+```plaintext
 .text:00401000 ; Attributes: bp-based frame
 
 .text:00401000
@@ -131,7 +131,7 @@ main函数
 
 构造函数：
 
-```asm
+```plaintext
 .text:00401030 CTestThisPointer__CTestThisPointer proc near ; CODE XREF: _main+Bp
 
 .text:00401030
@@ -179,7 +179,7 @@ main函数
 
 CTestThisPointer虚表所在位置只读代码段片段
 
-```asm
+```plaintext
 .rdata:004070DC const CTestThisPointer::`vftable' db 60h,10h,40h,0
 .rdata:004070DC                                ; DATA XREF: CTestThisPointer__CTestThisPointer+13o
 .rdata:004070DC                                 ; 因为只有唯一的函数Add，此处是Add函数的地址，经检验
@@ -191,7 +191,7 @@ CTestThisPointer虚表所在位置只读代码段片段
 
 Add函数：
 
-```asm
+```plaintext
 .text:00401060 ; 可以看到此地址的确与虚表中的地址一致
 .text:00401060 ; Attributes: bp-based frame
 .text:00401060
@@ -256,7 +256,7 @@ Add函数：
 
 主函数：
 
-```asm
+```plaintext
 .text:00401000     ; int __cdecl main(int argc, const char **argv, const char *envp)
 .text:00401000     _main   proc near                       ; CODE XREF: _mainCRTStartup+AFp
 .text:00401000
@@ -304,7 +304,7 @@ Add函数：
 
 而__unDName函数嘛，调用了
 
-```asm
+```plaintext
 .text:004015A4 080         call    Replicator::Replicator(void) ; Call Procedure
 .text:004015A9 080         lea     ecx, [ebp+var_3C]       ; Load Effective Address
 .text:004015AC 080         call    Replicator::Replicator(void) ; Call Procedure

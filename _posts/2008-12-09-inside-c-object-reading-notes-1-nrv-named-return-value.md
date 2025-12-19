@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
 
 罪证拷贝如下：
 
-```asm
+```plaintext
 00401038  call        edi
 0040103A  fild        qword ptr [esp+30h]
 0040103E  fild        qword ptr [___@@_PchSym_@00@UnbLwlxfnvmgUerhfzoLhgfwrlLCAAFUkilqvxghUgvhgxifmgrnvUgvhgkrhzhxrrUivovzhvUhgwzucOlyq@+8 (403390h)]
@@ -180,7 +180,7 @@ int main(int argc, char* argv[])
 
 于是我还是从汇编来看，再怎么优化它逃不过我的眼睛：）
 
-```asm
+```plaintext
 00401337  xor         esi,esi
 00401339  fstp        qword ptr [esp+38h]
 0040133D  add         dword ptr [gj (403024h)],989680h

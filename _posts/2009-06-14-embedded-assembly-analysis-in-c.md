@@ -91,7 +91,7 @@ int __cdecl GetArgument(int ai)
 
 在函数中没有指定返回值时，eax就是返回值了。。。这和普通的汇编代码一致。。。。顺便看看生成的代码：
 
-```asm
+```plaintext
     printf("%d/n",GetArgument(100));
 
 0041142E  push        64h 
@@ -118,7 +118,7 @@ int __stdcall GetArgument(int ai)
 
 调用时：
 
-```asm
+```plaintext
 0041142E  push        64h 
 00411430  call        GetArgument (4111DBh) 
 00411435  mov         esi,esp
@@ -272,7 +272,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 反汇编：
 
-```asm
+```plaintext
        printf("%d/n",GetArgument(10, 20, 30));
 
 00411ACE  push        1Eh 
@@ -447,7 +447,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 假如VS完全不管GetArgument函数，因为GetArgument函数内部无法维护栈平衡，那么程序崩溃是必然的，还好VS管理了这个问题：
 
-```asm
+```plaintext
     printf("%d/n",GetArgument(10));
 00411ACE  push        0Ah 
 00411AD0  call        GetArgument (4111FEh) 
@@ -531,7 +531,7 @@ int __cdecl GetArgument(int ai)
 
 其实这样的代码对于反汇编来说还挺有意思的：IDA中可以看到
 
-```asm
+```plaintext
 .text:00401000                      ; ===========================================================================
 .text:00401000
 .text:00401000                      ; Segment type: Pure code
