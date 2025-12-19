@@ -35,6 +35,5 @@ author:
 
 在搜狐输入法被qq黑了的时候，我还以为搜狐是善类，结果为了推广自己的浏览器也是不择手段啊。。。。。。唉。。。。大环境啊。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

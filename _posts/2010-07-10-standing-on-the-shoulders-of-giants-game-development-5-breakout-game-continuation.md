@@ -24,9 +24,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 其实在上一节，游戏已经基本成型了，但是还不能算是完整的游戏，本篇将需要完善的部分完成吧。
 
@@ -713,6 +711,4 @@ int
 《[How To Create A Breakout Game with Box2D and Cocos2D Tutorial: Part 2/2](<http://www.raywenderlich.com/505/how-to-create-a-simple-breakout-game-with-box2d-and-cocos2d-tutorial-part-22> "How To Create A Breakout Game with Box2D and Cocos2D Tutorial: Part 2/2")》
 点击链接下载源代码：[Cocos2D and Box2D Breakout Game](<http://www.raywenderlich.com/downloads/Box2DBreakout2.zip>)
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

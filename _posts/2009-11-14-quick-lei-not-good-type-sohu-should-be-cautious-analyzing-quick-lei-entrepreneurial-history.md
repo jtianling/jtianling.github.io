@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 近日按习惯在迅雷看看上看看电影，很多电影，包括首页推荐的电影，已经是如下图所示，被迅雷处理掉了
 
@@ -84,6 +82,4 @@ author:
 
 唉。。。。。。。。最后，还是支持搜狐吧，要知道迅雷一贯并非善类，中国的版权法我都不知道是用来干啥的了。。。。。。只希望，迅雷公司这样的互联网公司，多多保持创新，多多研究用户的使用习惯和行为模式，而不是一门的挖空心思去欺骗用户和弄一些混淆用户的东西。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

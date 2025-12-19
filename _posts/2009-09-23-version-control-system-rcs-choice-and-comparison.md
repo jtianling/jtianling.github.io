@@ -29,9 +29,7 @@ author:
 
 **版本控制系统（ RCS）的选择与比较**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 为啥考虑选择一个版本控制系统呢？由来已久。其实说到版本控制系统，工作的时候顺从公司的安排，一直用的是VSS，家里面以前常常使用VS，顺便也用上了VSS，但是到了后来，VSS明显不行了，当做Linux的工程，Python工程，或者Eclipse中的工程时，VSS都不太胜任工作，早就想换一个到处能使的版本控制系统了。另外，工作以外其实陆陆续续写了很多代码，在博客上发布的时候常常是用复制粘贴这样的方式，以前也曾经将一些重要的工程打包，放到google groups上去，但是实在是太过麻烦，要方便的话，还是在网站找个项目托管，将所有的代码直接提交，供大家去取的方式最好，顺便将自己的工作之外的代码编写方式统一，也更好组织工程的目录结构。在重装电脑的时候也省事，不用将N大的东西考来考去还怕丢失。在自己家的服务器，台式机，笔记本3者间倒腾代码也更加方便。
 
@@ -90,4 +88,3 @@ Mercurial：
 最后，我后来还看到一篇洋洋洒洒的论文-_-!可见事情发生的猛烈和迅速。。。。《[为什么软件项目从集中式迁移到分布式版本控制系统的热情持续不减](<http://yangyubo.com/why-projects-moving-to-dvcs/#id41>)?》  
 最后的最后，我为Mercurial写了一个简单的介绍及入门引导《[分布式的，新一代版本控制系统Mercurial的介绍及简要入门](<http://www.jtianling.com/archive/2009/09/25/4593687.aspx>) 》
 
-[**write by九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

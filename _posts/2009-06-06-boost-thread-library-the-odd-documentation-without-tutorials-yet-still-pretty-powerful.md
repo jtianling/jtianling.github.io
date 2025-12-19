@@ -28,9 +28,7 @@ author:
 
 **boost::thread 库，奇怪的文档没有Tutorial的库，但是却仍然相当强大**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 一直以来感觉boost的库作为开源的库文档是非常详细的，绝大部分库的文档由浅入深，一般先有Overview,从Introduction到简单的Tutorial到复杂的example,再到rationale，应有尽有，但是boost::thread是个例外，没有任何Introduction,Tutorial的内容，上来就是class/type的member function，头文件列举，列举完了了事，连一个example也没有，最奇怪的 boost库文档绝对非其莫属，甚至《Beyond the C++ Standard Library: An Introduction to Boost》这本书中也只字未提thread库，这样的确为学习boost::thread库加大了难度。对于初学者就更难受了，毕竟，本来多线程就是一个不那么容易的东西。。。。
 
@@ -323,4 +321,3 @@ int main()
 
 最最重要的是，这一切还是建立在坚实的C++强类型机制磐石上，没有用hack式的强制类型转换，这个重要性无论怎么样强调都不过分，这个优点说他有多大也是合适的。再一次的感叹，当我责怪牛人们将C++越弄越复杂的时候。。。。。。。。先用用这种复杂性产生的简单的类型安全的高效的库吧。。。。。。关于boost::thread库就了解到这里了，有点浅尝辄止的感觉，不过，还是先知其大略，到实际使用的时候再来详细了解吧，不然学习效率也不会太高。
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

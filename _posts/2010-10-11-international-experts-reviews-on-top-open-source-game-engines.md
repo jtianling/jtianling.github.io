@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 其实早就看到了（很老了，写于Sunday, December 9, 2007），最近写Bullet相关文章的时候又翻看到了，想到常常有人会问到底哪个开源引擎比较好，这里就顺便简单的翻译一下吧。虽然是一家之言，而且Wolfgang Engel这个大牛（不了解有多牛可以[参考这里](<http://www.linkedin.com/in/wolfgangengel> "参考这里")）的话是针对移动平台的，但是还是有一些普遍的参考价值的。[来源](<http://diaryofagraphicsprogrammer.blogspot.com/2007/12/porting-open-source-engine-to-iphone.html> "来源")。这也是Wolfgang写乌龙引擎（[oolongengine](<http://code.google.com/p/oolongengine/> "oolongengine")）的初衷。
 
@@ -61,6 +59,4 @@ Evaluated several open source engines:
 
 So I want to write my own based on the low-level framework I have in place now.
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

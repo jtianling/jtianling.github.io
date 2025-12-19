@@ -28,9 +28,7 @@ author:
 
 # **MacOS中的剪贴板操作 With Objective C**
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 每日废话
 
@@ -289,6 +287,4 @@ _//_
 2.《苹果开发之Cocoa编程》第三版 Aaron Hillegass著
 3. 苹果在线文档
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 概要
 
@@ -239,6 +237,4 @@ int _tmain(int argc, _TCHAR* argv[])
 
 一般来说，一个比较流行的开源库都是比较好的，因为好，才流行，因为流行而变的更好，其中，最最重要的关键在于，使用要简单，太复杂难用的库，无论设计的多么精巧，都很难吸引到使用者，也就难以进入这个良性的循环，不得不说，SDL在这方面，做的是非常好了。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

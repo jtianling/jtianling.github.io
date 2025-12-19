@@ -27,7 +27,6 @@ author:
 
 # C++中的成员函数调用原理及this指针的传递方式
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 测试 源代码：
 
@@ -216,4 +215,3 @@ Add函数：
 .text:0040106C CTestThisPointer__Add endp
 ```
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**

@@ -32,7 +32,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、 综述
 
@@ -580,4 +579,3 @@ void Fun2()
 
 Herb Sutter, Andrei Alexandrescu著， Addison Wesley Professional
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

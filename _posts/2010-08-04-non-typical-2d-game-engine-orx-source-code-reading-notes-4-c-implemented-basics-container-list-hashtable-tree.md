@@ -28,9 +28,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 C语言中没有标准的容器，所以为了跨平台，Orx中自己实现了一套。
 
@@ -388,6 +386,4 @@ struct
 
 一看到结构。。。。。。。。。。。。我大呼。。。。。数据结构的书籍还是没有骗我的啊。。。。。。。。。。。。。。。。。诡异的还是Orx。。。。。。。。。哪有需要自己一定要用一个新结构来包含Node来用一个list/tree的话。。。。。我要保存一个整数怎么办？。。。。。。。。简单的说，Orx的这个容器实现的非主流，不推荐大家使用及学习。。。。我这里也仅仅为了了解Orx的源代码而看看吧。。。。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

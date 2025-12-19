@@ -28,7 +28,6 @@ C函数abort()通过引发SIGABRT信号来终止程序。文章对比了其在Wi
 
 ## 一天一个C Run-Time Library 函数（3）  abort
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 头文件： <stdlib.h>
 

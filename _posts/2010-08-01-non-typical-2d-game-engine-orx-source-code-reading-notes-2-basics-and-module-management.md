@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 上一节中对Orx的整体框架及结构进行了梳理，本节开始阅读Orx底层的各个模块。本节的主要内容是基础模块和用于管理模块的部分代码。
 
@@ -587,6 +585,4 @@ sstModule.u32InitLoopCounter--;
 
 但是，我还是很欣赏这种将模块管理起来的代码，虽然有些冗余，但是将模块统一管理在一个数组之中，比在某些巨大的Init,Exit函数去一一调用各模块的相应函数要来的漂亮。新添加模块的时候，只需要添加对应的3大函数就能自动化的完成一些初始化及收尾工作，也比每添加一个就需要在巨大的Init,Exit函数中添加一条来的方便。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

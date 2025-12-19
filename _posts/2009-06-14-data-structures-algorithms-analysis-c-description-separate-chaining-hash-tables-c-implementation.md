@@ -30,7 +30,6 @@ author:
 
 # 《数据结构与算法分析C++描述》 分离链接(separate chaining)哈希表的C++实现
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第138-142面，分离链接(separate chaining)哈希表,侯捷将其翻译成开链
 
@@ -462,4 +461,3 @@ main()
 }
 ```
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**

@@ -28,7 +28,6 @@ C语言assert是调试用的宏，在条件为假时打印信息并中止程序�
 
 ## 一天一个C Run-Time Library 函数（8）  assert
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 ## msdn:
 
@@ -94,4 +93,3 @@ else
 
 的形式使用时，会使得else与assert中的if配对，而发生问题。。。。所以通过&&,||的计算顺序特性来完成：）又是一个C语言的小技巧啊。。。。太多这样的奇技淫巧了-_!-
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com

@@ -27,9 +27,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 [Sierpinski triangle](<http://en.wikipedia.org/wiki/Sierpinski_triangle> "Sierpinski triangle")的图形我早就见过了，是很漂亮的分形图形，只是今天才知道它叫这么个复杂的名字，很显然是以某个人命名的，因为我不研究分形，所以也不管他了。
 
@@ -325,6 +323,4 @@ int main (int argc, char *argv[]) {
 
 其实后面还有更加有趣的3维Sierpinski triangle的例子，但是因为没有任何新的东西，本文也就不展示了。以上所有源代码在https://blog-sample-code.jtianling.googlecode.com/hg/2010-10-12目录下可以找到。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

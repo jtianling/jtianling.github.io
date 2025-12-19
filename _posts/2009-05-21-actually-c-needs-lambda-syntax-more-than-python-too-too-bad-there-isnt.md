@@ -29,9 +29,7 @@ C++比Python更需要lambda语法。Python因函数定义简洁，lambda作用�
 
 **其实C++比Python更需要lambda语法，可惜没有。。。。**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 思路有点混乱，想到哪就写到哪了。
 
@@ -244,4 +242,3 @@ int main()
 
 这个样子。。。。。。。。。。。。。。阿门。
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

@@ -28,9 +28,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 前言
 
@@ -161,6 +159,4 @@ for (NSDictionary *dict in dictArray) {
 小结：  
 在使用了JsonCpp和TouchJson后，可以发现由于Json的数据结构主要就是一个Key:Value的映射加数组，所以无论在C++中还是在Objective C中，总是能用语言的原生结构很好的表示，（在C++中是map，在Objective C中是NSDictionary和NSArray）所以使用会非常方便，对比XML的强大并且复杂，简单的Json在保持概念非常简单的情况下完成了配置任务。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

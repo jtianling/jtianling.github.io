@@ -71,6 +71,5 @@ Technorati 标签: [云计算](http://technorati.com/tags/%e4%ba%91%e8%ae%a1%e7%
 
 假如它需要花费20页幻灯片来解释。。。。。。它不是一个真的云
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

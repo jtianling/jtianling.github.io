@@ -28,7 +28,6 @@ author:
 
 # OllyDbg,IDA pro强强联合！从OllyDbg中载入IDA Pro输出的map信息文件，带符号信息调试!
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 再强大的工具有的时候也不能独立解决问题，毕竟各有所长，就算是最最强大的IDA Pro, OllyDbg, SoftIce都不例外，对于静态分析自然是IDA Pro最强大，而静态分析不了的时候就需要SI,OD出马了，以前我找了很久才研究出一种从SoftIce中载入IDA Pro输出的map信息文件的方法，
 
@@ -48,4 +47,3 @@ http://www.jtianling.com/archive/2009/01/07/3730240.aspx
 
 方法就不多说了，用IDA Pro的Product功能，生成map,再用此插件载入就好了，连这都不知道的话估计也不会用这些软件了。
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**

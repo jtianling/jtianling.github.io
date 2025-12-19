@@ -26,9 +26,7 @@ Orx引擎用C语言巧妙模拟面向对象，其核心“Structure”系统统�
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 这一节，看的是我感觉Orx实现的最为"有技术"的部分了，C语言实现面向的技术，在[SDL的源码](<http://www.jtianling.com/archive/2010/07/26/5765571.aspx> "STL的源码")中看到过一种方法，Orx实现的是另外一种，相对来说可以支撑更加复杂和灵活的结构。
 
@@ -515,6 +513,4 @@ if (pstObject->astStructure[i].pstStructure != orxNULL)
 
 到了这里，Orx的主要组织结构module和Structure都看过了，底层的基础结构和模块也看过了。整体的Orx主干已经清晰了，具体的每个Structure，module是怎么实现的，暂时就不看了，需要的时候看一看就很清楚了。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

@@ -103,6 +103,4 @@ Apple LLVM compiler 3.0（Clang)：[C++ and C++'11 Support in Clang](<http://cla
 
   
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-[**九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com/> "write by 九天雁翎\(JTianLing\) -- www.jtianling.com")

@@ -28,7 +28,6 @@ atexit是C库函数，可在程序正常退出时，按后进先出顺序执行�
 
 ## 一天一个C Run-Time Library 函数 （9） atexit
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 ## msdn:
 
@@ -167,4 +166,3 @@ exit,_exit
 
 具体的原因我也不太清楚，APUE中倒是有一些描述，但是看了很久了，现在忘了，《windows核心编程》作者对于推荐使用return的描述主要是和windows中的[TerminateProcess](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.WINCE.v50.en/wcecoreos5/html/wce50lrfterminateprocess.htm>)，ExitProcess等API作为对比的，没有提及exit.
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com

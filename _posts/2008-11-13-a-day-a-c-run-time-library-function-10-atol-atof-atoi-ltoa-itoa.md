@@ -31,7 +31,6 @@ author:
 
 ## 一天一个C Run-Time Library 函数 (10) atol,atof,atoi, ltoa , itoa,
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 ## msdn:
 
@@ -146,4 +145,3 @@ windows中甚至实现了关于double的此类函数，呵呵，浮点都有两�
 
 记得，以前看到mysql的一份文档中，mysql的开发人员甚至以自己的整数类型比较多而感到自豪（也许不是自豪吧），进行了类似这样描述，mysql有丰富的整数类型，这样你可以使用更适合你的整数，在数据很大时，这可以为你省下很大的空间。。。。。。。。。。。the same in C/C++.......................
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com

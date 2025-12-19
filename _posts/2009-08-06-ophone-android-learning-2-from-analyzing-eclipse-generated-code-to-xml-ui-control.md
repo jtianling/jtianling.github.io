@@ -27,9 +27,7 @@ author:
 
 [**OPhone/Android的学习(2) —**](<http://www.jtianling.com/archive/2009/08/04/4409464.aspx>)**从分析Eclipse自动生成的代码到以XML控制UI**
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)****
 
-[讨论新闻组及文件](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、综述
 
@@ -396,4 +394,3 @@ onClick的响应程序用了random来随机生成一个0~2的整数，并通过�
 
 今天就到这里了。。。。。
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

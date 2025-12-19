@@ -31,7 +31,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、 综述
 
@@ -305,4 +304,3 @@ int main()
 
 boost::asio的确在某种程度上简化了网络客户端/服务器程序的编写，并且易于编写出效率较高的网络应用，（效率能高到什么程度没有实测）但是，作为与C程序员一脉相承的C++程序员，在完全不了解诸如asio:: async_write，asio:: async_accept等函数的实现时有多大的胆量去放心使用，这是个问题。说要去真的理解其实现吧。。。那么就将陷入真正的boost精密C++技巧使用的泥潭，因为boost::asio与其他boost库结合的是如此的紧密，特别是boost::bind,而boost::bind现在的实现实在不是那么优美，并且在下一版的C++标准中variadic templates的加入，是会使其实现简化很多的，这样说来，用boost::asio还是不用。。。是个问题。也许真正能让人下定决心在项目中使用boost::asio的时候，就是在下一代C++标准中其变成了std::asio的时候吧^^
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

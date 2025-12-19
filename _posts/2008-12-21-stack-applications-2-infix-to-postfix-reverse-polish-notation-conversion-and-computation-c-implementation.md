@@ -31,7 +31,6 @@ author:
 # 堆栈的应用（2）
 中缀算术表达式到后缀（逆波兰记法reverse polish notation）的转换及其计算 C++实现
 
-**_write by_ _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 

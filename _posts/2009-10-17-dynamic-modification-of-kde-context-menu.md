@@ -27,9 +27,7 @@ author:
 
 **KDE 上下文菜单的动态修改**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、 提要
 
@@ -203,4 +201,3 @@ http://techbase.kde.org/Development/Tutorials/Creating_Konqueror_Service_Menus
 
 [](<http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code>)
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

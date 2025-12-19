@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 现在在国内做游戏，似乎怎么都绕不开OGRE和CEGUI的学习，因为他们实在是太流行了。。。。。OGRE在Google中搜索game engine长期排在第一，而CEGUI又几乎是OGRE的官方UI。。。毕竟不是盖的。我第一份工作的时候就做过一些CEGUI相关的工作，（但是那时候引擎不是OGRE）但是一直没有太深入的学习，然后在游戏开发的路上绕了很大一圈，接触了OpenGL(ES),以及各色2D，3D引擎，最后似乎还是回到了OGRE和CEGUI，所以还是有些感慨。。。。。。
 
@@ -88,6 +86,4 @@ LINK : fatal error LNK1104: cannot open file 'OgreMain_d.lib'
 
 这个哥们描述的[背后的故事](<http://blog.csdn.net/yacper/archive/2010/05/19/5607450.aspx "背后的故事">)。。。。还提供了hack解决方案，牛，可惜我是用VS2008的，VS2005那个补丁不适合我，运行安装不了，我也还是希望通过正常的补丁途径解决。而这个哥们提供了完善的[解决方案](<http://hi.baidu.com/hy469680890/blog/item/b1de7e24187d946c34a80f1f.html "解决方案">)。基本上，简单的说，VS2008的解决方案就是下载[正确的依赖文件VC90](<http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-DEPS-0.7.x-r2-vc9.zip?download "正确的依赖文件VC90">)那个，或者直接下CEGUI SDK [VS2008的SDK](<http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-SDK-0.7.2-vc9.zip?download "VS2008的SDK">)，只是千万不要下VC80任何相关的东西。。。。（我很郁闷MS竟然不让VS2008在这种程度上支持VS2005，起码也能够让任何VS2005编译的东西在VS2008得到直接的支持啊）然后为自己的VS2008打上SP1补丁，就好了。这个问题真的折腾了我挺久，希望大家不要再继续被折腾了。。。。。。。。。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

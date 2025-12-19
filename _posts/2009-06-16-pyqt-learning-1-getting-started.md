@@ -28,9 +28,7 @@ author:
 
 # PyQt的学习（1） 入门
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[讨论新闻组及文件](<http://groups.google.com/group/jiutianfile/>)
 
 # 动机：
 
@@ -189,4 +187,3 @@ layout.pyw
 
 行了，基本上PyQt的程序是怎么样子的，大概有个了解了：），下面就开始慢慢来了。我也需要睡觉去了。
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

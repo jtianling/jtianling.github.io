@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 这是SDL中我最关心的模块，即SDL是怎么抽象渲染模块的接口然后实现跨平台的，已经在DirectX/OpenGL中绘制图形的。本文与前面两篇使用不同的描述方式，前面兩篇文章以结构性的铺开分析为主，本文决定使用流程分析。
 
@@ -243,6 +241,4 @@ SDL源码大概浏览了一遍，没有细看，总的来说，看源码还是�
 
 基本上，对于游戏来讲，OpenGL的渲染部分其实并没有太大价值，虽然其接口的确非常简单，（也许不是游戏可以考虑使用一下）但是，作为一个跨平台的库，SDL还是有其独特的价值，SDL提供了一个跨平台的窗口管理模块，事件系统，多线程模块，声音模块，并且能够让你很方便的使用OpenGL渲染与其配置，基本上可以看做是一个非常强大并且完整的OpenGL使用环境。就像glut/free glut曾经想要做到的那样，只不过SDL比其走的更远而已。类似的库还有[GLFW](<http://www.jtianling.com/archive/2010/07/15/5738421.aspx>)，完成的其实也不错。对于只想好好的关心渲染部分，对其他跨平台的脏活累活不感兴趣的，SDL算是不错的选择。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

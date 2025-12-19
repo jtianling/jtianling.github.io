@@ -30,9 +30,7 @@ author:
 
 **异常处理与MiniDump详解(3) SEH（Structured Exception Handling）**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、综述
 
@@ -435,4 +433,3 @@ Continue running
 
 5. [ 错误处理(Error-Handling)：为何、何时、如何(rev#2)，刘未鹏(pongba)著](<http://blog.csdn.net/pongba/archive/2007/10/08/1815742.aspx>)
 
-[**write by九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

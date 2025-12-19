@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 信号和插槽系统是我想用来在游戏引擎中让各模块解耦的关键部分，虽然自己以前也写过简单的实现，但是今天竟然找不到原来的代码了，而且我现在越来越懒了。。。。。于是乎，还是学习Boost中的signal2库吧。。。。。。。。。。汗颜中。在我发现公司一个比较成功的项目中竟然用了loki库后，使用外部库是越来越大胆了。。。。。更何况，这仅仅是我自己业余作品，按需配置使用使用boost并不过分吧。。。。呵呵，一点都不过分。
 
@@ -90,6 +88,4 @@ int main()
 参考：  
 《[boost 手册,signal2](<http://www.boost.org/doc/libs/1_42_0/doc/html/signals2.html> "boost 手册,signal2")》，特别感谢[金庆](<http://blog.csdn.net/jq0123>) 将其翻译成中文了，并且翻译的非常好。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

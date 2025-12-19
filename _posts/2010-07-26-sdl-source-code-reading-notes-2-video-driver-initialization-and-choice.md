@@ -981,6 +981,5 @@ SDL_Surface* screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16, SDL_OPE
 
 因为本文太长，在Google Document上输入都已经很卡了，所以留待下篇文章再看。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

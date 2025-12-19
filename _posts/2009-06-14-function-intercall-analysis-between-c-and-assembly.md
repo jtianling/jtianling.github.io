@@ -28,7 +28,6 @@ author:
 
 # C/C++与汇编的函数相互调用分析
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
 [**讨论新闻组及 相关文件下载**](<http://groups.google.com/group/jiutianfile/>)
 
@@ -316,4 +315,3 @@ int _tmain(int argc, _TCHAR* argv[])
 
 参考资料：MSDN
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

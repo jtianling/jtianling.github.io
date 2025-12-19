@@ -28,9 +28,7 @@ author:
 
 **google 的广告匹配算法其实也挺搞的**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 大家都知道google的广告吧。。。那属于通过匹配你浏览的网页中的关键字提供给你你可能最需要的广告，google的广告一向以此为卖点，或者说是优点。
 
@@ -38,4 +36,3 @@ author:
 
 呵呵，计算机的程序的极限还远远没有到。。。。
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

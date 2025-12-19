@@ -28,7 +28,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 一般认为Windows下以16bit表示的Unicode并不是UTF-16，而是UCS-2。UCS-2是一种编码格式，同时也是指以一一对应关系的Unicode实现。在UCS-2中只能表示U+0000到U+FFFF的BMP([Basic Multilingual Plane](<http://en.wikipedia.org/wiki/Basic_Multilingual_Plane> "Basic Multilingual Plane") ) Unicode编码范围，属于定长的Unicode实现，而UTF-16是变长的，类似于UTF-8的实现，但是由于其字节长度的增加，所以BMP部分也做到了一一对应，但是其通过两个双字节的组合可以做到表示全部Unicode，表示范围从U+0000 到 U+10FFFF。关于这一点，我在很多地方都看到混淆了，混的我自己都有点不太肯定自己的说法了，还好在[《UTF-16/UCS-2》](<http://en.wikipedia.org/wiki/UTF-16>)中还是区别开了，不然我不知道从哪里去寻找一个正确答案。（哪怕在IBM的相关网页上都将UCS-2作为UTF-16的别名列出）
 

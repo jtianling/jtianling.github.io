@@ -31,8 +31,6 @@ author:
 
 # 初学编程该怎么学？——对初学者程序设计语言学习的思考(2)
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
-[讨论新闻组及文件](<http://groups.google.com/group/jiutianfile/>)
 
 作为学习编程几年的并且现在还靠着号称世界上特别复杂的一种语言C++活着的人来说，我也能在这些简单的图形中绘制中找到编程的乐趣，这就是turtle的乐趣了，我想初学者能找到的乐趣会比我更加多吧。
 
@@ -128,4 +126,3 @@ screen.exitonclick()
 
 用turtle熟悉Python的基本语法估计是没有问题并且充满乐趣的，乐趣对初学者来说可是最重要的东西。并且，当你想用其实现更复杂逻辑的时候，也不得不用到更多的Python特性，这个自然过程会促进/巩固对Python的学习。这也许是除了单独学习一门语言外，另一个初学者可以尝试的入门之路，充满乐趣的路途。
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

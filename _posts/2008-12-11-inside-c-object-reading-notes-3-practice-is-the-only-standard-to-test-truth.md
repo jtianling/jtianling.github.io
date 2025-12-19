@@ -28,7 +28,6 @@ author:
 
 # 《Inside C++ Object》 阅读笔记(3)，实践是检验真理的唯一标准
 
-**_write by_ _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 在阅读笔记（2）中，我还以为，按《Inside C++ Object》中文版199面（以后页码都以侯捷中文版为准）示例所描述的那样
 

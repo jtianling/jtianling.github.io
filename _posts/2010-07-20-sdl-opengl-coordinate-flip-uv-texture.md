@@ -26,9 +26,7 @@ SDL和OpenGL的纹理坐标系原点不同，导致在SDL中渲染纹理时上�
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 同样的一段程序，在SDL with OpenGL时是颠倒的，而在GLFW和完全使用Windows API加OpenGL时又是正确的。
 如下：
@@ -51,6 +49,4 @@ glTexCoord2f(0.0 , 0.0 ); glVertex3f(-1.0 , 1.0 , 0.0 );
 glEnd();
 ```
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

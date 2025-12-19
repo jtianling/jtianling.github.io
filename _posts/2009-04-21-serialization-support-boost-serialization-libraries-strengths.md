@@ -29,9 +29,7 @@ author:
 
 **序列化支持(4)—Boost的序列化库的强大之处**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 1. 非介入式版本
 
@@ -880,4 +878,3 @@ int main() {
 
 然后，Boost::Serialize由于是完全融入C++的IOStream系统的，所以，只要你实现你自己的Stream，比如文档中提到的XML系统，你就可以实现任意的方式保存你序列化的数据。这样的开放性也是值得一提的，光是这一点都不是一般的非"准标准库"可以比拟的。。。。。。。。序列化大概就讲这么多吧。。。。序列化在公司只用了半天去了解，但是自己这段时间工作太忙，结果学习Boost的序列化库的使用，还不是看其实现，就用了这么久，真是无奈。。。。
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

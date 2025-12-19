@@ -27,9 +27,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 [上文](<http://www.jtianling.com/archive/2010/08/04/5786973.aspx> "上文")
 我阅读了Orx自己实现的一套hashTable，经我过的初步分析，一个CRC算法作为key是有可能冲突的，但是并没有验证，作为bug提交的话，有些不够完整，所以，我写个测试程序真实的验证一下这个CRC算法，同时，也验证一下自己的分析是否正确。简而言之，就是验证此CRC算法在实际使用中，到底有无冲突的可能。
@@ -255,6 +253,4 @@ Clash strings: cxezqfgwkdy      hjccdfyaamc
 
 另外，这也说明了出现问题的概率不是小到宇宙毁灭的几率那样，谁也不能保证在Orx使用一个256长度的hashTable的时候会不会出现问题。。。。。。。。。。。。。。。。事实上，即使为了效率，也还是参考参考MPQ中暴雪对CRC的使用，或者是如一般std扩展中hashmap的使用吧。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

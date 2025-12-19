@@ -28,7 +28,6 @@ author:
 
 # C++中的虚函数调用原理的反汇编实例分析(1)
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 具体的原理我并不想多讲，最好的办法是看《inside C++ Object》一书，我只是通过实际的反汇编代码来检验一下。。。。
 
@@ -334,4 +333,3 @@ Add函数：
 
 这么多类和函数。。。。。。。。。这些已经超过windows API的范围了，估计是属于VC6编译器内部实现的类了，呵呵，因为Windows内部实现不是主要用C吗？上面用了那么多类，应该不是Windows XP的代码吧。
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**

@@ -26,9 +26,7 @@ Lua发布包中的lua51.dll是个代理，源于一个历史命名错误。为�
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 今天下载lua的Windows二进制发布[luabinaries](<http://luabinaries.sourceforge.net/> "luabinaries")的时候，发现luabinaries的发布包含两个dll,lua5.1.dll,lua51.dll，其中lua5.1.dll大小合适，lua51.dll只有11K，感觉不像是个有用的lua dll，对此比较不解，查看了luabinaries的文档，
 
@@ -88,6 +86,4 @@ that was just one unfortunate decision that is difficult to be undone.
 
 呵呵，仅仅将这个有趣的事件作为编程中的一个轶事来看吧。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

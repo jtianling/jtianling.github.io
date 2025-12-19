@@ -59,6 +59,5 @@ Windows XP用户痛苦点（比如我）
 
 我将其放在了DropBox的目录里面。。。。。。。。。不会丢失辛苦的劳动成果了。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

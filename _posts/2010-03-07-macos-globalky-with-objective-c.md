@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 全局快捷键属于比较有用的功能了，在Windows下使用RegisterHotkey可以很方便的设定，（指的是通过程序设定啊）Qt中没有封装此功能，所以稍微麻烦一点，可以参看我原来的文章《[Qt/PyQt中使用系统全局的快捷键](<http://www.jtianling.com/archive/2010/01/25/5252302.aspx>)》，换到了MacOS中后，又得重新学习了，真是悲哀。。。。。。。  
 搜遍互联网，才总算发现有用的文章，《[Program Global Hotkeys in Cocoa Easily](<http://dbachrach.com/blog/2005/11/program-global-hotkeys-in-cocoa-easily/> "Program Global Hotkeys in Cocoa Easily")》一文真是精华中的精华。不仅说明了怎么在MacOS中设定全局快捷键，而且超额的指点了怎么让用户在程序中自定义。。。。强就一个字，作者绝对是介于牛A及牛C之间的人物。  
@@ -113,6 +111,4 @@ void *userData) {
 
 接触Cocoa的时间较短，发现接口设置的一些惯例都不太一样，虽然在GUI世界，消息（或者说事件）驱动是肯定的，但是在Windows的Win32 API及MFC那个层面编写代码的时候（.net不了解，就不知道了），消息的流向是知道的，可控制的，消息响应的时候也常常在OnMessage函数中自己去设置，但是Cocoa中感觉封装的层次更加高一些，我不知道消息从那儿来，又到哪儿去，只能通过回调或者控件的binding，action的链接，类的委托来设置我希望被调用的函数，具体啥时候调用，入口在哪，我都无法控制，这点，可能属于从较为底层跑到较为高层有点不适应。作为C/C++程序员，可能难免带上了一定的刨根问底的性格，甚至一定要回溯到系统加载进程的汇编代码才肯善罢甘休，不然总是觉得没有底，在不能彻底了解一个库的源代码前，甚至都不敢大量的使用，不然效率怎么样，内存怎么控制的，健壮不健壮总是没底，到了Objective C with Cocoa的世界后，还有点不适应。。。。。。。。。。 
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

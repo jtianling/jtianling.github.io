@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 Technorati 标签: [SAE](<http://technorati.com/tags/SAE>),[Sina App Engine](<http://technorati.com/tags/Sina+App+Engine>),[新浪云计算](<http://technorati.com/tags/%e6%96%b0%e6%b5%aa%e4%ba%91%e8%ae%a1%e7%ae%97>),[云计算平台](<http://technorati.com/tags/%e4%ba%91%e8%ae%a1%e7%ae%97%e5%b9%b3%e5%8f%b0>),[云计算](<http://technorati.com/tags/%e4%ba%91%e8%ae%a1%e7%ae%97>)
 
@@ -86,6 +84,4 @@ SAE的目标是实现互联网应用在开发运维上的无缝整合，为App�
 
 值得期待啊。。。。。。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

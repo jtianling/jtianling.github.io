@@ -30,7 +30,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 继续研究UTF8和UCS-2的选择，这里继续使用上一次提到的函数。
 
@@ -177,4 +176,3 @@ e4 b8 ad e6 96 87 0 0 0 0 0 0
 
 另外，有个很重要的问题需要提及的就是，目前我使用的Ubuntu8.04桌面版，不支持全Unicode的编码，似乎中文是没有什么问题，但是以前那几个太玄经的字符是输出不了的，可能其Unicode的支持只到到BMP这一层，这点比Windows稍逊色。以前测试过，的确是输出不了，但是源代码已经被覆盖了，大家可以自己去确定一下：）
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

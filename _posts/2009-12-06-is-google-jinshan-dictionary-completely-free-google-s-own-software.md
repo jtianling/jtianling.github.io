@@ -132,6 +132,5 @@ author:
 
 我昨天可能看漏了然后错怪Google中国了-_-!表示抱歉，然后修改题目。。。。。。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接****
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

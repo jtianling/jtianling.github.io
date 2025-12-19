@@ -28,7 +28,6 @@ C语言函数asctime可将tm时间结构体转换为可读字符串。文章介�
 
 ## 一天一个C Run-Time Library 函数 (7) asctime（时间函数）
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 ## msdn:
 
@@ -146,4 +145,3 @@ gmtime, localtime, ctime, time,
 
 **除了宽字节版本不能使用之外，其他函数的使用自然没有任何问题。并且函数名完全一致。对于这么古老和标准的函数假如还能出现问题，估计任何做可移植程序的人都会崩溃的。放心用吧。**
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com

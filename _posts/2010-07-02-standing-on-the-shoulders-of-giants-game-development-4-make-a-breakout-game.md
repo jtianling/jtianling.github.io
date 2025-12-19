@@ -24,9 +24,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 虽然很早就想用做一个完整游戏来完成此教程，但是在做什么游戏的问题上很纠结，太大太好的游戏太费精力，太小的游戏又不足以展示Orx的特点，选来选去也没有自己感觉最合适的，最后还是选择打砖块吧，此游戏虽然不能展示Orx的全部特点，但是很好的展示了其内嵌物理引擎的特点。因为Orx内嵌Box2D物理引擎，所以在游戏中使用物理，从来没有这么方便过，也许，哪天我该写一篇用Cocos2D+Box2D的类似文章来做比较。
 
@@ -330,6 +328,4 @@ orxSTATUS orxFASTCALL GameApp::EventHandler(const orxEVENT *_pstEvent)
 
 游戏其实基本成型了，剩下的，就是给游戏加个边框，（这个都不需要我额外讲方法了）不然球飞出去了，然后就是操作部分了，下一节再讲。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

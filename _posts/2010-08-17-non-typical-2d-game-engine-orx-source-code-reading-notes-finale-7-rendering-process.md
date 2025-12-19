@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[讨论新闻组及文件](<http://groups.google.com/group/jiutianfile/>)
 
 本文应该是该系列的最后一篇，看看一个物体在Orx中从载入到显示的完整流程。
 
@@ -224,6 +222,4 @@ glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 以上纯属个人看法，而历史证明，由于懂得东西不是很多，所以我的个人看法很多是不正确的，比如前面我提到的Orx的list实现[很奇怪的问题](<http://orx-project.org/forum?func=view&catid=17&id=968#974> "很奇怪的问题")。。。。。。。。。。。。。。。。。。。。所以请读者不要轻信上述问题，那仅仅是一家之言。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

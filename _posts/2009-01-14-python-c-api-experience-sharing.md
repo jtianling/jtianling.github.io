@@ -28,7 +28,6 @@ author:
 
 **Python C API 使用心得**
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 工作的变化简直和人生变化一样不可预知.就在反外挂刚开始的时候，天天看的都是汇编和一大堆只有cracker(或想称为cracker)的人才会看的破解相关书籍，但是才过了几天，准备做被动的反外挂系统后，工作基本上就转到了用Python C API来写扩展模块和用Python来写Check程序了，真是突然。
 

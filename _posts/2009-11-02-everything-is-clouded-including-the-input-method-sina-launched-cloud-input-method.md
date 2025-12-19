@@ -30,7 +30,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 IT行业最大的特点是喜新厌旧，伴随着这一特点衍生出来的就是商家喜欢炒作概念，这不，"云"一时间成为了最热门的词汇，于是一切都"云"了，Amazon最先有了通用云计算平台为这个推波助澜，Google这个本身就处于云端的公司也推出了App engine，一时间大家都"云"了，阿里也"云"了，Ubuntu9.10有了企业云，现在输入法都"云"了。何处不云阿。。。。。。。。。让人头晕。
 

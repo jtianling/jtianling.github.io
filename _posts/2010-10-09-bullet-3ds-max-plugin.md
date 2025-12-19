@@ -61,6 +61,5 @@ author:
 
 注意：事实证明，目前的此插件到处的bullet文件无法正常加载，再未更新之前，请直接忽略之。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

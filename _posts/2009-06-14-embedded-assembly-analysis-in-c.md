@@ -28,7 +28,6 @@ author:
 
 # 在C++中内嵌汇编代码分析
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 用JAVA或者Python的人常常会告诉你，现在的硬件已经太快了，以至于你可以完全不再考虑性能，快速的开发才是最最重要的。这是个速食者的年代，什么都是，甚至是编程。
 
@@ -576,4 +575,3 @@ int __cdecl GetArgument(int ai)
 1.  MSDN
 2.  《加密与解密》（第3版）附录2
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**

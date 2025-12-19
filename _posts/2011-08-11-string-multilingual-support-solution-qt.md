@@ -108,9 +108,7 @@ Qt的多国语言支持主要来源于Qt Linguist这个翻译程序，按照Qt�
   
   
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-[_**九天雁翎(JTianLing) -- www.jtianling.com**_](<http://blog.jtianling.com/>)[](<http://www.jtianling.com>)
 
 [](<http://www.jtianling.com>)  
 [](<http://www.jtianling.com>)

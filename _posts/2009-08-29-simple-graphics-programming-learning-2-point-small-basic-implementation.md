@@ -29,9 +29,7 @@ author:
 
 **简单图形编程的学习（ 2）---点 (small basic实现)**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、 又一顿牢骚
 
@@ -242,4 +240,3 @@ EndWhile
 星空中的文字-插图4：
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_082809_1607_26.png)
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

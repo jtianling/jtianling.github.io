@@ -26,9 +26,7 @@ SDL结合OpenGL非常简单，只需修改几行代码即可。SDL管理窗口�
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 以前使用过SDL和GLFW，发现SDL的API设计，第3方库，以及社区支持都好过GLFW，但是SDL是对显示做过封装的，所以使用2D是方便，但是GLFW没有对显示进行封装，完全使用OpenGL，所以使用OpenGL非常方便，这里，我不禁想到，要是SDL也能很好的使用OpenGL那么就完美了，在网上也的确查到了相关的资料。在试用以后发现比我想的还要简单，因为SDL在Windows中默认使用D3D渲染，我还以为会需要加宏重新编译SDL或者啥的，但是，一切比我想象的要简单，并且，找到的[教程](<http://gpwiki.org/index.php/SDL:Tutorials:Using_SDL_with_OpenGL> "教程")质量非常高，该讲的都讲了，该注意的都提到了，通俗易懂，明白无误，这是一个开源产品的最大优势，SDL就是这样一个产品！本来我以为需要大书特书的东西，在这样的教程下，显得非常多余。。。。呵呵，还是贴一些自己的代码吧。
 
@@ -137,6 +135,4 @@ SDL_GL_SwapBuffers();
 
 ![](http://docs.google.com/File?id=dhn3dw87_156g27946cz_b)
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

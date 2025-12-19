@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 前言
 
@@ -456,6 +454,4 @@ SDL_SetEventFilter等事件过滤的函数，实现非常简单，就是根据�
 
 准备下篇文章中讲述SDL最关键的video模块，相对来说，就比这些周边模块有意思的多。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

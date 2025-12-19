@@ -27,7 +27,6 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 **[讨论新闻组及文件](<http://groups.google.com/group/jiutianfile/>)**
 
@@ -420,6 +419,4 @@ Array有一个length成员变量，比如myArray.length，但是它不告诉你�
 
 好了，我要走了，留下你自生自灭。。。。。。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

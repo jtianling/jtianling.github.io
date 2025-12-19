@@ -27,9 +27,7 @@ Small Basic V0.6版本发布，新增了图形缩放、三角函数、文字输�
 
 **Small Basic V0.6 出来了，快报**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 今天在Small Basic的论坛上查看有趣的信息，无意看到微软官方消息：Small Basic V0.6 is Now Available for Download。。。。。。。
 
@@ -93,4 +91,3 @@ STARGATES的游戏截图如下：（游戏还是一般）
 
 ![StarGate截图](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20090828/stargate.png)
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

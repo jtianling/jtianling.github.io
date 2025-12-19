@@ -28,7 +28,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 在Ubuntu8.04桌面版下，测试的结果为
 
@@ -87,4 +86,3 @@ gcc version 4.2.4 (Ubuntu 4.2.4-1ubuntu4)
 
 纯ANSI C程序
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

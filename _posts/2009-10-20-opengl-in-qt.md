@@ -28,9 +28,7 @@ author:
 
 # OpenGL in Qt
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 Qt还是本人可移植GUI程序开发的首选，不过Qt开发普通的应用程序是行，但是据说效率太低，以至于像某些人说的那种刷新看得到一条条横线？这点我比较纳闷，就我使用的感觉，虽然Qt不以效率著称，但是事实上有足够的优化，最最典型的就是默认的图形双缓冲，按照Windows下的编程惯例是需要手动开启，并通过额外的接口调用才能使用的，这一点在以前简单图形编程学习时比较过Qt，Win32 GDI时感受特别深刻，在没有额外处理的时候，Win32动画程序那个闪阿，而Qt程序非常稳定。事实上，我想，Qt的其他问题比效率严重多了，比如个人感觉Qt程序在Windows下刷新的感知明显没有Windows原生程序快，这点倒是值得改进。
 
@@ -214,6 +212,4 @@ Mercurial使用方法见《[分布式的，新一代版本控制系统Mercurial�
 
 <http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code>
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

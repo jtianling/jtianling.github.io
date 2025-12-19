@@ -27,9 +27,7 @@ author:
 
 [**OPhone/Android的学习(3) —**](<http://www.jtianling.com/archive/2009/08/04/4409464.aspx>)**再熟悉几个常用的Widget**
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)****
 
-[讨论新闻组及文件](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、综述
 
@@ -235,4 +233,3 @@ Example2:
 
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_080809_1235_OPhoneAndro2.jpg)
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

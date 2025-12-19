@@ -28,7 +28,6 @@ author:
 
 # 从最简单的Win32汇编程序，HelloWorld说起
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
 
 [讨论新闻组及文件](<ttp://groups.google.com/group/jiutianfile/>)
 
@@ -111,4 +110,3 @@ makefile:
 
 我只能说，总算在我们程序背后没有什么在偷偷摸摸进行了，一切就像我们的源代码一样，这正是我们需要的境界。。。。。用汇编这点还是好（其他高级语言使用者基本可以忽视此句）
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

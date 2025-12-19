@@ -24,9 +24,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 我一直希望有个工具能够便捷的进行语法高亮，因为很多地方都可以用到。特别是，假如我在Google Document或者Office中编辑文件的时候，或者是在Windows Live Writer中编写博客文章的时候（WLW中有插件支持，但还是没有此工具这么方便，并且现在写博客的时候我已经改用Google Document了），我都希望能便捷的进行语法高亮，但是并不是都那么容易实现。特别是像Google Document这样不支持插件的工具，因为Google Document不支持插件，不能进行语法高亮，所以长时间以来我都不将其作为博客的编写工具，直到，你知道的，我决定写个工具来解决这个问题。于是，就有了今天这个工具。
 
@@ -728,6 +726,4 @@ zellner
 
 支持的颜色主题，语言语法都是通过config来配置，其实操作就是选择好语言，copy,Win+Z,paste。。。。。。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

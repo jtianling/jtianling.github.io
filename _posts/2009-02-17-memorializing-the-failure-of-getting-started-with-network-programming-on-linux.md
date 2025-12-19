@@ -27,9 +27,7 @@ author:
 
 # 以此纪念刚开始在linux上学习网络编程的失败-_-!
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 从一开始的学习到现在，我的Ubuntu 8.04服务器版本就从来没有正常的跑过一个服务器程序，亏它还是服务器版本的，郁闷的我要死。目前为止的正常的服务器端网络程序都是在Windows下运行成功的，比如第一次那个daytime服务器，都是靠着移植到windows下才能成功，不过不停的调试啊，调试啊，gdb倒是熟悉了不少，还顺便熟悉了一堆的网络调试工具，linux下的netstat,tcpdump，windows下的Wireshark（linux因为没有X window，所以用不了）倒是真熟悉了很多，我都真不知道这样的死Ubuntu对于学习是好是坏了，假如没有碰到这么多问题的话，我不会调试一个那样简单的程序那么多次，不会这样的进一步熟悉那些特别简单的套接口API,真是，郁闷了。
 

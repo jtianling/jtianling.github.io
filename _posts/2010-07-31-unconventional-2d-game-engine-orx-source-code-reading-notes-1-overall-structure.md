@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 前言
 
@@ -222,6 +220,4 @@ iarwain对SFML的评价是强大，简单，但是buggy。
 
 不过，SFML用C++结合了上面这么多有用的库，实现那么多功能，还有一堆的其他语言(Python,Ruby,D,C#等）绑定，并且也使用很自由的zlib/png协议，感觉还是值得一试的。特别是当对效率没有那么高的要求的时候。。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

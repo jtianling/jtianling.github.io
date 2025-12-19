@@ -27,9 +27,6 @@ author:
 
 # 手动脱UPX壳
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
-
-[**讨论新闻组及文件**](<ttp://groups.google.com/group/jiutianfile/>)
 
 个人手动脱壳定义，不是完全不用工具，仅仅是指不用脱壳机，并且手动寻找OEP，恢复IAT的时候使用ImportREC，但是手动找到IAT的位置，不用自动搜寻功能，其实找到了位置后，ImportREC还是做了新添加一个段，拷贝2进制数据，修改PE头中的IAT偏移地址这种工作，因为重复性太高，不手动进行了。
 
@@ -106,4 +103,3 @@ __set_app_type,地址就在47E2E4这个地方了，数据窗口跟随地址，�
 
 最后，UPX是有源码的，很适合作为第一款来脱的壳和第一款用来学习做壳的壳：）但是也给了我们一个提示，不要将无用的代码位置置为00，那样只能是给破解者最好的定位方式。
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

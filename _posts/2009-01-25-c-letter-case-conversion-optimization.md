@@ -27,9 +27,6 @@ author:
 
 # C++中字母大小写转换实现的优化
 
-[**write by****九天雁翎(JTianLing) -- blog.csdn.net/vagrxie**](<http://www.jtianling.com>)****
-
-[**讨论新闻组及文件**](<ttp://groups.google.com/group/jiutianfile/>)
 
 在本文中全部以转换为小写为例。
 
@@ -210,4 +207,3 @@ int _tmain(int argc, _TCHAR* argv[])
 
 测试结果为AQtime5测试数据，单位为机器周期，因为结果已经很明显了，所以没有进行多次循环的测试。并且为了排除缓存的影响，将最快的放在了最前面，那么哪怕有缓存的影响，对于wayThree也是最不利的才对。库函数的5000多的结果，说慢的可怕并不为过。在数据量很大的时候，这种优化的差异可不是一点点而已。
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

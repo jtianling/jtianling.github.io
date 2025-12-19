@@ -27,9 +27,7 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 当想要在iPhone上使用某个3D引擎的时候，感觉我这水平，自己写好像还不现实，学到自己能写都不知道要到何年何月了，于是折腾过没有官方支持但是比较简单而且我比较熟悉的Irrlicht。虽然的确成功了（见我[原来的文章](<http://www.jtianling.com/archive/2010/06/04/5646331.aspx> "原来的文章")），但是弄2D游戏的时候，（用其他引擎）经历过一些痛苦的事情后，我发现强大，成熟的引擎，以及官方的支持是多么重要。。。。。于是，虽然Ogre的效率在iPhone上还有些难以承受，但是，我还是希望学习学习，并将Ogre作为优先使用的3D引擎。谁叫Ogre那么流行呢？将来要是弄老本行，去做网络游戏，估计也不错^^
 
@@ -712,6 +710,4 @@ Setting this value to less than 1 results in undefined behavior and is a program
 
 注意，这里的animationInterval是秒为单位的表示时间间隔的变量，但是这里没有直接使用此变量来设定frameInterval，而是乘以了60，（Cocos认为iPhone设备的刷新率近似为60）应该来说，这才是正确用法。。。。。。。我看来可以向Ogre的开发组提交个bug了。。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

@@ -28,9 +28,7 @@ author:
 
 **继续 boost的相关学习， boost::string_algo让std::string这样的废柴类有用一点**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、对string态度的慢慢转变
 
@@ -199,4 +197,3 @@ void SplitUsage()
 
 其实寄希望于regex库出来后，std::string就能涅槃也不是太可能，std::string的string可能在平时的使用中是个简化编程的好办法，但是在对性能和内存占用稍微有点追求的程序，估计，std::string的使用还是会少之又少。。。。。。。。。。。
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

@@ -31,7 +31,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 继续研究UTF8和UCS-2的选择，这里继续使用上一次提到的函数。
 
@@ -245,4 +244,3 @@ int _tmain(int argc, _TCHAR* argv[])
 
 这里要提及的就是同时使用两种机制会有冲突，记得当时看到有文章说，C与C++的这两种机制最好不要混用-_-!
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

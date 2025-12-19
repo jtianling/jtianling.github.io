@@ -455,6 +455,5 @@ D3DXMATRIX* WINAPI D3DXMatrixRotationZ
     ( D3DXMATRIX *pOut, FLOAT Angle );
 ```
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

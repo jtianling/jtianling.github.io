@@ -31,7 +31,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 总体计划见：
 
@@ -151,4 +150,3 @@ UCS-2还是UTF-8，需要继续研究...................................
 
 [Unicode详解](<http://tech.idv2.com/2008/02/21/unicode-intro/> "永久链接: Unicode详解")—想当棒的中文讲解
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

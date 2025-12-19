@@ -36,6 +36,4 @@ ipad下的截图：
 
 ![](http://hi.csdn.net/attachment/201011/9/0_1289290167z1LT.gif)
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

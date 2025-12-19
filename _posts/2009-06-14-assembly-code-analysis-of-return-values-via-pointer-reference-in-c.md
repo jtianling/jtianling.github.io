@@ -28,7 +28,6 @@ author:
 
 # C++中通过指针,引用方式做返回值的汇编代码分析
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 源代码因为是《加密与解密》（第3版）一书中的代码，我就不贴了，不然好像是侵犯版权吧。见书中79面。
 
@@ -83,4 +82,3 @@ mov eax, [eax]
 mov edx, [ecx]
 ```
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**

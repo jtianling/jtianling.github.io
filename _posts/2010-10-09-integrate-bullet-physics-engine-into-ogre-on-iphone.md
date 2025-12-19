@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 为什么选择Bullet
 
@@ -59,6 +57,4 @@ mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::O
 
 当一切都OK以后，我发现我的目标竟然与GameKit是一样的。。。。。不就是Ogre+Bullet吗？[erwin](<http://code.google.com/u/erwin.coumans/> "erwin")估计以前就已经想过我所想了。。。。。也许，尝试下GameKit也不错。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

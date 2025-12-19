@@ -27,9 +27,7 @@ author:
 
 # 从Unicode到太玄经
 
-[**write by九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 本来仅仅是想找个BMP以外的Unicode字段来验证一下我用Python写的用于UTF-16编码的函数，结果发现在Supplementary Multilingual Plane有这么一条，看起来比较突兀：[Tai Xuan Jing](<http://en.wikipedia.org/wiki/Tai_Xuan_Jing> "Tai Xuan Jing") Symbols (1D300–1D35F)-_-!进去看一下更加突兀了-_-!
 

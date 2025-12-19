@@ -29,7 +29,6 @@ VS调试时将未初始化变量赋值为0xCC，因为它是调试中断指令�
 
 # 在VS中debug时，将未初始化变量都赋值为CC的顿悟
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [讨论新闻组及文件](<ttp://groups.google.com/group/jiutianfile/>)
 
@@ -50,4 +49,3 @@ CC在汇编代码中表示为int 3，实际表示一个中断，在与硬件中�
 0041137C rep stos dword ptr es:[edi] ;重复在es:[edi]存入30个;0CCCCCCCCh? Debug模式下把Stack上的变量初始化为0xcc，检查未初始化的问题
 ```
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

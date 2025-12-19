@@ -28,7 +28,6 @@ author:
 
 ## 一天一个C Run-Time Library 函数(5) access
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 ## msdn:
 
@@ -77,4 +76,3 @@ linux下的实现我竟然没有找到。。。。无语
 
 This POSIX function is deprecated beginning in Visual C++ 2005. Use the ISO C++ conformant [_access](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/ba34f745-85c3-49e5-a7d4-3590bd249dd3.htm>) or security-enhanced [_access_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/fb3004fc-dcd3-4569-8b27-d817546e947e.htm>) instead.
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com

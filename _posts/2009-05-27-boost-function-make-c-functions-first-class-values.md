@@ -27,9 +27,7 @@ boost::function解决了C++中函数、仿函数等类型不一的问题，将�
 
 **boost::function，让C++的函数也能当第一类值使用**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 最近在学习Python比较特殊的语法的时候，顺便也研究了一下C++中的类似实现。。。本文中的一些内容也可以参考前几天写的文章《[多想追求简洁的极致，但是无奈的学习C++中for_each的应用](<http://www.jtianling.com/archive/2009/05/15/4187209.aspx>)》《[其实C++比Python更需要lambda语法，可惜没有。。。。](<http://www.jtianling.com/archive/2009/05/21/4205134.aspx>)》最后发现类似的实现都要通过boost,并且还是比较扭曲的通过，然后，起码还算是实现那么回事了。然后前天工作正好属于配合工作，稍微有点时间，大致的看了下《Beyond the C++ Standard Library: An Introduction to Boost》，加深了一些理解，这里感叹一下，其起到的引导性作用还是不错的，可以有个大概的概念了以后再看boost的文档，那样更加事半功倍，虽然boost文档已经非常的好了，但是毕竟文档还是不同于教学。
 
@@ -309,4 +307,3 @@ int main()
   
 2\. boost.org
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

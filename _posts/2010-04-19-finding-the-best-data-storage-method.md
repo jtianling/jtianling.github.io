@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 游戏中总是有很多相关的数据需要存储,比如编辑器产生的关卡数据,人物,物品属性的配置等等,并且现在已经不是每人都设计一种自己数据格式的时代了.程序员们是越来越懒,大家都想着一套文件格式,一套解析,处理代码能够通吃所有的程序.以下讨论,包括优缺点,都仅仅是对于游戏数据(还仅指编辑的数据)存储而言,以下都省略此前提背景,其他领域的使用本文仅供参考,游戏领域的使用本文也仅是一家之言,当然也仅供参考.  
 首先,看看传统的数据存储解决方案.
@@ -106,6 +104,4 @@ encoding
 最后的总结是,未来的趋势应该是[JSON](<http://www.json.org/> "JSON")方案吧,[Google Protobuf](<http://code.google.com/p/protobuf/> "Google<br />
 Protobuf")方案更适合需要网络通信的情况,毕竟还需要通过工具生成代码,使用的方便性来说不如JSON.
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

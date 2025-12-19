@@ -27,7 +27,6 @@ author:
 
 <!-- more -->
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 学习以《数据结构与算法分析—C++描述》第三版为基础。
 

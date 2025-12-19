@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 为什么我们要从现成的游戏引擎学习开始
 
@@ -116,6 +114,4 @@ Orx is the way it is because I don't like having to initialize in code a whole b
 I'd rather just change some parameters in config and restart the program without changing a line of code, or even just reload the config file on-the-fly depending on the cases.  
 Of course, nothing's perfect and this aim isn't totally reached, but that's my current goal: having the least amount of code to write as possible.
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

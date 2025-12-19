@@ -111,6 +111,5 @@ std::string StringManager::GetLocalizedString( const char* key ) {
 
   
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- blog.jtianling.com](<http://blog.jtianling.com/>)**

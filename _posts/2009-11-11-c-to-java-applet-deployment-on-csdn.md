@@ -24,9 +24,7 @@ C++程序员学习Java Applet的入门教程，讲解代码编写与HTML部署�
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 Technorati 标签: [JAVA](<http://technorati.com/tags/JAVA>),[JAVA Applet](<http://technorati.com/tags/JAVA+Applet>),[Applet Tag](<http://technorati.com/tags/Applet+Tag>),[Deploy Applet](<http://technorati.com/tags/Deploy+Applet>),[从C++到JAVA](<http://technorati.com/tags/%e4%bb%8eC%2b%2b%e5%88%b0JAVA>)
 
@@ -144,6 +142,4 @@ Mercurial使用方法见《[分布式的，新一代版本控制系统Mercurial�
 
 <http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code>
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

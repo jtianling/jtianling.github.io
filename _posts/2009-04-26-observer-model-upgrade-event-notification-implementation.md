@@ -29,9 +29,7 @@ author:
 
 **Observer 模式的升级版,Event通知实现**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 本来这段程序是为mmgwg小组程序做示范写的，但是想想最近也很少有时间在家这样写程序了。。。。还是放上来吧，应该对有类似需求的兄弟们也有一些示范作用，对于程序的类层次结构就没有更多的深究了，仅仅是表达大概的意思，并不是希望大家都像我一样所有的实现都跑到父类中去。切记。
 
@@ -258,4 +256,3 @@ LRESULT CSubject::SendEvent( EventID_t aiEventID, LPARAM aLParam, WPARAM aWParam
 }
 ```
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

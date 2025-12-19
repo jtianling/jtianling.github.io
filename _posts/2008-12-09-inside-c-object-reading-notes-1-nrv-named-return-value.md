@@ -29,7 +29,6 @@ author:
 
 # 《Inside C++ Object 》 阅读笔记(1)， NRV（Named Return Value）
 
-**_write by_ _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 书其实看完了，因为实在公司抽中午吃饭剩余时间看的，所以其实一直没有好好的试验一下，现在将书带到家里好好的一个一个将感兴趣的测试一下了。
 

@@ -27,7 +27,6 @@ C语言三角函数由汇编实现，并利用SSE2等指令集高度优化，性
 <!-- more -->
 
 ## 一天一个C Run-Time Library 函数（6）  三角函数
-write by 九天雁翎(JTianLing) -- www.jtianling.com
 ## msdn:
 太多，不列举了。包括acos,cos,asin,sin,atan,tan等等
 ---
@@ -43,4 +42,3 @@ MS:
 无
 ## 个人想法：
 对于这么简单的函数自然可以自由使用了。并且在C++下的话通过重载可以更简单的使用。不然就只能记得使用f后缀的使用方式了。比如cosf。。。表示浮点类型的余弦函数。
-write by 九天雁翎(JTianLing) -- www.jtianling.com

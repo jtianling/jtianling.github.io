@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 前言
 
@@ -166,6 +164,4 @@ Scale       =
 
 大家自己去尝试吧，要知道，你可以将HelloWorld显示成各种各样的样子，却不用改变一行代码，也不用再次编译程序了，只需要改变配置。。。。。。。现在还没有好用的编辑器，很难想象，做个好用的编辑器后Orx会怎么样。。。。。。。。。。。。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

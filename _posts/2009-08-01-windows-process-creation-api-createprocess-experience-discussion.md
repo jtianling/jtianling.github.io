@@ -30,7 +30,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 在Windows下工作久了，虽然不想多么深入的去了解它，但是实际还是多少懂了一点。这里说说问题比较多用的也非常多的一个API，CreateProcess,这里不准备举太多例子了，《Windows核心编程》和MSDN上讲的都比较详细了，这里只谈谈使用的经验。
 
@@ -95,4 +94,3 @@ void _tmain( VOID )
 
 5.CreateProcess创建的进程句柄实际代表的是一个Windows核心对象，适用于Windows核心对象的操作都可以对进程句柄进行，(核心对象的概念请参考《WIndows核心编程》,其中包括WaitForSingleObject等同步API。
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

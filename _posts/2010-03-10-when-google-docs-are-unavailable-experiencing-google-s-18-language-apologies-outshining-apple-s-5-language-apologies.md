@@ -27,7 +27,6 @@ author:
 
 **[write by 九天雁翎(JTianLing) -- blog.csdn.net/vagrxie](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 在Google Doc不可用的时候，见识了Google的18国语言道歉。。。联想到苹果的4国，5国。。。还是Gooogle 的用户群更广？
 
@@ -75,6 +74,4 @@ Google Dokümanlar geçici olarak kullanım dışıdır. Lütfen daha sonra tekr
 
 ![](http://docs.google.com/File?id=dhn3dw87_76hkd5p3cc_b)
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

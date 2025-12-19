@@ -570,6 +570,5 @@ void SceneShow(GLvoid) {
 
 其实这个例子还可以进一步发挥，在每个数组值之间进行插值，实现类似flash的关键帧动画^^让上图中左边的龙渐变成右边的龙，其实本例已经与此相差不远了。。。。。。限于精力有限，暂时就不进一步发挥了。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

@@ -169,6 +169,4 @@ iphone上的情况，望知情人通知，目前没有时间测试。
 
   
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

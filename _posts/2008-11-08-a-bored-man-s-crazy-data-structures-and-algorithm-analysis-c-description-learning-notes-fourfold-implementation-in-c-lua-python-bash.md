@@ -35,7 +35,6 @@ author:
 
 # 一个无聊男人的疯狂数据结构学习（1） f(x) = 2f(x-1) + x^2
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第6面，图1-2，一个递归函数
 
@@ -114,4 +113,3 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 补充说明一下，这次完全lua,python都是在windows中gvim完成，以后全部放到linux中完成。呵呵，其实作为脚本语言这样移植性非常好的语言来说，主要的区别仅仅是开始第一句linux会多句magic指示，以方便直接在shell中执行而已。主要的目的是以后的vim2html可以通过bash的脚本来一次完成，不需要在windows中通过这么多操作了。：）
 
-write by 九天雁翎(JTianLing) -- www.jtianling.com

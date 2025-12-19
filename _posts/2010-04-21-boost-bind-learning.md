@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 最近学习了太多与MacOS与Iphone相关的东西，因为不会有太多人有兴趣，学习的平台又是MacOS，不太喜欢MacOS下的输入法，所以写下来的东西少了很多。
 
@@ -295,6 +293,4 @@ void render(image & target) {
 
 例子展示了erase_if,for_each算法中使用bind的方法，当然，实际中，假如是你的游戏引擎中的update，render函数，碰到上述需求或者类似代码实现是很正常的，但是，你会放心的仅仅为了简化一些代码，然后将如此性能相关的位置，直接交给bind吗？
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

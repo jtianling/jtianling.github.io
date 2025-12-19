@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 以前写过一篇关于CMake的基本用法的文章([现代软件构建系统的使用 cmake简介...](<http://www.jtianling.com/archive/2009/10/30/4743484.aspx>)),在最近的使用中,发现一些更复杂情况的使用还有待学习,并且相关的资料也比较少,真正可以依赖的也就(CMake 实践)一文.所以,最近准备将一些非常重要,但是网上资料较少的用法--字符串,文件操作,好好整理一下.目标是,实现一个目录下的多个工程的一次性工程文件生成,而不是为每个工程都建立一个CMake文件,这个需求在我下载一些图书的配套源码时经常碰到,可能大部分的图书作者都习惯于仅仅提供原始源代码文件而不提供工程文件.
 
@@ -402,6 +400,4 @@ Mercurial使用方法见《[分布式的，新一代版本控制系统Mercurial�
 
 <http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code>
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

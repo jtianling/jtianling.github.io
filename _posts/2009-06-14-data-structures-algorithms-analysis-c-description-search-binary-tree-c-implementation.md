@@ -30,7 +30,6 @@ author:
 **《数据结构与算法分析C++描述》**  
 **搜索二叉树的C++实现**
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 《数据结构与算法分析c++描述》 Mark Allen Weiss著  
 人民邮电大学出版  
@@ -374,4 +373,3 @@ author:
 48  
 ```
 
-**write by 九天雁翎(JTianLing) -- www.jtianling.com**

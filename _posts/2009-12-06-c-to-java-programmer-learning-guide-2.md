@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 Technorati 标签: [JAVA](<http://technorati.com/tags/JAVA>),[C++](<http://technorati.com/tags/C%2b%2b>),[Python](<http://technorati.com/tags/Python>)
 
@@ -180,6 +178,4 @@ Python -- 数组访问范围检测，越界时抛出IndexError: tuple index out 
 6. 《C专家编程》，Peter Van Der LinDen著，徐波译，人民邮电出版社
 7. 《Python核心编程》，Wesley J. Chun著，宋吉广译，人民邮电出版社
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

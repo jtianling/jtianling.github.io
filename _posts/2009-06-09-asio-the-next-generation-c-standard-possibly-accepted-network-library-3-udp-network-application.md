@@ -31,7 +31,6 @@ author:
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、 综述
 
@@ -283,4 +282,3 @@ int main()
 
 不过出于UDP应用相对于TCP应用本身的简单性，所以这个示例程序比对应的TCP版本就要简化很多，只是，不知道asio的UDP实现了更丰富的UDP特性没有，比如超时重发等机制。。。。 
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

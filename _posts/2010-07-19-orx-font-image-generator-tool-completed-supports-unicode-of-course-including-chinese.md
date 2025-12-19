@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 工具产生的历史
 
@@ -81,6 +79,4 @@ Texture = msyhFont.tga
 
 对于还不知道怎么使用Orx显示文字的，可以参考Orx的[教程](<http://orx-project.org/wiki/cn/orx/tutorials/standalone> "教程")，或者我[以前的文章](<http://www.jtianling.com/archive/2010/07/09/5724112.aspx> "以前的文章")。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

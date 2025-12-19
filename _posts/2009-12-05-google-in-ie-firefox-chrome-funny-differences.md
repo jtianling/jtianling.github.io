@@ -72,6 +72,5 @@ Firefox和Chrome除了Chrome的编辑框选中时高亮外以下都一样，以�
 
 [![image37](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image37_thumb.png)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image37.png)
 
-原创文章作者保留版权 转载请注明原作者 并给出链接****
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

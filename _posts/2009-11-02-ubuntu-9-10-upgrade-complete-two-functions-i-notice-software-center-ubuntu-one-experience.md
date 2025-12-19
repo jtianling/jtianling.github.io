@@ -86,6 +86,5 @@ Ubuntu9.10与Ubuntu9.04的变化：
 
 本来想写点完整的东西，最后光是找软件下载体验去了。。。。。。。遗憾，遗憾
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

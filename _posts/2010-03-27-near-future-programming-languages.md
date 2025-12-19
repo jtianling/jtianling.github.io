@@ -24,9 +24,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 其实很久就看到Bruce Eckel的文章了《[Programming in the Mid-Future](<http://www.artima.com/weblogs/viewpost.jsp?thread=284730> "Programming in the Mid-Future")》，原文发表于2010-3-10日.作为一个经常被自己无聊的求知欲所控制的程序员,我利用工作或者业余时间学习了N多种语言,也常常在想,到底怎么样的语言才是我们需要的,真的想要的,是能让(绝)大部分程序员所能接受的,公认的好语言,而不是一提到某某语言,就必定引发一场无休止的口水战呢?
 
@@ -45,6 +43,4 @@ Bruce Eckel提出了一些他的看法,虽然他不仅讲述了关于程序语�
 11. 简单的效率伸缩性: 一个程序在无论在多大规模下使用都不需要进行更改.
 12. 内建的可进化性: 无论向多大规模的程序中添加新特性,都是一样的简单.
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

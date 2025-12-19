@@ -29,9 +29,7 @@ author:
 
 **简单图形编程的学习（ 2）\---点 (Qt实现)**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 # 一、画点
 
@@ -244,4 +242,3 @@ void PointWidget::paintEvent(QPaintEvent *event)
 《[简单图形编程的学习（2）\---点 (small basic实现)](<http://www.jtianling.com/archive/2009/08/29/4495105.aspx>)》
 
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

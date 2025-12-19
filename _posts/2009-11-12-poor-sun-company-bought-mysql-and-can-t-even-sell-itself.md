@@ -42,6 +42,5 @@ Sun也算是盛极一时的大公司了，因为JAVA语言而闻名于世，后�
 
 当年，谁又能想到，那是Sun对MySQL的收购案会导致现在这样的后果呢？只谈历史的戏剧性啊。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

@@ -34,7 +34,6 @@ author:
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 本文不准备详细的讲解每一步，那是侮辱准备开始进行Qt学习的人的智商，仅仅将容易碰到的问题和关键步骤。
 
@@ -64,6 +63,4 @@ D:/Qt/vs2008ver/qt>configure -opensource -debug-and-release -platform win32-msvc
 
 其实，VS版本的Qt难以配置使用应该来说有一部分是Nokia的因素，他们是故意设计难用的，因为他们有好用的Windows下的商业版本用来卖钱，其实这是奇怪的继承了奇趣的传统，奇趣需要这种手段赚钱，但是Nokia根本不会需要这点零头，Nokia需要是的极大的推广Qt，以获取开发人员对其移动平台的支持(支持塞班的Qt就要发布了）。。。。现在Gnome与GTK+声势已经盖过KDE+Qt了，但是Nokia却仍然不肯放弃那古老的传统，这是我不能理解的。
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

@@ -29,7 +29,6 @@ author:
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 主要参考来自于：http://www.ccloveaa.com/blog/article.asp?id=476
 <http://www.irrlicht3d.org/wiki/index.php?n=Main.IrrlichtEngineWiki>
@@ -59,6 +58,5 @@ IPhone上的触摸响应:<http://www.rockfishnw.com/media/files/TouchEvents.zip>
 
 ![](http://docs.google.com/File?id=dhn3dw87_101qnbfmpwh_b)
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
