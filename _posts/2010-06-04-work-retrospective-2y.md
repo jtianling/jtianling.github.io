@@ -82,6 +82,3 @@ tags: 工作总结
 > If you haven't found it yet, keep looking, and don't settle.  
 > 你们如果还没有发现自己喜欢什么，那就不断地去寻找，不要祈求安逸
 
-原创文章作者保留版权 转载请注明原作者 并给出链接
-
-**[九天雁翎(JTianLing) — www.jtianling.com](http://www.jtianling.com/ "www.jtianling.com")**
