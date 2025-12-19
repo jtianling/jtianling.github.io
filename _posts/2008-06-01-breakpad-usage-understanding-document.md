@@ -22,14 +22,11 @@ author:
   last_name: ''
 ---
 
-
-Breakpad 使用方法理解文档.
-
-<!-- more -->
-
 只需要在任何异常前正常创建一个ExceptionHandler类的成员函数,就可以完成异常的捕捉及dump.
 
 在创建ExceptionHandler时,第一参数为宽字符表示的dump存储路径,第二参数为dump前客户需要运行的程序,程序原型应该为
+
+<!-- more -->
 
 ```cpp
 bool (*FilterCallback)(void* context, 

@@ -21,8 +21,6 @@ author:
   last_name: ''
 ---
 
-MPQ Strom库使用及源代码理解文档
-
 读取文件流程:
 
 1. 用要打开文档的文件名调用SFileOpenArchive()函数打开文档,得到打开文档的句柄.
