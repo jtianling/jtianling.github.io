@@ -22,9 +22,6 @@ author:
   last_name: ''
 ---
 
-本讲解SelfExtractor的实现，它通过在文件尾部添加目录，将可执行文件与数据打包成自解压程序，并支持解压其中文件。
-
-<!-- more -->
 
 # SelfExtractor理解文档
 
@@ -35,6 +32,8 @@ author:
 然后再从文件尾反向Seek一个strlen(文件标志)+sizeof(int)的距离,读取一个整数,此整数代表文件数量.当其为0,即返回NOTHING_TO_DO,
 
 然后根据文件数量,循环依次反向的Seek,读取文件名长度,文件名,文件长度,文件在文档中的偏移值.将各文件的信息保存在m_InfoArray数组中,将最后得到的偏移值,保存在m_nTOCSize中,此偏移值即整个文档头的大小.
+
+<!-- more -->
 
 ## int CSelfExtractor::ExtractOne(CFile* file, int index, CString Dir);
 

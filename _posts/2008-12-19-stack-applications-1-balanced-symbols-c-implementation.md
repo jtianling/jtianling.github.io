@@ -23,16 +23,9 @@ author:
   last_name: ''
 ---
 
-本文通过C++代码示例，讲解了如何利用堆栈数据结构来检查括号等符号是否平衡匹配。
+<<Data Structures and Algorithm Analysis in C++>> --《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第72面，堆栈的应用(1) 平衡符号
 
 <!-- more -->
-
-# 堆栈的应用(1) 平衡符号 C++实现
-
-
-<<Data Structures and Algorithm Analysis in C++>>
-
---《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第72面，堆栈的应用(1) 平衡符号
 
 ```cpp
 1 #include <stdio.h>  

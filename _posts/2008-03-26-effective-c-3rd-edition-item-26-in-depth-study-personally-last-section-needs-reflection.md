@@ -22,9 +22,6 @@ author:
   last_name: ''
 ---
 
-本文通过测试反驳《Effective C++》的观点，指出循环变量在循环外定义通常性能更优，并建议将其作为默认选择，仅简单类型除外。
-
-<!-- more -->
 
 Effective C++ 第3版 Item 26详尽研究 个人认为最后一些内容有待商酌
 
@@ -38,9 +35,9 @@ Approach B: define inside loop – n constructors + n destructors
 
 他的结论是假如你不确定实现A比实现B好，那么就都用B，从这个意义上讲，作者的意思是大部分情况下B都要更好，但是其实呢？经过我的测试，几乎绝大部分情况下，A要更好，而且要好的多，我的结论是，除了单纯的简单内建类型，比如int,bool,double等，其他任何情况，包括这些类型的数组，你都应该使用实现A，下面是详细测试代码。
 
+<!-- more -->
+
 ```cpp
-//Create By 九天雁翎（jtianling） Email:jtianling@gmail.com
-//博客：blog.jtianling.cn
 
 #include <vector>
 #include <string>

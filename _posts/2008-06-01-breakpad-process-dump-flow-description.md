@@ -23,11 +23,10 @@ author:
   last_name: ''
 ---
 
-Breakpad的ExceptionHandler在进程内捕获异常，通过信号量唤醒专用线程，在程序崩溃时生成内存dump文件。
-
-<!-- more -->
 
 Breakpad在进程中完成dump的流程描述
+
+<!-- more -->
 
 ExceptionHandler构造函数调用Initialize函数完成初始化.
 

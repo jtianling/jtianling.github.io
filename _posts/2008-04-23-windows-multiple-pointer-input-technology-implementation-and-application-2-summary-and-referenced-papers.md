@@ -22,9 +22,6 @@ author:
   last_name: ''
 ---
 
-为解决Windows不支持多指针输入的问题，本文比较了多种技术，推荐使用SDG Toolkit这一成熟易用的框架。
-
-<!-- more -->
 
 # Windows中多指针输入技术的实现与应用（2摘要及参考论文）
 
@@ -33,6 +30,8 @@ author:
 ## 摘 要
 
 多指针设备输入在很多情况下有很大的优势。但是微软的Windows本身并不支持此技术，让程序在Windows下支持多个指针设备，并且控制各自独立的光标就成了软件设计者问题。本文介绍了目前可行的，底层和利用框架软件实现的两大类方法。在底层实现中，详细讲述了利用RawInput技术实现多鼠标输入的原理。在框架软件实现中，详细讲述了一种多鼠标输入框架软件Single Display Groupware Toolkit的实现原理。并对各种方法进行了简单描述和总的对比，其中开发过滤式鼠标驱动的方法主要用来开发框架级程序；RawInput技术因为优点明显，被各层次的软件所利用；CPNmouse库是对通用多指针输入软件开发很好的尝试，但是并不是太成功；MultiPoint SDK虽然由微软推出，可是目前并不成熟；Single Display Groupware Toolkit综合了以上各技术的很多优点，缺点比较少，软件相对成熟，使用比较简单。本文推荐实现Windows中多指针输入技术的方法为使用Single Display Groupware Toolkit。最后简单介绍了Single Display Groupware的具体使用方法。因为Single Display Groupware Toolkit在MFC中使用不是那么方便，所以最后讨论一下在MFC中怎么自己实现和利用此技术，然后给出两个实例研究。
+
+<!-- more -->
 
 **关键词：**计算机；Windows；SDG；多指针设备；多鼠标
 

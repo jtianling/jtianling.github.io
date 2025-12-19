@@ -28,13 +28,7 @@ author:
 
 <!-- more -->
 
-# 堆栈的应用（2）
-中缀算术表达式到后缀（逆波兰记法reverse polish notation）的转换及其计算 C++实现
-
-
-<<Data Structures and Algorithm Analysis in C++>>
-
---《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第73-77面，中缀算术表达式到后缀（逆波兰记法reverse polish notation）的转换及其计算
+<<Data Structures and Algorithm Analysis in C++>> --《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第73-77面，中缀算术表达式到后缀（逆波兰记法reverse polish notation）的转换及其计算
 
 目前仅仅实现文中说明的功能，目标并不是一个完整的四则运算程序，所以只支持加法，乘法和（）。另外，因为对于C++流的控制能力比较弱（我下一步就决定好好研究研究），所以对输入的格式要求非常严格。
 

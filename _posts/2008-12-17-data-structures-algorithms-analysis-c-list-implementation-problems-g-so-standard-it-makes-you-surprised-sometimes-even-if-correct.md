@@ -24,16 +24,9 @@ author:
   last_name: ''
 ---
 
-g++因严格遵循C++标准，在模板继承中访问基类成员时需显式使用`this->`，此行为虽正确但常令人意外。
+<<Data Structures and Algorithm Analysis in C++>>--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第63-71面， 图3-11到3-16，实现的一个用链表实现的列表List类。
 
 <!-- more -->
-
-# 《数据结构与算法分析-C++描述》List实现的问题，g++太符合标准，以至于有的时候虽然正确，但是却会让你吃惊
-
-
-<<Data Structures and Algorithm Analysis in C++>>
-
-\--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第63-71面， 图3-11到3-16，实现的一个用链表实现的列表List类。
 
 原实现大概如下：（我可能修改了一些变量的命名以符合我的习惯）
 

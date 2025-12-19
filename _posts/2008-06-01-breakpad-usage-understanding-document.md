@@ -22,11 +22,10 @@ author:
   last_name: ''
 ---
 
-Breakpad通过ExceptionHandler类捕获异常。创建实例并配置dump路径与回调函数，即可在程序崩溃时生成dump文件用于调试。
-
-<!-- more -->
 
 Breakpad 使用方法理解文档.
+
+<!-- more -->
 
 只需要在任何异常前正常创建一个ExceptionHandler类的成员函数,就可以完成异常的捕捉及dump.
 

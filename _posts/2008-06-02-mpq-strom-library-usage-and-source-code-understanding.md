@@ -21,10 +21,6 @@ author:
   last_name: ''
 ---
 
-本文深入解析MPQ Storm库源码，详解了打开和读取文件的流程，并剖析了其内部结构、加密与哈希寻址机制。
-
-<!-- more -->
-
 MPQ Strom库使用及源代码理解文档
 
 读取文件流程:
@@ -33,6 +29,8 @@ MPQ Strom库使用及源代码理解文档
 2. 用上步得到的文档句柄,和要打开的文件名调用SFileOpenFileEx()函数,得到打开的文件句柄.
 3. 用上步得到的文件句柄,调用SFileReadFile()函数,读取数据.
 4. 关闭文件,文档句柄.
+
+<!-- more -->
 
 各函数调用方式及参数意义参看[MPQ内幕(二).](<http://writeblog.csdn.net/Editor/FCKeditor/editor/MPQ内幕\(二\).mht>)
 

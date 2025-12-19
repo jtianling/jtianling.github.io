@@ -21,17 +21,16 @@ author:
   last_name: ''
 ---
 
-详析三种随机数组生成算法，用数学归纳法证明其正确性，并用性能测试做对比。
-
-<!-- more -->
 
 数据结构与算法分析 C++描述（第3版） 习题2.8 详尽分析
 
-Data Structures and Algorithm Analysis In C++ Third Edition By Mark Allen Weiss 转载请注明出处及作者：九天雁翎
+Data Structures and Algorithm Analysis In C++ Third Edition By Mark Allen Weiss
 
 a:因为1，2很明显，所以不证明了。
 
 至于算法3，可以用数学归纳法证明,x详细证明如下：
+
+<!-- more -->
 
 1.当n=1时，a[0]=1，都是100%，成立；
 

@@ -21,9 +21,6 @@ author:
   last_name: ''
 ---
 
-本文以游戏补丁为例，详细剖析了MPQ文件格式，重点讲解了其文档头、哈希表与块表等核心结构。
-
-<!-- more -->
 
 # MPQ文档布局分析(以暗黑破坏神2的一个补丁patch_d2.MPQ和燃烧远征的一个补丁patch-2.MPQ文档为实例,以下简称D2,P2)
 
@@ -36,6 +33,8 @@ author:
 说明4:本文主要信息来自The MoPaQ File Format 1.0.txt,只是附带个人结合D2,P2后的分析,因为会经常提到原文件,以后简称其为MFF.另外也经常会提到[http://www.zezula.net/en/mpq/mpqformat.html](<http://www.zezula.net/en/mpq/mpqformat.html>)一文,简称为MFH.
 
 说明5:在一段文本的开头的十六进制数字都表示文件中的偏移地址,在段中,都以offset +十六进制数字说明此处表示在原文件的偏移地址.
+
+<!-- more -->
 
 ## 文档总体布局
 
