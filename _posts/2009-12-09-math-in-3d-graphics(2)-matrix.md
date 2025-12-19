@@ -5,6 +5,8 @@ date: 2009-12-08
 comments: true
 categories: 编程
 published: true
+
+mathjax: true
 tags: 
 - 矩阵
 - Matrix
