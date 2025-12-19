@@ -59,7 +59,7 @@ filename.txt 参数为想处理的文件名
 //    引的可用性，即向下兼容。假如程序本身有更好的处理方法，起码提供一个可以转换原
 //    有文件的程序。谢谢使用。
 //  Download Webs: groups/google.com/group/jiutianfile
-//  Blog: blog.csdn.net/vagrxie
+//  Blog: /
 //  E-mail: vagr@163.com
 //  QQ      : 375454
 //

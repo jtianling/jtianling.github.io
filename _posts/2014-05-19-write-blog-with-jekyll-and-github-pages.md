@@ -210,7 +210,7 @@ layout: none
 {% endraw %} 
 
 ## 导入文章
-修改完博客的风格后, 自己感觉还是比较满意的, 原来用markdown写的文章稍微改改就能用了, 但是原来还有很多老的文章, 最开始其实是在[CSDN](http://blog.csdn.net/vagrxie)上写的, 并且导入了原来的wordpress博客了, 这里通过Jekyll官方提供的[导入程序](http://import.jekyllrb.com/docs/wordpress/)导入. 
+修改完博客的风格后, 自己感觉还是比较满意的, 原来用markdown写的文章稍微改改就能用了, 但是原来还有很多老的文章, 最开始其实是在[CSDN](/)上写的, 并且导入了原来的wordpress博客了, 这里通过Jekyll官方提供的[导入程序](http://import.jekyllrb.com/docs/wordpress/)导入. 
 
 ## 评论
 原来的博客就接入了[友言](http://uyan.cc), 并且同步了老的评论, 但是因为新的博客所有的地址都变了, 而友言以文章地址为唯一的标识, 所以评论虽然都还在, 但是实际一个都匹配不上了, 感觉丢了2400多条评论也挺可惜的, 所以特别写了个ruby程序导入了原来的评论, 这个单开了一篇文章[**从Wordpress中导入友言的评论**](/import-comment-from-wordpress-in-uyan.html)来说明.  

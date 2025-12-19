@@ -63,7 +63,7 @@ protected:
 // 描述 :
 // 实现在Visual Studio .NET 2005 SP1下编译测试通过。
 // Webs : groups/google.com/group/jiutianfile
-// Blog : blog.csdn.net/vagrxie
+// Blog : /
 // E-mail : JTianLing@GMail.com
 // 欢迎大家在上述网页发帖或来信探讨，或说明该软件的BUG和可以改进之处
 // 创建时间：23:11:2008
