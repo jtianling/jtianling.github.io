@@ -27,9 +27,7 @@ author:
 
 # MSDN:为了防止数据丢失,请关闭文件后再删除它们
 
-[**write by  九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 今天看ext lib的作者网页上写的，觉得挺有意思，大家也可以去看看：
 http://mx-3.cz/tringi/www/langen.php?id=msdn&submenu=3
@@ -46,4 +44,3 @@ To prevent loss of data, close files before attempting to delete them.
 
 不过我的VS2005版本的MSDN已经没有这个了，不知道作者的版本是多少。
 
-[**write by  九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

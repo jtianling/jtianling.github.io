@@ -27,9 +27,7 @@ author:
 
 # 通过全局变量和自擦除代码来防Dump
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)
 
-[讨论新闻组及文件](<ttp://groups.google.com/group/jiutianfile/>)
 
 一般而言，你的程序一旦运行起来就没有办法防止Dump了，因为所有的数据都在内存中了，而且，为了更好的Dump完整程序，程序将要启动，还未启动时的Dump，任你程序中有多少防Dump的方法都没有用。这里只能结合两种方式来实现反Dump，其一，程序运行的时候其本身数据并不是完整的，以前我已经讲过方法了，《[让EXE文件不能直接启动的方法以防止直接调试的方法](<http://www.jtianling.com/archive/2009/02/06/3866949.aspx>)》，只要多用几次这样的方法，比如启动代码无效，中间某段代码也无效，然后通过与启动程序的交互来完成中间代码的修改，只在启动程序通知后才继续运行，以防止错误。这样就没有办法通过在文中介绍的启动时Dump来Dump数据了。对于Dump的作用还不理解的，可以去使用一下LordPE的Dump功能，保证你能够见识到工具的作用性如此之大，并认识到自己程序多么的脆弱。
 
@@ -141,4 +139,3 @@ pop eax
 
 但是破解方式还是有的，比如这种方式，只需要跟踪调试程序，绕过WriteProcessMemroy函数的调用就可以了，或者直接一点，直接将此API函数挂接上并使其无效，无论多少此的自擦除都会无效。
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)

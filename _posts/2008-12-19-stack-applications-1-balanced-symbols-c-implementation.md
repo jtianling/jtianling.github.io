@@ -29,7 +29,6 @@ author:
 
 # 堆栈的应用(1) 平衡符号 C++实现
 
-**_write by_** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_
 
 <<Data Structures and Algorithm Analysis in C++>>
 
@@ -118,4 +117,3 @@ argv[])
 66
 ```
 
-**_write by_** _九天雁翎_ _(JTianLing) -- blog.csdn.net/vagrxie_**

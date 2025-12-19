@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 估计这种小的知识会有几篇文章，除了全局快捷键部分外，其他的都比较简单，都是我实现["onekeycodehighlighter"](http://code.google.com/p/onekeycodehighlighter/)中碰到的一些小问题，这里顺便整理一下。事实上，稍微懂一点的人，去看看one key code highlighter的源代码都能明白了。这里相当于将其详细的剖析一下。。。。。。。另外，实现上用Python+PyQt，事实上，主要的部分是对Qt的一些类的使用，所以其实看懂了C++的Qt中使用上是一样的。啥？你看不懂Python？好的，这就是我为什么靠C++吃饭，却学习JAVA,JavaScript,Lua,Python,Bash的一个原因，不然你看不懂别人在写啥-_-!（当然，我基本上也就学到能看懂）
 对于pyQt完全不懂的，这里也不用看了，《[pyqt的学习(1) 入门](http://www.jtianling.com/archive/2009/06/17/4272009.aspx)》，《[pyqt(2) 对话框...](http://www.jtianling.com/archive/2009/06/20/4281633.aspx)》可以看看，但是写的有点乱，因为那时候我懂得也少（不代表现在就懂的多了）
@@ -131,4 +129,3 @@ Mercurial使用方法见《[分布式的，新一代版本控制系统Mercurial�
 [http://code.google.com/p/onekeycodehighlighter/source/browse/](http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code)
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

@@ -27,9 +27,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 ## 准备
 
@@ -62,4 +60,3 @@ author:
 注意：事实证明，目前的此插件到处的bullet文件无法正常加载，再未更新之前，请直接忽略之。
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

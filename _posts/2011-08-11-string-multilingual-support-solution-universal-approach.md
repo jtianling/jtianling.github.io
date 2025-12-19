@@ -112,4 +112,3 @@ std::string StringManager::GetLocalizedString( const char* key ) {
   
 
 
-**[write by 九天雁翎(JTianLing) -- blog.jtianling.com](<http://blog.jtianling.com/>)**

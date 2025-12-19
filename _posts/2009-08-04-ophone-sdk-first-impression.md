@@ -27,9 +27,7 @@ author:
 
 **OPhone SDK初体验**
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)
 
-[讨论新闻组及文件](http://groups.google.com/group/jiutianfile/)
 
 # 背景说明
 

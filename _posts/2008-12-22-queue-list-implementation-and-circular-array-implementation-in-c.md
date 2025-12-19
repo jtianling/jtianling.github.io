@@ -29,7 +29,6 @@ author:
 
 # 队列(queue)的链表(list)实现及循环数组(circular array)实现 C++实现
 
-**_write by_** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_
 
 <<Data Structures and Algorithm Analysis in C++>>
 
@@ -258,4 +257,3 @@ liQCir;
 42
 ```
 
-**_write by_** _九天雁翎_ _(JTianLing) -- blog.csdn.net/vagrxie_**

@@ -26,7 +26,6 @@ author:
 
 # 让EXE文件不能直接启动的方法以防止直接调试的方法
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 
 游戏中经常需要这样的技术，即让游戏主程序不能直接启动，通过这样的方式，可以在一定程序上达到防止调试的目的，虽然仅仅是最最简单的防止，但是仍然有一定的作用。
@@ -280,5 +279,4 @@ Dump方法：
 59 }
 ```
 
-因为此程序已经有一定的实用性，方便了目前不是太方便的动态修改头字节为CC以实现Dump动态修改并挂起的进程，为了方便不喜欢编译的兄弟，我将其编译后放到[**讨论新闻组及文件**](<ttp://groups.google.com/group/jiutianfile/>) ，名字为DynamicChangeFirstBYTE.exe
 

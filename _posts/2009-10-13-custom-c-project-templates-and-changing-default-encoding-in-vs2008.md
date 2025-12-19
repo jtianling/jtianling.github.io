@@ -28,9 +28,7 @@ author:
 
 **VS2008 中自定义C++工程模板与修改新建文件默认编码的办法**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 # 一、需求
 
@@ -218,4 +216,3 @@ function GetTargetName(strName, strProjectName)
 
 此过程发狂的得不到MSDN满篇.Net的帮助，又难领悟广大C#网民的旁敲侧击，独自在VS的漆黑中摸索，逢JS大山则开路，逢HTML大石则劈之，屡次撞壁，失败数回，叹MS之弃cpper至此，捶胸顿足，奋发自强，吐血三升，乃作此文，以兹纪念。
 
-[**write by九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

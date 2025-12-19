@@ -30,7 +30,6 @@ g++因严格遵循C++标准，在模板继承中访问基类成员时需显式�
 
 # 《数据结构与算法分析-C++描述》List实现的问题，g++太符合标准，以至于有的时候虽然正确，但是却会让你吃惊
 
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 
@@ -475,4 +474,3 @@ Effective C++,3rd,Item 43,Know How to access names in templatized base classes.
 
 这里要说明一下的是，我本来想用copy来输出的，所以包含了algorithm和iterator头文件，后来发现CList中的迭代器还没有实现trails,所以不能用。
 
-**_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**

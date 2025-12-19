@@ -28,9 +28,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 因为平时很少用IE了（一般只在迅雷看看中使用），所以虽然天天用Google n次的n个功能，但是平时还真没有注意到，不知道是最近改的，还是一直这样，不知道你注意到这些有趣的细节没有？
 
@@ -73,4 +71,3 @@ Firefox和Chrome除了Chrome的编辑框选中时高亮外以下都一样，以�
 [![image37](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image37_thumb.png)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image37.png)
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

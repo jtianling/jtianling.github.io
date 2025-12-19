@@ -36,7 +36,6 @@ author:
 # 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记
 用C++/lua/python/bash的四重实现（5）欧几里得算法求最大公约数
 
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 
@@ -172,4 +171,3 @@ gcd 1590 1989
 **echo**  $?
 ```
 
-**_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**

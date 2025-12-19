@@ -27,7 +27,6 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
 
 
 主要参考来自于：http://www.ccloveaa.com/blog/article.asp?id=476
@@ -59,4 +58,3 @@ IPhone上的触摸响应:<http://www.rockfishnw.com/media/files/TouchEvents.zip>
 ![](http://docs.google.com/File?id=dhn3dw87_101qnbfmpwh_b)
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

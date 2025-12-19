@@ -24,10 +24,8 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 ****
 ****
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 Technorati 标签: [商业使用免费软件](http://technorati.com/tags/%e5%95%86%e4%b8%9a%e4%bd%bf%e7%94%a8%e5%85%8d%e8%b4%b9%e8%bd%af%e4%bb%b6),[免费软件](http://technorati.com/tags/%e5%85%8d%e8%b4%b9%e8%bd%af%e4%bb%b6),[推荐软件](http://technorati.com/tags/%e6%8e%a8%e8%8d%90%e8%bd%af%e4%bb%b6),[软件](http://technorati.com/tags/%e8%bd%af%e4%bb%b6)
 ## 缘起
 可以参看《[谷歌金山词霸是完全免费的吗？谷歌自己的软件呢？](http://www.jtianling.com/archive/2009/12/06/4950619.aspx)》中的原因，新的公司对软件的使用控制很严，（当然，从中国的情况出发显的很严，其实严是正常的）我需要能够可商业使用（其实仅表示可以在企业使用）的免费使用的软件，并且，事实上，为了维持工作环境的尽量统一，我将尽量保持公司家里一套软件环境而不是公司一套家里一套，这样会很麻烦，比如会碰到公司的openoffice文档在家里没有办法用office来编辑和查看的问题。
@@ -101,5 +99,3 @@ scilab:法国出的很强大的软件,以前因为其与matlab的语法不兼容
 Cygwin：让Windows有类似Unix的环境，贡献无论怎么评价都不过分，特别是bash及其shell的全套引入，习惯了Unix脚本管理的人使用起来方便没有极限，哪怕是简单的grep工具的使用，Windows下我也不知道有啥可以替代的。。。。
 MingW:Windows下的gcc套件，虽然我自己不用，但是很多软件用到，比如Qt
 目前有些软件在公司还没没有碰到需求，所以暂时没有列出来，此列表考虑长期更新吧，不仅给大家一个参考，自己假如碰到重新安装电脑的时候，也能一一的安装。
-## 原创文章作者保留版权 转载请注明原作者 并给出链接****
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

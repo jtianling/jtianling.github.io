@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 ## 前言
 
@@ -366,4 +364,3 @@ orxViewport_CreateFromConfig 用于从配置中创建Viewport,orxObject_CreateFr
 全文到此也算结束了，一个Hello World牵涉到的东西之多，也许让很多人望而却步，的确，Orx在最开始的配置上，有点过于繁复了，一方面是因为Orx需要将大量的配置放出来以方便配置，另一方面，又没有提供足够好的默认配置，使得一开始的配置较多，但是，反过来说，这些都是配置上的问题，你可以从一些教程的配置的基础上开始工作，代码量其实是非常小的，上述例子中还有几行代码，那都是因为我对Orx的封装，实际的代码也就两个API调用。至于用代码更加容易理解，还是用配置更加容易理解，那就是见仁见智的问题了，我个人其实是更倾向于代码更加容易理解的，但是配置总的来还是方便。
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

@@ -28,9 +28,7 @@ author:
 
 # UTF-16的编码转换函数（Python实现）
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 此函数用于将Unicode的编码用UTF-16编码方式表示出来，由于Unicode超过0xFFFF的编码需要用两个16bit联合来表示，所以看起来就没有0xFFFF以下那么一一对应看起来直观。为了使用方便，实现此函数。
 

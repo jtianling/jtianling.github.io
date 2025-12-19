@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 无论哪一个新版本的操作系统发布，都会是"空前的，划时代的"产品，别的不说，我感觉广告倒是每次都是"空前的，划时代的"。我不知道每次的操作系统升级到底有多少创新的东西，也不知道Ubuntu9.10与Ubuntu9.04与Ubuntu8.10之间到底差别有多大，也不清楚Windows 7到Windows Vista到Windows XP之间的跨度有多么大，我只在想，要是老是划时代，我们现在已经在哪个时代了？唉，也要理解理解，做个操作系统不容易啊。。。。。最近Windows 7出来了，我没有升级，等它普及，软件跟上再做吧，Ubuntu9.10恰好也出来了，我升级了，毕竟，点几下鼠标就升级了，因为很显然不会普及，所以，我也没有必要等它普及了-_-!
 
@@ -87,4 +85,3 @@ Ubuntu9.10与Ubuntu9.04的变化：
 本来想写点完整的东西，最后光是找软件下载体验去了。。。。。。。遗憾，遗憾
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

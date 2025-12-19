@@ -27,7 +27,6 @@ author:
 
 # 对Linker.Lin的《[备忘]Lua的local是定义不是声明!》的研究
 
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 因为这样的特性实在是太奇怪了，所以不得不好好研究一下。
 
@@ -323,4 +322,3 @@ i       7
 
 第5行对g的使用，但是没有输出证明debug.getlocal并不是对每个在局部使用的变量都获取，仅仅获取在局部分配的变量，那么一次g 3，一次g 345的出现就很能说明问题了，g 34的定义也没有出现，说明getlocal仅仅获取的是分配变量的最后保留值，作为变量g，最后的值有2个，一个3，一个345，说明的确是一个local定义了一个变量。。。。。。只有到这个时候，我才能得出Linker.Lin的结论。
 
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**

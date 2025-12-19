@@ -22,9 +22,7 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 这里开始，是真正的与3D图形编程相关的知识了，前两节只能算是纯数学。
 
@@ -456,4 +454,3 @@ D3DXMATRIX* WINAPI D3DXMatrixRotationZ
 ```
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

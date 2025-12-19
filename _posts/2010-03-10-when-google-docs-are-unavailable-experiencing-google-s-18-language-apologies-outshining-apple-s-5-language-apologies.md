@@ -25,7 +25,6 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- blog.csdn.net/vagrxie](<http://www.jtianling.com>)**
 
 
 在Google Doc不可用的时候，见识了Google的18国语言道歉。。。联想到苹果的4国，5国。。。还是Gooogle 的用户群更广？

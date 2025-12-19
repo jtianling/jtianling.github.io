@@ -28,9 +28,7 @@ author:
 
 # UCS-2与UTF8之间的选择（5）\--断然决定UTF-8
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 想来想去，在Unicode这种问题上纠缠过多似乎意义不大，就如我以前说的，我认为将来很自然的不会再需要考虑这个问题，因为，未来总会统一到UTF-32上去，那时候我现在考虑的这些东西都是完全没有意义-_-!在一个不久的将来就会完全没有意义的事情上考虑来考虑去似乎太没有抓住主要问题......
 
@@ -52,4 +50,3 @@ author:
 
 当仅在windows来进行编码转换时，就可以利用Windows的编码转换API，WideCharToMultiByte和[MultiByteToWideChar](ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.WIN32COM.v10.en/intl/unicode_17si.htm)函数对，还算是比较好用，起码比Unicode组织提供的好用的多。其实还有C 运行库mbtowc, wctomb可以用，这两个函数在Linux下也有实现。那么，以后就不在这个问题上再进行更多的纠缠了，UTF-8吧：）
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

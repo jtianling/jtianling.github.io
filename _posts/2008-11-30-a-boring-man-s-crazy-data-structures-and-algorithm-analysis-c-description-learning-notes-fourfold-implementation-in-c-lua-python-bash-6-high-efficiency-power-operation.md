@@ -34,7 +34,6 @@ author:
 # 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记
 用C++/lua/python/bash的四重实现（6）高效率的幂运算
 
-**_write by_** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_
 
 <<Data Structures and Algorithm Analysis in C++>>
 
@@ -264,4 +263,3 @@ pow 2 5
 pow 2 6
 ```
 
-**_write by_** _九天雁翎_ _(JTianLing) -- www.jtianling.com_**

@@ -27,9 +27,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 我实现["onekeycodehighlighter"](http://code.google.com/p/onekeycodehighlighter/)中碰到的一些小问题，需要实现全局快捷键，但是是事实上Qt并没有对全局快捷键提供支持，那么用Qt的话就只能通过Win32Api来完成了，而我，用的是PyQt，还需要用Python来调用win32 API，事实上，都没有什么难的。
 
@@ -320,4 +318,3 @@ FUNCTIONS
 ![](http://docs.google.com/File?id=dhn3dw87_49hf4wzzht_b)
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

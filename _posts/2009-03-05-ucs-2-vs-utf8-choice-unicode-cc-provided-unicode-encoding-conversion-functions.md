@@ -30,9 +30,7 @@ author:
 
 # UCS-2与UTF8之间的选择（2）--Unicode组织提供的C/C++的Unicode编码转换函数
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 这里我大概搜索到了3个库，一个是Unicode组织自己提供的，一个是IBM做的开源ICU工程中的，一个是开源的UCData 2.9。
 
@@ -243,4 +241,3 @@ for(lit = container.begin(); lit != container.end(); ++lit)
 
 这在效率至上的世界中，很好理解。
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

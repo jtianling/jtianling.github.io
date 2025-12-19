@@ -29,9 +29,7 @@ author:
 
 **异常处理与 MiniDump详解(1) C++异常**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 # 一、综述
 
@@ -531,4 +529,3 @@ Changed exception. Out exceptionFuns.
 
 4. [错误处理(Error-Handling)：为何、何时、如何(rev#2)](http://blog.csdn.net/pongba/archive/2007/10/08/1815742.aspx)**，** 刘未鹏
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

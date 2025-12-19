@@ -431,4 +431,3 @@ int main(int argc, char **argv)
 
 ## 以此纪念刚开始在linux上学习网络编程的失败-_-!
 
-[**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

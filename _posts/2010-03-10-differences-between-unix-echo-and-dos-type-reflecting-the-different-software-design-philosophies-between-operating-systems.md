@@ -26,7 +26,6 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- blog.csdn.net/vagrxie](<http://www.jtianling.com>)**
 
 
 本文其实仅仅是写《各种进程创建方式比较总结(MacOS, Win32, Linux, Qt, Python…………)》一文时的过度发挥，发现插入大段无关文字有点问题，就给剥离出来了，也算一次文章的重构。。。。。从Unix的echo命令与Dos的type命令，从基本使用上来说，都是用于显示文件内容的，但是大致的使用一致，却有一些细微的差别，这些细微的差别，让我挺有感触，于是借题发挥了，也算无聊一把。但是，毫不夸张的说，两个小命令，展示了两个不同的世界。
@@ -166,4 +165,3 @@ b
 因为Unix以前相当依赖于Shell，（以前只有Shell)，加上其文化的影响，加上工作需要，每个Shell命令都是比较强大，并且协作性非常好（因为那古老的规则），其中最最典型的就是find,grep有意者去尝试一下就知道了。另外，其实说命令的话。。。。那perl,python算不算一个命令呢？。。。。。。呵呵，扯远了。
 
 
-**[write by 九天雁翎(JTianLing) -- blog.csdn.net/vagrxie](<http://www.jtianling.com>)**

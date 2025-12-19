@@ -27,9 +27,7 @@ author:
 
 # 潜心开始学习网络编程的第一步，UNP(Unix Network Programming)第一章，时间服务器到windows的移植
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](ttp://groups.google.com/group/jiutianfile/)
 
 学的如此之杂，绝不是我的初衷，但是事实已经形成了，还是按照刚工作时的计划，好好的学习网络技术吧。虽说我已远不是以前服务器组的成员了。。。虽说我其实开发了好几个服务器了，但是那是在公司的框架之上的，连套接字使用的机会都及其之少。。。实在谈不上什么网络编程的经验，那种开发基本上做好的包的映射和MFC的消息机制区别都不大了。
 
@@ -108,4 +106,3 @@ main(int argc, char **argv)
 
 另外，原有的包装函数我都是直接用原始的函数替换了，也没有加错误判断，不是什么好习惯。仅作学习使用。
 
-[**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

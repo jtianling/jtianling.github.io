@@ -28,12 +28,10 @@ author:
 
 # UCS-2与UTF8之间的选择（4）--linux中各编码字符串的C/C++输出支持及方式比较
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 
 继续研究UTF8和UCS-2的选择，这里继续使用上一次提到的函数。
 
-鉴于大家不一定能找到下载的地址，而源文件是允许自由散发的，我将代码打包，提供给大家下载，下载地址还是在[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>) 中，名字为unicodeorg.rar，
 
 昨天看了下Windows下的方法，这次研究Linux下的：
 

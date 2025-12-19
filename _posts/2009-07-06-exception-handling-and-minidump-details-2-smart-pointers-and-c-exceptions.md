@@ -30,7 +30,6 @@ author:
 
 # 异常处理与MiniDump详解(2) 智能指针与C++异常
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 
 # 一、 综述

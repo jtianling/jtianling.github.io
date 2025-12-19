@@ -29,7 +29,6 @@ author:
 
 # ASIO—下一代C++标准可能接纳的网络库（3）UDP网络应用
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 
 # 一、 综述

@@ -26,9 +26,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 参看来源：<http://vip.xunlei.com/freedom/freedom_skinad.html>
 
@@ -43,4 +41,3 @@ author:
 何况，迅雷软件的很多流氓做法实在让人忍无可忍。。。。。。。迅雷老总不是说么？有的软件的流氓行为看起来很诱人，但是我们坚决不会做。。。。。注意，“有的”两字，其他自己体会。
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

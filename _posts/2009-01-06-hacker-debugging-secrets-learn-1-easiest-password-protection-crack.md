@@ -26,7 +26,6 @@ author:
 
 # 黑客调试技术揭秘（Hacker Debugging Uncovered） 学习（1） 最简单的密码保护破解
 
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 源代码：
 
@@ -210,4 +209,3 @@ HIEW32是个命令行工具，打开文件后，一堆乱码。。。。书中�
 
 这样就绕过了检测了，一样可以达到目的。。。。太晚了，今天就到这里吧，其实好像除了IDA Pro，HIEW最基本的用法，什么都没有学会。
 
-**_write by_**** _九天雁翎_**** _(JTianLing) -- blog.csdn.net/vagrxie_**

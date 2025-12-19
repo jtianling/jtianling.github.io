@@ -27,9 +27,7 @@ author:
 
 分布式的，新一代版本控制系统Mercurial的介绍及简要入门
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)
 
-[讨论新闻组及文件](http://groups.google.com/group/jiutianfile/)
 
 在经历了《[**版本控制系统（ RCS）的选择与比较**](http://www.jtianling.com/archive/2009/09/23/4582457.aspx)》后，选择了Mercurial下面给大家介绍一下Mercurial。
 
@@ -371,4 +369,3 @@ E:/work>
 
 5. 《[Mercurial manual](http://www.selenic.com/mercurial/hg.1.html) 》，作者就是Mercurial的作者。
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

@@ -29,9 +29,7 @@ author:
 
 # ASIO—下一代C++标准可能接纳的网络库（1）简单的应用
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)
 
-[讨论新闻组及文件](http://groups.google.com/group/jiutianfile/)
 
 # 一、综述
 
@@ -167,4 +165,3 @@ int main()
 
 到此，asio文档中tutorial中的timer系列例子是结束了。其实这里展示的以asio基本原理为主，甚至都还没有接触到任何与网络相关的东西，但是，这些却是进一步学习的基础。。。。。。
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)

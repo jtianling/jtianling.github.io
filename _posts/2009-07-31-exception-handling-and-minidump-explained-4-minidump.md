@@ -29,9 +29,7 @@ author:
 
 **异常处理与 MiniDump详解(4) MiniDump**
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 # 一、综述
 
@@ -269,4 +267,3 @@ int main()
 
 **[异常处理与 MiniDump详解(1) C++异常](http://www.jtianling.com/archive/2009/07/02/4317423.aspx)**
 
-[**write by九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

@@ -28,7 +28,6 @@ author:
 
 # SoftIce,IDA pro强强联合！从SOFTICE中打开IDA Pro输出的map信息文件
 
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 很搞笑的事情，才知道原来没有关系（指两个公司没有关系）的softice,ida pro两个软件其实也是可以交互的，这点除了在Linux下有这样的思想，其他地方还真少看到，一般都要等某个公司独霸了市场，然后大家慢慢向他靠拢以形成标准。才有可能做到通用。
 
@@ -40,4 +39,3 @@ author:
 
 然后用softice的symload打开转换后的nym文件，载入成功后再载入需要调试的文件，这个时候就爽了！！！ 可以任意在你分析后命了名的代码下断，呵呵，从此后，没有加壳的代码。。。。。无论是看，还是调试。。。基本已经和一般的源码么有区别了。。。（当然指的是非宏汇编源码）
 
-**_write by_**** _九天雁翎_**** _(JTianLing) -- blog.csdn.net/vagrxie_**

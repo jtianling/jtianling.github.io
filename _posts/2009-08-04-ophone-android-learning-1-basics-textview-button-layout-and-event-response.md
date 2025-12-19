@@ -27,9 +27,7 @@ author:
 
 **OPhone/Android的学习(1) —初步知识，TextView,Button,Layout及事件响应**
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)
 
-[讨论新闻组及文件](http://groups.google.com/group/jiutianfile/)
 
 中移动强大的号召力让我暂时停止了前段时间兴趣浓厚的图形编程学习，说起来，无论是图形编程还是Android编程都算是编程领域比较充满趣味的部分，《C语言专家编程》作者就说过，用软件控制硬件总是编程最有乐趣的部分：）图形编程这样容易出成果，让自己看到自己的程序展示的方式，也是同样充满趣味的，何况，这也算是用软件控制硬件（显卡）的一种方式。
 
@@ -241,4 +239,3 @@ setContentView(layout);
 
 首先显示的是第一个按钮，点击一下后，显示的是第二个按钮，再点击则显示第三个按钮，以后的点击，按钮在第二个按钮与第三个按钮间来回切换。
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)

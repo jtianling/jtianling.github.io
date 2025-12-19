@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)]
 
 ## 缘起
 
@@ -133,4 +131,3 @@ author:
 我昨天可能看漏了然后错怪Google中国了-_-!表示抱歉，然后修改题目。。。。。。。。。。
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

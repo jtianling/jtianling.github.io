@@ -29,7 +29,6 @@ author:
 
 # windows/linux服务器程序支持库的开发（1）--UCS-2与UTF8之间的选择（1）
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 
 总体计划见：

@@ -25,9 +25,7 @@ SDL video模块通过函数指针结构体实现跨平台抽象，在初始化�
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 [前一篇文章](http://www.jtianling.com/archive/2010/07/24/5761714.aspx "前一篇文章")  
 讲了SDL的除video以外的大部分模块。本文主要关注SDL的video模块部分。
@@ -982,4 +980,3 @@ SDL_Surface* screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16, SDL_OPE
 因为本文太长，在Google Document上输入都已经很卡了，所以留待下篇文章再看。
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

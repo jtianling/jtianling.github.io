@@ -28,7 +28,6 @@ author:
 
 # 数据结构 链表的lua实现 仿照C++中list 实现
 
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 vector我就没有用lua实现了，实现个list就很别扭了。事实上太仿照C++标准库的list了，所以可能没有很好的发挥lua的特点，有点要说的就是，lua中table的赋值都是引用赋值的浅拷贝，这点在实现list的时候发挥了关键作用，不然没有指针的lua要实现一个列表都成为不可能了：）
 
@@ -338,4 +337,3 @@ iterator to iterate
 240
 ```
 
-**_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**

@@ -28,9 +28,7 @@ author:
 
 **程序员就像诗人，他的工作几乎全是纯思考 —弗里德里克·布鲁克斯**
 
-[**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 假如设计有模式，分析有模式，那么，程序员最希望有的自然是Debug的模式了。。。真希望有人已经总结出来了，以节省我们曾经浪费的大量时间。。。。可惜。。呵呵，好像没有看到，我碰到一些问题，顺便总结一下方法吧，当方法重复的被使用，那么也就成为一种Debug思考模式了。
 
@@ -52,4 +50,3 @@ author:
 
 **原有程序没有出现问题，不代表代码没有问题，关注于更改，就要关注每个细微的更改。**
 
-[**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

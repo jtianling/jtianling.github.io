@@ -408,4 +408,3 @@ int CExprComputer::ComputeInfix(_IN_ istream& aisExpr)
 }
 ```
 
-**_write by_ _九天雁翎_ _(JTianLing) -- blog.csdn.net/vagrxie_**

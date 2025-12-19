@@ -27,9 +27,7 @@ author:
 
 # 服务器Select模型的实现
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 select模型属于网络的I/O复用模型，比纯粹的阻塞I/O模型更具有实用性，因为可以同时等待多个描述字的就绪。
 
@@ -282,4 +280,3 @@ Conncet OK
 42 }
 ```
 
-[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 Technorati 标签: [云计算](http://technorati.com/tags/%e4%ba%91%e8%ae%a1%e7%ae%97), [云计算概念](http://technorati.com/tags/%e4%ba%91%e8%ae%a1%e7%ae%97%e6%a6%82%e5%bf%b5), [什么不是云计算](http://technorati.com/tags/%e4%bb%80%e4%b9%88%e4%b8%8d%e6%98%af%e4%ba%91%e8%ae%a1%e7%ae%97)
 
@@ -72,4 +70,3 @@ Technorati 标签: [云计算](http://technorati.com/tags/%e4%ba%91%e8%ae%a1%e7%
 假如它需要花费20页幻灯片来解释。。。。。。它不是一个真的云
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

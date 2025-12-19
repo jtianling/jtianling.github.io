@@ -32,7 +32,6 @@ author:
 
 简单图形编程的学习（2）\---点 (Windows GDI实现)
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 
 # 一、   又一顿牢骚

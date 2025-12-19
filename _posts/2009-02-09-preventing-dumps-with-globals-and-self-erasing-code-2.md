@@ -27,7 +27,6 @@ author:
 
 # 通过全局变量和自擦除代码来防Dump(2)
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 
 《[通过全局变量和自擦除代码来防Dump ](<http://www.jtianling.com/archive/2009/02/08/3869243.aspx>)》中我提到了用WriteProcessMemory来完成代码段的自擦除，其实这并不是什么好的手段，因为使用了Win32 API，对于分析你代码的人来说，这是明摆着告诉对方你要干什么，破解手段在原文中也提到了不少。其实，当时我去搜寻WriteMemroy API但是并不存在的时候，我就在想，为什么微软不提供，并且，同样的，有ReadProcessMemory但是有ReadMemory，为什么要使用的时候都需要通过GetCurrentProcess（）作为第一参数这样奇怪的形式，这个MS一贯的作风不符。这两个函数只在WinCE中有提供，普通Windows并没有，其实后来仔细想想就想通了，因为读写另外的进程的内存你必须要通过额外API，所以有这样的API给你来使用，但是读写自己的内存根本就不需要别的特殊的API，自己进程访问和改写自己进程中的数据是没有限制的。因此，需要做自擦除的操作仅仅需要memcpy或者memset就可以了！

@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 在没有经过本人允许的情况下，自动的下载搜狗的浏览器，并开始提示我安装了！！！！郁闷啊。。。。。。。。中国的软件流氓行为实在是无止尽啊。。。如下图。。。。
 
@@ -36,4 +34,3 @@ author:
 在搜狐输入法被qq黑了的时候，我还以为搜狐是善类，结果为了推广自己的浏览器也是不择手段啊。。。。。。唉。。。。大环境啊。。。。
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

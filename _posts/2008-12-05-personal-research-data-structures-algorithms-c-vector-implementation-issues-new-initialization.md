@@ -29,7 +29,6 @@ author:
 <!-- more -->
 
 # 个人研究《数据结构与算法分析-C++描述》Vector实现的问题，new与初始化
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>> --《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第61面， 图3-7,3-8，实现的一个列表Vector类。
 原实现大概如下：（我可能修改了一些变量的命名以符合我的习惯）
@@ -222,4 +221,3 @@ int main( void )
 
 我只能说，以前我一直没有注意到g++编译下自动初始化的事实。然后我特意看了一下VS和libstdc++的vector实现，在resize(size)的时候都是T()作为第二参数调用重载的另一个函数resize(size,val)来实现的，也就是说，C++标准库的这两个实现还是确保reseize初始化了。ok，也许Mark Allen Weiss的Vector在Linux下可以不出错。。。但是我还是认为这个程序写的有问题，加上初始化吧。。。。。自己Mark一下，原来g++编译的new带初始化的？希望有高人能够给我解答，假如不是g++编译的new带初始化那么是什么情况导致了这样的情况，还有，g++有关掉初始化的选项吗？
 
-**_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**

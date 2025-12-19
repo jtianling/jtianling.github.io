@@ -29,7 +29,6 @@ author:
 
 **一天一个 C Run-Time Library 函数(2) __max & __min**
 
-**_write by 九天雁翎(JTianLing) -- www.jtianling.com_**
 
 头文件 <stdlib.h>
 
@@ -147,4 +146,3 @@ http://www.jtianling.com/archive/2008/06/01/2501238.aspx
 
 虽然感觉这两个函数是会很常用到的，但是实际工作中还真没有用过一次。。。说实话，并不是没有这两个函数适用的场合，而是这样的场合自己用?:实现也很简单，所以常常根本想不到还有这样的两个函数可以实现，我更加是没有准备使用windows.h中max,min宏的想法，很简单就可以做到的事情，为什么要使用以导致移植性的降低了，没有理由。
 
-**_write by 九天雁翎(JTianLing) -- www.jtianling.com_**

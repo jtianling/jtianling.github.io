@@ -25,9 +25,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 Technorati 标签: [WLW](http://technorati.com/tags/WLW),[本地保存目录改变](http://technorati.com/tags/%e6%9c%ac%e5%9c%b0%e4%bf%9d%e5%ad%98%e7%9b%ae%e5%bd%95%e6%94%b9%e5%8f%98),[My Weblog Posts](http://technorati.com/tags/My+Weblog+Posts)
 
@@ -60,4 +58,3 @@ Windows XP用户痛苦点（比如我）
 我将其放在了DropBox的目录里面。。。。。。。。。不会丢失辛苦的劳动成果了。
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

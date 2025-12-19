@@ -35,7 +35,6 @@ author:
 # 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记
 用C++/lua/python/bash的四重实现（7）习题2.8 随机数组的三种生成算法
 
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 
@@ -426,4 +425,3 @@ randArr2 10
 randArr3 10
 ```
 
-**_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**

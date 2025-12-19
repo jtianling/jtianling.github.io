@@ -232,5 +232,4 @@ if (mFitToContents) mElement->setWidth(getCaptionWidth(caption, mTextArea) + mEl
  
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
 **

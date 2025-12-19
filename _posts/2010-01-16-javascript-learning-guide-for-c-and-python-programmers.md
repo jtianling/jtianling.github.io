@@ -28,7 +28,6 @@ author:
 <!-- more -->
 
 
-**[讨论新闻组及文件](<http://groups.google.com/group/jiutianfile/>)**
 
 原文来自：《[JavaScript for C & Python programmers](<http://www.wooji-juice.com/blog/javascript-article.html> "JavaScript for C & Python programmers")》，经过作者Canis允许后翻译，即使转载请附带此链接。
 

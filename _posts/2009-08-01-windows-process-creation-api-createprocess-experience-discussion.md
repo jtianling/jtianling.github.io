@@ -28,7 +28,6 @@ author:
 
 # Windows下的进程创建API--CreateProcess使用经验漫谈
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 
 在Windows下工作久了，虽然不想多么深入的去了解它，但是实际还是多少懂了一点。这里说说问题比较多用的也非常多的一个API，CreateProcess,这里不准备举太多例子了，《Windows核心编程》和MSDN上讲的都比较详细了，这里只谈谈使用的经验。

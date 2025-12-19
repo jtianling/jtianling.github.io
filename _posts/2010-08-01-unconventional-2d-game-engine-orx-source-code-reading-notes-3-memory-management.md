@@ -26,7 +26,6 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
 
 
 内存管理在任何希望达到高效的游戏引擎中都是基础，我以前恰好做过类似的工作，所以这里先看看Orx的实现，再谈谈自己以往做类似工作时的经验。
@@ -358,4 +357,3 @@ Orx的内存管理模块对于习惯使用缓存并且非常需要使用缓存�
 总之，虽然我以前写服务器代码（常常需要以空间换时间）时写过很多类似Orx这种手工管理缓存的代码，但是，我感觉还是有很多更好的替代方案的。
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)

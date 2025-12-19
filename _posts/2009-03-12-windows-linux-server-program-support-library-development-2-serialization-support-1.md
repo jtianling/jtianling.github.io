@@ -27,9 +27,7 @@ author:
 
 # [windows/linux服务器程序支持库的开发](/gnu的幽默.html)（2）--序列化支持(1)
 
-[**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 没有工作前，不知道序列化的作用。。。。虽然那时候学习《Programming with MFC》的时候，也知道CArchive，CObject等东西，但是没有太意识到其作用。但是，如前所述，我工作的第一件事情，就是了解公司的序列化类。从当时的一无所知，到现在也慢慢理解了一些序列化的作用了。说起来，自从工作以来因为当时做文件系统后后来的程序补丁，我应经在公司的序列化类以外额外实现了两个独立的序列化类了，分别是文件序列化和内存序列化。
 
@@ -41,4 +39,3 @@ author:
 
 这种二进制交流的方式不仅限于网络程序，任何程序间的交流都有可能用到，我碰到另外一个典型情况是一个Python脚本希望将一些数据经过一段C++程序，然后再放到另外一段Python脚本中去，这时当然可以通过Python的C API将所有的数据都一个一个转成C变量保存下来然后传出去，由C++程序运行时保存，然后再通过Python的C API一一转成Python的变量，这样做有很多不好的地方，其一是Python脚本间传递的数据对于C++程序来说不透明，任何改变都需要C++程序进行相应的更改，另外是每个变量都通过Python的C API去转换效率不高。其实这里就可以利用序列化成二进制数据来传输，其上两个缺点都会消失。顺便提一下，在Python中可以通过struct库的pack,unpack函数进行简单数据的序列化，通过marshal库来进行复杂对象的序列化（可是这个库好像已经不被推荐，但是我当时在实际工作中使用的就是这个），有更先进的pickle(有更快的C语言版本cPickle)，shelve可用。从这点来看，又会感叹Python的库实在是太多，往往不是没有你想要的库，而是由于库太多，你不知道哪个好用-_-!
 
-[**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

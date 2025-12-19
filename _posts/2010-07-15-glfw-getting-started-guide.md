@@ -28,9 +28,7 @@ author:
 
 <!-- more -->
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 ## 概要
 
@@ -378,4 +376,3 @@ GLFW无愧于其号称的lightweight的OpenGL框架，的确是除了跨平台�
 也许，下一步，我可以看看怎么在SDL中使用OpenGL。在Windows下，SDL的默认渲染API使用的是D3D，不知道是否可以更改，并且完全使用OpenGL来工作呢？
 
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

@@ -29,7 +29,6 @@ author:
 # 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记
 用（7）习题2.8 随机数组的三种生成算法补 将bash的实现翻译成比较纯正的bash风格
 
-**_write by_** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_
 
 《Data Structures and Algorithm Analysis in C++》
 --《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第49面， 一随机数组的三种生成算法
@@ -145,4 +144,3 @@ can't bear it run 100 times
 98
 ```
 
-**_write by_** _九天雁翎_ _(JTianLing) -- www.jtianling.com_**

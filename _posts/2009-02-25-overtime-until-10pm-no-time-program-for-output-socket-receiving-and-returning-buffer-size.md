@@ -26,7 +26,6 @@ author:
 
 # 加班到十点，没有时间，弄个输出套接字接收和返回的Buffer大小的程序
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 
 在Ubuntu8.04桌面版下，测试的结果为

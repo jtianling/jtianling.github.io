@@ -27,9 +27,7 @@ author:
 
 # 因为无法对抗，所以就放弃抵抗吗？--反外挂的迷思
 
-[**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 因为破解总是不可避免的，所以就应该开着大门让人破解吗?因为外挂总是不可避免，所以就应该开着大门让人做外挂吗？
 
@@ -47,4 +45,3 @@ author:
 
 刚开始还以为反外挂工作能让我有时间好好学习学习win32汇编，看来事实上机会还是不多了-_-!又一次的感叹，自己学的是越来越杂了，做游戏就从服务器做到客户端，到工具，光是语言也是从C学到C++，Lua,python,加反复学习的汇编，平台也是windows，Linux兼收。。。。但是好像却很难有时间精通一样技术了.......................唉。。。。最后怎么学到这样了呢-_-!前段时间甚至还有学习Object-C或者JAVA去弄iPhone，Android的想法。。。。
 
-[**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

@@ -30,7 +30,6 @@ C++宏是把双刃剑：它因无类型检查而危险，但在条件编译、�
 
 --接近你的朋友，更接近你的敌人
 
-**write by九天雁翎(JTianLing) -- blog.csdn.net/vagrxie**
 
 # 为什么宏是敌人：
 
@@ -467,4 +466,3 @@ class name from a given class name /a T
 T ) (get ## T ## Factory())
 ```
 
-**write by九天雁翎(JTianLing) -- blog.csdn.net/vagrxie**

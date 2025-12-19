@@ -28,7 +28,6 @@ author:
 
 # VMWare虚拟机安装，SoftIce在虚拟机中的安装
 
-**_write by_**** _九天雁翎(JTianLing) -- www.jtianling.com_**
 
 先来个开胃菜，为了安全起见（太多的破解工具都感觉不一定可靠，主要是来源。。。。）还是用虚拟机比较安全，假如不想重复的开机关机及重装系统的话。
 
@@ -46,4 +45,3 @@ svga.maxFullscreenRefreshTick = "5"
 
 两行，再重新启动，选择开始菜单中SoftIce的Start SoftIce，然后就可以按CTRL-D看看是否能够正常运行了，应该没有问题。
 
-**_write by_**** _九天雁翎_**** _(JTianLing) -- blog.csdn.net/vagrxie_**

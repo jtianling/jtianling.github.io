@@ -28,9 +28,7 @@ author:
 
 # PyQt(2) 对话框
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)
 
-[讨论新闻组及文件](http://groups.google.com/group/jiutianfile/)
 
 # 综述
 
@@ -339,4 +337,3 @@ self.lineEdit.setValidator(intValidator)
 3. [Qt tutorial](http://doc.trolltech.com/4.0/tutorial.html)
 4. PyQt GPL v4.4.4 for Python v2.6 examples from [riverbankcomputing](http://www.riverbankcomputing.co.uk/)
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)

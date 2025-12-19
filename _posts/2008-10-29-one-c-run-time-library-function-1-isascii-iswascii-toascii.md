@@ -28,7 +28,6 @@ author:
 
 ## 一天一个C Run-Time Library 函数 __isascii & iswascii & __toascii
 
-**_write by 九天雁翎(JTianLing) -- www.jtianling.com_**
 
 **_ _**
 
@@ -220,4 +219,3 @@ gcc注释到 "mask off high bits."
 
 最后。。。。。。。。。。。这样一个最最简单的函数，宏定义的函数。用了我整整一个没有加班的晚上的，晕掉了。当然，有在家里的VS中编程已经不太习惯的因素，但是还是太过了，下次不能这样太过了。。。点到为止就好了，不然这一辈子都分析不完了。
 
-**_write by 九天雁翎(JTianLing) -- www.jtianling.com_**

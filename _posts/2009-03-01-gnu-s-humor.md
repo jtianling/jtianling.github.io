@@ -27,7 +27,6 @@ GNU社区充满幽默感，其独特的命名（如GNU、copyleft）和有趣的
 
 ### GNU的幽默
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 GNU从名字开始幽默,GNU是GNU Not Unix的缩写。。。。-_-!
 
@@ -214,4 +213,3 @@ women()
 
 男人就是去酒吧喝醉了回来的动物，女人就是进入浴室再也不出来的动物-_-!
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****

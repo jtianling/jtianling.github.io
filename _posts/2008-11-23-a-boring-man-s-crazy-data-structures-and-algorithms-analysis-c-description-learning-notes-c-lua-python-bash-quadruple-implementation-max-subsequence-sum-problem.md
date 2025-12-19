@@ -34,7 +34,6 @@ author:
 # 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记 用C++/lua/python/bash的四重实现（3）
 最大子序列和问题
 
-**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 
@@ -398,4 +397,3 @@ BASH:
 绕了我吧。。。。。特别是算法二。。复杂的递归用bash来写就是自虐。Bash似乎本来就不是用来描述算法用的，呵呵，以后没有什么事一般就不把bash搬出来了。
 ```
 
-**_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**
