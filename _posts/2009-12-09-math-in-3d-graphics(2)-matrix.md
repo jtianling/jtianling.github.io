@@ -5,12 +5,13 @@ date: 2009-12-08
 comments: true
 categories: 编程
 published: true
-
-mathjax: true
 tags: 
 - 矩阵
 - Matrix
 - 数学
+
+mathjax: true
+
 ---
 
 接上一篇讲[向量的文章](/math-in-3d-graphics(1)-vector.html), 继续讲3D图形编程中的数学中最关键的概念, 矩阵.
