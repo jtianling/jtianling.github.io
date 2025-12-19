@@ -87,7 +87,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 [调用Fun1](<http://writeblog.csdn.net/posteditplain.aspx#fun1>)
 
-```asm
+```nasm
 0041140F  call        Fun1 (4111DBh) ;Call调用时将下一行命令的ＥＩＰ压入堆栈
 恢复因为Fun1参数入栈改变的栈指针,因为Fun1有3个参数,一个整数4个字节,共0Ch(12)个字节
 00411414  add         esp,0Ch
@@ -101,7 +101,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 恢复现场
 
-```asm
+```nasm
 0041141C  pop         edi
 0041141D  pop         esi
 0041141E  pop         ebx
@@ -116,7 +116,7 @@ int _tmain(int argc, _TCHAR* argv[])
 0041142F  ret     ;main返回
 ```
 
-```asm
+```nasm
 int Fun1(int a, int b, int c)
 {
 同上理解, 保存现场
@@ -151,7 +151,7 @@ int Fun1(int a, int b, int c)
 
 [调用Fun2](<http://writeblog.csdn.net/posteditplain.aspx#fun2>)
 
-```asm
+```nasm
 00411AB0  call        Fun2 (4111D6h) ;Call调用时将下一行命令的ＥＩＰ压入堆栈
 00411AB5  add         esp,14h ;恢复因为参数入栈改变的栈指针,因为Fun2有5个参数,一个整数4个字节,共14h(20)个字节
 将Fun2函数的返回值(保存在eax中),赋值给f;
@@ -179,7 +179,7 @@ int Fun1(int a, int b, int c)
 00411AD1  ret   
 ```
 
-```asm
+```nasm
 int Fun2(int a, int b, int c, int d, int e)
 {
 同上理解, 保存现场
