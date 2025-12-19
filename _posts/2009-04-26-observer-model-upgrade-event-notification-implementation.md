@@ -23,6 +23,10 @@ author:
   last_name: ''
 ---
 
+介绍Observer模式的Event通知升级版，通过事件ID实现精准通知，避免了传统模式遍历所有观察者的低效问题。
+
+<!-- more -->
+
 **Observer 模式的升级版,Event通知实现**
 
 [**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
@@ -33,11 +37,7 @@ author:
 
 要说明的是，原始的Observer模式仅仅说明了一种思想，但是使用价值并不高，因为很简单的道理，作为一个系统基础的行为模式，其仅仅支持一种通知方式，并且是遍历通过。。。（这也可以看做模式的说明仅仅是实现了一种很通用的情况，并不是最好的实现），我们使用的也可以看作是Observer模式的延伸，也可以看做Observer模式的另一种实现，是所谓的 Event通知方式。在实际代码中使用非常多。在我们公司代码中似乎不论是服务器还是客户端代码都需要用到。服务器代码中甚至为了实现策划编辑数据另外做了一套（也就是并行的两套）。
 
-具体的例子我打包放到
-
-[http://groups.google.com/group/jiutianfile/](<http://groups.google.com/group/jiutianfile/>)
-
-中了，文件名为Event Drive sample code.rar
+具体的例子我打包放到 [http://groups.google.com/group/jiutianfile/](<http://groups.google.com/group/jiutianfile/>) 中了，文件名为Event Drive sample code.rar
 
 程序没有经过调试，仅仅是编译通过,请仅仅作为示范使用。其中唯一比较难掌握的可能就是类成员函数的指针了，但是难的主要是语法，真正的使用上没有太多问题。
 
@@ -258,4 +258,4 @@ LRESULT CSubject::SendEvent( EventID_t aiEventID, LPARAM aLParam, WPARAM aWParam
 }
 ```
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
+[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

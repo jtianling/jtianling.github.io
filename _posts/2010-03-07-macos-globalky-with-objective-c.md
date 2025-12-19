@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+本文介绍在macOS上使用Carbon框架设置全局快捷键的方法，通过注册回调函数来响应按键事件。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)

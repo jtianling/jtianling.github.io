@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+文章对比了C++与其他语言的循环语法，指出C++缺少原生for each，使用for_each算法和函数对象等方法实现循环，过程繁琐复杂，牺牲了代码的简洁性。
+
+<!-- more -->
+
 # 多想追求简洁的极致，但是无奈的学习C++中for_each的应用
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****

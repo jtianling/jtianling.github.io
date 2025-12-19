@@ -22,12 +22,15 @@ author:
   last_name: ''
 ---
 
+文章用C++模板和vector实现了一个简单堆栈，并提供了代码示例和实现说明。
+
+<!-- more -->
+
 # 堆栈的简单C++实现
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
- 头文件：
+头文件：
 
 ```cpp
 #ifndef __STACK_H__
@@ -130,5 +133,4 @@ int main(int argc, char * argv[])
 
 在C++中标准的stack实现是通过adaptor设计模式来实现的，并将用于实现的容器放入了模板的参数，以方便你用vector和list,来替代默认的deque。
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**

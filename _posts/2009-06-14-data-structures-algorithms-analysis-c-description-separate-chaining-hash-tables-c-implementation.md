@@ -24,35 +24,35 @@ author:
   last_name: ''
 ---
 
-# 《数据结构与算法分析C++描述》 分离链接(separate chaining)哈希表的C++实现  
+本文分享了分离链接哈希表的C++实现，通过vector存储链表解决冲突，并附有完整的代码与测试示例。
+
+<!-- more -->
+
+# 《数据结构与算法分析C++描述》 分离链接(separate chaining)哈希表的C++实现
 
 **write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
-  
+《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第138-142面，分离链接(separate chaining)哈希表,侯捷将其翻译成开链
 
-《数据结构与算法分析c++描述》 Mark Allen Weiss著  
-人民邮电大学出版  
-中文版第138-142面，分离链接(separate chaining)哈希表,侯捷将其翻译成开链  
+这应该是最容易实现的哈希表方法了,次容易的应该是线性搜索.
 
-这应该是最容易实现的哈希表方法了,次容易的应该是线性搜索.  
+想起我到目前公司干的第二件事情，就是实现了一个文件系统，其核心模块就是一个类似MPQ的打包文件格式.而这个打包格式的核心模块就是一个线性哈希表的实现。只不过这次的实现不是在内存中，而是在文件上。这里顺便想说明是MPQ的实现是个很有意思的东西，感兴趣的可以去看看
 
-想起我到目前公司干的第二件事情，就是实现了一个文件系统，其核心模块就是一个类似MPQ的打包文件格式.而这个打包格式的核心模块就是一个线性哈希表的实现。只不过这次的实现不是在内存中，而是在文件上。这里顺便想说明是MPQ的实现是个很有意思的东西，感兴趣的可以去看看  
+[http://shadowflare.samods.org/inside_mopaq/](<http://shadowflare.samods.org/inside_mopaq/>)
 
-[http://shadowflare.samods.org/inside_mopaq/](<http://shadowflare.samods.org/inside_mopaq/>)  
+inside mopaq是我见过最详细也最有用的资料，至于我刚开始工作的一些原始的资料记录就是非常凌乱了，但是希望有人在做同样工作的时候还能有一些参考价值吧。
 
-inside mopaq是我见过最详细也最有用的资料，至于我刚开始工作的一些原始的资料记录就是非常凌乱了，但是希望有人在做同样工作的时候还能有一些参考价值吧。  
+[http://www.jtianling.com/archive/2008/06/02/2504503.aspx](<http://www.jtianling.com/archive/2008/06/02/2504503.aspx>)
 
-[http://www.jtianling.com/archive/2008/06/02/2504503.aspx](<http://www.jtianling.com/archive/2008/06/02/2504503.aspx>)  
+[http://www.jtianling.com/archive/2008/06/02/2504515.aspx](<http://www.jtianling.com/archive/2008/06/02/2504515.aspx>)
 
-[http://www.jtianling.com/archive/2008/06/02/2504515.aspx](<http://www.jtianling.com/archive/2008/06/02/2504515.aspx>)  
+并且，因为我以前已经实现了这么一个线性搜索的哈希表了，所以此次也不准备再实现一次了。
 
-并且，因为我以前已经实现了这么一个线性搜索的哈希表了，所以此次也不准备再实现一次了。  
+最后。。。。暴雪那个哈希算法的确是很不错，要求和一般的哈希算法不一样，一般的要求是哈希表总数为质数，其要求为2的幂。我在一次测试中发现，2万个文件的冲突次数大概在2千次,即1/10,远远低于书中低于1.5次的预期.
 
-最后。。。。暴雪那个哈希算法的确是很不错，要求和一般的哈希算法不一样，一般的要求是哈希表总数为质数，其要求为2的幂。我在一次测试中发现，2万个文件的冲突次数大概在2千次,即1/10,远远低于书中低于1.5次的预期.  
+这一次是在VS中实现的,直接拷贝过来了,没有用vim了.
 
-这一次是在VS中实现的,直接拷贝过来了,没有用vim了.  
-
-## 分离链接(separate chaining)哈希表的实现：  
+## 分离链接(separate chaining)哈希表的实现：
 
 ```cpp
 #ifndef
@@ -348,7 +348,7 @@ private:
 // __SL_HASH_TABLE_H__
 ```
 
-## 测试代码  
+## 测试代码
 
 ```cpp
 #include

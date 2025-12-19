@@ -21,9 +21,13 @@ author:
   last_name: ''
 ---
 
+本文是一篇手动脱UPX壳的入门教程，演示了如何用OllyDbg等工具寻找OEP、定位并修复IAT的完整过程，旨在学习逆向分析。
+
+<!-- more -->
+
 # 手动脱UPX壳
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
+[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
 [**讨论新闻组及文件**](<ttp://groups.google.com/group/jiutianfile/>)
 
@@ -34,8 +38,6 @@ author:
 需要用到的工具有OllyDbg（用于调试），LordPE（用于Dump，LordPE的Dump似乎比OllyDbg的Dump插件更稳定，因为好像OlldyDbg的Dump插件还尝试做了一些其他工作），ImportREC(恢复IAT)
 
 其实对于UPX这样著名的壳，网上教程实在是多，所以我没有必要再教大家一次，我不过是利用这个机会，练习练习而已，毕竟UPX定位于压缩壳，脱起来实在是比较容易。
-
- 
 
 先尝试：
 
@@ -58,8 +60,6 @@ upx203w版本
 004814A8   .  83EC 80       SUB     ESP, -80
 004814AB   .- E9 60FDF7FF   JMP     upx.00401210
 ```
-
- 
 
 最后一行的地址其实就是OEP了。。。。。。。。。。设个断，跟过去，直接用LordPE Dump all。。。。。工作已经完成一半，我在学习之前也没有想过会这么简单。
 
@@ -98,8 +98,6 @@ __set_app_type,地址就在47E2E4这个地方了，数据窗口跟随地址，�
 
 其实从功能上来讲用原有upx工具的-d 选项来脱壳要好的多：）
 
- 
-
 目前UPX官方最新版的是upx303w
 
 我还以为其有一定的改进，就实际效果而言，完全没有变化，可能毕竟定位于压缩壳的UPX稳定才是最重要的，所以脱壳基本上没有什么难度，其也没有想做成有什么难度，不然也不会提供自动脱壳功能。。。。。
@@ -107,11 +105,5 @@ __set_app_type,地址就在47E2E4这个地方了，数据窗口跟随地址，�
 要说明的一点是新版的壳用Ollydbg的Dump插件，勾上FixIAT选项Dump会出现错误，ImportREC自动搜索IAT的时候大小和位置也会找错，我这里的效果是总是从第一调用的函数开始向后找，手动输入正确的IAT地址和长度就没有任何问题。
 
 最后，UPX是有源码的，很适合作为第一款来脱的壳和第一款用来学习做壳的壳：）但是也给了我们一个提示，不要将无用的代码位置置为00，那样只能是给破解者最好的定位方式。
-
- 
-
- 
-
- 
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

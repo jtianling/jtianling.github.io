@@ -21,9 +21,13 @@ author:
   last_name: ''
 ---
 
+作者在研究Unicode编码时，意外发现中国古代的《太玄经》符号也被收录其中，并因此了解了这部古籍。
+
+<!-- more -->
+
 # 从Unicode到太玄经
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
+[**write by九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
@@ -42,7 +46,6 @@ Jump to: [navigation](<http://en.wikipedia.org/wiki/Tai_Xuan_Jing#column-one>), 
 The text **T ài Xuán Jīng** ("Canon of Supreme Mystery", [Chinese](<http://en.wikipedia.org/wiki/Chinese_language> "Chinese language"): 太玄經) was composed by the Confucian writer [Yáng Xióng](<http://en.wikipedia.org/wiki/Yang_Xiong_%28author%29> "Yang Xiong \(author\)") ([Chinese](<http://en.wikipedia.org/wiki/Chinese_language> "Chinese language"): 揚雄/扬雄; [pinyin](<http://en.wikipedia.org/wiki/Pinyin> "Pinyin"): Yáng Xióng; [Wade-Giles](<http://en.wikipedia.org/wiki/Wade-Giles> "Wade-Giles"): Yang Hsiung; 53 BCE-18 CE). The first draft of this work was completed in 2BCE (in the decade before the fall of the [Western Han Dynasty](<http://en.wikipedia.org/wiki/Western_Han_Dynasty> "Western Han Dynasty")). This text is also known in the West as _The Alternative I Ching_ and _The Elemental Changes_.
 
 The Tai Xuan Jing symbols [[1]](<http://www.unicode.org/charts/PDF/U1D300.pdf> "http://www.unicode.org/charts/PDF/U1D300.pdf") represent a primary level of semantic notation in the text and are an extension of the [Yì Jīng](<http://en.wikipedia.org/wiki/I_Ching> "I Ching") symbols. The mono-, di- and [tetragrams](<http://en.wikipedia.org/wiki/Tetragram> "Tetragram") consist of three [monograms](<http://en.wikipedia.org/wiki/Monogram> "Monogram"):
-
   * the unbroken line ([ ](<http://en.wikipedia.org/wiki/File:TXJ_1.svg> ""TXJ 1.svg" ")⚊) for heaven ([Chinese](<http://en.wikipedia.org/wiki/Chinese_language> "Chinese language"): 天; [pinyin](<http://en.wikipedia.org/wiki/Pinyin> "Pinyin"): tiān),
   * once broken line ([ ](<http://en.wikipedia.org/wiki/File:TXJ_2.svg> ""TXJ 2.svg" ")⚋) for earth ([Chinese](<http://en.wikipedia.org/wiki/Chinese_language> "Chinese language"): 地; [pinyin](<http://en.wikipedia.org/wiki/Pinyin> "Pinyin"): dì),
   * twice broken line ([ ](<http://en.wikipedia.org/wiki/File:TXJ_3.svg> ""TXJ 3.svg" ")

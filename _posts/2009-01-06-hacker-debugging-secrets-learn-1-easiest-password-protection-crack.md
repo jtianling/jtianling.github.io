@@ -20,12 +20,13 @@ author:
   last_name: ''
 ---
 
+本文介绍如何使用OllyDbg、IDA Pro和HIEW32等工具，通过分析汇编代码和修改跳转指令来破解简单的密码保护程序。
+
+<!-- more -->
+
 # 黑客调试技术揭秘（Hacker Debugging Uncovered） 学习（1） 最简单的密码保护破解
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
-
- 
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 源代码：
 
@@ -60,8 +61,6 @@ int main(int argc, char* argv[])
 }
 ```
 
- 
-
 我是在VS2005 SP1 Release下编译的，以下的汇编代码都是这个编译器生成的。
 
 对于这么简单的程序，只能是用来熟悉工具了。。。。怎么说以前也是玩过一下的，呵呵。
@@ -71,7 +70,7 @@ int main(int argc, char* argv[])
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20090106/T1N1.jpg)  
 
 ```asm
-00401063     /74 0D         JE       SHORT JustForH.00401072
+00401063     /74 0D         JE      SHORT JustForH.00401072
 00401065  |. |A1 60204000   MOV     EAX, DWORD PTR [<&MSVCP80.std::c>
 0040106A  |. |68 64214000   PUSH    JustForH.00402164                ;  ASCII "wrong  password",LF
 0040106F  |. |50            PUSH    EAX
@@ -80,9 +79,7 @@ int main(int argc, char* argv[])
 00401078  |.  68 74214000   PUSH    JustForH.00402174                ;  ASCII "password ok",LF,"hello,  legal user!",LF
 ```
 
-这个时候，谁都应该知道，这个第一行的JE就是判断完结果的跳转了，判断正确的话就输出了ASCII "password  
-ok",LF,"hello, legal user!",LF，不然继续执行，输出ASCII "wrong  
-password",LF，该怎么改也很明了了。。。。。
+这个时候，谁都应该知道，这个第一行的JE就是判断完结果的跳转了，判断正确的话就输出了ASCII "password ok",LF,"hello, legal user!",LF，不然继续执行，输出ASCII "wrong password",LF，该怎么改也很明了了。。。。。
 
 晕，用OllyDbg就达不到目的了。现在是来学别的工具的，按照书中的思路来走吧。
 
@@ -111,7 +108,7 @@ OK,还是找到了wrong password，然后用IDA Pro的交叉引用，OK一样搞
 .text:0040106A                 push    offset aWrongPassword ; "wrong  password/n"
 .text:0040106F                 push    eax
 .text:00401070                 jmp     short loc_40107E
-.text:00401072 ; 哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪?
+.text:00401072 ; 哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪哪?
 .text:00401072
 .text:00401072 loc_401072:                             ;  CODE XREF: sub_401000+63j
 .text:00401072                 mov     ecx,  ds:?cout@std@@3V?$basic_ostream@DU?$char_traits@D@std@@@1@A ;  std::basic_ostream<char,std::char_traits<char>> std::cout
@@ -125,12 +122,9 @@ OK,还是找到了wrong password，然后用IDA Pro的交叉引用，OK一样搞
 
 但是，想起谁说的来者OllyDbg就像是SoftIce + IDA Pro。。。。。呵呵，OllyDbg的确简单易用，我可以证明，但是是否是和SoftIce+IDA Pro这样强大嘛，还有待我继续学习，以了解真实情况。
 
- 
-
 ## 继续：
 
-Kris  
-Kasperasky说上面这些都是工具的功能，和我们自己没有关系。。。。的确是，虽然我不是黑客，但是也继续下去了。。。。
+Kris Kasperasky说上面这些都是工具的功能，和我们自己没有关系。。。。的确是，虽然我不是黑客，但是也继续下去了。。。。 
 
 HIEW32。。。。。。。。呵呵，原以为仅仅是一个16进制的编辑器，所以我还想假如不好用我就继续用我的WinHEX(这个可爱的家伙伴随着我很长很长的岁月了，虽然很多人喜欢用UE来做16进制编辑器，但是我在研究一个文件打包格式的时候才真的体会到，UE与WinHex的差距，WinHex就是为编辑16进制为生的。。。。。。参看我以前贴的惨烈的工作环境的图，那就是WinHex伴随我工作的场景。
 
@@ -155,7 +149,7 @@ HIEW32是个命令行工具，打开文件后，一堆乱码。。。。书中�
 .00402130:  6F 6E 00 00-43 72 61 63-6B 6D 65 20-30 30 68 0A  on   Crackme 00h  
 .00402140:  65 6E 74 65-72 20 70 61-73 73 77 64-3A 00 00 00  enter passwd:    
 .00402150:  6D 79 2E 67-6F 6F 64 2E-70 61 73 73-77 6F 72 64  my.good.password 
-.00402160:  00 00 00 00-77 72 6F 6E-67 20 70 61 73 73 77 6F      wrong passwo 
+.00402160:  00 00 00 00-77 72 6F 6E-67 20 70 61-73 73 77 6F      wrong passwo 
 .00402170:  72 64 0A 00-70 61 73 73-77 6F 72 64-20 6F 6B 0A  rd   password ok  
 .00402180:  68 65 6C 6C-6F 2C 20 6C-65 67 61 6C-20 75 73 65  hello, legal use 
 .00402190:  72 21 0A 00-70 61 75 73 65 00 00 00-00 00 00 00  r!   pause        
@@ -216,11 +210,4 @@ HIEW32是个命令行工具，打开文件后，一堆乱码。。。。书中�
 
 这样就绕过了检测了，一样可以达到目的。。。。太晚了，今天就到这里吧，其实好像除了IDA Pro，HIEW最基本的用法，什么都没有学会。
 
- 
-
- 
-
- 
-
-**_write by_**** _九天雁翎_**** _(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_**** _九天雁翎_**** _(JTianLing) -- blog.csdn.net/vagrxie_**

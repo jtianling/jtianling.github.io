@@ -24,35 +24,36 @@ author:
   last_name: ''
 ---
 
-#  堆栈的应用（2）  
-中缀算术表达式到后缀（逆波兰记法reverse polish notation）的转换及其计算 C++实现  
+本文用C++实现了基于堆栈的中缀表达式转后缀表达式算法，并展示了如何计算结果。程序支持加、乘和括号，但输入格式要求严格。
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+<!-- more -->
 
- 
+# 堆栈的应用（2）
+中缀算术表达式到后缀（逆波兰记法reverse polish notation）的转换及其计算 C++实现
+
+**_write by_ _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 
 --《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第73-77面，中缀算术表达式到后缀（逆波兰记法reverse polish notation）的转换及其计算
 
-       目前仅仅实现文中说明的功能，目标并不是一个完整的四则运算程序，所以只支持加法，乘法和（）。另外，因为对于C++流的控制能力比较弱（我下一步就决定好好研究研究），所以对输入的格式要求非常严格。
+目前仅仅实现文中说明的功能，目标并不是一个完整的四则运算程序，所以只支持加法，乘法和（）。另外，因为对于C++流的控制能力比较弱（我下一步就决定好好研究研究），所以对输入的格式要求非常严格。
 
 必须是1 + 2 * 3 =
 
 的格式，每个数字和符号之间都需要空格，一个比较复杂的例子是：
 
-``text
+```
 1 + 2 *
 3 + ( 1 + 2 * 3 ) =
-``
+```
 
 转换后：
 
-``text
+```
 1 2 3 *
 + 1 2 3 * + + =
-``
+```
 
 先看测试程序，就应该能知道，大概实现了什么效果了，这里唯一的便利在于，用了C++的输入输出流后，对于iostream,stringstream都比较一致了，但是还是感觉自己对流的控制能力太弱了。
 
@@ -109,8 +110,6 @@ int main(int argc, char * argv[])
 }
 ```
 
- 
-
 ExprComputer头文件：
 
 ```cpp
@@ -165,8 +164,6 @@ private :
 
 #endif
 ```
-
- 
 
 cpp 文件：
 
@@ -412,5 +409,4 @@ int CExprComputer::ComputeInfix(_IN_ istream& aisExpr)
 }
 ```
 
-**_write by_**** _九天雁翎_**** _(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_ _九天雁翎_ _(JTianLing) -- blog.csdn.net/vagrxie_**

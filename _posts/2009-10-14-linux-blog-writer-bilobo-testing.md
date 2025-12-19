@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+作者在Linux下测试了博客工具bilbo。它虽有代码格式等缺陷，但成功解决了发帖难题，让作者无需再切换到Windows。
+
+<!-- more -->
+
 # bilbo 测试成功，Linux总算有办法可以发点东西了！！！
 
 原来在Linux下是通过FireFox发的，但是CSDN对Firefox的支持有问题，在线编辑会丢失格式，更严重的是FireFox提交的文章只能用FireFox才能看到，害得当时我一批文章全部重新发表了一次，不知道现在好了没有，总之我是没有再敢用FireFox发表文章了。
@@ -72,8 +76,6 @@ void init (void)
 ```
 
 测试结果：格式丢失，颜色丢失，使用bilobo的代码标记工程无效。
-
-  
 
 ## 试着贴个图
 

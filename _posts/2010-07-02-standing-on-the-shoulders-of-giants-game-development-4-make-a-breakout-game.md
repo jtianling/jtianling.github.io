@@ -20,23 +20,27 @@ author:
   last_name: ''
 ---
 
+本文演示用Orx引擎开发打砖块游戏，通过配置创建Object，并利用内嵌物理引擎轻松实现碰撞与反弹。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-    虽然很早就想用做一个完整游戏来完成此教程，但是在做什么游戏的问题上很纠结，太大太好的游戏太费精力，太小的游戏又不足以展示Orx的特点，选来选去也没有自己感觉最合适的，最后还是选择打砖块吧，此游戏虽然不能展示Orx的全部特点，但是很好的展示了其内嵌物理引擎的特点。因为Orx内嵌Box2D物理引擎，所以在游戏中使用物理，从来没有这么方便过，也许，哪天我该写一篇用Cocos2D+Box2D的类似文章来做比较。
+虽然很早就想用做一个完整游戏来完成此教程，但是在做什么游戏的问题上很纠结，太大太好的游戏太费精力，太小的游戏又不足以展示Orx的特点，选来选去也没有自己感觉最合适的，最后还是选择打砖块吧，此游戏虽然不能展示Orx的全部特点，但是很好的展示了其内嵌物理引擎的特点。因为Orx内嵌Box2D物理引擎，所以在游戏中使用物理，从来没有这么方便过，也许，哪天我该写一篇用Cocos2D+Box2D的类似文章来做比较。
 
 ## Orx 中的Object概述
 
-    在Orx中一个Object到底表示什么？简单的说，表示一切。一切有形的无形的，可见的不可见的东西。在Orx中，所有所有的概念全部归结于 Object。所有其他的东西，都是Object的属性。包括通常概念里面的sprite,animation等等，在Orx中还包括特效(fx)，物理属性等。在几乎所有的2D游戏引擎中，几乎都是是Sprite为基础的，而在Orx中，是以Object为基础的。
+在Orx中一个Object到底表示什么？简单的说，表示一切。一切有形的无形的，可见的不可见的东西。在Orx中，所有所有的概念全部归结于 Object。所有其他的东西，都是Object的属性。包括通常概念里面的sprite,animation等等，在Orx中还包括特效(fx)，物理属性等。在几乎所有的2D游戏引擎中，几乎都是是Sprite为基础的，而在Orx中，是以Object为基础的。
 
 ## 显示一个 Object
 
-    在几乎所有的2D游戏引擎中，几乎都是是Sprite为基础的，所以最基本的操作都是显示一个Sprite，那么，换到Orx中，最基础的那就是显示一个 Object了。  
-    其实，在原来《[站在巨人的肩膀上开发游戏(2) -- Orx入门引导及Hello World](<http://www.jtianling.com/archive/2010/06/18/5679217.aspx>)》中，我们已经显示过一个 Object了，没错，那个Hello World的文字就是一个Object.........只不过其图形是显示文字而已。所以，我们创建Hello World的时候，调用的接口是orxObject_CreateFromConfig。  
-    要将其换成显示图形，只需要改配置，将其显示成一个图形即可，因为是做打砖块游戏，这里，我显示一个球。（这里的资源全部来自于《[How To Create A Breakout Game with Box2D and Cocos2D Tutorial](<http://www.raywenderlich.com/475/how-to-create-a-simple-breakout-game-with-box2d-and-cocos2d-tutorial-part-12> "How To Create A Breakout Game with Box2D and Cocos2D<br />
+在几乎所有的2D游戏引擎中，几乎都是是Sprite为基础的，所以最基本的操作都是显示一个Sprite，那么，换到Orx中，最基础的那就是显示一个 Object了。  
+其实，在原来《[站在巨人的肩膀上开发游戏(2) -- Orx入门引导及Hello World](<http://www.jtianling.com/archive/2010/06/18/5679217.aspx>)》中，我们已经显示过一个 Object了，没错，那个Hello World的文字就是一个Object.........只不过其图形是显示文字而已。所以，我们创建Hello World的时候，调用的接口是orxObject_CreateFromConfig。  
+要将其换成显示图形，只需要改配置，将其显示成一个图形即可，因为是做打砖块游戏，这里，我显示一个球。（这里的资源全部来自于《[How To Create A Breakout Game with Box2D and Cocos2D Tutorial](<http://www.raywenderlich.com/475/how-to-create-a-simple-breakout-game-with-box2d-and-cocos2d-tutorial-part-12> "How To Create A Breakout Game with Box2D and Cocos2D<br />
 Tutorial")》）顺便可以将Orx版本的程序与Cocos2D + Box2D（另外一个我非常喜欢的组合）做比较。  
-    原代码的改动仅出于代码可读性考虑，将HelloWorld改为Ball，Orx的特点之一，不改代码，你甚至可以使用原来编译好的Hello World程序（必须是教程1老的那个，教程2新的那个我做了特殊处理），只需要将新的配置中的Ball改为HelloWorld即可。当然，出于可读性，这样做不自然，但是我还是提及这样做的可能性。  
+原代码的改动仅出于代码可读性考虑，将HelloWorld改为Ball，Orx的特点之一，不改代码，你甚至可以使用原来编译好的Hello World程序（必须是教程1老的那个，教程2新的那个我做了特殊处理），只需要将新的配置中的Ball改为HelloWorld即可。当然，出于可读性，这样做不自然，但是我还是提及这样做的可能性。  
 新添加配置如下：
 
 ```ini
@@ -166,14 +170,13 @@ ChildList = Block1 # Block2 # Block3 # Block4
 到目前为止，我们学到什么了？4行配置。。。。。。。。。。且只有Graphic加Texture算是新内容。只要这些，你通过position就可以完成你想要的任何图形布局了。  
 当然，其实远远不止这些，请参考Orx的WIKI获取更多的信息：
 
-  * [Graphic](<http://orx-project.org/wiki/en/orx/config/settings_structure/orxgraphic> "en:orx:config:settings_structure:orxgraphic")
-
-  * [Object](<http://orx-project.org/wiki/en/orx/config/settings_structure/orxobject> "en:orx:config:settings_structure:orxobject")
+* [Graphic](<http://orx-project.org/wiki/en/orx/config/settings_structure/orxgraphic> "en:orx:config:settings_structure:orxgraphic")
+* [Object](<http://orx-project.org/wiki/en/orx/config/settings_structure/orxobject> "en:orx:config:settings_structure:orxobject")
 
 ## 物理的加入
 
-    好了，现在是添加真的游戏内容的时候了。光是静态图形可做不了游戏。  
-    在打砖块的游戏中，很重要的就是球的碰撞，反弹，以及碰撞的检测了。由于Orx中内嵌了Box2D引擎，我们能够很方便的使用，我多次提到是内嵌，而不是外挂，不是如Cocos2D那种仅仅包含一个Box2D，然后需要你调用Box2D的API去完成的那种，事实上，你可以根本不知道Box2D是啥。（其实个人感觉，了解Box2D的相关概念是必要的，不然怎么知道各个属性应该怎么配置啊）
+好了，现在是添加真的游戏内容的时候了。光是静态图形可做不了游戏。  
+在打砖块的游戏中，很重要的就是球的碰撞，反弹，以及碰撞的检测了。由于Orx中内嵌了Box2D引擎，我们能够很方便的使用，我多次提到是内嵌，而不是外挂，不是如Cocos2D那种仅仅包含一个Box2D，然后需要你调用Box2D的API去完成的那种，事实上，你可以根本不知道Box2D是啥。（其实个人感觉，了解Box2D的相关概念是必要的，不然怎么知道各个属性应该怎么配置啊）
 
 首先，物理世界的加入：
 
@@ -288,9 +291,9 @@ Solid = true;
 
 ## 碰撞检测
 
-    打砖块的游戏要求球碰到砖块时砖块消失的，这个需要做碰撞检测，这在Orx中也是很简单的，需要进行物理的Event响应，这是个新内容。  
+打砖块的游戏要求球碰到砖块时砖块消失的，这个需要做碰撞检测，这在Orx中也是很简单的，需要进行物理的Event响应，这是个新内容。  
 首先，初始化的时候，添加关注的事件。  
-  orxEvent_AddHandler(orxEVENT_TYPE_PHYSICS, GameApp::EventHandler);  
+orxEvent_AddHandler(orxEVENT_TYPE_PHYSICS, GameApp::EventHandler);  
 这个没有什么好说的，别忘了就行。
 
 然后，就是在注册函数中物理的响应了，此例中是GameApp::EventHandler。
@@ -323,13 +326,9 @@ orxSTATUS orxFASTCALL GameApp::EventHandler(const orxEVENT *_pstEvent)
 
 ![](http://hi.csdn.net/attachment/201007/2/0_1278047707UMkM.gif)
 
- 
-
 ## 需要完善的部分
 
-    游戏其实基本成型了，剩下的，就是给游戏加个边框，（这个都不需要我额外讲方法了）不然球飞出去了，然后就是操作部分了，下一节再讲。
-
- 
+游戏其实基本成型了，剩下的，就是给游戏加个边框，（这个都不需要我额外讲方法了）不然球飞出去了，然后就是操作部分了，下一节再讲。
 
 原创文章作者保留版权 转载请注明原作者 并给出链接
 

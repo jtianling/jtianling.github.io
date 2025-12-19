@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+分享手动脱ASPack壳的经验，演示如何用OllyDbg通过堆栈平衡法找到OEP，再用ImportREC恢复IAT。
+
+<!-- more -->
+
 # 手动脱ASPack壳
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
@@ -95,6 +99,6 @@ ASPack获取OEP就没有UPX那么简单了，当然，其实也还是不难，�
 
 一句，可以找到100120C属于IAT的一部分。然后用ImportRec恢复就好了，不多说了。
 
-非加密壳，还是比较容易脱的，当然，写就没有那么容易了。。。。
+非加密壳，还是比较容易脱的，当然，写就没有那么容易了。。。。。
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

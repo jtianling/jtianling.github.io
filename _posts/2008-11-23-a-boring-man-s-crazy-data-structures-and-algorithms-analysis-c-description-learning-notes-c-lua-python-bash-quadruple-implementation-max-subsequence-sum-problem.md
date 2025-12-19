@@ -27,13 +27,14 @@ author:
   last_name: ''
 ---
 
-#  一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记 用C++/lua/python/bash的四重实现（3）  
+本文是最大子序列和问题的学习笔记，作者用C++、Lua、Python实现了四种效率不同的算法，从暴力法到线性最优解，并提供了完整代码。
+
+<!-- more -->
+
+# 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记 用C++/lua/python/bash的四重实现（3）
 最大子序列和问题
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
-
- 
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 
@@ -41,9 +42,9 @@ blog.csdn.net/vagrxie_**
 
 总算有点技术含量了，呵呵，虽然说重复实现一下代码不难（不就是相当于翻译嘛），但是算法4为什么是正确的需要好好理解一下。
 
-以下为实现部分: 
+以下为实现部分:
 
-CPP: 
+CPP:
 
 ```cpp
 // Maximum contiguous subsequence sum algorithm 1 - 4, worst to best
@@ -168,7 +169,7 @@ CPP:
 }
 ```
 
-LUA: 
+LUA:
 
 ```lua
 #!/usr/bin/env lua
@@ -296,7 +297,7 @@ print("maxSubSum3(t):" .. maxSubSum3(t))
 print("maxSubSum4(t):" .. maxSubSum4(t))
 ```
 
-PYTHON: 
+PYTHON:
 
 ```python
 #!/usr/bin/env python
@@ -390,17 +391,11 @@ PYTHON:
     test()
 ```
 
-BASH: 
+BASH:
 
 ```bash
 #!/usr/bin/env bash
 绕了我吧。。。。。特别是算法二。。复杂的递归用bash来写就是自虐。Bash似乎本来就不是用来描述算法用的，呵呵，以后没有什么事一般就不把bash搬出来了。
 ```
-
- 
-
- 
-
- 
 
 **_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**

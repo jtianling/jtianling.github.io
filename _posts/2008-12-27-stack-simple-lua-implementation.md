@@ -23,10 +23,13 @@ author:
   last_name: ''
 ---
 
+本文展示了如何在Lua中基于一个链表类实现堆栈，并提供了Push、Pop等核心操作的代码示例。
+
+<!-- more -->
+
 # 堆栈的简单lua实现
 
-**_write by_**** _九天雁翎_**** _(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_**** _九天雁翎_**** _(JTianLing) -- blog.csdn.net/vagrxie_**
 
 ```lua
  1 #!/usr/bin/env lua
@@ -76,5 +79,4 @@ http://www.jtianling.com/archive/2008/12/25/3606972.aspx
 
 其实到了这个层次的lua语法（用一个类去实现另一个类），我已经不是太了解了，Programming in lua中也没有出现类似的语法，只简单的提到了怎么去New,书中是用这种方式去实现继承的。第19行的语法纯粹是自己摸索出来的，一开始用self:Size()，结果并没有从CList中去找，而是陷入了纯粹的递推自身调用。
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**

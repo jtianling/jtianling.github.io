@@ -21,30 +21,27 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie](<http://www.jtianling.com>)  
-**
+作者通过对比Google和苹果服务宕机时的道歉页面，发现前者支持18种语言而后者仅4-5种，以此说明Google用户群更广。
+
+<!-- more -->
+
+**[write by 九天雁翎(JTianLing) -- blog.csdn.net/vagrxie](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-在Google  
-Doc不可用的时候，见识了Google的18国语言道歉。。。联想到苹果的4国，5国。。。还是Gooogle 的用户群更广？
+在Google Doc不可用的时候，见识了Google的18国语言道歉。。。联想到苹果的4国，5国。。。还是Gooogle 的用户群更广？
 
-以下为具体内  
-容：
+以下为具体内容：
 
 Google：
 
 #### Google Docs is temporarily unavailable -- please try back later. If you get this page again, please check our [Help Center](<http://docs.google.com/support/>) for outage notices. We apologize for any inconvenience.
 
-Google  
-ドキュメントーは一時的にご利用いただけません。 しばらくしてから、もう一度試してみてください。 また、[ヘルプ センター](<http://docs.google.com/support/?hl=jp>)。  
-ご不便をおかけしますが何卒ご了承ください。
+Google ドキュメントーは一時的にご利用いただけません。 しばらくしてから、もう一度試してみてください。 また、[ヘルプ センター](<http://docs.google.com/support/?hl=jp>)。 ご不便をおかけしますが何卒ご了承ください。
 
 Google Documents est momentanément indisponible. Veuillez réessayer ultérieurement. En attendant, vous trouverez des informations utiles dans notre [Centre d'aide](<http://docs.google.com/support/?hl=fr>). Nous vous prions de nous excuser des désagréments occasionnés.
 
-Google Text & Tabellen ist vorübergehend nicht verfügbar. Versuchen Sie es später erneut. In der Zwischenzeit erhalten Sie nützliche Informationen in der [Google Hilfe-Seiten](<http://docs.google.com/support/?hl=de>).  
-Wir entschuldigen uns für eventuelle Unannehmlichkeiten.
+Google Text & Tabellen ist vorübergehend nicht verfügbar. Versuchen Sie es später erneut. In der Zwischenzeit erhalten Sie nützliche Informationen in der [Google Hilfe-Seiten](<http://docs.google.com/support/?hl=de>]). Wir entschuldigen uns für eventuelle Unannehmlichkeiten.
 
 Google Docs no estará disponible temporalmente. Por favor, intenta acceder más tarde. Mientras tanto, puedes consultar el [Centro de Asistencia](<http://docs.google.com/support/?hl=es>). Disculpa las molestias.
 
@@ -58,25 +55,19 @@ Google 文件是暂时无法使用。 請稍後再試。 在此期間，您可�
 
 Google 文档暂时不可用。请稍后再试。在此期间，您可以在我们的[支持中心](<http://docs.google.com/support/?hl=zh_CN>)查找有用的信息。对于由此带来的任何不便，我们深表歉意。
 
-Dokumenty Google jest tymczasowo niedostępny. Spróbuj ponownie później. Tymczasem możesz znaleźć przydatne informacje w naszym [Centrum pomocy](<http://docs.google.com/support/?hl=pl>).  
-Przepraszamy za wszelkie niedogodności.
+Dokumenty Google jest tymczasowo niedostępny. Spróbuj ponownie później. Tymczasem możesz znaleźć przydatne informacje w naszym [Centrum pomocy](<http://docs.google.com/support/?hl=pl>). Przepraszamy za wszelkie niedogodności.
 
-Google Dokument är inte tillgängligt för tillfället. Försök igen senare. Under tiden kan du hitta användbar information i vårt [hjälpcenter](<http://docs.google.com/support/?hl=sv>).  
-Vi ber om ursäkt för eventuellt besvär.
+Google Dokument är inte tillgängligt för tillfället. Försök igen senare. Under tiden kan du hitta användbar information i vårt [hjälpcenter](<http://docs.google.com/support/?hl=sv>). Vi ber om ursäkt för eventuellt besvär.
 
 Google Dokumenter er midlertidigt ikke tilgængelig. Prøv igen senere. I mellemtiden kan du muligvis finde brugbare oplysninger i vores [Hjælp](<http://docs.google.com/support/?hl=da>). Vi beklager ulejligheden.
 
-Google  
-문서도구 잠시 사용할 수 없습니다. 나중에 다시 열어보십시오. 궁금한 점이 있으면 우선 Google [도움말 센터](<http://docs.google.com/support/?hl=ko>)에서 찾아보십시오. 불편을 끼쳐드려 죄송합니다.
+Google 문서도구 잠시 사용할 수 없습니다. 나중에 다시 열어보십시오. 궁금한 점이 있으면 우선 Google [도움말 센터](<http://docs.google.com/support/?hl=ko>)에서 찾아보십시오. 불편을 끼쳐드려 죄송합니다.
 
-Документы Google временно недоступен. Повторите попытку позже. А пока полезную информацию можно найти в нашем [справочном центре](<http://docs.google.com/support/?hl=ru>).  
-Приносим извинения за причиненные неудобства.
+Документы Google временно недоступен. Повторите попытку позже. А пока полезную информацию можно найти в нашем [справочном центре](<http://docs.google.com/support/?hl=ru>). Приносим извинения за причиненные неудобства.
 
-Google Dokumenter er midlertidig utilgjengelig. Prøv igjen senere. I mellomtiden kan du finne nyttig informasjon i [Brukerstøtten](<http://docs.google.com/support/?hl=no>).  
-Vi beklager eventuelle ulemper dette medfører.
+Google Dokumenter er midlertidig utilgjengelig. Prøv igjen senere. I mellomtiden kan du finne nyttig informasjon i [Brukerstøtten](<http://docs.google.com/support/?hl=no>). Vi beklager eventuelle ulemper dette medfører.
 
-Google-dokumentit on väliaikaisesti poissa käytöstä. Yritä myöhemmin uudelleen. Voit löytää hyödyllisiä tietoja [ohjekeskuksestamme](<http://docs.google.com/support/?hl=fi>).  
-Pahoittelemme tilanteesta mahdollisesti aiheutuvaa haittaa.
+Google-dokumentit on väliaikaisesti poissa käytöstä. Yritä myöhemmin uudelleen. Voit löytää hyödyllisiä tietoja [ohjekeskuksestamme](<http://docs.google.com/support/?hl=fi>). Pahoittelemme tilanteesta mahdollisesti aiheutuvaa haittaa.
 
 Google Dokümanlar geçici olarak kullanım dışıdır. Lütfen daha sonra tekrar deneyin. Bu arada, [Yardım Merkezimizde](<http://docs.google.com/support/?hl=tr>). Bu durum için özür dileriz.
 
@@ -86,6 +77,4 @@ Google Dokümanlar geçici olarak kullanım dışıdır. Lütfen daha sonra tekr
 
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by  
-九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

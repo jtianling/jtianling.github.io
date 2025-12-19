@@ -25,13 +25,13 @@ author:
   last_name: ''
 ---
 
+介绍C语言中atoi、atof等字符串与数字转换函数，探讨其用法、替代方案，并分析了因整数类型多样而导致的函数设计问题。
+
+<!-- more -->
+
 ## 一天一个C Run-Time Library 函数 (10) atol,atof,atoi, ltoa , itoa,
 
- 
-
 write by 九天雁翎(JTianLing) -- www.jtianling.com
-
- 
 
 ## msdn:
 
@@ -64,9 +64,9 @@ long atol(
 
 Converts a long  
 integer to a string. These functions are deprecated because more secure  
-versions are available; see [_ltoa_s, _ltow_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/d7dc61ea-1ccd-412d-b262-555a58647386.htm>).  
-  
----  
+versions are available; see [_ltoa_s, _ltow_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/d7dc61ea-1ccd-412d-b262-555a58647386.htm>).
+
+---
 
 ```cpp
 char *_ltoa(   long _value_ ,   char *_str_ ,   int _radix_ );
@@ -74,12 +74,12 @@ wchar_t *_ltow(   long _value_ ,   wchar_t *_str_ ,   int _radix_ );
 template <size_t size> char *_ltoa(   long _value_ ,   char (&_str_)[size],   int _radix_ ); // C++ only
 template <size_t size> wchar_t *_ltow(   long _value_ ,   wchar_t (&_str_)[size],   int _radix_ ); // C++ only
 ```
-  
+
 Converts a  
 long integer to a string. These functions are deprecated because more secure  
-versions are available; see [_ltoa_s, _ltow_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/d7dc61ea-1ccd-412d-b262-555a58647386.htm>).  
-  
----  
+versions are available; see [_ltoa_s, _ltow_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/d7dc61ea-1ccd-412d-b262-555a58647386.htm>).
+
+---
 
 ```cpp
 char *_ltoa(   long _value_ ,   char *_str_ ,   int _radix_ );
@@ -87,10 +87,6 @@ wchar_t *_ltow(   long _value_ ,   wchar_t *_str_ ,   int _radix_ );
 template <size_t size> char *_ltoa(   long _value_ ,   char (&_str_)[size],   int _radix_ ); // C++ only
 template <size_t size> wchar_t *_ltow(   long _value_ ,   wchar_t (&_str_)[size],   int _radix_ ); // C++ only
 ```
-  
-** **
-
- 
 
 ## 测试程序：
 
@@ -104,7 +100,7 @@ template <size_t size> wchar_t *_ltow(   long _value_ ,   wchar_t (&_str_)[size]
 
 **记得就前两天看公司的代码，以前有个兄弟特别喜欢用这些函数，连对话框的中各类空间的获取一律都是先获取字符串，然后转换成整数。。。。。可能是不知道有类似****GetDlgItemInt****之类的接口吧。。。。******
 
-##  实现：
+## 实现：
 
 MS:
 
@@ -122,23 +118,17 @@ static unsigned long __cdecl strtoxl (
         )
 ```
 
-来实现。随便看了一眼，就像我个人想实现的话会用的方法一样，从字符串到整数，我应该会通过一个一个字符的计算与’0’字符的ascII值的差，然后相应其位置的乘以10^n，累加到一个整数吧。
+来实现。随便看了一眼，就像我个人想实现的话会用的方法一样，从字符串到整数，我应该会通过一个一个字符的计算与'0'字符的ascII值的差，然后相应其位置的乘以10^n，累加到一个整数吧。
 
 整数到字符串可能就是上面方式的反过来。。。。假如不让用sprintf等函数时。（这个我没有看源码了,应该差不多）
-
- 
 
 gcc:
 
 随便看了一下，也差不多
 
- 
-
 ## 效率测试：
 
 无
-
- 
 
 ## 相关函数：
 

@@ -20,13 +20,15 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**
+C++程序员学习Java Applet的入门教程，讲解代码编写与HTML部署方法，让程序在浏览器中直接运行。
+
+<!-- more -->
+
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 Technorati 标签: [JAVA](<http://technorati.com/tags/JAVA>),[JAVA Applet](<http://technorati.com/tags/JAVA+Applet>),[Applet Tag](<http://technorati.com/tags/Applet+Tag>),[Deploy Applet](<http://technorati.com/tags/Deploy+Applet>),[从C++到JAVA](<http://technorati.com/tags/%e4%bb%8eC%2b%2b%e5%88%b0JAVA>)
-
-## 
 
 ## 前言
 
@@ -37,8 +39,6 @@ Technorati 标签: [JAVA](<http://technorati.com/tags/JAVA>),[JAVA Applet](<http
 ## JAVA编程环境
 
 毫无疑问，推荐先到<http://www.java.com>上去下载一个最新的JRE安装，而后，我出于方便，使用Eclipse作为IDE编辑和编译JAVA程序，运行嘛，由于我准备将左右的程序都做成JAVA Applet，所以，事实上，所有的程序都可以再浏览器中运行。JDK的话，可以使用Eclipse带的，也可以到JAVA的网页上去下载，这个随便，我是下载了一个。
-
-## 
 
 ## JAVA Applet程序入门
 
@@ -71,7 +71,7 @@ import类似于C++中的include，但是不仅仅是那样，因为import不是�
 
 paint函数的参数是个Graphics类的对象，java.awt.Graphics属于Java中显示的基本类，地位基本相当于Qt中的QPainater。此处用Graphic的drawString方法显示了"Hello World”字符串。
 
-以上基本上就是这个简单的JAVA Applet程序的解释了。  
+以上基本上就是这个简单的JAVA Applet程序的解释了。
 
 ## JAVA Applet程序部署及运行
 
@@ -108,7 +108,7 @@ width=300
 height=200>  
 ```
 
-下面是一个java applet程序的运行效果： 
+下面是一个java applet程序的运行效果：
 
 并且发现，文档中明确说明：
 
@@ -132,8 +132,6 @@ height=200>
 
 6.《[HTML 4.01 Specification](<http://www.w3.org/TR/1999/REC-html401-19991224/>)》
 
-## 
-
 ## 完整源代码获取说明
 
 由于篇幅限制，本文一般仅贴出代码的主要关心的部分，代码带工程（或者makefile）完整版（如果有的话）都能用Mercurial在Google Code中下载。文章以博文发表的日期分目录存放，请直接使用Mercurial克隆下库：
@@ -146,6 +144,6 @@ Mercurial使用方法见《[分布式的，新一代版本控制系统Mercurial�
 
 <http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code>
 
-原创文章作者保留版权 转载请注明原作者 并给出链接****
+原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

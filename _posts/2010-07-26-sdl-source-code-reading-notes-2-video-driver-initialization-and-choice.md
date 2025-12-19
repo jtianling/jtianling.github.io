@@ -21,13 +21,15 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+SDL video模块通过函数指针结构体实现跨平台抽象，在初始化时动态加载特定驱动，统一了不同平台的接口。
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+<!-- more -->
 
-[前一篇文章](<http://www.jtianling.com/archive/2010/07/24/5761714.aspx> "前一篇文章")  
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
+
+[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
+
+[前一篇文章](http://www.jtianling.com/archive/2010/07/24/5761714.aspx "前一篇文章")  
 讲了SDL的除video以外的大部分模块。本文主要关注SDL的video模块部分。
 
 SDL中的video模块包含了大部分与平台相关的代码，并且SDL处理的很有技巧性，这里利用C语言的函数指针来模拟了一种类似于面向对象的效果。
@@ -38,7 +40,7 @@ SDL_VideoDevice *current_video = NULL;
 
 这一句定义的全局变量current_video上，我们先来看看这个变量类型SDL_VideoDevice。
 
-主要在SDL_sysvideo.h这个文件中  
+主要在SDL_sysvideo.h这个文件中
 
 ```c
 struct SDL_VideoDevice {
@@ -540,7 +542,7 @@ SDL_Init(SDL_INIT_VIDEO)->SDL_InitSubSystem（SDL_INIT_VIDEO)->SDL_VideoInit()
 
 中途会调用以"SDL_VIDEODRIVER"为参数调用SDL_getenv函数来获取全局配置中指定的对应的video driver。
 
-代码如下：  
+代码如下：
 
 ```c
 if ( SDL_VideoInit(SDL_getenv("SDL_VIDEODRIVER"),
@@ -551,7 +553,7 @@ if ( SDL_VideoInit(SDL_getenv("SDL_VIDEODRIVER"),
 
 我没有设定，所以会以name = NULL为第一参数来调用SDL_VideoInit，也就是让SDL自己选择一个video driver。
 
-SDL会从一个  
+SDL会从一个
 
 ```c
 typedef struct VideoBootStrap {
@@ -564,7 +566,7 @@ typedef struct VideoBootStrap {
 
 结构的全局变量bootstrap数组中选取一个可以使用的video driver。
 
-一共有这么多可能的video driver:  
+一共有这么多可能的video driver:
 
 ```c
 /* Available video drivers */
@@ -716,11 +718,11 @@ static VideoBootStrap *bootstrap[] = {
 
 在我的电脑上(Win32），一共有上面3种可能，windib（即GDI）,directX,dummy。事实上OpenGL在Win32的环境中都没有列出来，当然，但是在以前的例子中，我还是使用了SDL+OpenGL来渲染，原因在于video毕竟不是如同其名字所示，仅仅包含渲染或者视频方面的东西，它其实代表了大部分SDL与平台相关的东西，渲染在SDL中也仅仅是占比较小的一部分。
 
-选取video driver的时候，先调用VideoBootStrap   
+选取video driver的时候，先调用VideoBootStrap  
 结构中的available  
 函数来判断此video driver有效则通过此结构的create函数来创建一个video driver.
 
-如下：  
+如下：
 
 ```c
 for ( i=0; bootstrap[i]; ++i ) {
@@ -735,7 +737,7 @@ for ( i=0; bootstrap[i]; ++i ) {
 
 创建的时候附带index,并且一旦创建成功，就停止了创建过程，在我的例子中，由于GDI方式排在第一，所以事实上，SDL在Win32环境下默认是选择了使用GDI的video driver。
 
-此GDI video driver的create函数如下：  
+此GDI video driver的create函数如下：
 
 ```c
 static SDL_VideoDevice *DIB_CreateDevice(int devindex)
@@ -841,7 +843,7 @@ static SDL_VideoDevice *DIB_CreateDevice(int devindex)
 
 开始时为video driver分配内存，然后为相应的参数赋值，最最重要的就是为video driver的函数指针赋值，赋值成当前video driver的函数，以此实现我开始说的，以C语言实现类似面向对象的效果。
 
-video driver的那一堆函数指针就像是抽象的接口，这里的函数就像是子类的实现。上层逻辑只需要使用video driver的指针并调用其中的函数即可，完全统一，并且不用关心指针具体是调用了哪个"子类“的函数。因为习惯了C++，我很少使用C语言来编写大规模的代码，所以对这些特性并不是非常熟悉，但是在C语言实现面向对象特性方面，我见过几派，我感觉这种方式算是比较好的，比完全使用宏来模拟C++的效果看上去要更加容易理解和自然。当然，因为C语言的确没有"标准"的面向对象实现方式，所以到底那个更好，也只能是见仁见智的问题了，估计也会像"大括号战争”一样没有休止。
+video driver的那一堆函数指针就像是抽象的接口，这里的函数就像是子类的实现。上层逻辑只需要使用video driver的指针并调用其中的函数即可，完全统一，并且不用关心指针具体是调用了哪个"子类"的函数。因为习惯了C++，我很少使用C语言来编写大规模的代码，所以对这些特性并不是非常熟悉，但是在C语言实现面向对象特性方面，我见过几派，我感觉这种方式算是比较好的，比完全使用宏来模拟C++的效果看上去要更加容易理解和自然。当然，因为C语言的确没有"标准"的面向对象实现方式，所以到底那个更好，也只能是见仁见智的问题了，估计也会像"大括号战争"一样没有休止。
 
 此处还值得一提的是，SDL_VIDEO_OPENGL宏是默认开启的，也就是说，在Win32下使用GDI这个默认的video driver时，
 
@@ -859,21 +861,15 @@ SDL进行了
 这些函数的赋值。形成了对OpenGL的支持。这里与我以前了解的有些差异，因为我以前以为SDL在Win32下是默认使用DirectX加速的，现在看来并不是，就如侯捷所言，"源码面前了无秘密"，这些点点滴滴的东西，也算是看源码的一种收获。
 
 然后，我查看了文档：  
-《[SDL支持哪些系统平台？](<http://www.libsdl.org/intro.cn/whatplatforms.html> "SDL支持哪些系统平台？")  
-  
-》
+《[SDL支持哪些系统平台？](http://www.libsdl.org/intro.cn/whatplatforms.html "SDL支持哪些系统平台？")》
 
 有如下描述：
 
- 
-
-  * 有两个版本，一个是适合所有基于Win32的系统的安全版本，另一个是基于DirectX的高性能版本。 
-  * 安全版本的视频显示采用GDI。高性能版本采用DirectDraw，并支持硬件加速。 
-  * 安全版本的音频回放采用waveOut API。高性能版本采用DirectSound。 
+* 有两个版本，一个是适合所有基于Win32的系统的安全版本，另一个是基于DirectX的高性能版本。 
+* 安全版本的视频显示采用GDI。高性能版本采用DirectDraw，并支持硬件加速。 
+* 安全版本的音频回放采用waveOut API。高性能版本采用DirectSound。 
 
 这里可以看出，默认的时候SDL使用了Win32系统的安全版本。
-
- 
 
 此步初始化后，再利用video driver自己的VideoInit函数再次进行针对特殊的video driver的初始化。然后再开始SDL的事件线程（详细内容见上节）
 
@@ -896,7 +892,7 @@ SDL进行了
 
 SDL_putenv("SDL_VIDEODRIVER=directx");
 
-可以看到效果是以"directx"为第一参数调用SDL_VideoInit，并且进入了一下代码：  
+可以看到效果是以"directx"为第一参数调用SDL_VideoInit，并且进入了一下代码：
 
 ```c
 for ( i=0; bootstrap[i]; ++i ) {
@@ -921,7 +917,7 @@ DDrawCreate = (void *)GetProcAddress(DDrawDLL, TEXT("DirectDrawCreate"));
 
 同时，上述语句也说明，SDL使用的DirectX加速使用的是DX5.....并且使用的是DirectDraw，在那古老的年代，我不知道有没有D3D，不过对DDraw的使用倒是印证了我初看SDL渲染接口时的印象，抽象的接口与DDraw太像了。。。。。。。下面函数赋值的时候应该还能看到。
 
-DX5_CreateDevice为SDL DirectX driver的创建函数，如同GDI版本一样对函数进行赋值。  
+DX5_CreateDevice为SDL DirectX driver的创建函数，如同GDI版本一样对函数进行赋值。
 
 ```c
 /* Set the function pointers */
@@ -985,9 +981,6 @@ SDL_Surface* screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16, SDL_OPE
 
 因为本文太长，在Google Document上输入都已经很卡了，所以留待下篇文章再看。
 
-  
-
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

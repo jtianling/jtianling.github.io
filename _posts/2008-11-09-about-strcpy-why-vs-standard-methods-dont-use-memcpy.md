@@ -23,9 +23,11 @@ author:
   last_name: ''
 ---
 
-原文：http://blog.csdn.net/youyouzhishen/archive/2008/11/02/3207836.aspx
+本文通过汇编代码分析，纠正了“memcpy实现strcpy更高效”的误解，指出编译器会将其优化为性能更佳的内部函数。
 
-  
+<!-- more -->
+
+原文：http://blog.csdn.net/youyouzhishen/archive/2008/11/02/3207836.aspx
 
 ```cpp
 #include <cstring>

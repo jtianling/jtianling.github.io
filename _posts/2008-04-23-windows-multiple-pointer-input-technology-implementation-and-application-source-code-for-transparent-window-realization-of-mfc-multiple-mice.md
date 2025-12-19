@@ -23,109 +23,55 @@ author:
   last_name: ''
 ---
 
+分享用MFC创建透明窗口模拟鼠标指针的代码，是多鼠标系统开发的基础。
+
+<!-- more -->
+
 / 一下基本就是实现了一个透明的窗口，以此窗口来表示鼠标指针，我用了CImage,你可以到网上查查它的用法。
-
-  
-//  作者   :  
-九天雁翎(JTianLing)
-
-//  软件   :  
-透明窗口示例程序
-
-//  版本   :  
-0.1
-
-//  文件    
-: MouseWnd.h
-
-//  描述   :
-
-//        
-
-//  实现在Visual Studio .NET 2005 SP1下编译测试通过。
-
-//  Webs   :  
-groups/google.com/group/jiutianfile
-
-//  Blog   :  
-blog.csdn.net/vagrxie
-
-//  E-mail :  
-JTianLing@GMail.com
-
-// 
-
-//  欢迎大家在上述网页发帖或来信探讨，或说明该软件的BUG和可以改进之处
-
-//  创建时间：23:11:2008
-
-//  
-#################################################################pragma once
-
-
-//  
-CMouseWnd
-
-
+// 作者 : 九天雁翎(JTianLing)
+// 软件 : 透明窗口示例程序
+// 版本 : 0.1
+// 文件 : MouseWnd.h
+// 描述 :
+// 实现在Visual Studio .NET 2005 SP1下编译测试通过。
+// Webs : groups/google.com/group/jiutianfile
+// Blog : blog.csdn.net/vagrxie
+// E-mail : JTianLing@GMail.com
+// 欢迎大家在上述网页发帖或来信探讨，或说明该软件的BUG和可以改进之处
+// 创建时间：23:11:2008
+// #################################################################
+#pragma once
+// CMouseWnd
 class CMouseWnd : public CWnd
 {
     DECLARE_DYNAMIC(CMouseWnd)
-
 public:
     CMouseWnd();
     virtual ~CMouseWnd();
     CImage m_image;
-
 protected:
-
-//  CImage m_imBackGround;
+    // CImage m_imBackGround;
     CRect m_rtImage;
     CDC* m_pImDC;
     DECLARE_MESSAGE_MAP()
-
 public:
     afx_msg void OnPaint();
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnDestroy();
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-
 protected:
-    virtual BOOL  
-PreCreateWindow(CREATESTRUCT&  
-cs);
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 };
-
-
 //---------------------------------------------------------------------------------------------------
-
-
- //  文件    
-: MouseWnd.cpp
-
-//  描述   :
-
-//        
-
-//  实现在Visual Studio .NET 2005 SP1下编译测试通过。
-
-//  Webs   :  
-groups/google.com/group/jiutianfile
-
-//  Blog   :  
-blog.csdn.net/vagrxie
-
-//  E-mail :  
-JTianLing@GMail.com
-
-// 
-
-//  欢迎大家在上述网页发帖或来信探讨，或说明该软件的BUG和可以改进之处
-
-//  创建时间：23:11:2008
-
-//  
-#################################################################
-
+// 文件 : MouseWnd.cpp
+// 描述 :
+// 实现在Visual Studio .NET 2005 SP1下编译测试通过。
+// Webs : groups/google.com/group/jiutianfile
+// Blog : blog.csdn.net/vagrxie
+// E-mail : JTianLing@GMail.com
+// 欢迎大家在上述网页发帖或来信探讨，或说明该软件的BUG和可以改进之处
+// 创建时间：23:11:2008
+// #################################################################
 ```cpp
 #include "stdafx.h"
 #include "TestWnd.h"
@@ -196,7 +142,7 @@ lpCreateStruct)
 == -1)
        return -1;
 
-    // TODO:  在此添加您专用的创建代码
+    // TODO:  在此添加您专用的创建代码
     GetClientRect(&m_rtImage);
     m_rtImage.right = m_image.GetWidth();
     m_rtImage.bottom = m_image.GetHeight();
@@ -223,15 +169,15 @@ BOOL CMouseWnd::OnEraseBkgnd(CDC*
 pDC)
 {
     // TODO: 在此添加消息处理程序代码和/或调用默认值
-//  CWnd::OnEraseBkgnd(pDC);
+//  CWnd::OnEraseBkgnd(pDC);
 
     //pDC->TransparentBlt(m_rtImage.left,  
 m_rtImage.top, m_rtImage.Width(), m_rtImage.Height(),
     //  m_pImDC,  
 0, 0, m_image.GetWidth(), m_image.GetHeight(), RGB(255,255,255));
-//  m_image.TransparentBlt(pDC->GetSafeHdc(),m_rtImage,RGB(255,255,255));
+//  m_image.TransparentBlt(pDC->GetSafeHdc(),m_rtImage,RGB(255,255,255));
     m_image.Draw(pDC->GetSafeHdc(),m_rtImage);
-//  m_image.BitBlt(pDC->GetSafeHdc(),m_rtImage.left,m_rtImage.right,SRCCOPY);
+//  m_image.BitBlt(pDC->GetSafeHdc(),m_rtImage.left,m_rtImage.right,SRCCOPY);
     return true;
 }
 
@@ -241,49 +187,30 @@ cs)
     // TODO: 在此添加专用代码和/或调用基类
     //cs.lpszClass =  
 AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
-    //  ::LoadCursor(NULL,  
+    //  ::LoadCursor(NULL,  
 IDC_ARROW), reinterpret_cast<HBRUSH>(GetStockObject(NULL_BRUSH)), NULL);
     return CWnd::PreCreateWindow(cs);
 }
 ```
-
-  
-//  
-ChildView.h : CChildView 类的接口
-
-//
-
-
+// ChildView.h : CChildView 类的接口
 #pragma once
 #include "MouseWnd.h"
-
-
-//  
-CChildView 窗口
-
-
+// CChildView 窗口
 class CChildView : public CWnd
 {
 // 构造
 public:
     CChildView();
-
 // 属性
 public:
-
 // 操作
 public:
-
 // 重写
     protected:
-    virtual BOOL  
-PreCreateWindow(CREATESTRUCT&  
-cs);
-
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 // 实现
 public:
     virtual ~CChildView();
-
 protected:
     CImage m_image;
     CImage m_imBackGround;
@@ -292,30 +219,18 @@ protected:
     CDC* m_pImDC;
     CMouseWnd m_mouseWnd;
     // 生成的消息映射函数
-    //void SetTransparent(HWND   hwnd,UINT    
-alpha);
-
+    //void SetTransparent(HWND, alpha);
 protected:
     afx_msg void OnPaint();
     DECLARE_MESSAGE_MAP()
-
 public:
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnTimer(UINT_PTR nIDEvent);
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnDestroy();
 };
-
-
- //------------------------------------------------------------------------------
-
-  
-//  
-ChildView.cpp : CChildView 类的实现
-
-//
-
-
+//------------------------------------------------------------------------------
+// ChildView.cpp : CChildView 类的实现
 ```cpp
 #include "stdafx.h"
 #include "TestWnd.h"
@@ -405,7 +320,7 @@ lpCreateStruct)
 == -1)
        return -1;
 
-    // TODO:  在此添加您专用的创建代码
+    // TODO:  在此添加您专用的创建代码
     GetClientRect(&m_rtImage);
     m_rtImage.right = m_image.GetWidth();
     m_rtImage.bottom = m_image.GetHeight();
@@ -419,10 +334,10 @@ lpCreateStruct)
     m_mouseWnd.CreateEx(NULL, AfxRegisterWndClass(0), _T(""), WS_POPUP  
 | WS_VISIBLE,
                      m_rtMouseWnd,  
-NULL,  NULL, NULL );
+NULL,  NULL, NULL );
     //m_mouseWnd.Create(NULL, NULL,  
 WS_CHILD | WS_VISIBLE, m_rtMouseWnd, this,
-    //  1001);
+    //  1001);
     /*SetTransparent(m_mouseWnd.m_hWnd,0);*/
     return 0;
 }
@@ -436,11 +351,11 @@ nIDEvent)
     m_rtImage.OffsetRect(1,0);
     CRect rect(m_rtImage.left-1,m_rtImage.top,m_rtImage.right,m_rtImage.bottom);
     //InvalidateRect(rect);
-//  Invalidate();
+//  Invalidate();
     m_rtMouseWnd.OffsetRect(1, 0);
     m_mouseWnd.MoveWindow(m_rtMouseWnd);
-//  m_mouseWnd.Invalidate();
-//  m_mouseWnd.AnimateWindow(200,AW_SLIDE |  
+//  m_mouseWnd.Invalidate();
+//  m_mouseWnd.AnimateWindow(200,AW_SLIDE |  
 AW_HOR_POSITIVE );
     CWnd::OnTimer(nIDEvent);
 }
@@ -449,7 +364,7 @@ BOOL CChildView::OnEraseBkgnd(CDC*
 pDC)
 {
     // TODO: 在此添加消息处理程序代码和/或调用默认值
-//  CWnd::OnEraseBkgnd(pDC);
+//  CWnd::OnEraseBkgnd(pDC);
     CRect rect;
     GetClientRect(&rect);
     m_imBackGround.StretchBlt(pDC->GetSafeHdc(),rect);
@@ -465,30 +380,27 @@ void CChildView::OnDestroy()
 }
 
 //void  
-CChildView::SetTransparent(HWND    
-hwnd,UINT   alpha)  
+CChildView::SetTransparent(HWND   
+alpha)  
 
 //{
-//  typedef BOOL (*LAYERFUNC)(HWND hwnd,COLORREF  
+//  typedef BOOL (*LAYERFUNC)(HWND hwnd,COLORREF  
 crKey,BYTE bAlpha,DWORD dwFlags);
-//  LAYERFUNC    
-SetLayer;  
-//  HMODULE    
-hmod=LoadLibrary(_T("user32.dll"));  
-//  SetWindowLong(hwnd,GWL_EXSTYLE,GetWindowLong(hwnd,GWL_EXSTYLE)|0x80000L);  
-//  SetLayer=(LAYERFUNC)GetProcAddress(hmod,"SetLayeredWindowAttributes");  
-//  SetLayer(hwnd,0,(255*alpha)/100,0x2);  
+//  LAYERFUNC   
+SetLayer;   
+//  HMODULE   
+hmod=LoadLibrary(_T("user32.dll"));   
+//  SetWindowLong(hwnd,GWL_EXSTYLE,GetWindowLong(hwnd,GWL_EXSTYLE)|0x80000L);   
+//  SetLayer=(LAYERFUNC)GetProcAddress(hmod,"SetLayeredWindowAttributes");   
+//  SetLayer(hwnd,0,(255*alpha)/100,0x2);   
 //
-//  FreeLibrary(hmod);  
+//  FreeLibrary(hmod);   
 //}
 ```
-
-
-看到那么多注释就知道这是个没有完成的 东西了，不过用这个透明的窗口加上我那些多鼠标的底层实现，用MFC来实现一个比较好的通用多鼠标系统应该是没有技术问题了，来实现一般的多鼠标MFC程  
-序更是没有问题。这是我在参加工作前的最后一个作品。。。。呵呵，已经是7个月前的事情了，（现在是2008年11月23日），我今天晚上看到以前的这个东西，想起来那时候刚参加工作，家里连个可用的VS都没有，所以代码乱的很，今天整理一下，重新发一下，另外源代码也打包发到我常用的地址中：
+看到那么多注释就知道这是个没有完成的东西了，不过用这个透明的窗口加上我那些多鼠标的底层实现，用MFC来实现一个比较好的通用多鼠标系统应该是没有技术问题了，来实现一般的多鼠标MFC程序更是没有问题。这是我在参加工作前的最后一个作品。。。。呵呵，已经是7个月前的事情了，（现在是2008年11月23日），我今天晚上看到以前的这个东西，想起来那时候刚参加工作，家里连个可用的VS都没有，所以代码乱的很，今天整理一下，重新发一下，另外源代码也打包发到我常用的地址中：
 
 http://groups.google.com/group/jiutianfile
 
 另外，将当时没有发布的双鼠标五子棋源代码一起发了吧，那时候带着笔记本，台式机上的源码都发不了，直到现在才想起来：）
 
-很多朋友发邮件或者在博客中问过我为什么没有继续对多鼠标这个东西研究下去，呵呵，在此一并答复了，本人实在是工作忙啊。。。。。。。再次说明一下什么叫 忙，每天工作12个小时以上，每周工作6天，再加上你看看我最近学的东西，lua,python,bash....实在没有时间了，呵呵，既然我把什么都 公布了，大家有什么想法就都自己去实现吧。。。。有不懂的我能解答的我尽量回答....
+很多朋友发邮件或者在博客中问过我为什么没有继续对多鼠标这个东西研究下去，呵呵，在此一并答复了，本人实在是工作忙啊。。。。。。。再次说明一下什么叫忙，每天工作12个小时以上，每周工作6天，再加上你看看我最近学的东西，lua,python,bash....实在没有时间了，呵呵，既然我把什么都公布了，大家有什么想法就都自己去实现吧。。。。有不懂的我能解答的我尽量回答....

@@ -20,13 +20,15 @@ author:
   last_name: ''
 ---
 
-在Jeff Prosise井字棋的基础上做的一个五子棋，全手工代码输入，利用MFC实现，因为尚不知如何手工添加按钮，
+本文分享了一个用MFC和C++手工开发的五子棋游戏，详细讲解了核心代码实现，包括棋盘绘制和胜负判断，并提供源码下载。
 
-所以暂时重新开始游戏的方式为双击标题栏。可以到<http://groups.google.com/group/jiutianfile>下载编译好的文件和Visual Studio.net 2005工程源代码。
+<!-- more -->
+
+在Jeff Prosise井字棋的基础上做的一个五子棋，全手工代码输入，利用MFC实现，因为尚不知如何手工添加按钮，所以暂时重新开始游戏的方式为双击标题栏。可以到<http://groups.google.com/group/jiutianfile>下载编译好的文件和Visual Studio.net 2005工程源代码。
 
 源代码[gobangSrc.rar](<http://jiutianfile.googlegroups.com/web/gobangSrc.rar>)，编译好的文件[gobangRel.rar](<http://jiutianfile.googlegroups.com/web/gobangRel.rar>)
 
-头文件gobang.h
+## 头文件gobang.h
 
 ```cpp
 class CMyApp : public CWinApp
@@ -71,7 +73,7 @@ protected:
 };
 ```
 
-主体文件gobang.cpp
+## 主体文件gobang.cpp
 
 ```cpp
 #include <afxwin.h>

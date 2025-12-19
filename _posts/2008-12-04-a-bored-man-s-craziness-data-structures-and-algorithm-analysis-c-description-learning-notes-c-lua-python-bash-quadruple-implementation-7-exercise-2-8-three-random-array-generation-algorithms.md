@@ -28,28 +28,27 @@ author:
   last_name: ''
 ---
 
-#   一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记  
+用C++/Lua/Python/Bash四种语言实现生成随机数组的三种算法，并附代码对比不同语言的实现差异。
+
+<!-- more -->
+
+# 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记
 用C++/lua/python/bash的四重实现（7）习题2.8 随机数组的三种生成算法
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
-
- 
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 
-\--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第49面， 一随机数组的三种生成算法
+--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第49面， 一随机数组的三种生成算法
 
 这一次没有截图，因为我受不了让bash运行100次的速度，怎么说来着，还是那句话，Bash根本就不适合也不是设计用来描述算法的语言，我根本就是自讨苦吃。用了最多的时间，得到的是最低的效率。。。。。。还有最扭曲的代码。但是因为工作中不用到bash，不常用用还真怕都忘了。。。现在用python的时候就常有这样的感觉，以前看的书就像白看了一样。
 
 相对于bash来说，python的优雅一次一次的深入我心，每一次它都是代码最短的，最最优雅的，很多便捷的语法都是让人用的很痛快，虽然刚开始用的时候由于没有大括号。。。（我用c++习惯了）感觉代码就像悬在空中一样的不可靠。。。呵呵，习惯了以后，怎么看怎么爽。再加上丰富的库，绝了。
 
- 
+write by 九天雁翎(JTianLing)
+-- www.jtianling.com
 
-write by 九天雁翎(JTianLing)  
-\-- www.jtianling.com
-
-以下为实现部分: 
+以下为实现部分:
 
 CPP:
 
@@ -426,7 +425,5 @@ randArr1 10
 randArr2 10
 randArr3 10
 ```
-
- 
 
 **_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**

@@ -21,7 +21,11 @@ author:
   last_name: ''
 ---
 
-公开的I/O接口，70h,71h,甚至72h,73h我也试过，结果内容和70h,71h一样，在我改动BIOS设置后，发现两次的文件没有什么变化（时间变化除外），按国外的[CMOS Memory Map](<http://bioscentral.com/misc/cmosmap.htm>) ，应该每个时间位后面跟一个Alarm时间位，事实上我打开前后，此位一直为零，是不是一旦开机，BIOS自动为此位清零？目前具体的东西不太清除，还不该尝试在这些Alarm位上写东西，因为我测试过两台电脑，都是AMI的BIOS，在BIOS中打开Alarm后没有发现如期的改动。请高人指点。
+作者编写汇编程序读取CMOS，发现修改BIOS闹钟设置后，内存中对应位无变化。他对此不解，分享代码请求大家帮忙测试验证。
+
+<!-- more -->
+
+公开的I/O接口，70h,71h,甚至72h,73h我也试过，结果内容和70h,71h一样，在我改动BIOS设置后，发现两次的文件没有什么变化（时间变化除外），按国外的[CMOS Memory Map](<http://bioscentral.com/misc/cmosmap.htm>)，应该每个时间位后面跟一个Alarm时间位，事实上我打开前后，此位一直为零，是不是一旦开机，BIOS自动为此位清零？目前具体的东西不太清除，还不该尝试在这些Alarm位上写东西，因为我测试过两台电脑，都是AMI的BIOS，在BIOS中打开Alarm后没有发现如期的改动。请高人指点。
 
 以下为我保存CMOS信息的源代码，大家可以放心尝试一下，假如你的结果和我说的不一样，请告诉我，比如在改动BIOS中Alarm后，生成的文件中各时间位后是否真的有响应变化。
 
@@ -102,9 +106,6 @@ end start
 ```
 
 不想编译的可以下载以下网址编译好的程序
-
-<http://disk24.sh.com/?vagr>
-
-<http://groups.google.com/group/jiutianfile/files>
+<http://disk24.sh.com/?vagr> <http://groups.google.com/group/jiutianfile/files>
 
 最后生成的是16位的文件，通过UltraEdit查看就可以了，具体应该的含义可以参考[CMOS Memory Map](<http://bioscentral.com/misc/cmosmap.htm>)，希望你能告诉我你的电脑是否符合上述CMOS Memory Map。谢了

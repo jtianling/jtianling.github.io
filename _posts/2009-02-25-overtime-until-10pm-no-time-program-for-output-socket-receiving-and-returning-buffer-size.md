@@ -20,6 +20,10 @@ author:
   last_name: ''
 ---
 
+文章通过C程序测试了套接字的默认缓冲区大小，并对比了Ubuntu与FreeBSD系统下的不同结果。
+
+<!-- more -->
+
 # 加班到十点，没有时间，弄个输出套接字接收和返回的Buffer大小的程序
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
@@ -37,8 +41,6 @@ Socket default Send Buffer is 16384
 作者得出的结果分别是57344,32768
 
 在我的系统中，接收的缓存实在是够大
-
- 
 
 源代码：
 
@@ -79,16 +81,10 @@ Socket default Send Buffer is 16384
 34 }
 ```
 
- 
-
- 
-
 Thread model: posix
 
 gcc version 4.2.4 (Ubuntu 4.2.4-1ubuntu4)
 
 纯ANSI C程序
-
- 
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

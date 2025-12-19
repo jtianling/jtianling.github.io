@@ -21,19 +21,15 @@ author:
   last_name: ''
 ---
 
-最近老在折腾ubuntu。。。。。呵呵，学习辛苦了，偶尔放松一下，对工作的环境（其实我主要工作还是在windows的VS中，Linux属于假想工作环境-_0!）
+博主分享Ubuntu技巧：安装多媒体编解码器和C语言手册，解决了视频播放和查阅函数文档的难题。
 
- 
+<!-- more -->
+
+最近老在折腾ubuntu。。。。。呵呵，学习辛苦了，偶尔放松一下，对工作的环境（其实我主要工作还是在windows的VS中，Linux属于假想工作环境-_0!）
 
 ubuntu由于有apt,deb包管理相当轻松，大部分任务就是sudo apt-get install XXXX，呵呵，实在是奇迹。。。。。
 
- 
-
- 
-
 realplayer装了没有用。。。。原因不明。
-
- 
 
 国外的这个文章很牛：（<http://www.ubuntugeek.com/install-mplayer-and-multimedia-codecs-libdvdcss2w32codecsw64codecs-in-ubuntu-904-jaunty.html>）
 
@@ -73,36 +69,16 @@ If you want to install Mplayer with plug-in for Mozilla Firefox run the followin
 
 > sudo apt-get install mozilla-mplayer
 > 
->  
-> 
->  
-> 
 > 解决了很多问题
-> 
->  
-> 
->  
-> 
-> 有个问题很有意思，现在我在windows下用kmplayer，感觉很好，很习惯，比windows下的mplayer还好用，还美观，现在改用了KDE(主要是因为学了QT的原因，其实我以前都是用Gnome），想都没有想，直接上在ubuntu上装kmplayer用，结果完全不好用，再查了查，还有个kplayer,还是不好用，都删掉，换成mplayer..............一切如以前般强大，接近无语。。。。。。
-> 
->  
-> 
->  
-> 
->  
-> 
-> 接着，开发库文档的问题：【转】
-> 
->  
-> 
-> 添加库函数手册  
-> ubuntu默认是没有安装c语言的库函数man手册的，所以你在man perror 和sendto之类的函数时会显示没有相关文档的问题，这个问题让我郁闷了我好久。解决方法：  
-> sudo apt-get install manpages-dev
-> 
->  
-> 
-> 事实上，也有中文版的文档了，只是看起来比较别扭（可能因为ubuntu的控制台下中文字不够美观）
-> 
->  
-> 
-> 选择man页面的方式是man 页面号 文档，比如我要查sleep的库函数调用，那就是man 3 sleep
+
+有个问题很有意思，现在我在windows下用kmplayer，感觉很好，很习惯，比windows下的mplayer还好用，还美观，现在改用了KDE(主要是因为学了QT的原因，其实我以前都是用Gnome），想都没有想，直接上在ubuntu上装kmplayer用，结果完全不好用，再查了查，还有个kplayer,还是不好用，都删掉，换成mplayer..............一切如以前般强大，接近无语。。。。。。。
+
+接着，开发库文档的问题：【转】
+
+添加库函数手册
+ubuntu默认是没有安装c语言的库函数man手册的，所以你在man perror 和sendto之类的函数时会显示没有相关文档的问题，这个问题让我郁闷了我好久。解决方法：
+sudo apt-get install manpages-dev
+
+事实上，也有中文版的文档了，只是看起来比较别扭（可能因为ubuntu的控制台下中文字不够美观）
+
+选择man页面的方式是man 页面号 文档，比如我要查sleep的库函数调用，那就是man 3 sleep

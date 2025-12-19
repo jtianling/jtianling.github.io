@@ -22,31 +22,27 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+本文剖析了Orx游戏引擎的架构，介绍了其模块化设计、插件系统以及跨平台的实现方式。
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+<!-- more -->
+
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
+
+[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 前言
 
-    完全不了解Orx的可以参考我写的《[orx 库简单介绍](<http://www.jtianling.com/archive/2010/06/07/5652697.aspx> "orx 库简单介绍")  
-》以及[官方主页](<http://orx-project.org/> "官方主页")  
-。
+完全不了解Orx的可以参考我写的《[orx 库简单介绍](<http://www.jtianling.com/archive/2010/06/07/5652697.aspx> "orx 库简单介绍")》以及[官方主页](<http://orx-project.org/> "官方主页")。
 
-    开始学习Orx其实很久了，但是一直仅仅是学习了一些基础的用法，没有深入研究源代码，在用Orx写游戏的时候常常会因为某个配置出现问题而完全束手无策，求助于iarwain，最近在移植一个Win32编好的游戏到IPhone上时，又碰到了问题，还是束手无策，因为我决定还是看看Orx的源代码，不然，命运总是不掌握在自己的手里，就像撞大运编程一样。这也是我当时选择引擎最大的要求之一，开源，所能带来的好处之一。而Orx这种"数据驱动"式的引擎，更加是使得了解源代码如此重要，因为我感觉对于我来说，我更加能够发现调用一个API的错误，而非常难去发现一个配置上的错误，我一直也认为这是Orx"数据驱动"的弊端之一，这也是我认为Orx非典型的原因。
-
- 
+开始学习Orx其实很久了，但是一直仅仅是学习了一些基础的用法，没有深入研究源代码，在用Orx写游戏的时候常常会因为某个配置出现问题而完全束手无策，求助于iarwain，最近在移植一个Win32编好的游戏到IPhone上时，又碰到了问题，还是束手无策，因为我决定还是看看Orx的源代码，不然，命运总是不掌握在自己的手里，就像撞大运编程一样。这也是我当时选择引擎最大的要求之一，开源，所能带来的好处之一。而Orx这种"数据驱动"式的引擎，更加是使得了解源代码如此重要，因为我感觉对于我来说，我更加能够发现调用一个API的错误，而非常难去发现一个配置上的错误，我一直也认为这是Orx"数据驱动"的弊端之一，这也是我认为Orx非典型的原因。
 
 ## 源码阅读思路及目标
 
-    对于源码阅读，我还是用个人习惯的的先从整体上了解各个模块，然后单独了解各模块源码，最后整个的走一下主要的执行流程，了解各个模块是怎么结合在一起的。
+对于源码阅读，我还是用个人习惯的的先从整体上了解各个模块，然后单独了解各模块源码，最后整个的走一下主要的执行流程，了解各个模块是怎么结合在一起的。
 
-    对于Orx的源码阅读，我还是不准备达到到句句理解的地步，基本上还是以整体了解为主，顺便关心一下个人比较感兴趣的渲染部分，对源码的理解程度以最后能够完全脱离Orx的配置模块，靠自己的代码将各个模块组合起来，并实现基本的Orx功能为止。Orx作为跨平台引擎，我不能去分析所有其支持的平台，主要关心的版本是Win32版本及IPhone版本，当然，事实上因为Orx的跨平台主要是依赖于将SDL,GLFW等库作为插件来完成的，所以，其实在Orx这一层的代码其实都一样。（IPhone版本比较特殊）
+对于Orx的源码阅读，我还是不准备达到到句句理解的地步，基本上还是以整体了解为主，顺便关心一下个人比较感兴趣的渲染部分，对源码的理解程度以最后能够完全脱离Orx的配置模块，靠自己的代码将各个模块组合起来，并实现基本的Orx功能为止。Orx作为跨平台引擎，我不能去分析所有其支持的平台，主要关心的版本是Win32版本及IPhone版本，当然，事实上因为Orx的跨平台主要是依赖于将SDL,GLFW等库作为插件来完成的，所以，其实在Orx这一层的代码其实都一样。（IPhone版本比较特殊）
 
-    为了无论在何时都能找到本文对应的源码，这里使用最新的Orx1.2版本的源码，并未使用svn上的版本。
-
- 
+为了无论在何时都能找到本文对应的源码，这里使用最新的Orx1.2版本的源码，并未使用svn上的版本。
 
 ## Orx总体结构
 
@@ -90,10 +86,7 @@ utils：工具类部分，包括用C语言实现的HashTable,List,Tree3大容器
 
 通过插件来实现的部分有：Display,Joystick,Keyboard,Mouse,Physics,Render,Sound。
 
-通用插件（实现除物理，声音以外的功能）本身现在有4套：[GLFW](<http://www.glfw.org/> "GLFW")  
-,IPhone,[SDL](<http://www.libsdl.org/> "SDL")  
-,[SFML](<http://www.sfml-dev.org/> "SFML")  
-。
+通用插件（实现除物理，声音以外的功能）本身现在有4套：[GLFW](<http://www.glfw.org/> "GLFW"),IPhone,[SDL](<http://www.libsdl.org/> "SDL"),[SFML](<http://www.sfml-dev.org/> "SFML")。
 
 其中SFML是1.1版本前使用的插件。GLFW是现在(1.2版本)默认使用的插件。
 
@@ -107,7 +100,7 @@ IPhone的插件是因为IPhone版本比较特殊而特别加入的，对应支�
 
 ## 逻辑结构：
 
-从"orxModule.h"的一个枚举定义中，可以看到Orx作者为Orx整体的逻辑模块的划分。  
+从"orxModule.h"的一个枚举定义中，可以看到Orx作者为Orx整体的逻辑模块的划分。
 
 ```c
 /*
@@ -170,8 +163,7 @@ typedef enum __orxMODULE_ID_t
 
 现在已经不是需要所有事情都从头做起的年代了，作为游戏引擎，需要处理的各个方面内容实在太多，很难都完全自己处理，Orx使用了一些外部库来完成一些相应功能。
 
-深蓝在Orx的官方中文论坛中进行了一些[总结](<http://orx-project.org/forum?func=view&catid=20&id=941> "总结")  
-，较为详细，可供参考。
+深蓝在Orx的官方中文论坛中进行了一些[总结](<http://orx-project.org/forum?func=view&catid=20&id=941> "总结")，较为详细，可供参考。
 
 我这里仅仅简单的说明一下：
 
@@ -189,37 +181,32 @@ stb_vorbis：ogg声音格式支持。
 
 libsndfile：wav,aiff声音格式支持。
 
-我描述的仅仅是大概的情况，关于引用外部工程以及插件的详细使用情况可以参考Orx的[changelog](<http://orx.svn.sourceforge.net/viewvc/orx/trunk/CHANGELOG?revision=1958&view=markup> "changelog")  
-。
+我描述的仅仅是大概的情况，关于引用外部工程以及插件的详细使用情况可以参考Orx的[changelog](<http://orx.svn.sourceforge.net/viewvc/orx/trunk/CHANGELOG?revision=1958&view=markup> "changelog">)。
 
 ## 关于SFML
 
 在最后提供一些额外的关于SFML信息，虽然与Orx的总体结构无关，但是也顺便在此记录。
 
-很多外部工程的引用都是从新的1.2开始的，而且都是为了替代SFML的相关部分而引入的，也就是说，最后Orx用glfw/SDL + SOIL + OpenAL + stb_vorbis + libsndfile才实现了SFML的部分功能。这还真的仅仅是SFML的部分功能，仅仅是Orx需要的那一部分功能。这里可以看出SFML有多么强大，其作为simple and fast Multimedia library的库，与SDL(Simple DirectMedia Layer)相比真的是太不simple了。事实上，从SFML的[License页](<http://www.sfml-dev.org/license.php> "License页")  
-可以看到，SFML本身就使用了
+很多外部工程的引用都是从新的1.2开始的，而且都是为了替代SFML的相关部分而引入的，也就是说，最后Orx用glfw/SDL + SOIL + OpenAL + stb_vorbis + libsndfile才实现了SFML的部分功能。这还真的仅仅是SFML的部分功能，仅仅是Orx需要的那一部分功能。这里可以看出SFML有多么强大，其作为simple and fast Multimedia library的库，与SDL(Simple DirectMedia Layer)相比真的是太不simple了。事实上，从SFML的[License页](<http://www.sfml-dev.org/license.php> "License页">)可以看到，SFML本身就使用了
 
-  * **GLEW**  
-is under the [BSD license](<http://www.opensource.org/licenses/bsd-license.php> "BSD license terms")  
-, the [SGI license](<http://glew.sourceforge.net/sgi.txt> "SGI license terms")  
-or the [GLX license](<http://glew.sourceforge.net/glx.txt> "GLX license terms")
-  * **OpenAL-Soft**  
-is under the [LGPL license](<http://www.gnu.org/copyleft/lesser.html> "LGPL license terms")
-  * **libsndfile**  
-is under the [LGPL license](<http://www.gnu.org/copyleft/lesser.html> "LGPL license terms")
-  * **stb_vorbis**  
+  * **GLEW**
+is under the [BSD license](<http://www.opensource.org/licenses/bsd-license.php> "BSD license terms">), the [SGI license](<http://glew.sourceforge.net/sgi.txt> "SGI license terms">) or the [GLX license](<http://glew.sourceforge.net/glx.txt> "GLX license terms">)
+  * **OpenAL-Soft**
+is under the [LGPL license](<http://www.gnu.org/copyleft/lesser.html> "LGPL license terms">)
+  * **libsndfile**
+is under the [LGPL license](<http://www.gnu.org/copyleft/lesser.html> "LGPL license terms">)
+  * **stb_vorbis**
 is public domain
-  * **libjpeg**  
+  * **libjpeg**
 is public domain
-  * **libpng**  
-is under the [zlib/png license](<http://www.libpng.org/pub/png/src/libpng-LICENSE.txt> "zlib/png license terms")
-  * **zlib**  
-is under the [zlib/png license](<http://www.zlib.net/zlib_license.html> "zlib/png license terms")
-  * **SOIL**  
+  * **libpng**
+is under the [zlib/png license](<http://www.libpng.org/pub/png/src/libpng-LICENSE.txt> "zlib/png license terms">)
+  * **zlib**
+is under the [zlib/png license](<http://www.zlib.net/zlib_license.html> "zlib/png license terms">)
+  * **SOIL**
 is public domain
-  * **freetype**  
-is under the [FreeType license](<http://www.freetype.org/FTL.TXT> "FreeType license terms")  
-or the [GPL license](<http://www.freetype.org/GPL.TXT> "GPL license terms")
+  * **freetype**
+is under the [FreeType license](<http://www.freetype.org/FTL.TXT> "FreeType license terms">) or the [GPL license](<http://www.freetype.org/GPL.TXT> "GPL license terms">)
 
 这么多的外部库。而其中Orx最后使用用于替代SFML的相应部分的库，可以看到，也基本来自于SFML本身使用的这些库。。。。。。。。#@￥#@%……￥#@……￥6
 
@@ -227,18 +214,14 @@ iarwain对SFML的评价是强大，简单，但是buggy。
 
 并且，从效率上来看，iarwain也是使用了这些外部库，但是在changelog中,有这么一句：
 
-* IMPORTANT: Added new plugins for embedded versions: SDL plugins for win/linux (35-40% than the SFML ones) and GLFW plugins for win/linux/osx (~2% faster than SDL ones). 
+* IMPORTANT: Added new plugins for embedded versions: SDL plugins for win/linux (35-40% than the SFML ones) and GLFW plugins for win/linux/osx (~2% faster than SDL ones).
 
 也就是说，在1.2版本比1.1版本要快35%一样，仅仅因为使用了新的插件替代了SFML。不知道SFML在simple与fast的平衡中，是否因为太过强大，功能太过丰富，而导致实现simple的代价过大。
 
-在[features页面](<http://www.sfml-dev.org/features.php> "features页面")  
-上，可以看到，SFML甚至还包含一个网络模块。。。。。
+在[features页面](<http://www.sfml-dev.org/features.php> "features页面">)上，可以看到，SFML甚至还包含一个网络模块。。。。。
 
 不过，SFML用C++结合了上面这么多有用的库，实现那么多功能，还有一堆的其他语言(Python,Ruby,D,C#等）绑定，并且也使用很自由的zlib/png协议，感觉还是值得一试的。特别是当对效率没有那么高的要求的时候。。。。。。
 
- 
-
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

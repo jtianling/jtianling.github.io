@@ -22,13 +22,15 @@ author:
   last_name: ''
 ---
 
+Breakpad通过ExceptionHandler类捕获异常。创建实例并配置dump路径与回调函数，即可在程序崩溃时生成dump文件用于调试。
+
+<!-- more -->
+
 Breakpad 使用方法理解文档.
 
 只需要在任何异常前正常创建一个ExceptionHandler类的成员函数,就可以完成异常的捕捉及dump.
 
 在创建ExceptionHandler时,第一参数为宽字符表示的dump存储路径,第二参数为dump前客户需要运行的程序,程序原型应该为
-
-
 
 ```cpp
 bool (*FilterCallback)(void* context, 
@@ -36,13 +38,9 @@ bool (*FilterCallback)(void* context,
                        MDRawAssertionInfo* assertion);
 ```
 
-
 程序返回false将不产生dump,返回true才正常dump.
 
-
 第三参数为客户Dump后需要运行的程序,程序原型为:
-
-
 
 ```cpp
 bool (*MinidumpCallback)(const wchar_t* dump_path,
@@ -53,54 +51,48 @@ bool (*MinidumpCallback)(const wchar_t* dump_path,
                          bool succeeded);
 ```
 
-
 程序返回true表示异常全部被控制,程序正常运行,返回false,程序仍然保留异常,以方便交给其他程序处理,比如各平台的原生异常处理系统.
-
 
 HandlerType:确定需要控制的异常类型,HANDLER_ALL时,控制所有类型的异常.
 
-
 ExceptionHandler有两个版本的构造函数:
 
- ExceptionHandler(const wstring& dump_path,
-                   FilterCallback filter,
-                   MinidumpCallback callback,
-                   void* callback_context,
-                   int handler_types);
+```cpp
+ExceptionHandler(const wstring& dump_path,
+                  FilterCallback filter,
+                  MinidumpCallback callback,
+                  void* callback_context,
+                  int handler_types);
 
-
- ExceptionHandler(const wstring& dump_path,
-                   FilterCallback filter,
-                   MinidumpCallback callback,
-                   void* callback_context,
-                   int handler_types,
-                   MINIDUMP_TYPE dump_type,
-                   const wchar_t* pipe_name,
-                   const CustomClientInfo* custom_info);
-
-
+ExceptionHandler(const wstring& dump_path,
+                  FilterCallback filter,
+                  MinidumpCallback callback,
+                  void* callback_context,
+                  int handler_types,
+                  MINIDUMP_TYPE dump_type,
+                  const wchar_t* pipe_name,
+                  const CustomClientInfo* custom_info);
+```
 
 dump_path()用来返回dump的路径.
 
 Set_dump_path(const wstring &dump_path)用来设置路径.
-
 
 WriteMinidump()
 
 WriteMinidump(const wstring &dump_path,
                     MinidumpCallback callback, void* callback_context);立即写dump文件.
 
-
 WriteMinidumpForException(EXCEPTION_POINTERS* exinfo)用用户提供的异常信息立即写dump文件.
-
 
 get_requesting_thread_id()得到出现异常或者调用WriteMinidump()函数的线程ＩＤ．
 
-
+```cpp
 bool ExceptionHandler::WriteMinidumpWithException(
     DWORD requesting_thread_id,
     EXCEPTION_POINTERS* exinfo,
     MDRawAssertionInfo* assertion)
+```
 
 为最主要的函数,具体的写下Dump文件.
 
@@ -118,7 +110,6 @@ typedef struct _EXCEPTION_RECORD {
 
 typedef EXCEPTION_RECORD *PEXCEPTION_RECORD;
 ```
-
 
 ```c
 typedef struct _CONTEXT {
@@ -210,14 +201,12 @@ typedef struct _CONTEXT {
 typedef CONTEXT *PCONTEXT;
 ```
 
-
 ```c
 typedef struct _EXCEPTION_POINTERS {
     PEXCEPTION_RECORD ExceptionRecord;
     PCONTEXT ContextRecord;
 } EXCEPTION_POINTERS, *PEXCEPTION_POINTERS;
 ```
-
 
 ```c
 typedef struct {
@@ -234,7 +223,6 @@ typedef struct {
 } MDRawAssertionInfo;
 ```
 
-
 实现上:当FilterCallback(即ExceptionHandler构造函数的第二参数)不为空的时候,首先用WriteMinidumpWithException函数的原参数直接调用FilterCallback,(参数类型一致),完成用户在调用Dump先需要做的工作.
 
 然后通过IsOutOfProcess（）成员函数判断是否此时是Exception_handler自身来进行dump,详细内容,参看 <Breakpad在进程中完成dump的流程文字描述>
@@ -242,7 +230,6 @@ typedef struct {
 当IsOutOfProcess()返回真的时候,应该表示此时处理是在进程外发生的,也就是利用crash_generation的client,server的机制完成,不影响原进程的运行.
 
 此时调用CrashGenerationClient类型的成员变量的RequestDump函数完成dump.
-
 
 当返回假的时候,此时先判断是否从dbghelp.dll中正确的import了MiniDumpWriteDump函数,然后创建了一个新的可写的文件.
 
@@ -256,7 +243,6 @@ _set_invalid_parameter_handler(ExceptionHandler::HandleInvalidParameter);
 
 _set_purecall_handler(ExceptionHandler::HandlePureVirtualCall);
 ```
-
 
 即, HandleInvalidParameter, HandlePureVirtualCall中添加的信息.
 
@@ -278,7 +264,6 @@ _snwprintf_s(reinterpret_cast<wchar_t*>(assertion.file),
 assertion.line = line;
 assertion.type = MD_ASSERTION_INFO_TYPE_INVALID_PARAMETER;
 ```
-
 
 分别为调用无效参数的表达式,函数名,文件名,行号,最后设定异常类型为
 

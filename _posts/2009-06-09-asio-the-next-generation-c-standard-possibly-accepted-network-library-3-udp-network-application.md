@@ -23,13 +23,17 @@ author:
   last_name: ''
 ---
 
+本文通过UDP示例对比了ASIO与传统Socket API。作者指出，ASIO在同步编程中优势不大，但在异步服务器端能显著简化开发，体现其价值。
+
+<!-- more -->
+
 # ASIO—下一代C++标准可能接纳的网络库（3）UDP网络应用
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-# 一、   综述
+# 一、 综述
 
 接着前面
 
@@ -39,11 +43,9 @@ author:
 
 继续，讲了简单应用，讲了TCP,自然而然是UDP了。其实个人感觉UDP与TCP的接口假如经过封装是可以做到接口比较一致的，但是遗憾的是asio没有遵循这样的接口设计方案。
 
-      
+# 二、 Tutorial
 
-# 二、   Tutorial
-
-## 1.      Daytime.4 - A synchronous UDP daytime client（同步UDP daytime客户端）
+## 1. Daytime.4 - A synchronous UDP daytime client（同步UDP daytime客户端）
 
 还是先看看普通的socket API的情况：
 
@@ -149,9 +151,7 @@ int main(int argc, char* argv[])
 
 甚至没有感觉到有任何简化。一大堆的resolver(为了适应ipv6)，一大堆的array,其实并不优雅，在很简单的程序中，会发现，似乎asio就是简单的为socket进行了非常浅的封装一样，你还得了解一大堆本来可以不了解的东西，asio内在的高效率，异步啊，用的那些模式啊，都看不到。。。。。。。。。。呵呵， 也许socket API本来就是Make the simple things simple吧，而asio就是为了应付绝对复杂的情况而做出相对复杂设计的吧。这样的例子没有任何说服力能让人放弃socket API而使用asio。。。。。。。不知道asio的文档中加入这些干啥。。。仅仅为了说明？-_-!
 
- 
-
-## 2.      A synchronous UDP daytime server（同步的UDP daytime服务器）
+## 2. A synchronous UDP daytime server（同步的UDP daytime服务器）
 
 还是先来个原始的socket API写的版本：
 
@@ -277,14 +277,10 @@ int main()
 
 我甚至觉得在asio中写服务器比写客户端更加简单-_-!也许一开始asio就是为了写高性能服务器而设计的，所以导致写客户端相对那么麻烦，但是写服务器却又简单很多吧。不过，熟悉socket API对于使用asio也是有意义的，比如这里的receive_from,send_to不过是对应的socket API函数换汤不换药的版本而已，使用起来除了参数传递方式上的变化，最后效果一致。
 
- 
-
-## 3.      An asynchronous UDP daytime server(异步 UDP daytime 服务器)
+## 3. An asynchronous UDP daytime server(异步 UDP daytime 服务器)
 
 又是有点意思了的程序了，asio的命名就是表示异步的io，所以展现异步的程序才能体现asio的实力及其简化了底层操作的本事。TCP的应用是这样，这里也不例外。
 
-不过出于UDP应用相对于TCP应用本身的简单性，所以这个示例程序比对应的TCP版本就要简化很多，只是，不知道asio的UDP实现了更丰富的UDP特性没有，比如超时重发等机制。。。。
-
- 
+不过出于UDP应用相对于TCP应用本身的简单性，所以这个示例程序比对应的TCP版本就要简化很多，只是，不知道asio的UDP实现了更丰富的UDP特性没有，比如超时重发等机制。。。。 
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

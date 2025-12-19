@@ -21,7 +21,11 @@ author:
   last_name: ''
 ---
 
-# C++中的成员函数调用原理及this指针的传递方式  
+本文通过反汇编代码，揭示了C++成员函数调用时，编译器通过ECX寄存器隐式传递this指针的机制。
+
+<!-- more -->
+
+# C++中的成员函数调用原理及this指针的传递方式
 
 **write by 九天雁翎(JTianLing) -- www.jtianling.com**
 

@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+作者吐槽迅雷，即使付费会员仍有无法屏蔽的广告，加上其流氓行为，让人虽常用却心生反感。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
 [**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)

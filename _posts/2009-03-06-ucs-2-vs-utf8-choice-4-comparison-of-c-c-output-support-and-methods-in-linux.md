@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+本文通过代码示例说明，在Linux下C/C++可直接输出UTF-8字符串，无需特殊设置，使用非常方便。
+
+<!-- more -->
+
 # UCS-2与UTF8之间的选择（4）--linux中各编码字符串的C/C++输出支持及方式比较
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
@@ -31,8 +35,6 @@ author:
 继续研究UTF8和UCS-2的选择，这里继续使用上一次提到的函数。
 
 鉴于大家不一定能找到下载的地址，而源文件是允许自由散发的，我将代码打包，提供给大家下载，下载地址还是在[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>) 中，名字为unicodeorg.rar，
-
- 
 
 昨天看了下Windows下的方法，这次研究Linux下的：
 
@@ -104,11 +106,7 @@ e4 b8 ad e6 96 87 0 0 0 0 0 0
 
 中文
 
- 
-
 这里和Windows中不同的就是输出UTF-8的字符串在Linux下甚至不需要通过setlocale设置环境变量，这样对于C++的输出估计还是有好处的：），起码不会去影响到C++的正常输出。但是，对于宽字节的输出没有办法成功，就算你像在Windows中设置locale也没有用，道理也很简单，因为Linux下的locale我就是设置成UTF-8的-_-!
-
- 
 
 ```cpp
  1 #include <stdio.h>  
@@ -167,8 +165,6 @@ e4 b8 ad e6 96 87 0 0 0 0 0 0
 54
 ```
 
- 
-
 直接可以获得
 
 e4 b8 ad e6 96 87 0 0 0 0 0 0
@@ -180,7 +176,5 @@ e4 b8 ad e6 96 87 0 0 0 0 0 0
 这样的情况下，在Linux下同时在C 和 C++中使用UTF-8输出中文也不会有任何冲突，这个优势比在Windows下大多了。
 
 另外，有个很重要的问题需要提及的就是，目前我使用的Ubuntu8.04桌面版，不支持全Unicode的编码，似乎中文是没有什么问题，但是以前那几个太玄经的字符是输出不了的，可能其Unicode的支持只到到BMP这一层，这点比Windows稍逊色。以前测试过，的确是输出不了，但是源代码已经被覆盖了，大家可以自己去确定一下：）
-
- 
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

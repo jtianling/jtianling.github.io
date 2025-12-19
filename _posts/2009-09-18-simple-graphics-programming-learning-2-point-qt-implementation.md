@@ -1,6 +1,12 @@
 ---
 layout: post
-title: "简单图形编程的学习（2）---点 (Qt实现)"
+title: "简单图形编程的学习（2）---
+
+文章讲解如何用Qt的QPainter画点，并通过代码示例实现了随机点、雪花和星空等动画效果。
+
+<!-- more -->
+
+点 (Qt实现)"
 categories:
 - "游戏开发"
 tags:
@@ -27,7 +33,7 @@ author:
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-# 一、   画点
+# 一、画点
 
 在Qt中画点的函数是QPainter的drawPoint函数，还是放在QPainter体现了Qt决心将所有的绘图指令放在一个对象中。（除了OpenGL）既然如此，使用方法上和drawText也就差不太多了。
 
@@ -144,7 +150,7 @@ void PointWidget::paintEvent(QPaintEvent *event)
 
 知道这些以后，剩下的也就是一个qrand函数+ drawPoint函数的理解量了。这里不放截图了，这么简单的东西放个截图我都觉得没有意思。
 
-## 1.      老电视机雪花点的效果：
+## 1.老电视机雪花点的效果：
 
 Main.cpp中用
 
@@ -159,7 +165,7 @@ w.setPalette(palette);
 
 老电视机雪花效果中每次都需要擦除重绘避免点的叠加所以一下语句注释掉
 
-//    w.setAttribute(Qt::WA_OpaquePaintEvent);
+// w.setAttribute(Qt::WA_OpaquePaintEvent);
 
 paintEvent实现：
 
@@ -184,7 +190,7 @@ void PointWidget::paintEvent(QPaintEvent *event)
 
 完整代码就不贴了。
 
-## 2.      移动的星空：
+## 2.移动的星空：
 
 主要实现代码：
 
@@ -229,7 +235,7 @@ void PointWidget::paintEvent(QPaintEvent *event)
 
 思路还是与以前的一样，无非是西安初始化一些点，然后改变其x坐标，但是要说明的是，Qt为我们简化了很多操作，首先，默认情况下，会擦出每一帧，这样就不用我们手动通过覆盖上一个点的方式去完成，另外，默认使用了双缓冲方式显示图片（与上个特性其实是统一的。。。。）完全不闪。。。。
 
-# 二、   小结
+# 二、小结
 
 一个个简单的点就能够构成的效果比本文展示的要多的多，参考以前的文章，因为笔者对Qt的熟悉程度有限，重新实现程序费时费力，并且也不太适应目前所用的QtCreator工具（主要是vi功能弱的吐血，Eclipse的vi模拟就够差的了，QtCreator虽然原生就带，但是几乎还不如不用，还是VS中的ViEmu强大），程序的其他效果及截图也请参考此系列相关其他文章了：
 

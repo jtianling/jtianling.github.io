@@ -20,6 +20,10 @@ author:
   last_name: ''
 ---
 
+作者回顾编程语言的兴衰，从C++转向学习Java。他反思自己广而不精的学习之路，虽有迷茫，但对新知识仍充满好奇，并以此标记职业新起点。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
 [**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)

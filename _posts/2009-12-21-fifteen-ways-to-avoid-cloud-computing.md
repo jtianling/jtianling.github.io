@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+本文通过16个判断标准，教你识别伪云计算，看穿厂商的市场炒作。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
 [**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)

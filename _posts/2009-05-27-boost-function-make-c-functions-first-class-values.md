@@ -21,19 +21,21 @@ author:
   last_name: ''
 ---
 
-**boost::function ，让C++的函数也能当第一类值使用**
+boost::function解决了C++中函数、仿函数等类型不一的问题，将其统一封装，使它们能像普通变量一样存储和传递。
+
+<!-- more -->
+
+**boost::function，让C++的函数也能当第一类值使用**
 
 [**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-最近在学习Python比较特殊的语法的时候，顺便也研究了一下C++中的类似实现。。。本文中的一些内容也可以参考前几天写的文章《[多想追求简洁的极致，但是无奈的学习C++中for_each的应用](<http://www.jtianling.com/archive/2009/05/15/4187209.aspx>)
-
-》《[其实C++比Python更需要lambda语法，可惜没有。。。。](<http://www.jtianling.com/archive/2009/05/21/4205134.aspx>)》最后发现类似的实现都要通过boost,并且还是比较扭曲的通过，然后，起码还算是实现那么回事了。然后前天工作正好属于配合工作，稍微有点时间，大致的看了下《Beyond the C++ Standard Library: An Introduction to Boost》，加深了一些理解，这里感叹一下，其起到的引导性作用还是不错的，可以有个大概的概念了以后再看boost的文档，那样更加事半功倍，虽然boost文档已经非常的好了，但是毕竟文档还是不同于教学。
+最近在学习Python比较特殊的语法的时候，顺便也研究了一下C++中的类似实现。。。本文中的一些内容也可以参考前几天写的文章《[多想追求简洁的极致，但是无奈的学习C++中for_each的应用](<http://www.jtianling.com/archive/2009/05/15/4187209.aspx>)》《[其实C++比Python更需要lambda语法，可惜没有。。。。](<http://www.jtianling.com/archive/2009/05/21/4205134.aspx>)》最后发现类似的实现都要通过boost,并且还是比较扭曲的通过，然后，起码还算是实现那么回事了。然后前天工作正好属于配合工作，稍微有点时间，大致的看了下《Beyond the C++ Standard Library: An Introduction to Boost》，加深了一些理解，这里感叹一下，其起到的引导性作用还是不错的，可以有个大概的概念了以后再看boost的文档，那样更加事半功倍，虽然boost文档已经非常的好了，但是毕竟文档还是不同于教学。
 
 当然，就算这个库真的进了C++09标准了其实也还是没有真的将函数作为第一类值那样简洁高效。。。。但是BS的原则嘛。。。尽量不扩张语言功能，而是去用库来实现。。。直到其没有办法，D&E上其认为C++中不需要原生的并发支持，用库就好了（虽然其实连标准库也没有）的言语还历历在目，09标准中却已基本通过增加并发的内存模型了。也不知道为啥。。。其语言只要符合需要就好，不成为特性的拼凑的思想，很显然让reflect，closure这样的特性也没有办法进入09标准了。。。无奈一下。
 
-       简单描述一下问题：在函数是第一类值的语言中，你可以保存，动态创建及传递一个函数，就像是一个普通的整数一样。比如python,lua中你就能这样。但是在C++这样的语言中，你需要用函数指针来保存一个普通的函数，然后用类对象来保存函数对象。
+简单描述一下问题：在函数是第一类值的语言中，你可以保存，动态创建及传递一个函数，就像是一个普通的整数一样。比如python,lua中你就能这样。但是在C++这样的语言中，你需要用函数指针来保存一个普通的函数，然后用类对象来保存函数对象。
 
 参考《[其实C++比Python更需要lambda语法，可惜没有。。。。](<http://www.jtianling.com/archive/2009/05/21/4205134.aspx>)》一文中的例子比如在Python中，你可以这样：
 
@@ -138,9 +140,9 @@ int (__cdecl*)(int,int)
 class add2
 3
 class boost::lambda::lambda_functor<class boost::lambda::lambda_functor_base<cl
-ss boost::lambda::arithmetic_action<class boost::lambda::plus_action>,class boo
+ass boost::lambda::arithmetic_action<class boost::lambda::plus_action>,class boo
 t::tuples::tuple<class boost::lambda::lambda_functor<struct boost::lambda::plac
-holder<1> >,class boost::lambda::lambda_functor<struct boost::lambda::placehold
+eholder<1> >,class boost::lambda::lambda_functor<struct boost::lambda::placehold
 r<2> >,struct boost::tuples::null_type,struct boost::tuples::null_type,struct b
 ost::tuples::null_type,struct boost::tuples::null_type,struct boost::tuples::nu
 l_type,struct boost::tuples::null_type,struct boost::tuples::null_type,struct b

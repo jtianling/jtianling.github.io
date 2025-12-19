@@ -21,262 +21,168 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+本文分析了SDL的跨平台渲染机制。它借助GDI设置OpenGL，并用GDI实现2D渲染，其核心价值在于为OpenGL提供跨平台框架。
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+<!-- more -->
 
-    这是SDL中我最关心的模块，即SDL是怎么抽象渲染模块的接口然后实现跨平台的，已经在DirectX/OpenGL中绘制图形的。  
-    本文与前面两篇使用不同的描述方式，前面兩篇文章以结构性的铺开分析为主，本文决定使用流程分析。
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
+
+[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
+
+这是SDL中我最关心的模块，即SDL是怎么抽象渲染模块的接口然后实现跨平台的，已经在DirectX/OpenGL中绘制图形的。本文与前面两篇使用不同的描述方式，前面兩篇文章以结构性的铺开分析为主，本文决定使用流程分析。
 
 ## SDL+OpenGL
 
-    对于OpenGL版本，由于主要的绘制都是由OpenGL的API来完成，与SDL关系并不大，所以只看SDL_SetVideoMode  
-部分。  
-    在写[上一篇文章](<http://www.jtianling.com/archive/2010/07/26/5765571.aspx> "上一篇文章")  
-的时候，我很惊讶的发现，即使是在SDL使用了DirectX版本的video driver后，仍然可以使用OpenGL来完成渲染。关键点在SDL_SetVideoMode  
-函数上，先看此函数。  
-使用OpenGL时，用以下方式调用此函数：  
-SDL_Surface* screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16, SDL_OPENGL);   
-即最后一个参数为SDL_OPENGL。  
-此时，最后使用DirectX来渲染还是使用OpenGL来渲染，最大的不同自然在于surface的创建，  
-在SDL_SetVideoMode中会有这么一句：  
-mode = video->SetVideoMode(this, prev_mode,video_w,video_h,video_bpp,flags);  
-即使用当前video driver来设置video mode，由于我已经选中了directX的video driver了，所以实际调用的是：  
+对于OpenGL版本，由于主要的绘制都是由OpenGL的API来完成，与SDL关系并不大，所以只看SDL_SetVideoMode部分。在写[上一篇文章](<http://www.jtianling.com/archive/2010/07/26/5765571.aspx> "上一篇文章")的时候，我很惊讶的发现，即使是在SDL使用了DirectX版本的video driver后，仍然可以使用OpenGL来完成渲染。关键点在SDL_SetVideoMode函数上，先看此函数。使用OpenGL时，用以下方式调用此函数：
+SDL_Surface* screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16, SDL_OPENGL);
+即最后一个参数为SDL_OPENGL。此时，最后使用DirectX来渲染还是使用OpenGL来渲染，最大的不同自然在于surface的创建，在SDL_SetVideoMode中会有这么一句：
+mode = video->SetVideoMode(this, prev_mode,video_w,video_h,video_bpp,flags);
+即使用当前video driver来设置video mode，由于我已经选中了directX的video driver了，所以实际调用的是：
 
 ```c
 SDL_Surface *DX5_SetVideoMode(_THIS, SDL_Surface *current,
                             int width, int height, int bpp, Uint32 flags)
 ```
 
-此函数中，有这么一段代码：  
+此函数中，有这么一段代码：
 
 ```c
 /*
 If we are setting a GL mode, use GDI, not DirectX (yuck)
 */
 
-if
-( flags & SDL_OPENGL ) {
+if ( flags & SDL_OPENGL ) {
         Uint32 Rmask, Gmask, Bmask;
 
         /*
  Recalculate the bitmasks if necessary
 */
 
-        if
-( bpp == current->format->BitsPerPixel ) {
+        if ( bpp == current->format->BitsPerPixel ) {
             video = current;
-        } else
-{
-            switch
-(bpp) {
-                case
- 15
-:
-                case
- 16
-:
-                    if
-( 0
-/* 
-DIB_SussScreenDepth() == 15
-*/
-) {
+        } else {
+            switch (bpp) {
+                case 15:
+                case 16:
+                    if ( 0 /* DIB_SussScreenDepth() == 15 */ ) {
                         /*
  5-5-5
 */
 
-                        Rmask = 0x00007c00
-;
-                        Gmask = 0x000003e0
-;
-                        Bmask = 0x0000001f
-;
-                    } else
-{
+                        Rmask = 0x00007c00;
+                        Gmask = 0x000003e0;
+                        Bmask = 0x0000001f;
+                    } else {
                         /*
  5-6-5
 */
 
-                        Rmask = 0x0000f800
-;
-                        Gmask = 0x000007e0
-;
-                        Bmask = 0x0000001f
-;
+                        Rmask = 0x0000f800;
+                        Gmask = 0x000007e0;
+                        Bmask = 0x0000001f;
                     }
-                    break
-;
-                case
- 24
-:
-                case
- 32
-:
+                    break;
+                case 24:
+                case 32:
                     /*
  GDI defined as 8-8-8
 */
 
-                    Rmask = 0x00ff0000
-;
-                    Gmask = 0x0000ff00
-;
-                    Bmask = 0x000000ff
-;
-                    break
-;
-                default
-:
-                    Rmask = 0x00000000
-;
-                    Gmask = 0x00000000
-;
-                    Bmask = 0x00000000
-;
-                    break
-;
+                    Rmask = 0x00ff0000;
+                    Gmask = 0x0000ff00;
+                    Bmask = 0x000000ff;
+                    break;
+                default:
+                    Rmask = 0x00000000;
+                    Gmask = 0x00000000;
+                    Bmask = 0x00000000;
+                    break;
 
             }
-            video = SDL_CreateRGBSurface(SDL_SWSURFACE, 0
-, 0
-, bpp,
-                                         Rmask, Gmask, Bmask, 0
-);
-            if
-( video == NULL
-) {
+            video = SDL_CreateRGBSurface(SDL_SWSURFACE, 0, 0, bpp,
+                                         Rmask, Gmask, Bmask, 0);
+            if ( video == NULL ) {
                 SDL_OutOfMemory();
-                return
-(NULL
-);
+                return (NULL);
             }
         }
 ```
 
-看作者的注释：  
+看作者的注释：
 ```c
 /*
  If we are setting a GL mode, use GDI, not DirectX (yuck)
 */
 ```
 
-啥都明白了，原来即使是使用DirectX的video driver,SDL会在SetVideoMode的时候判断是否是使用OpenGL，是的话还是改用了GDI。  
-然后，WIN_GL_SetupWindow函数中，完成了在Windows下使用OpenGL需要设定的内容。具体的内容可以参考《[Win32下的OpenGL编程必须步骤](<http://www.jtianling.com/archive/2009/09/28/4602961.aspx>)  
-》。
+啥都明白了，原来即使是使用DirectX的video driver,SDL会在SetVideoMode的时候判断是否是使用OpenGL，是的话还是改用了GDI。然后，WIN_GL_SetupWindow函数中，完成了在Windows下使用OpenGL需要设定的内容。具体的内容可以参考《[Win32下的OpenGL编程必须步骤](<http://www.jtianling.com/archive/2009/09/28/4602961.aspx>)》。
 
-既然使用DirectX版本video driver的SDL最后其实也是使用GDI版本的surface,这里回头来看看GDI版本创建surface的步骤。  
-在GDI版本的video driver实际调用的是DIB_SetVideoMode函数来设定VideMode。  
+既然使用DirectX版本video driver的SDL最后其实也是使用GDI版本的surface,这里回头来看看GDI版本创建surface的步骤。在GDI版本的video driver实际调用的是DIB_SetVideoMode函数来设定VideMode。
 
 ```c
 /*
  Recalculate the bitmasks if necessary
 */
 
-if
-( bpp == current->format->BitsPerPixel ) {
+if ( bpp == current->format->BitsPerPixel ) {
         video = current;
-    } else
-{
-        switch
-(bpp) {
-            case
- 15
-:
-            case
- 16
-:
-                if
-( DIB_SussScreenDepth() == 15
-) {
+    } else {
+        switch (bpp) {
+            case 15:
+            case 16:
+                if ( DIB_SussScreenDepth() == 15 ) {
                     /*
  5-5-5
 */
 
-                    Rmask = 0x00007c00
-;
-                    Gmask = 0x000003e0
-;
-                    Bmask = 0x0000001f
-;
+                    Rmask = 0x00007c00;
+                    Gmask = 0x000003e0;
+                    Bmask = 0x0000001f;
 
-                } else
-{
+                } else {
                     /*
  5-6-5
 */
 
-                    Rmask = 0x0000f800
-;
-                    Gmask = 0x000007e0
-;
-                    Bmask = 0x0000001f
-;
+                    Rmask = 0x0000f800;
+                    Gmask = 0x000007e0;
+                    Bmask = 0x0000001f;
 
                 }
-                break
-;
-            case
- 24
-:
-            case
- 32
-:
+                break;
+            case 24:
+            case 32:
                 /*
  GDI defined as 8-8-8
 */
 
-                Rmask = 0x00ff0000
-;
-                Gmask = 0x0000ff00
-;
-                Bmask = 0x000000ff
-;
-                break
-;
-            default
-:
-                Rmask = 0x00000000
-;
-                Gmask = 0x00000000
-;
-                Bmask = 0x00000000
-;
-                break
-;
+                Rmask = 0x00ff0000;
+                Gmask = 0x0000ff00;
+                Bmask = 0x000000ff;
+                break;
+            default:
+                Rmask = 0x00000000;
+                Gmask = 0x00000000;
+                Bmask = 0x00000000;
+                break;
 
         }
         video = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                    0
-, 0
-, bpp, Rmask, Gmask, Bmask, 0
-);
-        if
-( video == NULL
-) {
+                    0, 0, bpp, Rmask, Gmask, Bmask, 0);
+        if ( video == NULL ) {
             SDL_OutOfMemory();
-            return
-(NULL
-);
+            return (NULL);
         }
     }
 ```
 
-其实与DX5_SetVideoMode中创建Surface的代码一模一样，DX5_SetVideoMode函数中所谓的使用GDI的surface其实指的就是拷贝一份GDI创建surface的代码过去吧。。。。。接下来，同样的调用WIN_GL_SetupWindow完成Windows下设置OpenGL使用的必要操作。  
-看完相关源代码后，发现一切还是比较简单。
+其实与DX5_SetVideoMode中创建Surface的代码一模一样，DX5_SetVideoMode函数中所谓的使用GDI的surface其实指的就是拷贝一份GDI创建surface的代码过去吧。。。。。接下来，同样的调用WIN_GL_SetupWindow完成Windows下设置OpenGL使用的必要操作。看完相关源代码后，发现一切还是比较简单。
 
 ## SDL GDI video driver
 
-    看完了SDL+OpenGL，这里了解一下SDL在使用GDI video driver时，自己附带的渲染功能。至于DirectX部分我就不看了，毕竟我对DirectX了解的不算太多，而且SDL用的DirectX版本实在太老了，但是，其实应该也不难懂，使用DDraw的方法其实和SDL的surface差不多。  
-SDL_LoadBMP其实是这样定义的一个宏：  
-#define SDL_LoadBMP(file)    SDL_LoadBMP_RW(SDL_RWFromFile(file, "rb"), 1)  
-SDL用SDL_Surface * SDL_LoadBMP_RW (SDL_RWops *src, int freesrc)这个函数来完成自己的从二进制数据中对BMP的解析，没有使用Windows提供的API（为了不同平台使用一套代码），加上BMP图形的数据解析起来还是比较简单的。  
-在  
-用类似  
- SDL_Surface *screen = SDL_SetVideoMode(640 , 480 , 16 , SDL_DOUBLEBUF);  
-的代码创建surface的时候，（即不是使用OpenGL的时候）  
-在SetVideoMode的时候，SDL用以下代码来完成offscreen buffer：（这也是我第一次了解怎么使用Windows API来创建offscreen buffer）  
+看完了SDL+OpenGL，这里了解一下SDL在使用GDI video driver时，自己附带的渲染功能。至于DirectX部分我就不看了，毕竟我对DirectX了解的不算太多，而且SDL用的DirectX版本实在太老了，但是，其实应该也不难懂，使用DDraw的方法其实和SDL的surface差不多。SDL_LoadBMP其实是这样定义的一个宏：
+#define SDL_LoadBMP(file)   SDL_LoadBMP_RW(SDL_RWFromFile(file, "rb"), 1)
+SDL用SDL_Surface * SDL_LoadBMP_RW (SDL_RWops *src, int freesrc)这个函数来完成自己的从二进制数据中对BMP的解析，没有使用Windows提供的API（为了不同平台使用一套代码），加上BMP图形的数据解析起来还是比较简单的。在用类似 SDL_Surface *screen = SDL_SetVideoMode(640 , 480 , 16 , SDL_DOUBLEBUF);的代码创建surface的时候，（即不是使用OpenGL的时候）在SetVideoMode的时候，SDL用以下代码来完成offscreen buffer：（这也是我第一次了解怎么使用Windows API来创建offscreen buffer）
 
 ```c
 /*
@@ -285,24 +191,15 @@ SDL用SDL_Surface * SDL_LoadBMP_RW (SDL_RWops *src, int freesrc)这个函数来�
 
 hdc = GetDC(SDL_Window);
 screen_bmp = CreateDIBSection(hdc, binfo, DIB_RGB_COLORS,
-                    (void
-**)(&video->pixels), NULL
-, 0
-);
+                    (void **)(&video->pixels), NULL, 0);
 ReleaseDC(SDL_Window, hdc);
 SDL_free(binfo);
-if
-( screen_bmp == NULL
-) {
-            if
-( video != current ) {
+if ( screen_bmp == NULL ) {
+            if ( video != current ) {
                 SDL_FreeSurface(video);
             }
-            SDL_SetError("Couldn't create DIB section"
-);
-            return
-(NULL
-);
+            SDL_SetError("Couldn't create DIB section");
+            return (NULL);
         }
 ```
 
@@ -310,32 +207,23 @@ if
 
 CreateDIBSection Function
 
-The **CreateDIBSection**  
-function creates a DIB that applications can write to directly. The function gives you a pointer to the location of the bitmap bit values. You can supply a handle to a file-mapping object that the function will use to create the bitmap, or you can let the system allocate the memory for the bitmap.
+The **CreateDIBSection** function creates a DIB that applications can write to directly. The function gives you a pointer to the location of the bitmap bit values. You can supply a handle to a file-mapping object that the function will use to create the bitmap, or you can let the system allocate the memory for the bitmap.
 
-按API的意思，其实这也不是原生用于offscreen buffer的，仅仅是一个可以直接写bitmap的内存。  
-在最后flip的时候，下面这段函数很关键：  
+按API的意思，其实这也不是原生用于offscreen buffer的，仅仅是一个可以直接写bitmap的内存。在最后flip的时候，下面这段函数很关键：
 
 ```c
-static
- void
- DIB_NormalUpdate(_THIS, int
- numrects, SDL_Rect *rects)
+static void DIB_NormalUpdate(_THIS, int numrects, SDL_Rect *rects)
 {
     HDC hdc, mdc;
-    int
- i;
+    int i;
 
     hdc = GetDC(SDL_Window);
-    if
-( screen_pal ) {
+    if ( screen_pal ) {
         SelectPalette(hdc, screen_pal, FALSE);
     }
     mdc = CreateCompatibleDC(hdc);
     SelectObject(mdc, screen_bmp);
-    for
- ( i=0
-; i
+    for ( i=0; i<numrects; ++i ) {
         BitBlt(hdc, rects[i].x, rects[i].y, rects[i].w, rects[i].h,
                     mdc, rects[i].x, rects[i].y, SRCCOPY);
     }
@@ -345,28 +233,16 @@ static
 ```
 
 在这里，使用了
-
-    mdc = CreateCompatibleDC(hdc);  
-    SelectObject(mdc, screen_bmp);
-
+mdc = CreateCompatibleDC(hdc);
+SelectObject(mdc, screen_bmp);
 选择offscreen buffer到新创建的mdc中，然后从新创建的mdc向当前的hdc进行BitBlt，完成flip操作。当然，个人感觉，这种GDI模拟offscreen buffer的操作，在flip的时候还需要进行BitBlt，即使在两个dc间进行BitBlt比从内存到dc的快，但是效率上还是与OpenGL/D3D那种直接支持offscrren buffer的不在一个数量级，那可是直接切换显示不同区域的显存数据而已。
-
- 
 
 SDL源码大概浏览了一遍，没有细看，总的来说，看源码还是挺有帮助的，对于开源软件来说，文档也不能完全的详细说明每一个API的使用，但是对于开源软件，源码就是最好的文档。就此结束SDL的源码阅读过程，下一步，也许是略看Orx源码的时候了。。。。。。。。。。。。。。。。。。。。。。
 
- 
-
 ## 总结
 
-基本上，对于游戏来讲，OpenGL的渲染部分其实并没有太大价值，虽然其接口的确非常简单，（也许不是游戏可以考虑使用一下）但是，作为一个跨平台的库，SDL还是有其独特的价值，SDL提供了一个跨平台的窗口管理模块，事件系统，多线程模块，声音模块，并且能够让你很方便的使用OpenGL渲染与其配置，基本上可以看做是一个非常强大并且完整的OpenGL使用环境。就像glut/free glut曾经想要做到的那样，只不过SDL比其走的更远而已。类似的库还有[GLFW](<http://www.jtianling.com/archive/2010/07/15/5738421.aspx>)  
-，完成的其实也不错。对于只想好好的关心渲染部分，对其他跨平台的脏活累活不感兴趣的，SDL算是不错的选择。
-
- 
-
- 
+基本上，对于游戏来讲，OpenGL的渲染部分其实并没有太大价值，虽然其接口的确非常简单，（也许不是游戏可以考虑使用一下）但是，作为一个跨平台的库，SDL还是有其独特的价值，SDL提供了一个跨平台的窗口管理模块，事件系统，多线程模块，声音模块，并且能够让你很方便的使用OpenGL渲染与其配置，基本上可以看做是一个非常强大并且完整的OpenGL使用环境。就像glut/free glut曾经想要做到的那样，只不过SDL比其走的更远而已。类似的库还有[GLFW](<http://www.jtianling.com/archive/2010/07/15/5738421.aspx>)，完成的其实也不错。对于只想好好的关心渲染部分，对其他跨平台的脏活累活不感兴趣的，SDL算是不错的选择。
 
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

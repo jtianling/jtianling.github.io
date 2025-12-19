@@ -22,9 +22,13 @@ author:
   last_name: ''
 ---
 
+本文系列基于毕业论文，详细阐述了在Windows中实现多鼠标输入的技术方法与应用实践。
+
+<!-- more -->
+
 Technorati 标签: [Windows](<http://technorati.com/tags/Windows>),[MultiPoint](<http://technorati.com/tags/MultiPoint>),[多鼠标](<http://technorati.com/tags/%e5%a4%9a%e9%bc%a0%e6%a0%87>),[多指针输入](<http://technorati.com/tags/%e5%a4%9a%e6%8c%87%e9%92%88%e8%be%93%e5%85%a5>),[SDG](<http://technorati.com/tags/SDG>),[Mouse](<http://technorati.com/tags/Mouse>),[RawInput](<http://technorati.com/tags/RawInput>)
 
-首先要说的是，此文的主要内容都来自本人 在 湖南大学 郑善贤 老师指导下写的 毕业论文
+首先要说的是，此文的主要内容都来自本人在湖南大学郑善贤老师指导下写的毕业论文
 
 可以在此<http://groups.google.com/group/Single-Display-Groupware>找到我参考的英文资料，也可以在此讨论相关问题。
 

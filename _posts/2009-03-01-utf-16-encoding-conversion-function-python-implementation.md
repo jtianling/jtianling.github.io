@@ -22,17 +22,19 @@ author:
   last_name: ''
 ---
 
+这篇文章用Python实现了一个函数，能将复杂的Unicode字符编码成UTF-16格式，并详细解释了其中的转换原理。
+
+<!-- more -->
+
 # UTF-16的编码转换函数（Python实现）
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
+[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
-
- 
+[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 此函数用于将Unicode的编码用UTF-16编码方式表示出来，由于Unicode超过0xFFFF的编码需要用两个16bit联合来表示，所以看起来就没有0xFFFF以下那么一一对应看起来直观。为了使用方便，实现此函数。
 
-其函数实现算法来自[《UTF-16/UCS-2》](<http://en.wikipedia.org/wiki/UTF-16>)
+其函数实现算法来自[《UTF-16/UCS-2》](http://en.wikipedia.org/wiki/UTF-16)
 
 具体算法描述如下：
 
@@ -41,17 +43,17 @@ author:
 The character at code point U+64321 (hexadecimal) is to be encoded in UTF-16. Since it is above U+FFFF, it must be encoded with a surrogate pair, as follows:
 
 ```text
-v  = 0x64321
+v  = 0x64321
 
 v′ = v - 0x10000
 
-   = 0x54321
+   = 0x54321
 
-   = 0101 0100 0011 0010 0001
+   = 0101 0100 0011 0010 0001
 
 vh = 0101010000 // higher 10 bits of v′
 
-vl = 1100100001 // lower  10 bits of v′
+vl = 1100100001 // lower  10 bits of v′
 
 w1 = 0xD800 // the resulting 1st word is initialized with the high bits
 
@@ -59,23 +61,23 @@ w2 = 0xDC00 // the resulting 2nd word is initialized with the low bits
 
 w1 = w1 | vh
 
-   = 1101 1000 0000 0000 |
+   = 1101 1000 0000 0000 |
 
-             01 0101 0000
+             01 0101 0000
 
-   = 1101 1001 0101 0000
+   = 1101 1001 0101 0000
 
-   = 0xD950
+   = 0xD950
 
 w2 = w2 | vl
 
-   = 1101 1100 0000 0000 |
+   = 1101 1100 0000 0000 |
 
-             11 0010 0001
+             11 0010 0001
 
-   = 1101 1111 0010 0001
+   = 1101 1111 0010 0001
 
-   = 0xDF21
+   = 0xDF21
 ```
 
 The correct UTF-16 encoding for this character is thus the following word sequence:
@@ -83,8 +85,6 @@ The correct UTF-16 encoding for this character is thus the following word sequen
 ```text
 0xD950 0xDF21
 ```
-
- 
 
 Python实现如下：
 
@@ -102,11 +102,9 @@ def **EncodeUTF16**(u):
     return w1,w2
 ```
 
- 
-
 强大的Eclipse是我见过的第二个可以直接复制过来就有语法高亮和保持格式的编辑器/IDE，以前我见过的唯一一个就是MS它自己的VS。
 
-用此算法计算[**《U1D300--Tai Xuan Jing****（太玄经）Unicode****编码.pdf****》**](<http://groups.google.com/group/jiutianfile/>) 中前三个字符的数值，获得结果：
+用此算法计算[**《U1D300--Tai Xuan Jing（太玄经）Unicode编码.pdf》**](http://groups.google.com/group/jiutianfile/) 中前三个字符的数值，获得结果：
 
 ```text
 0x1D300
@@ -121,5 +119,4 @@ def **EncodeUTF16**(u):
 
 00000002h: 34 D8 00 DF 34 D8 01 DF 34 D8 02 DF
 
-用UTF-16模式保存后，前面加上了BOM,FF FE用于表示小头机，再换回文本模式你就能看到 “**  
-**
+用UTF-16模式保存后，前面加上了BOM,FF FE用于表示小头机，再换回文本模式你就能看到 "

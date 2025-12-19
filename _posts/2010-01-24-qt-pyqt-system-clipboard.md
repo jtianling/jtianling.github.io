@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+本文介绍在PyQt中用QMimeData操作剪贴板，通过同时设置文本和HTML，实现代码高亮效果的直接粘贴。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
@@ -55,8 +59,8 @@ clipboard.setMimeData(mimeData)
 ```
 
 来设置一个转换过的HTML源码，此时就能直接在Google Document上通过粘贴来得到高亮过的代码了：）  
-但是，在语法文本源代码的地方此时的粘贴就无效了，因为已经没有文本了，经过试验，Qt中不同的数据时相互不影响的，于是再改了一下：  
-  
+但是，在语法文本源代码的地方此时的粘贴就无效了，因为已经没有文本了，经过试验，Qt中不同的数据时相互不影响的，于是再改了一下：
+
 ```python
 def setClipboardMimeToHTML():
     clipboard = QtGui.QApplication.clipboard()
@@ -66,7 +70,7 @@ def setClipboardMimeToHTML():
     clipboard.setMimeData(mimeData)
 ```
 
-哈哈，能够粘贴HTML的地方，显示的就是HTML，只能显示文本的地方，粘贴的即是HTML的源码。好不强大，这也就是最后，你们在 _[“ onekeycodehighlighter"](<http://code.google.com/p/onekeycodehighlighter/>)_ 中实际使用的效果。  
+哈哈，能够粘贴HTML的地方，显示的就是HTML，只能显示文本的地方，粘贴的即是HTML的源码。好不强大，这也就是最后，你们在 _[\" onekeycodehighlighter\"](<http://code.google.com/p/onekeycodehighlighter/>)_ 中实际使用的效果。  
 总之，我是对自己做的这个工具很满意了：）
 
 ## 完整源代码获取说明

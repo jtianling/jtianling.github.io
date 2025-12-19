@@ -20,11 +20,13 @@ author:
   last_name: ''
 ---
 
-几种典型算法的快速比较函数
+介绍一个C++算法性能比较函数，可自动测量多个算法在不同数据规模下的运行时间，并将结果输出到文件，方便直观对比优劣。
 
- 
+<!-- more -->
 
-声明：
+# 几种典型算法的快速比较函数
+
+## 声明：
 
 ```cpp
 //因为这里主要是比较不同算法的实现,所以这里不区分算法及其实现,都称为算法
@@ -52,9 +54,7 @@ typedef void (*pfI)(int);
 void CompareAlgorithmI(const std::vector<pfI> &pfIVec,const std::vector<int>& vec);
 ```
 
- 
-
-实现：
+## 实现：
 
 ```cpp
 void CompareAlgorithmAI(const std::vector<pfAI> &pfAIVec,const std::vector<int>& vec)
@@ -126,9 +126,7 @@ void CompareAlgorithmI(const std::vector<pfI> &pfIVec,const std::vector<int>& ve
 }
 ```
 
- 
-
-实际用法示例如下：
+## 实际用法示例如下：
 
 ```cpp
 int main()
@@ -151,7 +149,5 @@ int main()
    jtianling::CompareAlgorithmAI(pfAIVec, vec);
 }
 ```
-
- 
 
 类似的算法比较函数都可以很容易设计出来，这样在比较几个算法的优劣时就方便多了。

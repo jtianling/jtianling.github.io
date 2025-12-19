@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+作者抱怨搜狗浏览器未经许可自动下载安装，称其为流氓行为并感到非常郁闷。他感叹，为了推广产品不择手段，这反映了国内软件行业令人失望的大环境。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
 [**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)

@@ -26,6 +26,10 @@ author:
   last_name: ''
 ---
 
+本文介绍了为iOS编译Ogre 1.7.2调试版的方法，并提及在iPad上运行时触摸响应缓慢的问题。
+
+<!-- more -->
+
 新版本的Ogre(1.7.2)彻底解决了前面版本关于iOS4的一些问题，但是用SDK编译release版本可以做到WOB，但是假如需要debug版本的Ogre的话，还是得自己编译，用CMake 2.8-3版本，添加OGRE_BUILD_PLATFORM_IPHONE的bool变量，然后勾选ogles，去掉ogl，配置一下freetype库（这最隐蔽，不然会得到一些链接错误），生成后在生成的工程目录运行> ../SDK/iPhone/fix_linker_paths.sh，还特别注意一下需要使用SDK4.1版本编译就行了（老版本似乎会缺少一些新的OGLES扩展）基本上还是比较简单。只是我尝试在ipad上运行时，速度还勉强，但是触摸响应极慢。。。。。。。。难道这就是传说中的display link的触摸响应延迟问题？（Ogre 1.7.2的what't news中提到了一点）
 
 ipad下的截图：
@@ -34,5 +38,4 @@ ipad下的截图：
 
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

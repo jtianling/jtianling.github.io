@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+分享一个Lua函数PrintTable，可将任意表结构格式化输出，方便调试，也能用于序列化和配置。
+
+<!-- more -->
+
 ```lua
 function PrintTable(o, f, b)
     if type(f) ~= "function" and f ~= nil then
@@ -61,16 +65,14 @@ function PrintTable(o, f, b)
 end
 ```
 
-最近因为工作需要,学习了lua,呵呵,挺有意思了,甚至让我萌生了回去继续学习以前学过一下的python.  
-因为常用vim编写lua,调试不是太方便,所以根据programming in lua写了上面这个函数,用起来还算方便,当  
-需要输出到文件的时候就指定第二参数,或者通过io.output改变io.write的行为.第三参数是指定需要输出  
-到文件并能重新读出来时的[]号的,具体原因就不多讲了,看看programming in lua 就知道了.
+最近因为工作需要,学习了lua,呵呵,挺有意思了,甚至让我萌生了回去继续学习以前学过一下的python.因为常用vim编写lua,调试不是太方便,所以根据programming in lua写了上面这个函数,用起来还算方便,当需要输出到文件的时候就指定第二参数,或者通过io.output改变io.write的行为.第三参数是指定需要输出到文件并能重新读出来时的[]号的,具体原因就不多讲了,看看programming in lua 就知道了.
 
-下面是个示例:  
-a = {[{100, 200}] = { 300, 400}, 200, { 300, 500}, abc = "abc"}  
+下面是个示例:
+
+a = {[{100, 200}] = { 300, 400}, 200, { 300, 500}, abc = "abc"}
 PrintTable(a, io.write, true)
 
-输出结果如下:  
+输出结果如下:
 ```lua
 {
 [1] = 200,
@@ -89,6 +91,4 @@ PrintTable(a, io.write, true)
 }
 ```
 
-其实还是合法的lua语句,可以用来作为序列化语句,或者配置文件.没有经过严格测试,仅作为抛砖引玉.  
-对于新手,提示一下,可以通过在此函数前加上module("PrintTable", package.seeall),并将此文件保存在  
-类似lualibs的库目录,然后就可以通过在你自己的程序中用require "PrintTable"来使用此函数了.
+其实还是合法的lua语句,可以用来作为序列化语句,或者配置文件.没有经过严格测试,仅作为抛砖引玉.对于新手,提示一下,可以通过在此函数前加上module("PrintTable", package.seeall),并将此文件保存在类似lualibs的库目录,然后就可以通过在你自己的程序中用require "PrintTable"来使用此函数了.

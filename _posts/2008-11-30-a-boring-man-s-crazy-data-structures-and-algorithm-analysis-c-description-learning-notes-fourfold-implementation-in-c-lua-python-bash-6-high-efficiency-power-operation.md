@@ -27,17 +27,18 @@ author:
   last_name: ''
 ---
 
-#   一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记  
+文章分享了一个时间复杂度为O(log n)的高效幂运算算法，并提供了其在C++、Lua、Python和Bash四种语言下的完整代码实现。
+
+<!-- more -->
+
+# 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记
 用C++/lua/python/bash的四重实现（6）高效率的幂运算
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
-
- 
+**_write by_** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_
 
 <<Data Structures and Algorithm Analysis in C++>>
 
-\--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第46面，图2-11  
+--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第46面，图2-11
 一个高效率的幂运算，应该还算不上最高效率的,但是作为一个递归及O(logn)的例子还是很合适的，因为足够的简单。
 
 bash的实现我发现老是用普通程序语言的思想是不行了，麻烦的要死，于是用命令替换实现了一个b版本，明显效果好的多：）用一个语言就是要用一个语言的特性。
@@ -48,12 +49,12 @@ bash的实现我发现老是用普通程序语言的思想是不行了，麻烦�
 
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20081130/pow.jpg)
 
-write by 九天雁翎(JTianLing)  
-\-- www.jtianling.com
+write by 九天雁翎(JTianLing)
+-- www.jtianling.com
 
-以下为实现部分: 
+以下为实现部分:
 
-CPP: 
+CPP:
 
 ```cpp
 #include <stdio.h>
@@ -87,7 +88,7 @@ CPP:
 }
 ```
 
-LUA: 
+LUA:
 
 ```lua
 #!/usr/bin/env lua
@@ -116,7 +117,7 @@ print("pow(2,5)=" .. pow(2,5));
 print("pow(2,6)=" .. pow(2,6));
 ```
 
-PYTHON: 
+PYTHON:
 
 ```python
 #!/usr/bin/env python
@@ -145,7 +146,7 @@ PYTHON:
     test()
 ```
 
-BASH: 
+BASH:
 
 ```bash
 #!/usr/bin/env bash
@@ -263,14 +264,4 @@ pow 2 5
 pow 2 6
 ```
 
- 
-
- 
-
- 
-
- 
-
- 
-
-**_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**
+**_write by_** _九天雁翎_ _(JTianLing) -- www.jtianling.com_**

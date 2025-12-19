@@ -23,7 +23,11 @@ author:
   last_name: ''
 ---
 
-**一天一个****C Run-Time Library****函数****(2)****__max & __min**
+本文介绍了微软C库的非标准函数__max和__min，它们是宏。文章分析了宏的效率与风险，并建议可直接使用三元运算符替代。
+
+<!-- more -->
+
+**一天一个 C Run-Time Library 函数(2) __max & __min**
 
 **_write by 九天雁翎(JTianLing) -- www.jtianling.com_**
 
@@ -31,16 +35,16 @@ author:
 
 ## msdn:
 
-Returns the larger of two values.  
-  
----  
-type __max(       _type_ _a_ ,       _type_ _b_ );  
-  
-Returns the smaller of two values.  
-  
----  
-type __min(       _type_ _a,_       _type_ _b_ );  
-  
+Returns the larger of two values.
+
+---
+type __max( _type_ _a_ , _type_ _b_ );
+
+Returns the smaller of two values.
+
+---
+type __min( _type_ _a_, _type_ _b_ );
+
 ## 测试程序：
 
 ```c
@@ -68,8 +72,6 @@ gcc无此函数，鉴于此函数的实用性，自然也需要实现一份。
 
 对于这么简单的函数也就不多说明了，不然又太过了。
 
-** **
-
 ## 实现：
 
 MS:
@@ -79,9 +81,7 @@ MS:
 #define __min(a,b)  (((a) < (b)) ? (a) : (b))
 ```
 
-还是简单的宏，对于一个C++程序员来说，我不是太习惯，可能我属于原教义派，看多了Bjarne Stroustrup的书，心中总是对于宏有所排斥，我以前就因为被windows一个简单的宏折磨的够呛。那个宏也是关于最大，最小的,我在[ _http://www.jtianling.com/archive/2007/07/06/1680398.aspx_](<http://www.jtianling.com/archive/2007/07/06/1680398.aspx>)
-
-一文中有所描述。
+还是简单的宏，对于一个C++程序员来说，我不是太习惯，可能我属于原教义派，看多了Bjarne Stroustrup的书，心中总是对于宏有所排斥，我以前就因为被windows一个简单的宏折磨的够呛。那个宏也是关于最大，最小的,我在[ _http://www.jtianling.com/archive/2007/07/06/1680398.aspx_](<http://www.jtianling.com/archive/2007/07/06/1680398.aspx>) 一文中有所描述。
 
 简而言之，就是windows.h中（实际定义在windef.h中，但是windows.h包含了windef.h，而windows.h才是经常包含的文件）
 
@@ -135,24 +135,16 @@ http://www.jtianling.com/archive/2008/06/01/2501238.aspx
 
 作为C语言来说，很多时候自然都是效率之上了。
 
- 
-
 ## 效率测试：
 
 略。
-
- 
 
 ## 相关函数：
 
 无。
 
- 
-
 ## 个人想法：
 
 虽然感觉这两个函数是会很常用到的，但是实际工作中还真没有用过一次。。。说实话，并不是没有这两个函数适用的场合，而是这样的场合自己用?:实现也很简单，所以常常根本想不到还有这样的两个函数可以实现，我更加是没有准备使用windows.h中max,min宏的想法，很简单就可以做到的事情，为什么要使用以导致移植性的降低了，没有理由。
-
- 
 
 **_write by 九天雁翎(JTianLing) -- www.jtianling.com_**

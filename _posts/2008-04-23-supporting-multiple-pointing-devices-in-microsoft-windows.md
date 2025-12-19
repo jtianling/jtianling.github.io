@@ -22,45 +22,33 @@ author:
   last_name: ''
 ---
 
-在微软Windows中支持多指针设备
+通过开发设备驱动与API，本文解决了Windows不支持多指针的原生限制。该方案实现了多鼠标独立控制，让应用程序能支持多人或多手协同操作。
 
- 
+<!-- more -->
+
+在微软Windows中支持多指针设备
 
 原文作者：Michael Westergaard
 
 译者：湖南大学 谢祁衡
 
- 
-
 在此声明：此文为本人毕业论文翻译的文章，请勿转载，不然出现什么问题，本人可是要找麻烦的。特别是出现学校方面因为在网上发现此文怀疑本人抄袭的时候。另外，因为本文已经收录在学校了，所以我有足够的证据能证明我上交此文的时间先于网络上有此文的时间。原文请到google上搜索，我不转载，不过也可以到我创建的讨论多鼠标的google群里面去下载，<http://groups.google.com/group/Single-Display-Groupware>
 
-    摘要： 本文描述了在微软Windows中的一个包含多指针设备支持API的实现。微软Windows本来不支持多指针设备控制独立的指针，但是我们或其他人已经完成了很多解决此问题的实现。在这里我们描述了一个通常的解决方法，和一个应用程序怎么样可以通过一个框架使用它。这个设备驱动程序和支持其的API将免费提供。感兴趣的人可以联系作者以获得更多信息。
+摘要： 本文描述了在微软Windows中的一个包含多指针设备支持API的实现。微软Windows本来不支持多指针设备控制独立的指针，但是我们或其他人已经完成了很多解决此问题的实现。在这里我们描述了一个通常的解决方法，和一个应用程序怎么样可以通过一个框架使用它。这个设备驱动程序和支持其的API将免费提供。感兴趣的人可以联系作者以获得更多信息。
 
- 
+## 1 引言：
 
- 
+为现代桌面应用程序开发的交互技术正在改变。更早的时候，通常是用一个指针设备（典型的是一个鼠标或者轨迹球），和一个键盘。然而，碰到提供更复杂交互技术的程序不再少见，比如使用多个指针设备，每人控制一个指针。微软Windows不是本来就完全支持超过一个指针设备。假如多个指针设备连接上，它们都控制着同一个指针。已经有了很多为解决此问题的方法，使得可以有多个独立的指针。这里我描述了一个通常的实现，它允许程序很简单的使用多个指针设备。这个解决方法被设计在微软Windows 2000/XP中使用。接下来，我提到的支持平台仅仅是Windows，并且用"鼠标"表示任何指针设备。（鼠标，轨迹球，笔等）。
 
-1   引言：
+多鼠标在不同的设定下，可能有很多优点。比如，一个人可能一手用鼠标而另一手用轨迹球，用鼠标来精确定位，而用轨迹球做更大范围的移动。这可以在改变一个窗口大小的时候用来移动窗口，而这些用来做桌面电脑Windows中的版面设计是非常有用的。这被称作双手调整（two-hand resize）。这个交互技术也可能在其他情况下被使用，比如在一个动作中放大和移动组件。一个人也可以假想使用两个或者更多鼠标，而每个鼠标有着不同的用途：一个鼠标用来绘制矩形，而另一个用来画圆。这样用户有一个从一个器件到另一个的直接的物理切换。这在绘制图形模型语言Coloured Petri Nets (CPN) [11]时非常有用。为了此例中的目的，CPN是一个有不同节点的指向图形，一些被描绘成矩形，一些被描绘成圆形。很多现代的交互技术，比如tool-glasses[3]或者浮动调色板（floating palettes），需要至少两个鼠标；一个鼠标用来移动调色板，而另一个用来选择工具。我们相信使用多鼠标将引起用户在本地从一个手到另一个手里转移负担，因此，可以降低长期累积的操作伤害。也可以设想更多的人，每个人有一个鼠标协同在一个大屏幕上解决问题。这就是WorkSPACE [17]的一个目的所在。
 
- 
+CPN Tools [2, 4] 是一个CPN的编辑和模拟软件，它就是用了很多先进的交互技术。从最开始此计划的一个目的就是使用先进的交互技术，包括，但不限于加入先进的多指针设备交互技术。在此计划的早期环境里，Windows对于支持多鼠标的限制变得很明显，然后就实现了一个自己的解决方案。这个自己开发的解决方案产生了一个额外的程序，它将直接探测串口，有哪个鼠标已经连接上，解码从已连接上鼠标发来的信号，并且发送事件到主程序。鉴于支持任意多数鼠标的需要，第一个解决方案被证明是非常低效的。首先，得到串口鼠标变得越来越困难，而我们至少支持USB鼠标，最好是也支持串口鼠标，PS/2鼠标和任何将来的鼠标，而与此同时，为所有的鼠标只提供一个通用的接口。在第一个解决方案里面这些都是不可能的，因为原始鼠标被Windows控制，而第二个鼠标被衍生的应用程序控制。第二，这个解决方案需要在Windows里面使第二个鼠标失效，这可能导致用户不得不在桌面上有一个基本上在CPN Tools应用程序里没有用的额外鼠标。第三，这个解决方案不是通用的，当鼠标的接口改变时，比如改到USB 时，都要重新实现。因为这些原因，我们决定实现一个新的解决方案。因为我们从早期的实现中获得了很多经验，我们决定做一个独立于CPN Tools的实现，足够通用到给其他人使用。这个实现的一个目标是让设计的API至少像Windows提供的普通鼠标接口一样容易使用。
 
-    为现代桌面应用程序开发的交互技术正在改变。更早的时候，通常是用一个指针设备（典型的是一个鼠标或者轨迹球），和一个键盘。然而，碰到提供更复杂交互技术的程序不再少见，比如使用多个指针设备，每人控制一个指针。微软Windows不是本来就完全支持超过一个指针设备。假如多个指针设备连接上，它们都控制着同一个指针。已经有了很多为解决此问题的方法，使得可以有多个独立的指针。这里我描述了一个通常的实现，它允许程序很简单的使用多个指针设备。这个解决方法被设计在微软Windows 2000/XP中使用。接下来，我提到的支持平台仅仅是Windows，并且用“鼠标”表示任何指针设备。（鼠标，轨迹球，笔等）。
+这个任务的困难可以通过看其他使用多鼠标的尝试有所了解。MAME:Analog+ [1]（一个支持多鼠标的游戏库），和Multiple Input Devices (MID) 计划[7, 8] ( 一个支持多鼠标的通用的Java库)尝试使用多鼠标，但是在Windows 2000里面都失败了。两个程序都引用了我们也从微软接收的同一个信息。在Windows NT/2000/XP中不能分辨多鼠标的输入是一个设计决定，并且两个计划都说明了在这些操作系统中使用多鼠标是不可能的。另外，MAME:Analog+说明了你必须使用USB设备来得到多鼠标。此外，两个库都集中于每个用户使用一个鼠标，而没有认识到每一个用户使用多个鼠标的潜力。
 
-    多鼠标在不同的设定下，可能有很多优点。比如，一个人可能一手用鼠标而另一手用轨迹球，用鼠标来精确定位，而用轨迹球做更大范围的移动。这可以在改变一个窗口大小的时候用来移动窗口，而这些用来做桌面电脑Windows中的版面设计是非常有用的。这被称作双手调整（two-hand resize）。这个交互技术也可能在其他情况下被使用，比如在一个动作中放大和移动组件。一个人也可以假想使用两个或者更多鼠标，而每个鼠标有着不同的用途：一个鼠标用来绘制矩形，而另一个用来画圆。这样用户有一个从一个器件到另一个的直接的物理切换。这在绘制图形模型语言Coloured Petri Nets (CPN) [11]时非常有用。为了此例中的目的，CPN是一个有不同节点的指向图形，一些被描绘成矩形，一些被描绘成圆形。很多现代的交互技术，比如tool-glasses[3]或者浮动调色板（floating palettes），需要至少两个鼠标；一个鼠标用来移动调色板，而另一个用来选择工具。我们相信使用多鼠标将引起用户在本地从一个手到另一个手里转移负担，因此，可以降低长期累积的操作伤害。也可以设想更多的人，每个人有一个鼠标协同在一个大屏幕上解决问题。这就是WorkSPACE [17]的一个目的所在。
+## 2 设计概要与需求
 
-    CPN Tools [2, 4] 是一个CPN的编辑和模拟软件，它就是用了很多先进的交互技术。从最开始此计划的一个目的就是使用先进的交互技术，包括，但不限于加入先进的多指针设备交互技术。在此计划的早期环境里，Windows对于支持多鼠标的限制变得很明显，然后就实现了一个自己的解决方案。这个自己开发的解决方案产生了一个额外的程序，它将直接探测串口，有哪个鼠标已经连接上，解码从已连接上鼠标发来的信号，并且发送事件到主程序。鉴于支持任意多数鼠标的需要，第一个解决方案被证明是非常低效的。首先，得到串口鼠标变得越来越困难，而我们至少支持USB鼠标，最好是也支持串口鼠标，PS/2鼠标和任何将来的鼠标，而与此同时，为所有的鼠标只提供一个通用的接口。在第一个解决方案里面这些都是不可能的，因为原始鼠标被Windows控制，而第二个鼠标被衍生的应用程序控制。第二，这个解决方案需要在Windows里面使第二个鼠标失效，这可能导致用户不得不在桌面上有一个基本上在CPN Tools应用程序里没有用的额外鼠标。第三，这个解决方案不是通用的，当鼠标的接口改变时，比如改到USB 时，都要重新实现。因为这些原因，我们决定实现一个新的解决方案。因为我们从早期的实现中获得了很多经验，我们决定做一个独立于CPN Tools的实现，足够通用到给其他人使用。这个实现的一个目标是让设计的API至少像Windows提供的普通鼠标接口一样容易使用。
-
-    这个任务的困难可以通过看其他使用多鼠标的尝试有所了解。MAME:Analog+ [1]（一个支持多鼠标的游戏库），和Multiple Input Devices (MID) 计划[7, 8] ( 一个支持多鼠标的通用的Java库)尝试使用多鼠标，但是在Windows 2000里面都失败了。两个程序都引用了我们也从微软接收的同一个信息。在Windows NT/2000/XP中不能分辨多鼠标的输入是一个设计决定，并且两个计划都说明了在这些操作系统中使用多鼠标是不可能的。另外，MAME:Analog+说明了你必须使用USB设备来得到多鼠标。此外，两个库都集中于每个用户使用一个鼠标，而没有认识到每一个用户使用多个鼠标的潜力。
-
- 
-
- 
-
-2   设计概要与需求
-
- 
-
-    这个设备驱动程序和支援API被设计来提供一个硬件与用户层间的接口。总的体系结构如图1所示。
+这个设备驱动程序和支援API被设计来提供一个硬件与用户层间的接口。总的体系结构如图1所示。
 
 这个设备驱动程序负责滤过鼠标的事件，就像是从各个不同硬件的驱动程序中接受一样。低层的API负责与设备驱动程序交流和提供一个到更高层的回馈机制。高层API允许用户层程序高效地或通过预定的方式接收鼠标事件。
 
@@ -68,186 +56,140 @@ author:
 
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/翻译示意1.JPG)
 
-    示意图1
+示意图1
 
-   
+设备驱动程序和支持其API的框架图（左边），对比显示了鼠标通常工作方式（右边）。这些可以同时相容的存在于旧应用程序中。本文主要描述了方框加粗的部分。
 
-    设备驱动程序和支持其API的框架图（左边），对比显示了鼠标通常工作方式（右边）。这些可以同时相容的存在于旧应用程序中。本文主要描述了方框加粗的部分。
+### 2.1 设备驱动
 
- 
+即使一个鼠标意味着要在使用了这个设备驱动和本文描述的API的程序中使用，它在Windows中必须也能作为一个有效的普通鼠标，因为不这样的话，它将不能在一个没有使用此设备驱动的程序中使用。
 
-2.1 设备驱动
-
-    即使一个鼠标意味着要在使用了这个设备驱动和本文描述的API的程序中使用，它在Windows中必须也能作为一个有效的普通鼠标，因为不这样的话，它将不能在一个没有使用此设备驱动的程序中使用。
-
-    接下来，我们将提到普通的鼠标和作为Windows鼠标/游标的相关指针游标。
+接下来，我们将提到普通的鼠标和作为Windows鼠标/游标的相关指针游标。
 
 因为我们想要支持很大数量的不同鼠标，为存在的每个不同类型的鼠标提供一个设备驱动程序实现是不行的。为了让应用程序对所有有效的指针设备使用一个单一的接口，在此描述的驱动可以也应该被安装在一个系统的所有鼠标之中。
 
-    因为这些原因，我决定以过滤式驱动的方式来实现这个设备驱动程序。[15]这些允许我们在任何鼠标的驱动栈中作钩子，安装我们自己的驱动接口作为这个鼠标接口的一个补充，而且滤过任何我们想传递给Windows鼠标的硬件事件。此外，一个滤过式驱动可以被安装在一个便利的点上，在这里硬件的不同已经被排除了，但是它仍然可能分辨不同的鼠标。
+因为这些原因，我决定以过滤式驱动的方式来实现这个设备驱动程序。[15]这些允许我们在任何鼠标的驱动栈中作钩子，安装我们自己的驱动接口作为这个鼠标接口的一个补充，而且滤过任何我们想传递给Windows鼠标的硬件事件。此外，一个滤过式驱动可以被安装在一个便利的点上，在这里硬件的不同已经被排除了，但是它仍然可能分辨不同的鼠标。
 
-    这里接下来的三个章节利用了一些关于Windows驱动开发的知识和一部分Windows API,但是即使略过也不失文意。为了使实现尽量的简单，我以Microsoft的Windows驱动程序开发软件包（Driver Development Kit）的moufiltr驱动作为蓝本。
+这里接下来的三个章节利用了一些关于Windows驱动开发的知识和一部分Windows API,但是即使略过也不失文意。为了使实现尽量的简单，我以Microsoft的Windows驱动程序开发软件包（Driver Development Kit）的moufiltr驱动作为蓝本。
 
-    当你尝试开发鼠标过滤式鼠标驱动程序的时候，这个驱动程序是一个很好的起点；
+当你尝试开发鼠标过滤式鼠标驱动程序的时候，这个驱动程序是一个很好的起点；
 
 基本上只需要修改一个函数来实现过滤鼠标事件。这个 moufiltr 驱动已经作为一个在所有普通鼠标驱动程序mouclass顶端的过滤器进行安装，使得它很容易用单一的驱动支持串口，PS/2 和 USB 设备。它很容易用 IoRegisterDeviceInterface 来增加我们自己的设备界面。
 
-    我们遇到的第一个问题是Windows 本身的寄存器中只把任何鼠标类设备当作单一的用户，安装了过滤器的也一样。通常一个程序和任意一个驱动程序交流靠的是先寻找到正确的设备（一个驱动程序的实例）。然后，程序用创建文件一样的方式得到了一个用来交流的句柄，就像创建了一个在这个驱动程序名字空间（name-space）中的“文件”一样。这个句柄可以使用DeviceIoControl 函数利用Device Input and Ouput Control(IOCTL)[13]用来和设备驱动程序交流。因为Windows本身的寄存器独享到鼠标的入口，所以不可能得到一个允许实现IOCTL的句柄。然而，得到一个允许查询设备属性的句柄还是可能的。当我们尝试这样做的时候，设备驱动程序收到通知然后传递被我们查询的文件的信息。我们使用这个在一个文件名中加进函数调用，用得到文件名的形式。
+我们遇到的第一个问题是Windows 本身的寄存器中只把任何鼠标类设备当作单一的用户，安装了过滤器的也一样。通常一个程序和任意一个驱动程序交流靠的是先寻找到正确的设备（一个驱动程序的实例）。然后，程序用创建文件一样的方式得到了一个用来交流的句柄，就像创建了一个在这个驱动程序名字空间（name-space）中的"文件"一样。这个句柄可以使用DeviceIoControl 函数利用Device Input and Ouput Control(IOCTL)[13]用来和设备驱动程序交流。因为Windows本身的寄存器独享到鼠标的入口，所以不可能得到一个允许实现IOCTL的句柄。然而，得到一个允许查询设备属性的句柄还是可能的。当我们尝试这样做的时候，设备驱动程序收到通知然后传递被我们查询的文件的信息。我们使用这个在一个文件名中加进函数调用，用得到文件名的形式。
 
 <device-name>/execute/<function>(/<parameter>)*
 
-    这样可能看起来不像一个好的解决方案，但是它却有两个很好的属性：它简洁而且很容易有个逆向函数。因为简洁是一个目标，这本身就证明了这是好的解决方法。考虑到应用程序会崩溃和应用程序设计者会忘记关闭文件的事实，逆向函数的调用应该明显。因为当一个应用程序终止或崩溃时，Windows自动关闭属于此应用程序的所有打开文件，我们得到了一个此实现的近似效果。假如一个应用程序已经通知驱动使服务启动，这个应用程序会在停止，甚至崩溃时，自动地告诉设备驱动程序停止服务。
+这样可能看起来不像一个好的解决方案，但是它却有两个很好的属性：它简洁而且很容易有个逆向函数。因为简洁是一个目标，这本身就证明了这是好的解决方法。考虑到应用程序会崩溃和应用程序设计者会忘记关闭文件的事实，逆向函数的调用应该明显。因为当一个应用程序终止或崩溃时，Windows自动关闭属于此应用程序的所有打开文件，我们得到了一个此实现的近似效果。假如一个应用程序已经通知驱动使服务启动，这个应用程序会在停止，甚至崩溃时，自动地告诉设备驱动程序停止服务。
 
-    第二个问题是当鼠标事件发生的时候，我们想要实现一个用户模式的回调。因为这可能频率很高的发生，所以我们想要一个相当轻量级的机制，而且可以实现一个回调。我们已经考虑过使用带名字的事件，但是发现这样对于我们的目的来说有一点过于复杂。我们也想使用提供了非常快的用户模式回调却没有文档支持的函数 KeUserModeCallback，但是因为我们不知道我们是否在一个线程的环境中，所以无法使用。
+第二个问题是当鼠标事件发生的时候，我们想要实现一个用户模式的回调。因为这可能频率很高的发生，所以我们想要一个相当轻量级的机制，而且可以实现一个回调。我们已经考虑过使用带名字的事件，但是发现这样对于我们的目的来说有一点过于复杂。我们也想使用提供了非常快的用户模式回调却没有文档支持的函数 KeUserModeCallback，但是因为我们不知道我们是否在一个线程的环境中，所以无法使用。
 
-    我们最后决定使用Asynchronous Procedure Calls (APC).APCs 可以实现从系统一个部分到另一个部分的调用，但是只在这个接收部分所在的线程里。我们因此可以在用户模式做一个从设备驱动程序到用户模式的回调。APC 的功能包括在普通的Windows库里，但是却没有很好的文档支持。幸运的是文献[6, 16]包含了开始需要的足够信息。
+我们最后决定使用Asynchronous Procedure Calls (APC).APCs 可以实现从系统一个部分到另一个部分的调用，但是只在这个接收部分所在的线程里。我们因此可以在用户模式做一个从设备驱动程序到用户模式的回调。APC 的功能包括在普通的Windows库里，但是却没有很好的文档支持。幸运的是文献[6, 16]包含了开始需要的足够信息。
 
-    这个设备驱动程序接口提供了四个函数到用户模式。Get,UnGet,Suspend,和UnSuspend。Get函数是用来在鼠标上做钩子和注册一个用户模式的回调。当这个函数被一个设备调用的时候，它停止传递事件，所以Windows的鼠标将不知道任何事件。我们将物理上的鼠标与逻辑上的Windows鼠标分开并加进我们自己的逻辑鼠标是有效的。UnGet是相反的函数，用来放弃回调并且使鼠标返回给Windows操作。
+这个设备驱动程序接口提供了四个函数到用户模式。Get,UnGet,Suspend,和UnSuspend。Get函数是用来在鼠标上做钩子和注册一个用户模式的回调。当这个函数被一个设备调用的时候，它停止传递事件，所以Windows的鼠标将不知道任何事件。我们将物理上的鼠标与逻辑上的Windows鼠标分开并加进我们自己的逻辑鼠标是有效的。UnGet是相反的函数，用来放弃回调并且使鼠标返回给Windows操作。
 
-    Suspend函数是用来临时将鼠标从应用程序中挂起。当一个应用程序已经调用了Get函数，并且想要Windows临时从鼠标接收事件，但是同时也接受它自己的事件，还要防止其他应用程序得到鼠标的情况下，这个函数被调用。有趣的是，如果鼠标移动到应用程序窗口外面并且用户应该再有一个普通的Windows指针。
+Suspend函数是用来临时将鼠标从应用程序中挂起。当一个应用程序已经调用了Get函数，并且想要Windows临时从鼠标接收事件，但是同时也接受它自己的事件，还要防止其他应用程序得到鼠标的情况下，这个函数被调用。有趣的是，如果鼠标移动到应用程序窗口外面并且用户应该再有一个普通的Windows指针。
 
-    总之，所有的驱动程序可能是示意图2中描述的三种状态之一，括号里的文字指示了哪个进程可以调用给定的函数，并且只有指示的转换才是合法的。设备驱动应该确保一个应用程序正使用鼠标时，其他应用程序不能使用鼠标。它只允许特定的进程调用不同状态的特定函数，以此达到上述目的。当一个进程已经调用了Get函数，它就变成这个设备的所有者，直到Unget的函数被调用，只有所有者进程可以对这个设备调用函数。这些是为了防止代表其它程序的外部进程阻止访问设备驱动程序。
-
- 
+总之，所有的驱动程序可能是示意图2中描述的三种状态之一，括号里的文字指示了哪个进程可以调用给定的函数，并且只有指示的转换才是合法的。设备驱动应该确保一个应用程序正使用鼠标时，其他应用程序不能使用鼠标。它只允许特定的进程调用不同状态的特定函数，以此达到上述目的。当一个进程已经调用了Get函数，它就变成这个设备的所有者，直到Unget的函数被调用，只有所有者进程可以对这个设备调用函数。这些是为了防止代表其它程序的外部进程阻止访问设备驱动程序。
 
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/翻译示意2.JPG)示意图2
 
- 
+设备驱动程序可能在上述的三种状态之一。在free状态时，鼠标就像普通的鼠标一样。在hooked状态时，这个鼠标就被应用程序所捕捉，而且不能控制Windows的鼠标。在suspended状态时，鼠标对于用户来说就像free状态一样,但是调用了Get函数的应用程序仍然控制着它。这些在括号里的名字指示了哪个进程被允许调用相应的函数来改变状态。
 
-    设备驱动程序可能在上述的三种状态之一。在free状态时，鼠标就像普通的鼠标一样。在hooked状态时，这个鼠标就被应用程序所捕捉，而且不能控制Windows的鼠标。在suspended状态时，鼠标对于用户来说就像free状态一样,但是调用了Get函数的应用程序仍然控制着它。这些在括号里的名字指示了哪个进程被允许调用相应的函数来改变状态。
+### 2.2 低层API
 
- 
+尽管设备驱动程序提供了一个相当简单的到鼠标的接口，但是要和设备驱动交流却让人有点生厌，因为必须列举所有的鼠标并且搜寻鼠标来使用和手动调用设备驱动提供的函数。低层API通过提供一个简单的接口来设定一个回调函数来使这个任务更简单。另外，它简单的利用了自然数简化了鼠标的识别（与Windows里提供的没有标识的普通鼠标相反），而且加进了额外的错误控制机制。基本上低层的API隐藏了操作系统来支持多鼠标，所以建立在低层API上的程序就很容易移植，比如说，如果微软决定完全支持多鼠标。一个低层API已经利用标准C和BETA语言实现了。BETA实现是建立在C语言实现上面的。
 
- 
-
-2.2 低层API
-
-    尽管设备驱动程序提供了一个相当简单的到鼠标的接口，但是要和设备驱动交流却让人有点生厌，因为必须列举所有的鼠标并且搜寻鼠标来使用和手动调用设备驱动提供的函数。低层API通过提供一个简单的接口来设定一个回调函数来使这个任务更简单。另外，它简单的利用了自然数简化了鼠标的识别（与Windows里提供的没有标识的普通鼠标相反），而且加进了额外的错误控制机制。基本上低层的API隐藏了操作系统来支持多鼠标，所以建立在低层API上的程序就很容易移植，比如说，如果微软决定完全支持多鼠标。一个低层API已经利用标准C和BETA语言实现了。BETA实现是建立在C语言实现上面的。
-
-    低层API提供了五个主要的函数：RegisterCallback, GetMice, UnGet- Mouse, SuspendMouse,和 UnSuspendMouse。低层API包含了一些更多的函数，但是它们对于理解这个API并不是那么重要。RegisterCallback负责注册一个回调函数给应用程序。回调函数是一个在任何已经加了钩子的鼠标发送事件的时候被调用的函数。所有鼠标只有一个回调函数可以被注册，而且在所有加钩子的鼠标中应该多路传输。假如不能接受这些，不得不实现另外一个低层的API。GetMice函数用来得到一个给定数量的鼠标，或者当给参数0的时候得到所有可用的鼠标。API的用户没有任何办法控制哪个鼠标被加钩子。这些看起来都不是主要问题，作为一个应用程序将可能总是给所有可用的鼠标加钩子，并且，最终被一个框架程序支持，以让用户决定哪个鼠标被用来干什么。GetMice函数返回实际得到鼠标的数量。我们实际得到的鼠标将被编号。当稍后利用UnGetting函数使鼠标给更高层程序负责时，任何记录都是需要的。当一个鼠标已经通过调用这个函数被加了钩子，事件就通过注册的回调函数来响应。假如没有回调函数被注册，新的事件将被忽略。UnGetMouse, SuspendMouse, 和 UnSuspendMouse 函数基于特定的鼠标调用，假如它已经通过GetMice函数被加了钩子的话。
+低层API提供了五个主要的函数：RegisterCallback, GetMice, UnGet- Mouse, SuspendMouse,和 UnSuspendMouse。低层API包含了一些更多的函数，但是它们对于理解这个API并不是那么重要。RegisterCallback负责注册一个回调函数给应用程序。回调函数是一个在任何已经加了钩子的鼠标发送事件的时候被调用的函数。所有鼠标只有一个回调函数可以被注册，而且在所有加钩子的鼠标中应该多路传输。假如不能接受这些，不得不实现另外一个低层的API。GetMice函数用来得到一个给定数量的鼠标，或者当给参数0的时候得到所有可用的鼠标。API的用户没有任何办法控制哪个鼠标被加钩子。这些看起来都不是主要问题，作为一个应用程序将可能总是给所有可用的鼠标加钩子，并且，最终被一个框架程序支持，以让用户决定哪个鼠标被用来干什么。GetMice函数返回实际得到鼠标的数量。我们实际得到的鼠标将被编号。当稍后利用UnGetting函数使鼠标给更高层程序负责时，任何记录都是需要的。当一个鼠标已经通过调用这个函数被加了钩子，事件就通过注册的回调函数来响应。假如没有回调函数被注册，新的事件将被忽略。UnGetMouse, SuspendMouse, 和 UnSuspendMouse 函数基于特定的鼠标调用，假如它已经通过GetMice函数被加了钩子的话。
 
 这个API不是线程安全的，也就是说，假如它们在不同的线程里面，函数的调用必须被互斥保护。这些是可以接受的因为它假设那些函数将被单线程程序或程序初始化时调用。这些API确保了注册的回调函数的正常连续调用，所以它也没有保证线程安全。
 
- 
+### 2.3 高层API
 
-2.3 高层API
+高层API建立在低层API回调函数的基础上。作为BETA语言并不能高效的支持这些（它不用真的操作系统线程），所以我们决定实现一个更高层的API。这个API必须处理这些从回调函数中得到的信息，而且把它们作为普通的事件提供给应用程序。进一步说，就像已经提到的，低层API不是线程安全的，高层API也有这个特点。高层API也负责所有输入设备的加速问题以及为每一个鼠标绘制指针。最后，高层API提供每个鼠标相对及绝对位置的调用。目前，高层API被设计成一个程序的静态链接，而且管理这个程序的驱动访问。每个都静态地链接到高层API的多个程序，可以同时运行。但是任何给定的鼠标一次只能被一个应用程序加载钩子；比如说，假如一个用户有三个安装好的鼠标，而一个需要两个鼠标的应用程序，剩下的一个鼠标对其他应用程序是有效的。所有的鼠标都按照"先进，先利用"（"First come,first served"）原则决定是否有效的。高层的API是为了Octopus框架程序而被使用和设计的，所以可能不是太适合其他框架或应用程序的需要。在未来，可能会有一个高层API的动态链接库的实现。
 
-    高层API建立在低层API回调函数的基础上。作为BETA语言并不能高效的支持这些（它不用真的操作系统线程），所以我们决定实现一个更高层的API。这个API必须处理这些从回调函数中得到的信息，而且把它们作为普通的事件提供给应用程序。进一步说，就像已经提到的，低层API不是线程安全的，高层API也有这个特点。高层API也负责所有输入设备的加速问题以及为每一个鼠标绘制指针。最后，高层API提供每个鼠标相对及绝对位置的调用。目前，高层API被设计成一个程序的静态链接，而且管理这个程序的驱动访问。每个都静态地链接到高层API的多个程序，可以同时运行。但是任何给定的鼠标一次只能被一个应用程序加载钩子；比如说，假如一个用户有三个安装好的鼠标，而一个需要两个鼠标的应用程序，剩下的一个鼠标对其他应用程序是有效的。所有的鼠标都按照“先进，先利用”（“First come,first served”）原则决定是否有效的。高层的API是为了Octopus框架程序而被使用和设计的，所以可能不是太适合其他框架或应用程序的需要。在未来，可能会有一个高层API的动态链接库的实现。
-
-    高层API产生一个线程来监听新的回调函数。收到的信息可以利用PostMessage 函数被处理和发送给主应用程序窗口。假如需要的话，指针可以被更新。
+高层API产生一个线程来监听新的回调函数。收到的信息可以利用PostMessage 函数被处理和发送给主应用程序窗口。假如需要的话，指针可以被更新。
 
 高层API提供了十个函数：Initialise,Cleanup,SuspendMouse,UnSuspendMouse, GetRelativePosition,GetAbsolutePosition,SetAbsolutePosition,SetCursor,
 
 LockCanvas和UpdateCursors。Initialise和Cleanup被用来打开和关闭高层API，SuspendMouse 和UnSuspendMouse 仅仅是同名低层API函数的线程安全版本，所以对于它们就不加过多的描述了。GetRelativePosition,GetAbsolutePosition,和 SetAbsolutePosition是为了那些比起事件方式更喜欢轮流检测方式接收鼠标信息的应用程序而设计的。SetCursor,LockCanvas,和UpdateCursors是用来设置和绘制指针的。
 
-    Initialise 函数开始一个线程来监听低层API的回调函数。它需要的参数依次为，需要监听鼠标的编号，发送事件的窗口，绘制鼠标指针的显示上下文（Display Context），与一些描述这个API行为的标记。这些标记控制打开或关闭API的一些特性。例如一个程序员可以选择他是否需要发送事件给一个主窗口（假如不要，就不需要给出一个窗口作为参数），他是否想要绘制一个指针（假如不要，就不需要传递一个显示上下文作为参数），这个指针是否应该被剪切后再传递给显示上下文，鼠标是否需要加速，还有当鼠标被挂起(suspended)时，事件是否应该被发送。Cleanup 函数取消获得（UnGet）所有的被加钩子的鼠标，关闭通过Initialise 函数开始的进程，并且释放所有运行API时获得的资源。
+Initialise 函数开始一个线程来监听低层API的回调函数。它需要的参数依次为，需要监听鼠标的编号，发送事件的窗口，绘制鼠标指针的显示上下文（Display Context），与一些描述这个API行为的标记。这些标记控制打开或关闭API的一些特性。例如一个程序员可以选择他是否需要发送事件给一个主窗口（假如不要，就不需要给出一个窗口作为参数），他是否想要绘制一个指针（假如不要，就不需要传递一个显示上下文作为参数），这个指针是否应该被剪切后再传递给显示上下文，鼠标是否需要加速，还有当鼠标被挂起(suspended)时，事件是否应该被发送。Cleanup 函数取消获得（UnGet）所有的被加钩子的鼠标，关闭通过Initialise 函数开始的进程，并且释放所有运行API时获得的资源。
 
-    就像已经提到的，GetRelativePosition，GetAbsolutePosition和SetAbsolutePosition 函数本来是为了更喜欢检测方式获得鼠标信息的程序设计，但是需要的时候，它们也可以被用来与事件结合。所有这些函数都以鼠标的编号为参数。SetAbsolutePosition 函数另外还取一个点（坐标）作为参数。两个Get函数返回一个点（坐标）。GetRelativePosition 函数得到特定鼠标自从上次调用此函数后的相对移动。结果被加速度影响，但是不被剪接所影响。GetAbsolutePosition 和 SetAbsolutePosition 函数得到或设置绝对的位置。加速度和剪切都会影响位置。
+就像已经提到的，GetRelativePosition，GetAbsolutePosition和SetAbsolutePosition 函数本来是为了更喜欢检测方式获得鼠标信息的程序设计，但是需要的时候，它们也可以被用来与事件结合。所有这些函数都以鼠标的编号为参数。SetAbsolutePosition 函数另外还取一个点（坐标）作为参数。两个Get函数返回一个点（坐标）。GetRelativePosition 函数得到特定鼠标自从上次调用此函数后的相对移动。结果被加速度影响，但是不被剪接所影响。GetAbsolutePosition 和 SetAbsolutePosition 函数得到或设置绝对的位置。加速度和剪切都会影响位置。
 
 SetCursor 函数为一个给定的鼠标设置一个指针。它以鼠标的编号，一个指针和指针的焦点为参数。UpdateCursors 函数为鼠标重绘指针。这些都在一个鼠标移动的时候被自动调用，但是它也可能通过刷新屏幕的方式被手动调用。
 
-    假如LockCanvas 被调用，UpdateCursors 将不能被自动调用，直到UpdateCursors 被此线程内的LockCanvas手动调用。这个函数应该仅仅在应用程序重绘显示上下文前被调用，UpdateCursors 应该仅仅在此更新后被调用。
+假如LockCanvas 被调用，UpdateCursors 将不能被自动调用，直到UpdateCursors 被此线程内的LockCanvas手动调用。这个函数应该仅仅在应用程序重绘显示上下文前被调用，UpdateCursors 应该仅仅在此更新后被调用。
 
- 
+## 3 应用和未来的工作
 
- 
+设备驱动程序和相对应的API都已经被集成进Octopus框架程序，从而CPN Tools也进行了应用。Octopus是一个从示意图１左边那一列描述的框架程序的例子，而CPN Tools是一个应用程序，也是从左边那一列开发而来。接下来的观点大体都是基于Octopus框架开发的经验而来。
 
-3          应用和未来的工作
+这个框架必须负责完全抽象位置和按键点击的概念。它必须提供提供一个和今天其他应用程序框架服务类似的服务。它还必须有一组控件，而且当任何鼠标动作发生的时候发送事件给它们。例如在用BETA语言编写的Lidskjalv用户接口框架（User Interface Framework）中 [9]，一个pushButton有一个eventHandler,同时也有一个onClicked事件。当用户点击鼠标的时候，这可能通过继承被绑定来接收事件通知。相似的，Octopus框架为使用多鼠标提供了一些控件和服务。它提供了一个与onClicked事件类似的机制，但是它必须也通知接收者一个事件以传递其他鼠标目前正在做什么，这是为了允许应用程序开发者来特殊化一些多手交互操作，比如像第１节描述的双手调整那样。因为操作系统不支持多鼠标，这个框架程序必须也开发一个更高级的有效机制，以便当需要的时候可以控制系统鼠标。我们计划当任何鼠标离开应用程序窗口的时候，它就被挂起（也就是说，它现在控制Windows系统鼠标），而且当任何以前加过钩子的鼠标进入应用程序窗口，它就被激活，此时Windows的鼠标没有鼠标操作。最后，一个框架可能也支持在运行的时候增加和移除鼠标，但是我们不认为增加和移除鼠标是一个非常常用的操作，暂时省去。
 
- 
+Octopus目前使用本文描述的驱动程序和API。驱动程序是独立于Octopus框架和CPN Tools应用程序的，但是已经实现的API的仅仅是我们在此刻开发Octopus和CPN Tools中看到需要的。因为这个原因，此API还有很大提升的空间。一个例子是应用程序开发者不能控制在使用GetMice函数时究竟为哪个鼠标加载钩子。一个明显的提升是提供一些函数让应用程序基于文字描述选择鼠标，文字可以描述这个鼠标的性能（２键或３键，有无滚轮等）或者在总线上的位置等信息。
 
-    设备驱动程序和相对应的API都已经被集成进Octopus框架程序，从而CPN Tools也进行了应用。Octopus是一个从示意图１左边那一列描述的框架程序的例子，而CPN Tools是一个应用程序，也是从左边那一列开发而来。接下来的观点大体都是基于Octopus框架开发的经验而来。
-
-    这个框架必须负责完全抽象位置和按键点击的概念。它必须提供提供一个和今天其他应用程序框架服务类似的服务。它还必须有一组控件，而且当任何鼠标动作发生的时候发送事件给它们。例如在用BETA语言编写的Lidskjalv用户接口框架（User Interface Framework）中 [9]，一个pushButton有一个eventHandler,同时也有一个onClicked事件。当用户点击鼠标的时候，这可能通过继承被绑定来接收事件通知。相似的，Octopus框架为使用多鼠标提供了一些控件和服务。它提供了一个与onClicked事件类似的机制，但是它必须也通知接收者一个事件以传递其他鼠标目前正在做什么，这是为了允许应用程序开发者来特殊化一些多手交互操作，比如像第１节描述的双手调整那样。因为操作系统不支持多鼠标，这个框架程序必须也开发一个更高级的有效机制，以便当需要的时候可以控制系统鼠标。我们计划当任何鼠标离开应用程序窗口的时候，它就被挂起（也就是说，它现在控制Windows系统鼠标），而且当任何以前加过钩子的鼠标进入应用程序窗口，它就被激活，此时Windows的鼠标没有鼠标操作。最后，一个框架可能也支持在运行的时候增加和移除鼠标，但是因为我们不认为增加和移除鼠标是一个非常常用的操作，暂时省去。
-
-    Octopus目前使用本文描述的驱动程序和API。驱动程序是独立于Octopus框架和CPN Tools应用程序的，但是已经实现的API的仅仅是我们在此刻开发Octopus和CPN Tools中看到需要的。因为这个原因，此API还有很大提升的空间。一个例子是应用程序开发者不能控制在使用GetMice函数时究竟为哪个鼠标加载钩子。一个明显的提升是提供一些函数让应用程序基于文字描述选择鼠标，文字可以描述这个鼠标的性能（２键或３键，有无滚轮等）或者在总线上的位置等信息。
-
-    目前设备驱动程序和API的实现并不能很好的支持多鼠标应用程序同时使用鼠标。就像所描述的，设备驱动程序实际上避免了多鼠标应用程序同时使用相同的鼠标。这个行为在只有很少的应用程序使用这些设备驱动程序和API时是可以接受的，但是当使用多鼠标变得更平常时就不能接受了。因此我们提议制作一个分享机制可能是有效的。此机制可能将被安装进系统的服务而且简单的发送鼠标事件给鼠标目前所在的窗口。
+目前设备驱动程序和API的实现并不能很好的支持多鼠标应用程序同时使用鼠标。就像所描述的，设备驱动程序实际上避免了多鼠标应用程序同时使用相同的鼠标。这个行为在只有很少的应用程序使用这些设备驱动程序和API时是可以接受的，但是当使用多鼠标变得更平常时就不能接受了。因此我们提议制作一个分享机制可能是有效的。此机制可能将被安装进系统的服务而且简单的发送鼠标事件给鼠标目前所在的窗口。
 
 这个解决方案特意在本文中进行描述。它非常容易创建在设备驱动程序顶端的其他API，也可以移植目前的API到其它的程序语言。本文里的描述的高层API是最满足Octopus需要的一个，但是其他框架程序可能有其他的需要。比如说，可能实现一个与Windows控件系统兼容的框架程序，它仅仅在Windows里面加入多指针，这样就可以通过多用户同时使用不同的应用程序的方式被现存的程序使用。进一步的说，微软是否会决定使分辨不同鼠标的输入成为可能，我们就可以不要设备驱动程序，并且改变低层API来使用这个新的功能，而其余的实现将继续正常工作，没有任何问题。
 
-    想利用这个设备驱动程序改变MAME:Analog+ 和 MID实现的人可能也会对此感兴趣，此实现能允许在更多环境下使用多鼠标，比如在Windows 2000下，或者取消只使用USB设备的限制，以此就能很大地扩展它们的可用性。
+想利用这个设备驱动程序改变MAME:Analog+ 和 MID实现的人可能也会对此感兴趣，此实现能允许在更多环境下使用多鼠标，比如在Windows 2000下，或者取消只使用USB设备的限制，以此就能很大地扩展它们的可用性。
 
- 
+## 4 结论
 
- 
-
-4          结论
-
- 
-
-    在本文中我们描述了让多鼠标有各自独立指针的主要问题，这个事实是Windows在应用程序级别上不能分辨不同的鼠标。
+在本文中我们描述了让多鼠标有各自独立指针的主要问题，这个事实是Windows在应用程序级别上不能分辨不同的鼠标。
 
 我们已经描述了此技术的一个解决方案，此方案是通过使用一个设备驱动程序和两组API来实现的，其中每一部分都移除了一些很复杂的工作，并且提供给程序员一个更干净的接口来使用多鼠标。
 
-    最后，我们简短的描述了一下未来的路。一些观点必须放在开发支持多鼠标的框架中时才成立。主要的，它必须与现有事物（带事件的控件）基本相似，但是它也必须提供了其他鼠标正在做什么的信息。
+最后，我们简短的描述了一下未来的路。一些观点必须放在开发支持多鼠标的框架中时才成立。主要的，它必须与现有事物（带事件的控件）基本相似，但是它也必须提供了其他鼠标正在做什么的信息。
 
-    这个设备驱动程序和支持其的API将免费提供。感兴趣的人可以联系作者以获得更多信息。
+这个设备驱动程序和支持其的API将免费提供。感兴趣的人可以联系作者以获得更多信息。
 
- 
+## 5 致谢：
 
- 
+作者想感谢Kurt Jensen, Jens Bæk Jørgensen, Thomas Mailund和提供了建设性意见的审阅者。
 
-5   致谢： 作者想感谢Kurt Jensen, Jens Bæk Jørgensen, Thomas Mailund和提供了建设性意见的审阅者。
+## 6 参考文献
 
- 
+1. A MAME site For Improved Analog Input.http://www.urebelscum.speedhost.com/.
 
- 
+2. M. Beaudouin-Lafon and M. Lassen. The Architecture and Implementation of CPN2000, A Post-WIMP Graphical Application. In Proceedings of ACM Symposium on User Interface Software and Technology. ACM Press, November 2000.
 
- 
+3. L. Bier, M. Stone, K. Pier, and W. Buxton T. De Rose.Toolglass and magic lenses:the see-through interface.In Proc. ACM SIGGRAPH, pages 73–80\. ACM Press, 1993.
 
- 
-
- 
-
-6 参考文献
-
-1.A MAME site For Improved Analog Input.http://www.urebelscum.speedhost.com/.
-
-2.M. Beaudouin-Lafon and M. Lassen. The Architecture and Implementation of CPN2000, A Post-WIMP Graphical Application.  In Proceedings of ACM Symposium on User Interface Software and Technology. ACM Press, November 2000.
-
-3.L. Bier, M. Stone, K. Pier, and W. Buxton T. De Rose.Toolglass and magic lenses:the see-through interface.In Proc. ACM SIGGRAPH, pages 73–80\. ACM Press, 1993.
-
-4.University of Aarhus CPN group. CPN Tools homepage.
-
+4. University of Aarhus CPN group. CPN Tools homepage.
 http://www.daimi.au.dk/CPNTools/.
 
-5.M.B. Enevoldsen and M. Lassen.  Octopus: A PostWIMP Framework for New InteractionTechniques.http://www.ecoop2002.lcc.uma.es/tpDemonstrations.htm#d13.
+5. M.B. Enevoldsen and M. Lassen. Octopus: A PostWIMP Framework for New InteractionTechniques.http://www.ecoop2002.lcc.uma.es/tpDemonstrations.htm#d13.
 
-6.J. Finnegan. Nerditorium.
-
+6. J. Finnegan. Nerditorium.
 http://msdn.microsoft.com/library/en-us/dnmsj99/html/nerd0799.asp, July 1999.
 
-7.J.P. Hourcade and B. Bederson. Multiple input devices: Mid.
-
+7. J.P. Hourcade and B. Bederson. Multiple input devices: Mid.
 http://www.cs.umd.edu/hcil/mid/.
 
-8.J.P. Hourcade and B.B. Bederson.  Architecture and Implementation of a Java Package for Multiple Input Devices (MID).  Technical report, Institute for Advanced Computer Studies, Computer Science Department, University of Maryland, May 1999.
+8. J.P. Hourcade and B.B. Bederson. Architecture and Implementation of a Java Package for Multiple Input Devices (MID). Technical report, Institute for Advanced Computer Studies, Computer Science Department, University of Maryland, May 1999.
 
-9.Mjølner Informatics.  Lidskjalv: User Interface Framework – Reference Manual.  Mjølner Informatics Report, MIA 94-27, available at
-
+9. Mjølner Informatics. Lidskjalv: User Interface Framework – Reference Manual. Mjølner Informatics Report, MIA 94-27, available at
 http://www.mjolner.dk/mjolner-system/documentation/lidskjalv- ref/index.html.
 
-10.Mjølner Informatics. The Mjølner System: BETA Language.
-
+10. Mjølner Informatics. The Mjølner System: BETA Language.
 http://www.mjolner.dk/mjolner-system/beta_en.php.
 
-11.K. Jensen.Coloured Petri Nets. Basic Concepts,Analysis Methods and Practical Use. Volume 1,Basic Concepts.Monographs in Theoretical Computer Science.Springer-Verlag, 1992.
+11. K. Jensen.Coloured Petri Nets. Basic Concepts,Analysis Methods and Practical Use. Volume 1,Basic Concepts.Monographs in Theoretical Computer Science.Springer-Verlag, 1992.
 
-12.O.L. Madsen, B. Møller-Pedersen, and K. Nygaard.Object-Oriented Programming in the
-
+12. O.L. Madsen, B. Møller-Pedersen, and K. Nygaard.Object-Oriented Programming in the
 BETA Programming Language.Addison-Wesley, June 1993.
 
-13.Microsoft Corporation. Device Input and Output Control (IOCTL).
-
+13. Microsoft Corporation. Device Input and Output Control (IOCTL).
 http://msdn.microsoft.com/library/en-us/devio/devio_7pb3.asp.
 
-14.Microsoft Corporation. Microsoft Windows Driver Development Kits.
-
+14. Microsoft Corporation. Microsoft Windows Driver Development Kits.
 http://www.microsoft.com/ddk/W2kDDK.asp.
 
-15.P.G. Viscarola and W.A Mason.  Windows NT Device Driver Development, pages 235–239.Macmillan Computer Publishing, 1999.
+15. P.G. Viscarola and W.A Mason. Windows NT Device Driver Development, pages 235–239.Macmillan Computer Publishing, 1999.
 
-16.Anatoly Vorobey.User mode APCs.   http://www.cmkrnl.com/arc- userapc.html, May 1997.
+16. Anatoly Vorobey.User mode APCs. http://www.cmkrnl.com/arc- userapc.html, May 1997.
 
-17.WorkSPACE: Distributed Work support through component based SPAtial Computing En- vironments. http://www.daimi.au.dk/workspace/index.shtml.
+17. WorkSPACE: Distributed Work support through component based SPAtial Computing En- vironments. http://www.daimi.au.dk/workspace/index.shtml.

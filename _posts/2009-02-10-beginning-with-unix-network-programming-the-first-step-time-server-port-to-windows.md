@@ -21,15 +21,15 @@ author:
   last_name: ''
 ---
 
-# 潜心开始学习网络编程的第一步 ，UNP(Unix Network Programming)第一章，时间服务器到windows的移植
+作者学习网络编程时，将UNP时间服务器从Linux移植到Windows，解决了阻塞问题，并分享了Windows下需WSAStartup初始化等关键区别。
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
+<!-- more -->
 
-[**讨论新闻组及文件**](<ttp://groups.google.com/group/jiutianfile/>)
+# 潜心开始学习网络编程的第一步，UNP(Unix Network Programming)第一章，时间服务器到windows的移植
 
- 
+[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](http://www.jtianling.com)
 
- 
+[**讨论新闻组及文件**](ttp://groups.google.com/group/jiutianfile/)
 
 学的如此之杂，绝不是我的初衷，但是事实已经形成了，还是按照刚工作时的计划，好好的学习网络技术吧。虽说我已远不是以前服务器组的成员了。。。虽说我其实开发了好几个服务器了，但是那是在公司的框架之上的，连套接字使用的机会都及其之少。。。实在谈不上什么网络编程的经验，那种开发基本上做好的包的映射和MFC的消息机制区别都不大了。
 
@@ -100,11 +100,7 @@ main(int argc, char **argv)
 }
 ```
 
- 
-
 然后通过Ubuntu上跑的客户端来连接这台windows上的服务器就好了-_-!莫名其妙。。。。。。可能还是属于我Linux下的配置和管理不太熟悉吧。。。但是运行服务器后，netstat却的确也没有看到服务器有监听端口啊。。。程序又没有问题....无奈了。
-
- 
 
 对于windows下的套接口使用源程序，有几点想说一下，因为我进入公司当时分配在服务器组，学的第一课是序列化，第二课就是网络基础啦，当时看的也是这本Stevens的经典著作。。。呵呵，都是将Unix环境的，所以当时在公司调试自己的Windows程序，光是因为没有使用WSAStartup初始化就卡了我大半天-_-!
 
@@ -112,12 +108,4 @@ main(int argc, char **argv)
 
 另外，原有的包装函数我都是直接用原始的函数替换了，也没有加错误判断，不是什么好习惯。仅作学习使用。
 
- 
-
- 
-
- 
-
- 
-
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
+[**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

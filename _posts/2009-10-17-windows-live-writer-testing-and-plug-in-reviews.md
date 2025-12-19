@@ -21,7 +21,11 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**
+作者评测了Windows Live Writer的多款插件，重点测试代码高亮功能，并给出了最佳选择推荐。
+
+<!-- more -->
+
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)** __
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
@@ -46,7 +50,7 @@ author:
 实际代码出现效果，可配置，可用容器显示滚动条效果以限制源代码所占篇幅（可惜高度不可以通过GUI方便的调节），格式正常，颜色漂亮，支持中文。感觉不错。有个缺点就是不是用容器的时候无法一次选择然后配置。
 
 ```cpp
-      1:  
+      1: 
     
     
        2: // OpenGL需要的头文件
@@ -58,7 +62,7 @@ author:
        4: #include <GL/glut.h>
     
     
-       5:  
+       5: 
     
     
        6: //定义程序链接时所需要调用的OpenGL程序库,简化工程配置
@@ -70,19 +74,19 @@ author:
        8: #pragma comment( lib, "glut32.lib" )  
     
     
-       9:  
+       9: 
     
     
       10: // DEFINES ////////////////////////////////////////////////
     
     
-      11:  
+      11: 
     
     
       12: // MACROS /////////////////////////////////////////////////
     
     
-      13:  
+      13: 
     
     
       14: #define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
@@ -91,7 +95,7 @@ author:
       15: #define KEYUP(vk_code)   ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
     
     
-      16:  
+      16: 
     
     
       17: // GLOBALS ////////////////////////////////////////////////
@@ -103,7 +107,7 @@ author:
       19: HINSTANCE ghInstance; // 程序实例句柄
     
     
-      20:  
+      20: 
     
     
       21: #define FRAME_PER_SECOND (30)
@@ -118,7 +122,7 @@ author:
       24: #define PI (3.1415926535898)
     
     
-      25:  
+      25: 
     
     
       26: // 取消 OpenGL ，在程序结束前调用，释放渲染环境，设备环境以及最终窗口句柄。
@@ -142,7 +146,7 @@ author:
       32: }
     
     
-      33:  
+      33: 
     
     
        1: // OpenGL需要的头文件
@@ -154,7 +158,7 @@ author:
        3: #include <GL/glut.h>
     
     
-       4:  
+       4: 
     
     
        5: //定义程序链接时所需要调用的OpenGL程序库,简化工程配置
@@ -166,19 +170,19 @@ author:
        7: #pragma comment( lib, "glut32.lib" )  
     
     
-       8:  
+       8: 
     
     
        9: // DEFINES ////////////////////////////////////////////////
     
     
-      10:  
+      10: 
     
     
       11: // MACROS /////////////////////////////////////////////////
     
     
-      12:  
+      12: 
     
     
       13: #define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
@@ -187,7 +191,7 @@ author:
       14: #define KEYUP(vk_code)   ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
     
     
-      15:  
+      15: 
     
     
       16: // GLOBALS ////////////////////////////////////////////////
@@ -199,7 +203,7 @@ author:
       18: HINSTANCE ghInstance; // 程序实例句柄
     
     
-      19:  
+      19: 
     
     
       20: #define FRAME_PER_SECOND (30)
@@ -214,7 +218,7 @@ author:
       23: #define PI (3.1415926535898)
     
     
-      24:  
+      24: 
     
     
       25: // 取消 OpenGL ，在程序结束前调用，释放渲染环境，设备环境以及最终窗口句柄。
@@ -268,7 +272,7 @@ author:
   24. #define PI (3.1415926535898) 
   25.   26. // 取消 OpenGL ?在程序结束前?用??放渲染环境??备环境以及最终窗口句柄。
   27. void DisableOpenGL() 
-  28. { 
+  28: { 
   29. wglMakeCurrent( NULL, NULL ); 
   30. wglDeleteContext( ghRC ); 
   31. ReleaseDC( ghWnd, ghDC ); 
@@ -627,5 +631,3 @@ Word Count
 原创文章作者保留版权 转载请注明原作者 并给出链接****
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
-
->

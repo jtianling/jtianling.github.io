@@ -28,16 +28,17 @@ author:
   last_name: ''
 ---
 
+本文用C++、Lua、Python和Bash四种语言实现了二分搜索算法，并附上完整代码供参考学习。
+
+<!-- more -->
+
 # 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记 用C++/lua/python/bash的四重实现（4）二分搜索算法
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
-
- 
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 
-\--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第44面，图2-9二分搜索算法
+--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第44面，图2-9二分搜索算法
 
 二分搜索是很著名也很实用的算法，在排序中查找的速度从算法分析角度来说已经是最快的了。O(logN)
 
@@ -53,7 +54,7 @@ blog.csdn.net/vagrxie_**
 
 以下是源代码：
 
-CPP:  
+CPP:
 
 ```cpp
 #include <stdio.h>
@@ -120,7 +121,7 @@ int  main(int  argc, char * argv[])
 }
 ```
 
-LUA: 
+LUA:
 
 ```lua
 #!/usr/bin/env lua
@@ -157,7 +158,7 @@ print(binarySearch(array, 3))
 print(binarySearch(array, 101))
 ```
 
-PYTHON: 
+PYTHON:
 
 ```python
 #!/usr/bin/env python
@@ -188,7 +189,7 @@ print  binarySearch(array, 2)
 print  binarySearch(array, 100)
 ```
 
-BASH: 
+BASH:
 
 ```bash
 #!/usr/bin/env bash
@@ -247,7 +248,5 @@ echo  -e  "$?/t$times"
 
 exit  0
 ```
-
- 
 
 **_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**

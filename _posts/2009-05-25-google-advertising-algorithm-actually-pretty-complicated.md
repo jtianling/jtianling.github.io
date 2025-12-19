@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+谷歌广告算法因字面匹配闹了笑话：作者在浏览Python编程网站时，竟被推荐了蟒蛇皮手袋，暴露了算法的局限性。
+
+<!-- more -->
+
 **google 的广告匹配算法其实也挺搞的**
 
 [**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
@@ -33,9 +37,5 @@ author:
 今天在看一个关于Python的网站，结果google给我匹配出了一个搞笑的广告-_-!一个卖蟒蛇皮的手袋的网站。。。Python handbag。。。。晕，本来截了图了，但是csdn网站照常出了问题，图片不能上传，以后又机会再补吧。
 
 呵呵，计算机的程序的极限还远远没有到。。。。
-
- 
-
- 
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

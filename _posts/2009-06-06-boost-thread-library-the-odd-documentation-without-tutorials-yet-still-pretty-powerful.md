@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+本文探讨boost::thread库，其文档虽差但功能强大。它通过函数对象创建线程，支持灵活、类型安全的参数传递，并与boost其他库良好集成。
+
+<!-- more -->
+
 **boost::thread 库，奇怪的文档没有Tutorial的库，但是却仍然相当强大**
 
 [**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
@@ -36,21 +40,15 @@ author:
 
 其实，个人认为，一个多线程库可以很简单，实现简单的临界区用于同步就足够应付绝大部分情况了，相对而言，boost::thread这样的库还是稍微庞大了一点。类似于Python中的thread库其实就不错了（据《Programming Python》作者说原型来自于JAVA），通过继承形式使用线程功能（template method模式），还算比较自然，其实我们公司自己内部也实现了一套与之类似的C++版的线程库，使用也还算方便。但是boost::thread走的是另一条路。由于其文档中没有Introduction和Tutorial，我纯粹是摸石头过河似的实验，有用的不对的地方那也就靠大家指出来了。
 
- 
+# 一、 Introduction：
 
-# 一、   Introduction：
+boost::thread不是通过继承使用线程那种用了template method模式的线程模型，而是通过参数传递函数(其实不仅仅是函数，只要是Callable，Copyable（因为需要复制到线程的本地数据）的就行)。这种模型是好是坏，我一下也没有结论，但是boost::thread库的选择总归是有些道理的，起码从个人感觉来说，也更符合标准库一贯的优先使用泛型而不是继承的传统和作风，这样的模型对于与boost::function,boost::bind等库的结合使用的确也是方便了很多，
 
-boost::thread不是通过继承使用线程那种用了template method模式的线程模型，而是通过参数传递函数(其实不仅仅是函数，只要是Callable，Copyable（因为需要复制到线程的本地数据）的就行）。这种模型是好是坏，我一下也没有结论，但是boost::thread库的选择总归是有些道理的，起码从个人感觉来说，也更符合标准库一贯的优先使用泛型而不是继承的传统和作风，这样的模型对于与boost::function,boost::bind等库的结合使用的确也是方便了很多，
-
- 
-
-## 1.      题外话：
+## 1. 题外话：
 
 假如你对win32/linux下的多线程有一定的了解有助于理解boost::thread的使用，假如没有win32/linux的多线程使用经验，那么起码也需要对多线程程序有概念性的了解，起码对于3个概念要有所了解，context switching,rare conditions, atomic operation，最好也还了解线程间同步的一些常见形式，假如对于我上面提及的概念都不了解，建议先补充知识，不然，即便是HelloWorld，估计也难以理解。 另外，毕竟本文仅仅是个人学习boost::thread库过程中的一些记录，所以不会对操作系统，线程等知识有透彻的讲解，请见谅。
 
- 
-
-## 2.      boost::thread的HelloWorld:
+## 2. boost::thread的HelloWorld:
 
 example1:
 
@@ -182,8 +180,6 @@ int main()
 
 我们还是能看到3个完好的helloworld，并且，这在实际使用中也是有意义的，因为，在主线程进入HelloWorld函数时，假如第一个线程还没有执行完毕，那么，可能同时有3个线程存在，第一个线程正在输出，第二个线程和主线程在mu.lock();此句等待（也叫阻塞在此句）。其实,作为一个多线程的库，自然同步方式不会就这么一种，其他的我就不讲了。
 
- 
-
 作为boost库，有个很大的有点就是，互相之间结合的非常好。这点虽然有的时候加大了学习的难度，当你要使用一个库的时候，你会发现一个一个顺藤摸瓜，结果都学会了,比如现在，关于boost库的学习进行了很久了，（写了4，5篇相关的学习文章了），从boost::for_each,boost::bind,boost::lambda,boost::function,boost:: string_algo,到现在的boost::thread，其实原来仅仅是想要好好学习一下boost::asio而已。当你真的顺着学下来，不仅会发现对于C++语言的理解，对STL标准库的理解，对于泛型的理解，等等都有更深入的了解，我甚至在同时学习python的时候，感觉到boost库改变了C++的很多语言特性。。。虽然是模拟出来的。呵呵，题外话说多了，其实要表达的意思仅仅是boost::thread库也是和其他boost库有很多紧密结合的地方，使得其使用会非常的方便。这里一并的在一个例子中演示一下。
 
 example4:
@@ -247,8 +243,6 @@ HHHeeelllllolo o W WoWoorrrlldld!d!
 
 但是，正是这样的乱七八糟，告诉了我们，我们进入了真实的乱七八糟的多线程世界了-_-!
 
- 
-
 还记得可怜的Win32 API怎么为线程传递参数吗？
 
 看看其线程的原型
@@ -256,7 +250,7 @@ HHHeeelllllolo o W WoWoorrrlldld!d!
 ```c
 **DWORD ThreadProc(**
 
-  **LPVOID** _lpParameter_
+  **LPVOID** _lpParameter_
 
 **);**
 ```
@@ -325,16 +319,8 @@ int main()
 }
 ```
 
- 
-
 这里不怀疑线程的创建了，用了同步机制以方便查看结果，看看参数的传递效果，是不是真的达到了随心所欲的境界啊：）
 
 最最重要的是，这一切还是建立在坚实的C++强类型机制磐石上，没有用hack式的强制类型转换，这个重要性无论怎么样强调都不过分，这个优点说他有多大也是合适的。再一次的感叹，当我责怪牛人们将C++越弄越复杂的时候。。。。。。。。先用用这种复杂性产生的简单的类型安全的高效的库吧。。。。。。关于boost::thread库就了解到这里了，有点浅尝辄止的感觉，不过，还是先知其大略，到实际使用的时候再来详细了解吧，不然学习效率也不会太高。
-
- 
-
- 
-
- 
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

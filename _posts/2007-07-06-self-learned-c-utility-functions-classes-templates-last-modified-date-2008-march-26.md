@@ -20,9 +20,11 @@ author:
   last_name: ''
 ---
 
+分享一个C++个人工具库，包含容器打印、算法效率比较及随机数组生成等功能，旨在简化学习与调试。
+
+<!-- more -->
+
 鉴于个人习惯，将所有的文件都放到了jtianling目录下，一般的函数放到jtianling.h和jtianling.cpp中，其他的分类按文件放置，这样要包含文件就需要用include “jtianling/jtianling.h”形式包含，而且要在设置里面将jtianling这个目录包含进去
-
-
 
 jtianling.h
 

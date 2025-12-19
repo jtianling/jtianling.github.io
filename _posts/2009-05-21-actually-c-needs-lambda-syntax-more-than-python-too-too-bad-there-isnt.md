@@ -23,6 +23,10 @@ author:
   last_name: ''
 ---
 
+C++比Python更需要lambda语法。Python因函数定义简洁，lambda作用不大。而C++的强类型和模板使函数式编程代码繁琐，急需lambda简化。
+
+<!-- more -->
+
 **其实C++比Python更需要lambda语法，可惜没有。。。。**
 
 [**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
@@ -101,7 +105,6 @@ int main()
 可以看到，相对而言C++的函数定义语法，包括使用方式上都会比Python要复杂一些，最主要的复杂性来之于C++赖以生存的根本，强类型，为了达到类型安全又类型无关，引入的模板机制，进一步的复杂化了函数的定义。
 
 最有意思的是，
-
     cout << fun( add1<int>, 1, 2) <<endl;
     cout << fun( ptr_fun(add1<int>), 1, 2) <<endl;
 
@@ -233,8 +236,7 @@ int main()
 }
 ```
 
-还是几乎与原有的不+1输出实现同样的简洁，这就是lambda带来的特性，在没有这些特性的时候，我们就只能老老实实的按iterator的方式写了，在C++苦海中挣扎的兄弟们啊。。。。（特别是像我这样，工作中甚至连boost都不能用的人啊。。。。）继续等待吧。。。。等09标准出来。。。等VS202X版本的VS出来后，估计差不多才可能实现新的C++ 09标准，然后我们也许能够稍微减轻点工作量，以后能够写成大概是
-
+还是不是与原有的不+1输出实现同样的简洁，这就是lambda带来的特性，在没有这些特性的时候，我们就只能老老实实的按iterator的方式写了，在C++苦海中挣扎的兄弟们啊。。。。（特别是像我这样，工作中甚至连boost都不能用的人啊。。。。）继续等待吧。。。。等09标准出来。。。等VS202X版本的VS出来后，估计差不多才可能实现新的C++ 09标准，然后我们也许能够稍微减轻点工作量，以后能够写成大概是
     for(auto lit = l.begin(); lit != l.end(); ++lit)
     {
        cout <<*lit \+ 1 <<endl;
@@ -242,4 +244,4 @@ int main()
 
 这个样子。。。。。。。。。。。。。。阿门。
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
+[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

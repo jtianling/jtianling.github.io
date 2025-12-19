@@ -22,18 +22,19 @@ author:
   last_name: ''
 ---
 
-## 一天一个C Run-Time Library 函数(5)  access
+本文介绍C函数access，用于检查文件权限与存在性。文章重点比较了其在Windows和Linux下的使用差异，并探讨了跨平台编程的取舍。
+
+<!-- more -->
+
+## 一天一个C Run-Time Library 函数(5) access
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
 
- 
-
 ## msdn:
 
-Determines if a file  
-is read-only or not. More secure versions are available; see [_access_s, _waccess_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/fb3004fc-dcd3-4569-8b27-d817546e947e.htm>).  
-  
----  
+Determines if a file is read-only or not. More secure versions are available; see [_access_s, _waccess_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/fb3004fc-dcd3-4569-8b27-d817546e947e.htm>).
+
+---
 
 ```c
 int
@@ -44,8 +45,6 @@ _waccess(const wchar_t *_path_, int _mode_);
 
 ## 测试程序：
 
- 
-
 ## 说明：
 
 access是个很有用的函数，非常之有用。特别是在linux下。对于windows中，似乎都没有不可读和不可执行的概念，所以相对来说使用率相对低一些。另外，最标准的测试一个文件是否存在的方式可能就是用access函数了，虽然真正的可以达到目的方式有很多。
@@ -54,23 +53,17 @@ access是个很有用的函数，非常之有用。特别是在linux下。对于
 
 对于这么重要的函数，我没有给出示例。。。只能说我是越来越懒了，不过总是发现明明我仅仅是想看看哪些函数在windows/linux下都可以用，最后却变成了函数的使用说明和实现代码分析。。。。。。。。花费时间，其实也没有实际价值，因为用法可以查msdn，man，我贴一下也没有什么用，还是把时间用在更值得用过的地方吧。****
 
-##  实现：
+## 实现：
 
-windows下主要通过API  GetFileAttributes函数来完成。
+windows下主要通过API GetFileAttributes函数来完成。
 
-linux下的实现我竟然没有找到。。。。。无语
-
- 
+linux下的实现我竟然没有找到。。。。无语
 
 ## 效率测试：
 
 此函数好像通常不太需要考虑效率，因为两个系统完全不一样，所以测试此函数效率没有任何意义。
 
- 
-
 ## 相关函数：
-
- 
 
 ## 个人想法：
 
@@ -82,14 +75,6 @@ linux下的实现我竟然没有找到。。。。。无语
 
 最后，linux下的函数命名遵循的是POSIX标准，POSIX函数的命名没有前缀。MS的函数命名遵循的是ISO标准（据说），ISO标准的函数命名都带前置下划线。这点纯属瞎猜。。。。来源于所有的POSIX函数在MSDN中都会有类似的文字：
 
-This POSIX function is deprecated beginning in  
-Visual C++ 2005. Use the ISO C++ conformant [_access](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/ba34f745-85c3-49e5-a7d4-3590bd249dd3.htm>) or  
-security-enhanced [_access_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/fb3004fc-dcd3-4569-8b27-d817546e947e.htm>) instead.
-
- 
-
- 
-
- 
+This POSIX function is deprecated beginning in Visual C++ 2005. Use the ISO C++ conformant [_access](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/ba34f745-85c3-49e5-a7d4-3590bd249dd3.htm>) or security-enhanced [_access_s](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.VisualStudio.v80.chs/dv_vccrt/html/fb3004fc-dcd3-4569-8b27-d817546e947e.htm>) instead.
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com

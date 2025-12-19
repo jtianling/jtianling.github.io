@@ -23,19 +23,17 @@ author:
   last_name: ''
 ---
 
-# 《Inside C++ Object 》 阅读笔记(1)， NRV（Named Return  
-Value）
+测试C++的NRV优化，发现VS2005等现代编译器优化极其激进，能直接消除循环并预计算结果，让传统测试方法失效。
 
- 
+<!-- more -->
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+# 《Inside C++ Object 》 阅读笔记(1)， NRV（Named Return Value）
+
+**_write by_ _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 书其实看完了，因为实在公司抽中午吃饭剩余时间看的，所以其实一直没有好好的试验一下，现在将书带到家里好好的一个一个将感兴趣的测试一下了。
 
- NRV（Named Return Value）是我阅读《Inside C++ Object》碰到的第一个感兴趣的东西，书上面有Lippman的测试数据和侯捷的测试数据。当然，对于VS的效率一直没有报太大希望，但是不至于这个Lippman所说的编译器的义不容辞的优化都不做吧。可能因为侯捷用的VC5.0实在太老了，于是我自己决定测试一下。
-
- 
+NRV（Named Return Value）是我阅读《Inside C++ Object》碰到的第一个感兴趣的东西，书上面有Lippman的测试数据和侯捷的测试数据。当然，对于VS的效率一直没有报太大希望，但是不至于这个Lippman所说的编译器的义不容辞的优化都不做吧。可能因为侯捷用的VC5.0实在太老了，于是我自己决定测试一下。
 
 首先在Linux下,我测试了一下。测试代码书上有，我还是贴一下：
 
@@ -44,7 +42,7 @@ blog.csdn.net/vagrxie_**
 #include <stdlib.h>
 #include <memory>
 #ifdef _WIN32
-#include “jtianling.h”
+#include "jtianling.h"
 #endif
 using namespace std;
 
@@ -96,8 +94,6 @@ int main(int argc, char* argv[])
     exit(0);
 }
 ```
-
- 
 
 因为在linux下我有sheel下的time可以用，所以不需要自己在程序中计时（实际上这还导致linux下的时间会长一些，因为记上了循环外的部分，包括了main的调用等），windows下用我自己的带有gettime的一个库。
 
@@ -183,8 +179,6 @@ int main(int argc, char* argv[])
 }
 ```
 
- 
-
 分别测试有copy constructor和没有的情况，结果仍然和以前一致，虽然速度很快，但是，有copy constructor的时候速度还是要慢一些，这点很让人不解，更让人不解的是，既然没有开启NRV，那么应该会有1次default constructor的调用用来构建临时变量，然后再有一次copy constructor来返回值，但是实际上gj显示default constructor和copy constructor中只有一个被调用了。说明起码是进行了某种优化了。
 
 难道MS用的是另外一个不同于NRV的优化方案？
@@ -212,7 +206,4 @@ Have you seen it?红色部分，当我第一次看到989680h的时候，它的�
 
 然后我将copy constructor注释掉，再次编译运行，最最让人惊讶的事情发生了，汇编代码完全一样。。。。。不是我眼睛不好使，我用BC对比后结果也是一样的。天哪，这还算优化吗？。。。。简直是恶意篡改代码........呵呵，说严重了。问题是。。。最大的问题是，无论我测多少次，一样的汇编代码，在有copy constructor的版本总会慢一些，数量级在0.0001上，我也曾怀疑可能是偶尔的机器性能波动，但是实际多次测试，有copy constructor的版本就是会慢一些，希望有人能给我解答这个问题。
 
- 
-
-**_write by_**** _九天雁翎_**** _(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_ _九天雁翎_ _(JTianLing) -- blog.csdn.net/vagrxie_**

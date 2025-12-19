@@ -20,10 +20,13 @@ author:
   last_name: ''
 ---
 
+整理了丰富的游戏开发资源，涵盖引擎、库、工具和免费的模型、纹理、音效等素材。
+
+<!-- more -->
+
 From: http://www.gamedev.net/community/forums/topic.asp?topic_id=324643
 
 **Graphics Engines**
-
 - [Ogre 3D](http://www.ogre3d.org/)
 - [Nebula Device](http://www.radonlabs.de/nebula.html)
 - [Jad](http://www.jadengine.com/) (formerly Haddd)
@@ -55,11 +58,9 @@ From: http://www.gamedev.net/community/forums/topic.asp?topic_id=324643
 - [Kyra Sprite Engine](http://www.grinninglizard.com/kyra/)
 
 **Libraries**
-
 - [Free Game Development Libraries](http://abattoir.wolfpaw.net/personal/gamelibs.php) (external list)
 
 _Graphics:_
-
 - [Crazy Eddie's GUI system](http://www.cegui.org.uk/modules/news/)
 - [Cal3D](http://cal3d.sourceforge.net/) (character animation library)
 - [GLFW](http://glfw.sourceforge.net/) (OpenGL Framework)
@@ -97,14 +98,12 @@ _Graphics:_
 - [GLOD](http://www.cs.jhu.edu/%7Egraphics/GLOD/) (Geometric Level of Detail for OpenGL)
 
 _Video:_
-
 - [FFmpeg](http://ffmpeg.sourceforge.net/index.php)
 - [Dirac](http://sourceforge.net/projects/dirac)
 - [Theora](http://www.theora.org/)
 - [XviD](http://www.xvid.org/)
 
 _Networking:_
-
 - [RakNet](http://www.rakkarsoft.com/)
 - [OpenTNL](http://www.opentnl.org/) (Torque network library)
 - [HawkNL](http://www.hawksoft.com/hawknl/)
@@ -113,7 +112,6 @@ _Networking:_
 - [Game Networking Engine](http://www.rit.edu/%7Ejpw9607/gne/)
 
 _Sound:_
-
 - [FMOD](http://www.fmod.org/)
 - [OpenAL](http://www.openal.org/)
 - [Audiere](http://audiere.sourceforge.net/)
@@ -122,7 +120,6 @@ _Sound:_
 - [Ogg Vorbis](http://www.vorbis.com/)
 
 _Physics and Collision:_
-
 - [Open Dynamics Engine (ODE)](http://ode.org/)
 - [Tokamak](http://www.tokamakphysics.com/)
 - [Newton Game Dynamics](http://www.physicsengine.com/)
@@ -137,7 +134,6 @@ _Physics and Collision:_
 - [V-Collide](http://www.cs.unc.edu/%7Egeom/V_COLLIDE/)
 
 _Scripting and XML:_
-
 - [Python](http://python.org/)
 - [IronPython](http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython)
 - [Lua](http://www.lua.org/)
@@ -160,7 +156,6 @@ _Scripting and XML:_
 - [ezXML](http://ezxml.sourceforge.net/)
 
 _Compression and File Systems:_
-
 - [zlib](http://www.zlib.net/)
 - [bzip2](http://www.bzip.org/)
 - [LZMA SDK](http://www.7-zip.org/sdk.html)
@@ -174,9 +169,7 @@ _Compression and File Systems:_
 _Note: Much of the above lists (but not all) were taken from [this page](http://abattoir.wolfpaw.net/personal/gamelibs.php), maintained by Kylotan [here](http://www.gamedev.net/community/forums/topic.asp?topic_id=291432)._
 
 **Applications and Utilities:**
-
 _Development Environments:_
-
 - [Visual Studio 2005 Express](http://msdn.microsoft.com/vstudio/express/)
 - [Code::Blocks IDE](http://www.codeblocks.org/)
 - [Dev-C++](http://www.bloodshed.net/devcpp.html)
@@ -184,7 +177,6 @@ _Development Environments:_
 - [ActivePython](http://www.activestate.com/Products/ActivePython/)
 
 _Graphics Development:_
-
 - [gDEBugger](http://www.gremedy.com/)
 - [FX Composer](http://developer.nvidia.com/object/fx_composer_home.html)
 - [RenderMonkey](http://www.ati.com/developer/rendermonkey/)
@@ -195,7 +187,6 @@ _Graphics Development:_
 - [Sh](http://libsh.org/) (shader language)
 
 _Modeling:_
-
 - [SoftImage|XSI Mod Tool](http://www.softimage.com/community/xsi_mod_tool/default.aspx)
 - [Milkshape 3D](http://www.swissquake.ch/chumbalum-soft/) (not free, $25)
 - [Wings 3D](http://www.wings3d.com/)
@@ -204,13 +195,11 @@ _Modeling:_
 - [DeleD](http://www.delgine.com/index.php?filename=product_deled&menus=off)
 
 _World Building:_
-
 - [Quake Army Knife (QuArK)](http://dynamic.gamespy.com/%7Equark/)
 - [GtkRadiant](http://www.qeradiant.com/)
 - [Getic3D](http://www.zalsoft.com/index.php)
 
 _Audio:_
-
 - [ModPlug](http://www.modplug.com/)
 - [Audacity](http://audacity.sourceforge.net/)
 - [SynthEdit](http://www.synthedit.com/)
@@ -218,15 +207,12 @@ _Audio:_
 - [KVR Audio](http://www.kvraudio.com/) (not actually software, but has tons of links)
 
 _Images:_
-
 - [Paint.NET (excellent free image editor)](http://www.eecs.wsu.edu/paint.net/)
 - [The GIMP](http://www.gimp.org/)
 - [BMFont](http://www.angelcode.com/products/bmfont/) (font texture generator)
 
 **Media**
-
 _Textures:_
-
 - [Transmogrifying Textures Vol. I (NVIDIA)](http://developer.nvidia.com/object/IO_TTVol_01.html)
 - [Mayang's Free Textures](http://www.mayang.com/textures/)
 - [3D Cafe's Free Textures](http://www.3dcafe.com/asp/textures.asp)
@@ -247,7 +233,6 @@ _Textures:_
 - [Psionic3D](http://www.psionic3d.co.uk/)
 
 _Models:_
-
 - [3D Millenium Free Models](http://www.m3corp.com/a/download/models/index.htm)
 - [Polycount](http://www.planetquake.com/polycount/)
 - [Marlin Studios](http://www.marlinstudios.com/samples/samples.htm)
@@ -258,11 +243,9 @@ _Models:_
 - [Free 3D Models for 3D Studio Max](http://www.3dnuts.com/models.shtml)
 
 _Sprites_
-
 - [This thread has lots...and lots...and lots...](http://www.gamedev.net/community/forums/topic.asp?topic_id=272386)
 
 _Sounds:_
-
 - [SFX and Music Resources](http://www.gamedev.net/community/forums/topic.asp?topic_id=279518) (another long GDNet post)
 - [Jamendo](http://www.jamendo.com/us/) (Creative Commons licensed music)
 - [A1 Free Sound Effects](http://www.a1freesoundeffects.com/noflash.htm)

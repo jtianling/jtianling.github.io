@@ -22,9 +22,13 @@ author:
   last_name: ''
 ---
 
+C++的map是排序的，其迭代效率虽低于list但并非传言中极慢。map的优势在于各项操作性能均衡，不应因误解而弃用。
+
+<!-- more -->
+
 # 为C++的map翻案，map实际是排序并且迭代效率不低的
 
-[**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
+[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
 [**讨论新闻组及文件**](<ttp://groups.google.com/group/jiutianfile/>)
 
@@ -184,8 +188,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 速度在上面已经有输出了，300元素，迭代100次，list花费2.26秒，multimap花费2.59秒，multimap的迭代速度的确比list慢，但是慢的比率实在是不太多，没有到传言中不可接受的地步，下面会做一个加强版的测试，测试在元素非常多（2万）的情况下，multimap的迭代速度降低的影响。
 
-以上程序输出：
+## 以上程序输出：
 
+```
 99 98 97 96 95 94 93 92 91 90 89 88 87 86 85 84 83 82 81 80 79 78 77 76 75 74 73
  72 71 70 69 68 67 66 65 64 63 62 61 60 59 58 57 56 55 54 53 52 51 50 49 48 47 4
 6 45 44 43 42 41 40 39 38 37 36 35 34 33 32 31 30 29 28 27 26 25 24 23 22 21 20
@@ -206,6 +211,7 @@ int _tmain(int argc, _TCHAR* argv[])
 1485000
 
 1485000
+```
 
 有点乱，从前面几排可以看出map是排序的，迭代可以按顺序输出。
 
@@ -217,9 +223,11 @@ int _tmain(int argc, _TCHAR* argv[])
 
 其实从实现上考虑，可以想到，随着元素的增加，list的迭代速度是不会变慢的，但是map作为二叉树，树越大，其遍历的速度会越来越慢，这里为了看看到底会有多慢，将元素的个数扩大到一个实际中有可能碰到的数值，3万，再来测试迭代速度。
 
+```
 Routine Name     Time      Time with Children    Shared Time Hit Count
 MapIterate   1.15       1.57       73.18     1
 ListIterate     0.25       0.51       49.40     1
+```
 
 ```cpp
 #define TEST_TIMES 100
@@ -261,7 +269,7 @@ void ListIterate()
 
 这点就像很多人批评C++一样，高不成低不就，但是还是有人使用C++，就在于同样的特性在使用的时候也可以是比C语言的抽象能力更强，比其他高级语言的速度更快，更接近底层。
 
-[**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
+[**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
 其实个人感觉，真正可能会使C++成为历史的是将底层和上层完全分开的潮流，那样才会架空C++的空间。比如，底层与硬件打交道和要求速度非常快的部分交给C，然后上层逻辑全部交给Python等脚本语言，这才是C++最怕的事情。事实上使用过一些如python,mysql,lua的API后就会发现，不仅仅是windows API，事实上世界上大部分应用程序在提供自己的扩展接口时，基本都是C接口，毕竟因为C++的特性，要提供一个兼容的类接口不是那么容易的，这就是世界的格局，C语言几乎不可能从软件世界消失，因为它是如英语一样的世界通用语言，虽然C++的社团不断的希望融入这个世界，mysql也有第3方封装的C++ 接口，lua也有众多C++绑定接口,boost.python库的出现就是更是使C++为Python写扩展更加容易，但是要为世界所接受，仍然任重而道远。
 

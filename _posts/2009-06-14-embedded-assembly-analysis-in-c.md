@@ -22,9 +22,13 @@ author:
   last_name: ''
 ---
 
+本文讲解C++内嵌汇编的使用，通过实例分析了不同调用约定下的汇编代码实现，并强调其为性能优化的利器，但需程序员手动管理栈和寄存器，风险较高。
+
+<!-- more -->
+
 # 在C++中内嵌汇编代码分析
 
-**write by****九天雁翎(JTianLing) -- www.jtianling.com**
+**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 用JAVA或者Python的人常常会告诉你，现在的硬件已经太快了，以至于你可以完全不再考虑性能，快速的开发才是最最重要的。这是个速食者的年代，什么都是，甚至是编程。
 
@@ -40,13 +44,10 @@ C/C++程序员常常会发现自己只有有限的内存，要占用更小的CPU
 
 对于各类调用约定也可以参考《加密与解密》（第3版），其中的分类还比较详细。
 
-我在《 反汇编时的函数识别及各函数调用约定的汇编代码分析》，《 C++中通过指针,引用方式做返回值的汇编代码分析》中也有一些实例的分析，但是不能代替完整的说明，仅供参考。
+我在《 反汇编时的函数识别及各函数调用约定的汇编代码分析》，《 C++中通过指针,引用方式做返回值的汇编代码分析》中也有一些实例的分析，但是不能代替完整的说明，仅供参考。
 
 http://www.jtianling.com/archive/2009/01/20/3844768.aspx
-
 http://www.jtianling.com/archive/2009/01/20/3844520.aspx
-
- 
 
 以下形式就是最方便的内嵌汇编用法：
 
@@ -72,8 +73,6 @@ int __cdecl GetArgument(int ai)
     return li;
 }
 ```
-
- 
 
 以上程序就是一个仅仅返回参数的函数，用__cdecl调用约定，需要注意的是，mov li, ai的形式是不允许的。。。。与在普通汇编中不允许从内存mov到内存的限制一致。
 
@@ -238,8 +237,6 @@ int _tmain(int argc, _TCHAR* argv[])
 }
 ```
 
- 
-
 结果也是正确的，fastcall的规则在VC中是已知的，但是在很多编译器中实现并不一样，所以很多书籍推荐最好不要使用fastcall来内嵌汇编，因为你不知道到底fastcall到底会使用哪些寄存器来传递参数。
 
 MSDN中有如下描述：
@@ -274,8 +271,6 @@ int _tmain(int argc, _TCHAR* argv[])
     return 0;
 }
 ```
-
- 
 
 反汇编：
 
@@ -326,8 +321,6 @@ int __fastcall GetArgument(int ai1, int ai2, int ai3)
 004130F0  ret         4    
 ```
 
- 
-
 说实话，ebp+8的计算我原来是搞错了，我当时直接用了esp+8，但是后来才发现在debug没有优化的时候，此处是会采用先保存esp,然后再用ebp的标准用法的。这里没有任何可健壮和移植性可言，仅仅是为了说明thiscall其实也是有规则并且符合约定的，比如上述程序在VS2005最大速度优化时也能正确运行，反汇编代码如下：
 
 ```cpp
@@ -352,8 +345,6 @@ int _tmain(int argc, _TCHAR* argv[])
 }
 ```
 
- 
-
 ```cpp
 int __fastcall GetArgument(int ai1, int ai2, int ai3)
 {
@@ -372,8 +363,6 @@ int __fastcall GetArgument(int ai1, int ai2, int ai3)
 0040100A 5D               pop         ebp 
 0040100B C2 04 00         ret         4   
 ```
-
- 
 
 最后，在VS2005中还有一个专门为内嵌汇编准备的函数调用方式，naked。。。裸露的调用方式？-_-!呵呵，其实应该表示是无保护的。
 
@@ -398,8 +387,6 @@ int _tmain(int argc, _TCHAR* argv[])
     return 0;
 }
 ```
-
- 
 
 反汇编代码：
 
@@ -460,8 +447,6 @@ int _tmain(int argc, _TCHAR* argv[])
 }
 ```
 
- 
-
 假如VS完全不管GetArgument函数，因为GetArgument函数内部无法维护栈平衡，那么程序崩溃是必然的，还好VS管理了这个问题：
 
 ```asm
@@ -498,8 +483,6 @@ int _tmain(int argc, _TCHAR* argv[])
     return 0;
 }
 ```
-
- 
 
 上例在VS2005中最大速度优化，内联选项为仅仅在有inline声明才内联时可以运行正确，见汇编代码：
 
@@ -588,20 +571,9 @@ int __cdecl GetArgument(int ai)
 
 另外push ecx,pop ecx的处理也是编译器极端优化的一个例子，这里本来可以用sub,add修改esp的做法的，但是那样的话一条指令就是5个字节。。。这样的话才1个字节！真是极端的优化啊。。。。。
 
- 
-
 参考资料：
 
-1.      MSDN
+1.  MSDN
+2.  《加密与解密》（第3版）附录2
 
-2.      《加密与解密》（第3版）附录2
-
- 
-
- 
-
- 
-
- 
-
-**write by****九天雁翎****(JTianLing) -- www.jtianling.com**
+**write by 九天雁翎(JTianLing) -- www.jtianling.com**

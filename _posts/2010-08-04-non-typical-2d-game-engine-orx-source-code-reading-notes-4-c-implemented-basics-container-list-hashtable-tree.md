@@ -24,23 +24,24 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+为跨平台，Orx引擎自实现了List、HashTable等C语言容器。文章剖析了其非常规的设计，并指出了HashTable存在的性能与冲突风险。
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+<!-- more -->
+
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
+
+[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 C语言中没有标准的容器，所以为了跨平台，Orx中自己实现了一套。
 
 在Orx中作者分别实现了HashTable,List,Tree3个容器，虽然没有实现一个自己的String，但是为orxSTRING（实际为char*的typedef)实现了一堆的辅助函数。
 
-下面分别来看看，为了不使本文成为一个类似algorithm in C的讲算法的文章，这里只看看使用和各容器的特性^^  
+下面分别来看看，为了不使本文成为一个类似algorithm in C的讲算法的文章，这里只看看使用和各容器的特性^^
 
-## List  
+## List
 
-以前有人说过，几乎每个程序员在职业生涯都会自己实现一个List,不知道是不是真这样，虽然我的确实现过。。。。。。。。。。  
-先看结构：  
-  
+以前有人说过，几乎每个程序员在职业生涯都会自己实现一个List,不知道是不是真这样，虽然我的确实现过。。。。。。。。。。先看结构：
+
 ```c
 /*
 * Node list structure
@@ -81,12 +82,8 @@ typedef
 */
 } orxLINKLIST;
 ```
-  
-从结构看，我感觉实现的有些特殊，我以前看到的一般的list实现（自然是指C语言中的）一般用一个结构就解决一切了，都是用list的node本身（一般是头结点）来表示一个list,Orx这里额外特别的抽象出了一个List结构，然后node还反过来有指针指向list，有点奇怪的是，没有看到数据存在哪里。。。。。。。。。。。然后，突然发现，我没有看到list的Create函数。。。。。。。。看了一下Orx对List的使用，原来都是直接使用orxLINKLIST  
-。。。。。。。。。。。。  
-再然后，没有地方存储数据（比如类似pData的指针）的疑惑也解开了。。。。。。所有使用这个list的地方都用一个以orxLINKLIST_NODE  
-为第一个成员变量的结构，然后node的指针，就相当于整个结构的指针了。。。。。。。。。。。。。  
-比如下面这个config的结构：  
+
+从结构看，我感觉实现的有些特殊，我以前看到的一般的list实现（自然是指C语言中的）一般用一个结构就解决一切了，都是用list的node本身（一般是头结点）来表示一个list,Orx这里额外特别的抽象出了一个List结构，然后node还反过来有指针指向list，有点奇怪的是，没有看到数据存在哪里。。。。。。。。。。。然后，突然发现，我没有看到list的Create函数。。。。。。。。看了一下Orx对List的使用，原来都是直接使用orxLINKLIST。。。。。。。。。。。。再然后，没有地方存储数据（比如类似pData的指针）的疑惑也解开了。。。。。。所有使用这个list的地方都用一个以orxLINKLIST_NODE为第一个成员变量的结构，然后node的指针，就相当于整个结构的指针了。。。。。。。。。。。。比如下面这个config的结构：
 
 ```c
 typedef struct __orxCONFIG_SECTION_t
@@ -105,10 +102,9 @@ typedef struct __orxCONFIG_SECTION_t
 
 谜底解开了，总的来说，这个List很诡异。。。。。。。。。。。。
 
-## HashTable  
+## HashTable
 
-一个HashTable容器拥有O(1)的查找效率，被誉为20世纪最重要的编程领域发明之一。。。。。（不记得在哪看到的了）  
-先看看结构：  
+一个HashTable容器拥有O(1)的查找效率，被誉为20世纪最重要的编程领域发明之一。。。。。（不记得在哪看到的了）先看看结构：
 
 ```c
 #define orxHASHTABLE_KU32_INDEX_SIZE                         256
@@ -150,17 +146,10 @@ struct
 */
 };
 ```
-  
-每个hashTable的数据自然是一个cell,存储在pData中，通过注释基本也能理解Orx的Hash table的结构了。  
-所有的数据通过apstCell[orxHASHTABLE_KU32_INDEX_SIZE];  
-数组来存储，并且通过某个较小的key（说明这个较小的key一定小于orxHASHTABLE_KU32_INDEX_SIZE  
-）来索引这个数据，假如有第一个较小的key冲突的情况，通过orxHASHTABLE_CELL  
-的*pstNext  
-变量来保存成链状，并通过u32Key  
-这个32位的key来区别。这个结构与一般C++ STL扩展中的hashTable实现原理基本一样。（HashTable目前还不是C++标准库的内容，所以只在扩展库中存在）  
-谁说看结构比看流程清晰来着？说的实在是太对了。当结构是这样定的时候，流程还能玩出啥花来？
 
-用下面这样的代码来测试一下，同时验证想法。  
+每个hashTable的数据自然是一个cell,存储在pData中，通过注释基本也能理解Orx的Hash table的结构了。所有的数据通过apstCell[orxHASHTABLE_KU32_INDEX_SIZE];数组来存储，并且通过某个较小的key（说明这个较小的key一定小于orxHASHTABLE_KU32_INDEX_SIZE）来索引这个数据，假如有第一个较小的key冲突的情况，通过orxHASHTABLE_CELL的*pstNext变量来保存成链状，并通过u32Key这个32位的key来区别。这个结构与一般C++ STL扩展中的hashTable实现原理基本一样。（HashTable目前还不是C++标准库的内容，所以只在扩展库中存在）谁说看结构比看流程清晰来着？说的实在是太对了。当结构是这样定的时候，流程还能玩出啥花来？
+
+用下面这样的代码来测试一下，同时验证想法。
 
 ```c
 orxHASHTABLE* hashTable = orxHashTable_Create(32
@@ -189,14 +178,8 @@ printf("Value:
 "
 , value);
 ```
-  
-解释：  
-orxHashTable_Create实际仅仅分配了内存而已。值得一提的仅仅是cell的内存使用[上一节](<http://www.jtianling.com/archive/2010/08/01/5780357.aspx> "上一节")  
-提到的bank来分配的。  
-orxString_ToCRC用于将string进行CRC，没有啥好说的。只是不知道Orx的这个CRC效果怎么样，比如速度快不快，冲突几率高不高。  
-orxHashTable_Add中先判断是否有同样key的数据存在，存在的话会报错。  
-其中调用的下列函数非常关键，用于获取前面提到的较小的key，来合成数组的索引。原来就是取CRC出来的32位值的与orxHASHTABLE_KU32_INDEX_SIZE  
-匹配的低位而已。（虽然这里用取模会意思更加自然一些，但是一个取模操作比一个位操作慢的不是一点点）  
+
+解释：orxHashTable_Create实际仅仅分配了内存而已。值得一提的仅仅是cell的内存使用[上一节](<http://www.jtianling.com/archive/2010/08/01/5780357.aspx> "上一节")提到的bank来分配的。orxString_ToCRC用于将string进行CRC，没有啥好说的。只是不知道Orx的这个CRC效果怎么样，比如速度快不快，冲突几率高不高。orxHashTable_Add中先判断是否有同样key的数据存在，存在的话会报错。其中调用的下列函数非常关键，用于获取前面提到的较小的key，来合成数组的索引。原来就是取CRC出来的32位值的与orxHASHTABLE_KU32_INDEX_SIZE匹配的低位而已。（虽然这里用取模会意思更加自然一些，但是一个取模操作比一个位操作慢的不是一点点）
 
 ```c
 static
@@ -216,7 +199,7 @@ static
  ));
 }
 ```
-  
+
 找到位置以后的操作就太自然了。
 
 ```c
@@ -248,17 +231,10 @@ static
       _pstHashTable->u32Counter++;
     }
 ```
-  
-由于iarwain的注释存在，我更加没有必要说太多了。值得一提的是可以看到这里面甚至没有判断这个数组索引所在的位置是否已经被占，然后进行冲突处理的操作。  
-原因在于先  
-pstCell->pstNext = _pstHashTable->apstCell[u32Index];  
-  
-然后  
-_pstHashTable->apstCell[u32Index] = pstCell;  
-  
-假如原来此位置为空，next也就是空了，假如原来此位置有原来的值（甚至可以是一个链），就将整个链接在现在新数据的后面。
 
-然后看set函数：  
+由于iarwain的注释存在，我更加没有必要说太多了。值得一提的是可以看到这里面甚至没有判断这个数组索引所在的位置是否已经被占，然后进行冲突处理的操作。原因在于先pstCell->pstNext = _pstHashTable->apstCell[u32Index];然后_pstHashTable->apstCell[u32Index] = pstCell;假如原来此位置为空，next也就是空了，假如原来此位置有原来的值（甚至可以是一个链），就将整个链接在现在新数据的后面。
+
+然后看set函数：
 
 ```c
   /*  
@@ -298,8 +274,8 @@ _pstHashTable->apstCell[u32Index] = pstCell;
   /* Done! */
   return orxSTATUS_SUCCESS;
 ```
-  
-用于在此数组位置进行进一步的索引，找到32位key完全一致的值。  
+
+用于在此数组位置进行进一步的索引，找到32位key完全一致的值。
 
 ```c
  while (pstCell != orxNULL && pstCell->u32Key != _u32Key)
@@ -308,8 +284,8 @@ _pstHashTable->apstCell[u32Index] = pstCell;
     pstCell = pstCell->pstNext;
   }
 ```
-  
-而  
+
+而
 
 ```c
  /*  
@@ -332,9 +308,7 @@ _pstHashTable->apstCell[u32Index] = pstCell;
 
 我小结一下：
 
-1、Orx的HashTable定死了apstCell[orxHASHTABLE_KU32_INDEX_SIZE]这个数组的大小，orxHASHTABLE_KU32_INDEX_SIZE  
-等于256，所以，很自然的，此hashTable  
-在数量较小的时候才能保持较高的效率，（即HashTable的理论值O(1))假如数量远远超过256，那么查询效率几乎接近线性效率O(n)。
+1、Orx的HashTable定死了apstCell[orxHASHTABLE_KU32_INDEX_SIZE]这个数组的大小，orxHASHTABLE_KU32_INDEX_SIZE等于256，所以，很自然的，此hashTable在数量较小的时候才能保持较高的效率，（即HashTable的理论值O(1))假如数量远远超过256，那么查询效率几乎接近线性效率O(n)。
 
 2、Orx这里的索引完全依赖于其String的32位CRC计算，但是很遗憾的，CRC的计算时会有冲突的，也就是会出现两个不同String但是计算出同样CRC的情况，我没有仔细了解这个CRC的计算，但是将整个HashTable的基础建立在这个不稳定的基石上，总的来说已经说明了这个HashTable存在问题。。。。。。。。。。。。。
 
@@ -411,10 +385,9 @@ struct
   GList *prev;
 };
 ```
-  
+
 一看到结构。。。。。。。。。。。。我大呼。。。。。数据结构的书籍还是没有骗我的啊。。。。。。。。。。。。。。。。。诡异的还是Orx。。。。。。。。。哪有需要自己一定要用一个新结构来包含Node来用一个list/tree的话。。。。。我要保存一个整数怎么办？。。。。。。。。简单的说，Orx的这个容器实现的非主流，不推荐大家使用及学习。。。。我这里也仅仅为了了解Orx的源代码而看看吧。。。。。。。。
 
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

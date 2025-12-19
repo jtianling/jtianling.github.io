@@ -29,13 +29,14 @@ author:
   last_name: ''
 ---
 
-#   一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记  
+本文使用C++、Lua、Python和Bash四种语言，分别实现了欧几里得算法来求解最大公约数，并附有完整代码。
+
+<!-- more -->
+
+# 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记
 用C++/lua/python/bash的四重实现（5）欧几里得算法求最大公约数
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
-
- 
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 <<Data Structures and Algorithm Analysis in C++>>
 
@@ -49,14 +50,14 @@ blog.csdn.net/vagrxie_**
 
 从左自右依次是cpp,lua,python,bash。
 
-![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20081128/gcd.jpg)![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20081128/gcd.jpg)  
+![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20081128/gcd.jpg)![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20081128/gcd.jpg)
 
-write by 九天雁翎(JTianLing)  
+write by 九天雁翎(JTianLing)
 \-- www.jtianling.com
 
-以下为实现部分: 
+以下为实现部分:
 
-CPP: 
+CPP:
 
 ```cpp
 #include <stdio.h>
@@ -88,7 +89,7 @@ CPP:
 }
 ```
 
-LUA: 
+LUA:
 
 ```lua
 #!/usr/bin/env lua
@@ -112,7 +113,7 @@ print("gcd(1989,1590)=" .. gcd(1989,1590))
 print("gcd(1590,1989)=" .. gcd(1590,1989))
 ```
 
-PYTHON: 
+PYTHON:
 
 ```python
 #!/usr/bin/env python
@@ -136,7 +137,7 @@ PYTHON:
     test()
 ```
 
-BASH: 
+BASH:
 
 ```bash
 #!/usr/bin/env bash

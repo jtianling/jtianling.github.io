@@ -24,18 +24,19 @@ author:
   last_name: ''
 ---
 
-## 一天一个C Run-Time Library 函数(4)  abs _abs64
+本文解析C/C++绝对值函数abs，对比了C和C++对不同类型的处理差异，并分析了其简单实现，指出该函数常被编译器内联优化。
+
+<!-- more -->
+
+## 一天一个C Run-Time Library 函数(4) abs _abs64
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
 
- 
-
 ## msdn:
 
-Calculate the absolute value.  
-  
----  
+Calculate the absolute value.
 
+---
 
 ```cpp
 int abs(
@@ -49,19 +50,13 @@ _abs64(     __int64 _n_ );
 
 这里要说明的是c++因为有重载的技术，所以都可以用abs来表示，而C语言里面实际还有labs函数，用来表示long类型的绝对值。
 
- 
-
 ## 测试程序：
 
 虽然MSDN都有example,但是对于这么简单的函数，就没有必要贴了。
 
- 
-
 ## 说明：
 
 功能很简单，也很实用的函数。以前学习c++的时候有用到过，可是实际上工作以后竟然一次也没有用过。
-
-** **
 
 ## 实现：
 
@@ -120,8 +115,6 @@ MS:
 0041142A  mov         eax,dword ptr [ebp-0C4h]
 ```
 
- 
-
 gcc:
 
 ```asm
@@ -138,19 +131,13 @@ gcc:
 
 DEBUG下才能看到老实的逐句解析的代码，Release下简单的abs函数调用都直接在编译期间就计算完了。说实话，即使在DEBUG版本中我看不出来两者有什么区别。两者在参数为正，或为负的时候都需要一次jmp。唯一也许有不同的可能就是neg eax的时候也许比neg ecx会快一点。（这还是个人猜想，因为毕竟eax是最常用也是CPU设计时提供最快操作的寄存器）
 
- 
-
 ## 效率测试：
 
 实在不想再测试效率了，对于这样简单的函数测试一百亿次也看不出什么东西。这也是我为什么去看汇编出来的东西。何况，release的时候还被优化了呢。。。
 
- 
-
 ## 相关函数：
 
 无
-
- 
 
 ## 个人想法：
 
@@ -162,8 +149,4 @@ DEBUG下才能看到老实的逐句解析的代码，Release下简单的abs函�
 
 今天对我来说是周末，偷懒了：）其实这么一个简单的函数也没有太多好说的。想用就用吧。
 
- 
-
-write  
-by 九天雁翎(JTianLing)  
-\-- www.jtianling.com
+write by 九天雁翎(JTianLing) -- www.jtianling.com

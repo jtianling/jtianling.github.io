@@ -22,9 +22,11 @@ author:
   last_name: ''
 ---
 
-# Windows下的进程创建API--CreateProcess使用经验漫谈
+分享Windows下CreateProcess API的使用经验，讲解句柄管理、进程关系、错误模式等关键点，帮助开发者避开常见陷阱，掌握高级用法。
 
-# 
+<!-- more -->
+
+# Windows下的进程创建API--CreateProcess使用经验漫谈
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
@@ -79,7 +81,7 @@ void _tmain( VOID )
 
 2. CloseHandle( pi.hProcess );
 
-    CloseHandle( pi.hThread );
+    CloseHandle( pi.hThread );
 
 后，子进程就与父进程彻底脱离关系了，在Windows下进程之间的关系比较弱，不仅没有父进程收割子进程退出状态这一回事，甚至连getppid这样的API也没有。这又导致了两个现象，
 
@@ -92,9 +94,5 @@ void _tmain( VOID )
 4\. Process Creation Flags设为CREATE_SUSPENDED时，可以将欲创建进程挂起，这时想对新进程干啥都行，甚至可以尝试更改其代码段以影响程序运行，（但是大部分带监控的杀毒软件会有警告）。然后用ResumeThread API去让原进程的主线程运行起来。
 
 5.CreateProcess创建的进程句柄实际代表的是一个Windows核心对象，适用于Windows核心对象的操作都可以对进程句柄进行，(核心对象的概念请参考《WIndows核心编程》,其中包括WaitForSingleObject等同步API。
-
- 
-
- 
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

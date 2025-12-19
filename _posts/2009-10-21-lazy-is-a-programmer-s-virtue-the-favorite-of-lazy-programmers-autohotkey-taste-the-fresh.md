@@ -21,13 +21,17 @@ author:
   last_name: ''
 ---
 
+AutoHotkey是Windows平台的自动化工具，能通过脚本自定义快捷键、控制窗口、模拟操作，是懒人程序员告别重复、提升效率的利器。
+
+<!-- more -->
+
 ### 懒惰是程序员的美德! 懒惰程序员的最爱AutoHotkey 尝鲜
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-Don’t Repeat yourself在编程领域成为DRY原则，是知道我们编写强壮代码的重要指导原则之一，但是，事实上在其他领域也是一样的（我也不知道此原则是否最先出现在编程领域）。Larry Wall的懒惰是程序员的美德的话我是记忆深刻。作为一个对计算机着迷，对程序无比投入的人，深知学海无涯，但是，正是因为学无止尽，更迫切的需要我们做追求效率的程序员，将重复的工作交给最擅长做重复工作的电脑去做，只有这样，我们才能将更多的时间节省下来，去干我们自己想干的事情。（虽然工作时不太可能-_-!但是起码能赢得一句手快的评价，再次-_-!）学习VIM，Bash，Python，Lua，Qt，SQL都是如此，在这条路上已经走了这么远的我们，又何惧为了更加提高效率，再多学AutoHotkey这样一个小工具呢？既然选择了远方，就只顾风雨兼程，既然选择了编程，就只能忘了远方。-_-!敲自己的键盘，让别人走路去吧。
+Don't Repeat yourself在编程领域成为DRY原则，是知道我们编写强壮代码的重要指导原则之一，但是，事实上在其他领域也是一样的（我也不知道此原则是否最先出现在编程领域）。Larry Wall的懒惰是程序员的美德的话我是记忆深刻。作为一个对计算机着迷，对程序无比投入的人，深知学海无涯，但是，正是因为学无止尽，更迫切的需要我们做追求效率的程序员，将重复的工作交给最擅长做重复工作的电脑去做，只有这样，我们才能将更多的时间节省下来，去干我们自己想干的事情。（虽然工作时不太可能-_-!但是起码能赢得一句手快的评价，再次-_-!）学习VIM，Bash，Python，Lua，Qt，SQL都是如此，在这条路上已经走了这么远的我们，又何惧为了更加提高效率，再多学AutoHotkey这样一个小工具呢？既然选择了远方，就只顾风雨兼程，既然选择了编程，就只能忘了远方。-_-!敲自己的键盘，让别人走路去吧。
 
 [AutoHotkey](<http://www.autohotkey.com/>)的名字大家说不上如雷贯耳，久仰大名，起码也是早有耳闻了吧。让我们不惧艰险（又是一种脚本语言-_-!）将AutoHotkey作为饭后甜点好好品尝一下吧吧^^
 
@@ -179,9 +183,9 @@ IfWinNotActive, , , WinActivate, ,
 WinWaitActive, ,
 MouseClick, left, 33216, 32891
 Sleep, 100
-WinWait, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer
-IfWinNotActive, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer, , WinActivate, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer
-WinWaitActive, Don’t Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer
+WinWait, Don't Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer
+IfWinNotActive, Don't Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer, , WinActivate, Don't Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer
+WinWaitActive, Don't Repeat yourself 懒惰是程序员的美德 AutoHotkey 尝鲜 - Windows Live Writer
 MouseClick, left, 1362, 10
 Sleep, 100
 MouseClick, left, 1387, 10
@@ -215,8 +219,6 @@ Send i%Words%{Esc}
 
 对于AutoHotkey这样强大的东西，一篇3000来字的小文实在是无法详细尽数其功能，而本人的目的也就是提供给觉得AutoHotKey复杂而不去学习的人尝个鲜，知道了AutoHotkey没有那么难以后，伴随着使用，参考着帮助文档，慢慢的会发现AutoHotkey也是一个离不开的工具了。我就在网上看到很多人狂喊，Linux下什么都好，就是没有AutoHotkey-_-!（其实类似的言论非常多，比如也没有Windows Live Writer equivalent）
 
-原创文章作者保留版权 转载请注明原作者 并给出链接****
+原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
-
-****

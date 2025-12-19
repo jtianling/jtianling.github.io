@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+本文介绍了一种更隐蔽的反Dump方法：使用memcpy代替Win32 API擦除自身代码，有效增加逆向分析的难度。
+
+<!-- more -->
+
 # 通过全局变量和自擦除代码来防Dump(2)
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****

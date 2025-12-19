@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+序列化用于实现跨平台、跨进程的数据保存与传输，它将数据转为统一的二进制格式，是网络通信和程序交互的基础。
+
+<!-- more -->
+
 # [windows/linux服务器程序支持库的开发](/gnu的幽默.html)（2）--序列化支持(1)
 
 [**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

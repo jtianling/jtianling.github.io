@@ -21,13 +21,15 @@ author:
   last_name: ''
 ---
 
+GNU社区充满幽默感，其独特的命名（如GNU、copyleft）和有趣的C/C++代码声明，展现了他们与众不同的黑客文化。
+
+<!-- more -->
+
 ### GNU的幽默
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 GNU从名字开始幽默,GNU是GNU Not Unix的缩写。。。。-_-!
-
- 
 
 ### 其主页上专门有一条GNU FUN：
 
@@ -39,23 +41,19 @@ GNU从名字开始幽默,GNU是GNU Not Unix的缩写。。。。-_-!
 
 Our policy for the humor page is that we will include something if all of these are true:
 
-  1. It should be funny.
-  2. It has no copyright problems.
-  3. It is not libelous.
-  4. It won't offend most ordinary hackers more than is reasonable in humor.
-  5. The humor does not have to be computer-related.
+1. It should be funny.
+2. It has no copyright problems.
+3. It is not libelous.
+4. It won't offend most ordinary hackers more than is reasonable in humor.
+5. The humor does not have to be computer-related.
 
 GNUer是语言的发明创造专家和幽默大师，copyleft也来自这里，总之，他们喜欢与世界反着干.....
 
 大部分的文章以声明(claim）结尾，其便以放弃(disclaim)结尾，大部分公司都是是将源代码作为最高机密，GNU却提倡开源，于是别人需要保留自己的copyright，GNU copyleft......其实copyleft也是收到保护的-_-!
 
- 
-
 这里从其中选一面贴过来：
 
 from <http://www.gnu.org/fun/jokes/declarations.html>
-
- 
 
 ## Funny C/C++ declarations!
 
@@ -194,10 +192,6 @@ friend class mate;
 };
 ```
 
- 
-
- 
-
 个人最为欣赏的是这两个函数的定义：
 
 ```cpp
@@ -219,11 +213,5 @@ women()
 ```
 
 男人就是去酒吧喝醉了回来的动物，女人就是进入浴室再也不出来的动物-_-!
-
- 
-
- 
-
- 
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****

@@ -21,7 +21,11 @@ author:
   last_name: ''
 ---
 
-#  反汇编时的函数识别及各函数调用约定的汇编代码分析  
+本文通过反汇编实例，深入解析了C++的__cdecl、__stdcall、__fastcall等调用约定，阐明了参数传递与栈清理机制，助力逆向分析。
+
+<!-- more -->
+
+# 反汇编时的函数识别及各函数调用约定的汇编代码分析
 
 **write by 九天雁翎(JTianLing) -- www.jtianling.com**
 

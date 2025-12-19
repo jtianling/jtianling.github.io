@@ -22,17 +22,17 @@ author:
   last_name: ''
 ---
 
-#   一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记  
-用（7）习题2.8 随机数组的三种生成算法补 将bash的实现翻译成比较纯正的bash风格  
+本文是数据结构学习笔记，作者用纯正的Bash脚本实现了三种随机数组生成算法，并分享了完整代码。
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+<!-- more -->
 
- 
+# 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记
+用（7）习题2.8 随机数组的三种生成算法补 将bash的实现翻译成比较纯正的bash风格
 
-<<Data Structures and Algorithm Analysis in C++>>
+**_write by_** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_
 
-\--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第49面， 一随机数组的三种生成算法
+《Data Structures and Algorithm Analysis in C++》
+--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第49面， 一随机数组的三种生成算法
 
 由于偷懒我最近老是喜欢用bash从C语言（其实好像是csh)中引进的语法，所以感觉都不是那么纯粹的bash风格（但是其实bash的风格我本来就不 喜欢），老是学了不用，有一天写bash都当C语言在写就完了。今天加班比较晚，就不搞什么新内容了，将2.8的bash实现翻译成了比较纯粹的bash 风格。。。。对于没有接触过Bash的人来说更加接近天书了，enjoy it......(I hope you can)
 
@@ -145,8 +145,4 @@ can't bear it run 100 times
 98
 ```
 
- 
-
- 
-
-**_write by_**** _九天雁翎_**** _(JTianLing) -- www.jtianling.com_**
+**_write by_** _九天雁翎_ _(JTianLing) -- www.jtianling.com_**

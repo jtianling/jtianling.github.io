@@ -23,18 +23,17 @@ author:
   last_name: ''
 ---
 
-#   堆栈的应用(1) 平衡符号 C++实现
+本文通过C++代码示例，讲解了如何利用堆栈数据结构来检查括号等符号是否平衡匹配。
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+<!-- more -->
 
- 
+# 堆栈的应用(1) 平衡符号 C++实现
+
+**_write by_** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_
 
 <<Data Structures and Algorithm Analysis in C++>>
 
-\--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第72面，堆栈的应用(1) 平衡符号
-
- 
+--《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第72面，堆栈的应用(1) 平衡符号
 
 ```cpp
 1 #include <stdio.h>  
@@ -119,7 +118,4 @@ argv[])
 66
 ```
 
- 
-
-**_write by_**** _九天雁翎_**** _(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_** _九天雁翎_ _(JTianLing) -- blog.csdn.net/vagrxie_**

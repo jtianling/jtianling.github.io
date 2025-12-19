@@ -21,7 +21,11 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**
+文章对比了Java与C++，总结了Java在整数类型、变量初始化和数组等方面的改进。这些设计旨在解决C++的常见陷阱，让编程更安全、便捷。
+
+<!-- more -->
+
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
@@ -43,7 +47,7 @@ JAVA -- 完全由标准定死原生整数类型的大小，整数类型丰富
 
 Python -- 整数仅分标准整形和长整形，标准整形长度不确定，长整形
 
-JAVA的这个特点不算是太大的改动，但是比起C++来说实在是更为方便。C++继承了C的传统，标准中原生类型都仅仅是建议最小的大小，具体多大的权利留给了编译器，因为这种特性，流行着一句"一百家编译器厂商就有一百种C++”的话。所以在C++中，我们通过typedef来获取自己一般想要的大小，（到时候想要改也方便）减少int的使用转而使用长度更加确定的short,long，去减少整数类型大小不确定带给我们可移植性的问题。
+JAVA的这个特点不算是太大的改动，但是比起C++来说实在是更为方便。C++继承了C的传统，标准中原生类型都仅仅是建议最小的大小，具体多大的权利留给了编译器，因为这种特性，流行着一句"一百家编译器厂商就有一百种C++"的话。所以在C++中，我们通过typedef来获取自己一般想要的大小，（到时候想要改也方便）减少int的使用转而使用长度更加确定的short,long，去减少整数类型大小不确定带给我们可移植性的问题。
 
 事实上，这种特性可能是考虑到不同硬件对不同大小的值执行速度上的差异，比如16位机器一次处理16位整数的效率最高，32位的机器是32位，而64位则是64位，C++作为一门没有完全脱离硬件并且不放弃底层开发市场的语言，无法不考虑这一点，所以才有int的出现，用此类型来自适应当前机器最适合的类型，其他类型也没有强行的规定死，导致了sizeof的使用常常难以避免，特别是在数组等长度的计算时，sizeof的使用简直就是标准用法，JAVA抛弃了这种用法，确定了所有原生类型的大小，在一定程度上简化了程序代码。
 
@@ -166,32 +170,16 @@ Python -- 数组访问范围检测，越界时抛出IndexError: tuple index out 
 
 此文是当时刚刚通过新公司的面试还没有进入公司的时候写的，因为还没有完善，一直没有发布，当时以为自己在新公司会使用JAVA，所以趁还没有进入公司现巩固一下（对JAVA的了解很少，仅大概看过《Thinking in JAVA》一书），但是事实进入公司以后，还是做C++的工作。。。。。。。所以，此系列，未完善的文章也先发布了，无意外的话，此系列还就此终结了。。。。。。。。。。。。（假如以后有闲工夫或者工作真的换的时候再开始也未必可知）
 
-## 
-
-## 
-
-## 
-
 ## 参考资料
 
-1.《Thinking In JAVA》，英文版，第4版，Bruce Eckel著，机械工业出版社
+1. 《Thinking In JAVA》，英文版，第4版，Bruce Eckel著，机械工业出版社
+2. 《JAVA Programming Language》，英文版，第4版，Ken Arnold,James Gosling,David Holmes著，人民邮电出版社
+3. 《[JDK 6 Documentation](<http://java.sun.com/javase/6/docs/>)》，JAVA在线文档集合
+4. 《[The Java Language Specification, Third Edition](<http://java.sun.com/docs/books/jls/third_edition/html/j3TOC.html>)》
+5. 《[Java™ Platform, Standard Edition 6 API Specification](<http://java.sun.com/javase/6/docs/api/index.html>)》
+6. 《C专家编程》，Peter Van Der LinDen著，徐波译，人民邮电出版社
+7. 《Python核心编程》，Wesley J. Chun著，宋吉广译，人民邮电出版社
 
-2.《JAVA Programming Language》，英文版，第4版，Ken Arnold,James Gosling,David Holmes著，人民邮电出版社
-
-3.《[JDK 6 Documentation](<http://java.sun.com/javase/6/docs/>)》，JAVA在线文档集合
-
-4.《[The Java Language Specification, Third Edition](<http://java.sun.com/docs/books/jls/third_edition/html/j3TOC.html>)》
-
-5.《[Java™ Platform, Standard Edition 6 API Specification](<http://java.sun.com/javase/6/docs/api/index.html>)》
-
-6.《C专家编程》，Peter Van Der LinDen著，徐波译，人民邮电出版社
-
-7\. 《Python核心编程》，Wesley J. Chun著，宋吉广译，人民邮电出版社
-
-## 
-
-## 
-
-原创文章作者保留版权 转载请注明原作者 并给出链接****
+原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

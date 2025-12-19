@@ -21,13 +21,17 @@ author:
   last_name: ''
 ---
 
+Orx作者录制的无声教程，演示了仅通过修改配置文件，无需改代码即可实现复杂游戏效果的强大功能。
+
+<!-- more -->
+
 Orx作者iarwain亲自录制，品质保证，非Youtube，中国可流畅播放。
 
 - [Part1: setup and build（设置及构建）](<http://vimeo.com/1721371>)
 - [Part2: simple object display（简单的物体显示）](<http://vimeo.com/1721417>)
 - [Part3: advanced object properties（高级物体属性）](<http://vimeo.com/1721450>)
 - [Part4: simple visual FX（简单的特效）](<http://vimeo.com/1721563>)
-- [Part5: spawner combined with FX（加特效的spawner）   spawner不知道怎么翻译，大概类似于一个游戏中的物体创建发生器](<http://vimeo.com/1721677>)
+- [Part5: spawner combined with FX（加特效的spawner） spawner不知道怎么翻译，大概类似于一个游戏中的物体创建发生器](<http://vimeo.com/1721677>)
 - [Part6: more spawner controls（更多的spawner控制）](<http://vimeo.com/1721703>)
 - [Part7: config override and release/debug builds（配置覆盖和release/debug构建）](<http://vimeo.com/1721832>)
 - [Part8: final summary（总结）](<http://vimeo.com/1721868>)

@@ -26,6 +26,10 @@ author:
   last_name: ''
 ---
 
+介绍Windows下Qt环境配置要点。Eclipse需注意make文件，VS2008配置繁琐，推荐使用专用安装器避免手动编译。
+
+<!-- more -->
+
 # Windows下的Qt编程环境配置(Eclipse+CDT+MinGW与VS2008+VS Add in) 要点
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**
@@ -52,7 +56,7 @@ D:/Qt/vs2008ver/qt>configure -opensource -debug-and-release -platform win32-msvc
 
 剩下来进行傻瓜式选择，开始等待Qt的配置。配置完成后，用nmake编译，留下至少7G的空间用于存放中间文件，然后等N个小时吧（鬼知道Qt到底多么庞大）祈祷你成功吧，然后再次进入VS的Qt Option选项，选择目录，总算看到OK按钮活过来了，不容易啊，在Windows中要求进行Linux般的配置，会难住更多的人，因为在Linux下我进行再复杂的配置都习以为常，但是在Windows下我只习惯下一步。。。。。。。。。。。。
 
-这一段讲这么多，是希望大家亲自来感受一下被折磨的感觉-_-！还有以防进行到一半需要帮助的难兄难弟，其实，正因为这个步骤实在是繁琐加费时，所以，现在有个专门的开源项目来解决此事，那就是[qt-msvc-installer](<http://code.google.com/p/qt-msvc-installer/>)，经我试用，感觉比上述过程实在是一个天一个地，我庆幸我用的是VS2008，因为上述项目只支持VS2008，同用VS2008的人庆贺吧，说开源不好的人（比如Qt在这点上做的）的确有道理，但是没有开源（比如说[qt-msvc-installer](<http://code.google.com/p/qt-msvc-installer/>)），那我们就还是在做着那些重复的，无意义的，让人郁闷及崩溃的事情。
+这一段讲这么多，是希望大家亲自来感受一下被折磨的感觉-_-!还有以防进行到一半需要帮助的难兄难弟，其实，正因为这个步骤实在是繁琐加费时，所以，现在有个专门的开源项目来解决此事，那就是[qt-msvc-installer](<http://code.google.com/p/qt-msvc-installer/>)，经我试用，感觉比上述过程实在是一个天一个地，我庆幸我用的是VS2008，因为上述项目只支持VS2008，同用VS2008的人庆贺吧，说开源不好的人（比如Qt在这点上做的）的确有道理，但是没有开源（比如说[qt-msvc-installer](<http://code.google.com/p/qt-msvc-installer/>)），那我们就还是在做着那些重复的，无意义的，让人郁闷及崩溃的事情。
 
 ### 感想（可忽略，纯粹废话）
 

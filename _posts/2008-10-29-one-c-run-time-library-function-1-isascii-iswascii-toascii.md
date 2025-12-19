@@ -22,13 +22,15 @@ author:
   last_name: ''
 ---
 
-## 一天一个C Run-Time Library 函数  __isascii & iswascii & __toascii
+本文剖析了C函数__isascii与__toascii，对比了MS与GCC的实现差异，并测试性能，发现二者效率相近。
 
- 
+<!-- more -->
+
+## 一天一个C Run-Time Library 函数 __isascii & iswascii & __toascii
 
 **_write by 九天雁翎(JTianLing) -- www.jtianling.com_**
 
-**_ _**
+**_ _**
 
 ## msdn:
 
@@ -36,13 +38,13 @@ Determines whether a particular character is an ASCII character.
 
 **int** **__isascii(**
 
-**    int** _c_
+**    int** _c_
 
 **);**
 
 **int** **iswascii(**
 
-**    wint_t** _c_
+**    wint_t** _c_
 
 **);**
 
@@ -98,8 +100,6 @@ int _tmain(int argc, _TCHAR* argv[])
 }
 ```
 
- 
-
 ## 说明：
 
 __isascii是一个比较特殊的函数，因为它以两个前置下划线开头。这在C语言中并不多见。（起码我看到的比较少）
@@ -108,7 +108,7 @@ __isascii是一个比较特殊的函数，因为它以两个前置下划线开�
 
 iswascii这个__isascii函数的宽字节版本，如同很多宽字节版本的函数一样，这个函数属于MS自己扩的，于是。。linux下无法使用此函数，要使用，只能自己实现罗。
 
-** **
+** **
 
 ## 实现：
 
@@ -190,8 +190,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 实际的测试结果很让人失望，在测试了几乎无数次以后，MS和gcc的实现效率都几乎相同，在10亿这个级别，gcc也不过有时快0.1秒而已，而且多次运行，还不是太稳定。看来并不是复杂的实现就一定好。。。
 
- 
-
 ## 相关函数：
 
 msdn:
@@ -210,24 +208,16 @@ int __toascii(
 #define __toascii(_Char)   ( (_Char) & 0x7f )
 ```
 
-gcc注释到 “mask off high bits.”
+gcc注释到 "mask off high bits."
 
 这里和gcc中__isascii函数实现的前一部分很像，一个是去除低七位，一个是保留低七位。看了这个以后才知道gcc为什么想到这样实现__isascii了。
-
- 
 
 ## 个人想法：
 
 这两个函数在实际中我从来没有用到过，假如不是我工作范围太窄那就是这两个函数的使用性并不强了，的确，我没有事去把一个值转为ascii?是ascii的话就没有意义，不是的话，原来的含义还能保留吗？至于__isascii函数可能还在某些情况下有用吧，只不过我没有用到过，谁有实际中使用此两个函数的代码可以告诉我一下。
 
- 
-
 另外，总结的是，虽然C Runtime库MS也有源码，但是完全没有任何注释。相对而言gcc的注释就算是很丰富和详细了，呵呵，毕竟开源代码就是不一样啊，做来就是给人看的，想想这样分析下去，光是看源代码收获都不会太小。
 
- 
-
 最后。。。。。。。。。。。这样一个最最简单的函数，宏定义的函数。用了我整整一个没有加班的晚上的，晕掉了。当然，有在家里的VS中编程已经不太习惯的因素，但是还是太过了，下次不能这样太过了。。。点到为止就好了，不然这一辈子都分析不完了。
-
- 
 
 **_write by 九天雁翎(JTianLing) -- www.jtianling.com_**

@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+本文分享了一个C++字符串逆序的笨拙实现，作者强调此为反面教材，不推荐学习。
+
+<!-- more -->
+
 ```cpp
 /*Copyright (c) 2007,九天雁翎  
  * All rights reserved.  

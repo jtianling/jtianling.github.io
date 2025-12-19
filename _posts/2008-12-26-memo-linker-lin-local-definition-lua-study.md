@@ -21,12 +21,13 @@ author:
   last_name: ''
 ---
 
-# 对Linker.Lin的 《[备忘]Lua的local是定义不是声明!》的研究
+本文通过调试证明，Lua的local是定义而非声明。每次使用local都会创建一个新变量，而非声明或复用旧变量。
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+<!-- more -->
 
- 
+# 对Linker.Lin的《[备忘]Lua的local是定义不是声明!》的研究
+
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 因为这样的特性实在是太奇怪了，所以不得不好好研究一下。
 
@@ -53,8 +54,6 @@ hello!1
 hello!1
 ```
 
- 
-
 他的结论很明显了，题目就是了。先推断一下他的理解(假如不对请告诉我啊：)）
 
 因为上述程序输出
@@ -76,8 +75,6 @@ test2:
 6 **end**
 ```
 
- 
-
 输出的是
 
 ```
@@ -86,11 +83,7 @@ hello!1
 hello!11
 ```
 
- 
-
-注意区别，没有local的时候，g相当于直接在原有的基础上加了1，而加了local的时候是两次重新的定义，都是hello!1。自此，Linker.Lin得出了结论，“Lua的local是定义不是声明!”。呵呵，好像一切都比较符合逻辑，不知道Linker.Lin是不是这样理解的。
-
- 
+注意区别，没有local的时候，g相当于直接在原有的基础上加了1，而加了local的时候是两次重新的定义，都是hello!1。自此，Linker.Lin得出了结论，"Lua的local是定义不是声明!"。呵呵，好像一切都比较符合逻辑，不知道Linker.Lin是不是这样理解的。
 
 其实，我的理解是，虽然这一次local的声明导致g变成定义，但是说local就是定义。。。。好像很奇怪。。。。。
 
@@ -104,8 +97,6 @@ test3:
 5 print(x)
 6 **end**
 ```
-
- 
 
 一样是可以得出
 
@@ -175,21 +166,19 @@ test5:
 ```
 nil                               \-- 第一次进入循环输出时，x为nil
 
-hello!1                               \-- 因为x为nil,所以第5行第一次运行后，x为g..’1’，此处x明显也是定义
+hello!1                               \-- 因为x为nil,所以第5行第一次运行后，x为g..'1'，此处x明显也是定义
 
-hello!11                      \-- local x = hello!1 .. ‘1’  
+hello!11                      \-- local x = hello!1 .. '1'  
 还没有什么好奇怪的
 
 hello!1                        \-- 第二次进入循环，此时x已经有值了，并且是hello!1，那么表示此值是前一个没有加local定义的x，因为local x应该起码是hello!11  吧
 
 hello!11                      \-- 第二次第五行后此时非local的x也变成了hello!11
 
-hello!111                    \-- 此时local x又重新定义一次，所以等于hello!11 .. ‘1’
+hello!111                    \-- 此时local x又重新定义一次，所以等于hello!11 .. '1'
 
 hello!11                      \-- 非local的x有超出for的作用域
 ```
-
- 
 
 其实，这仅仅是个作用域的问题，lua中有起码有两个作用域，全局的，局部的，for构成一个Block(块)，构成一个局部的概念，local的变量，作用域就在此局部内直到此局部范围结束。一个循环结束后，也算是一次局部范围的结束。于是local的变量销毁了。
 
@@ -214,12 +203,12 @@ lua比较少见的默认全局特性，这点的确少见（bash也是），因�
 
 ```cpp
 string  
-str = “Hello!”;
+str = "Hello!";
 
 for (int  
 i = 0; i < 2; ++i)
 {
-       string str = str + “1”;
+       string str = str + "1";
        cout <<string;
 }
 
@@ -227,11 +216,7 @@ cout
 <<string;
 ```
 
- 
-
 只是，在C++中，局部的概念是默认的，没有local，一样定义。
-
- 
 
 但是，呵呵，好东西都是留到最后嘛，（不要怪我前面废话那么多，认清楚问题嘛，靠C++吃饭的我。。。有个特点就是喜欢知其然，并知其所以然，所以解释起来都是一大堆的。。。。）
 
@@ -241,10 +226,10 @@ for
 i=1,2 do
 
 local g  
-= ‘1’
+= '1'
 
 local g  
-= ‘2’
+= '2'
 
 end
 
@@ -336,9 +321,6 @@ g       345
 i       7
 ```
 
- 
-
 第5行对g的使用，但是没有输出证明debug.getlocal并不是对每个在局部使用的变量都获取，仅仅获取在局部分配的变量，那么一次g 3，一次g 345的出现就很能说明问题了，g 34的定义也没有出现，说明getlocal仅仅获取的是分配变量的最后保留值，作为变量g，最后的值有2个，一个3，一个345，说明的确是一个local定义了一个变量。。。。。。只有到这个时候，我才能得出Linker.Lin的结论。
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_**** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**

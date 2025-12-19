@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+本文通过代码示例说明，C++的std::merge算法要求输入序列必须先排好序，才能正确合并成有序序列。
+
+<!-- more -->
+
 ```cpp
 #include <vector>
 #include <string>

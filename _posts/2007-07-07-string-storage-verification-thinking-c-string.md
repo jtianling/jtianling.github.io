@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+本文探讨了C++中char*指针的地址，解释了指针变量地址(&p)与指向地址(p)的区别，并演示了如何通过类型转换输出真实地址。
+
+<!-- more -->
+
 ```cpp
 /*Copyright (c) 2007,九天雁翎
 
@@ -69,7 +73,7 @@ int main()
 }
 ```
 
-&p其实得到的是指针的地址，而不是c-string “Hello word!”的地址，而cout又为char* 重载了一个不同与一般指针的输出方式，所以你要输出”Hello world!”，可以通过static_cast<void*>方式，强制转换到void*指针，这样cout就可以输出想要的结果，结果自然和Bjarne Stroustrup说的一样，微软也没有错。
+&p其实得到的是指针的地址，而不是c-string "Hello word!"的地址，而cout又为char* 重载了一个不同与一般指针的输出方式，所以你要输出"Hello world!"，可以通过static_cast<void*>方式，强制转换到void*指针，这样cout就可以输出想要的结果，结果自然和Bjarne Stroustrup说的一样，微软也没有错。
 
 如下:
 

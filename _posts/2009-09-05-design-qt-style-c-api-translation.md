@@ -22,11 +22,13 @@ author:
   last_name: ''
 ---
 
+Qt创始人分享API设计原则，阐述优秀API的六大特性，并讲解命名艺术与常见陷阱，助你设计出简洁易读的C++接口。
+
+<!-- more -->
+
 相当好的关于API设计的文章，Qt的创始人之一写就，很有启发，大规模的C++设计会碰到的问题很多，我们可以慢慢想办法减少这些问题。
 
 原文来自：<http://googollee.blog.163.com/blog/static/1159411200811321030894/>
-
- 
 
 设计Qt风格的C++API
 
@@ -46,14 +48,14 @@ author:
 > 
 > 在奇趣（Trolltech），为了改进Qt的开发体验，我们做了大量的研究。这篇文章里，我打算分享一些我们的发现，以及一些我们在设计Qt4时用到的原则，并且展示如何把这些原则应用到你的代码里。 
 > 
->   * [好的API的六个特性](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£æ ¼çC++API.html#SixCharacteristicsOfGoodApis>)
->   * [便利陷阱](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£æ ¼çC++API.html#TheConvenienceTrap>)
->   * [布尔参数陷阱](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£æ ¼çC++API.html#TheBooleanParameterTrap>)
->   * [静态多态](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£æ ¼çC++API.html#StaticPolymorphism>)
->   * [命名的艺术](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£æ ¼çC++API.html#TheArtOfNaming>)
->   * [指针还是引用？](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£æ ¼çC++API.html#PointersOrReferences>)
->   * [例子：QProgressBar](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£æ ¼çC++API.html#CaseStudyQprogressbar>)
->   * [如何把API设计好](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£æ ¼çC++API.html#HowToGetApisRight>)
+>   * [好的API的六个特性](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£æ ¼ç%9A%84C++API.html#SixCharacteristicsOfGoodApis>)
+>   * [便利陷阱](<file:///C:/Documents%20and%20Settings/æåæµ·/æ¡é¢/è®¾è®¡Qté£%8E%E6%A0%BC%E7%9A%84C++API.html#TheConvenienceTrap>)
+>   * [布尔参数陷阱](<file:///C:/Documents%20and%20Settings/æå%86%E6%B5%B7/æ¡%8C%E9%9D%A2/è%AE%BE%E8%AE%A1Qt%E9%A3%8E%E6%A0%BC%E7%9A%84C++API.html#TheBooleanParameterTrap>)
+>   * [静态多态](<file:///C:/Documents%20and%20Settings/æ%8E%E5%86%86%E6%B5%B7/æ¡%8C%E9%9D%A2/è%AE%BE%E8%AE%A1Qt%E9%A3%8E%E6%A0%BC%E7%9A%84C++API.html#StaticPolymorphism>)
+>   * [命名的艺术](<file:///C:/Documents%20and%20Settings/æ%9D%8E%E5%86%86%E6%B5%B7/æ¡%8C%E9%9D%A2/è%AE%BE%E8%AE%A1Qt%E9%A3%8E%E6%A0%BC%E7%9A%84C++API.html#TheArtOfNaming>)
+>   * [指针还是引用？](<file:///C:/Documents%20and%20Settings/æ%9D%8E%E5%86%86%E6%B5%B7/æ¡%8C%E9%9D%A2/è%AE%BE%E8%AE%A1Qt%E9%A3%8E%E6%A0%BC%E7%9A%84C++API.html#PointersOrReferences>)
+>   * [例子：QProgressBar](<file:///C:/Documents%20and%20Settings/æ%9D%8E%E5%86%86%E6%B5%B7/æ¡%8C%E9%9D%A2/è%AE%BE%E8%AE%A1Qt%E9%A3%8E%E6%A0%BC%E7%9A%84C++API.html#CaseStudyQprogressbar>)
+>   * [如何把API设计好](<file:///C:/Documents%20and%20Settings/æ%9D%8E%E5%86%86%E6%B5%B7/æ¡%8C%E9%9D%A2/è%AE%BE%E8%AE%A1Qt%E9%A3%8E%E6%A0%BC%E7%9A%84C++API.html#HowToGetApisRight>)
 > 
 
 设计应用程序接口，API，是很难的。这是一门和设计语言同样难的艺术。这里可以选择太多的原则，甚至有很多原则和其他原则有矛盾。 
@@ -104,7 +106,7 @@ slider->setObjectName("volume");
 
 `widget->repaint(false);`
 
-初学者很容易把这句话理解成“别重画”！ 
+初学者很容易把这句话理解成"别重画"！ 
 
 这样做是考虑到布尔参数可以减少一个函数，避免代码膨胀。事实上，这反而增加了代码量。有多少Qt用户真的记住了下面三行程序都是做什么的？ 
 
@@ -141,7 +143,7 @@ str.replace("%USER%", user, Qt::CaseInsensitive); // Qt 4
 
 静态多态
 
-相似的类应该含有相似的API。在必要的时候——就是说，需要使用运行时多态的时候——这可以通过继承实现。但是多态依旧会发生在设计时期。比如，如果你用[QListBox](<http://doc.trolltech.com/3.3/qlistbox.html>)代替[QComboBox](<http://doc.trolltech.com/3.3/qcombobox.html>)，或者用[QSlider](<http://doc.trolltech.com/4.0/qslider.html>)代替[QSpinBox](<http://doc.trolltech.com/4.0/qspinbox.html>)，你会发现相似的API使这种替换非常容易。这就是我们所说的“静态多态”。 
+相似的类应该含有相似的API。在必要的时候——就是说，需要使用运行时多态的时候——这可以通过继承实现。但是多态依旧会发生在设计时期。比如，如果你用[QListBox](<http://doc.trolltech.com/3.3/qlistbox.html>)代替[QComboBox](<http://doc.trolltech.com/3.3/qcombobox.html>)，或者用[QSlider](<http://doc.trolltech.com/4.0/qslider.html>)代替[QSpinBox](<http://doc.trolltech.com/4.0/qspinbox.html>)，你会发现相似的API使这种替换非常容易。这就是我们所说的"静态多态"。 
 
 静态多态也使API和程序模式更容易记忆。作为结论，一组相关类使用相似的API，有时要比给每个类提供完美的单独API，要好。 
 
@@ -153,9 +155,9 @@ str.replace("%USER%", user, Qt::CaseInsensitive); // Qt 4
 
 ### 通用的命名规则
 
-一些规则通常对所有名字都是有用的。首先，就像我之前提到的，别用缩写。甚至很明显的缩写，比如“prev”表示“previous”从长远看也是不划算的，因为用户必须记住哪些词是缩写。 
+一些规则通常对所有名字都是有用的。首先，就像我之前提到的，别用缩写。甚至很明显的缩写，比如"prev"表示"previous"从长远看也是不划算的，因为用户必须记住哪些词是缩写。 
 
-如果API本身不一致，事情自然会变得很糟糕，比如， Qt3有activatePreviousWindow()和fetchPrev()。坚持“没有缩写”的规则更容易创建一致的API。 
+如果API本身不一致，事情自然会变得很糟糕，比如， Qt3有activatePreviousWindow()和fetchPrev()。坚持"没有缩写"的规则更容易创建一致的API。 
 
 另一个重要但更加微妙的规则是，在设计类的时候，必须尽力保证子类命名空间的干净。在Qt3里，没有很好的遵守这个规则。比如，拿[QToolButton](<http://doc.trolltech.com/3.3/qtoolbutton.html>)来举例。如果你在Qt3里，对一个[QToolButton](<http://doc.trolltech.com/3.3/qtoolbutton.html>)调用name()、caption()、text()或者textLabel()，你希望做什么呢？你可以在Qt Designer里拿QToolButton试试： 
 
@@ -202,23 +204,23 @@ tabWidget->setCornerWidget(widget, Qt::TopLeftCorner);
 str.indexOf("$(QTDIR)", Qt::CaseInsensitive);
 ```
 
-当枚举值可以用“或”连接起来当作一个标志时，传统的做法是将“或”的结果作为一个int保存，这不是类型安全的。Qt4提供了一个模板类 [QFlags](<http://doc.trolltech.com/4.0/qflags.html>)<T>来实现类型安全，其中T是个枚举类型。为了方便使用，Qt为很多标志类名提供了typedef，所以你可以使用类型 Qt::Alignment代替[QFlags](<http://doc.trolltech.com/4.0/qflags.html>)<Qt::AlignmentFlag>。 
+当枚举值可以用"或"连接起来当作一个标志时，传统的做法是将"或"的结果作为一个int保存，这不是类型安全的。Qt4提供了一个模板类 [QFlags](<http://doc.trolltech.com/4.0/qflags.html>)<T>来实现类型安全，其中T是个枚举类型。为了方便使用，Qt为很多标志类名提供了typedef，所以你可以使用类型 Qt::Alignment代替[QFlags](<http://doc.trolltech.com/4.0/qflags.html>)<Qt::AlignmentFlag>。 
 
-为了方便，我们给枚举类型单数的名字（这样表示枚举值一次只能有一个标志），而“标志”则使用复数名字。比如： 
+为了方便，我们给枚举类型单数的名字（这样表示枚举值一次只能有一个标志），而"标志"则使用复数名字。比如： 
 
 ```cpp
 enum RectangleEdge { LeftEdge, RightEdge, ... };
 typedef [QFlags](<http://doc.trolltech.com/4.0/qflags.html>)<RectangleEdge> RectangleEdges;
 ```
 
-有些情况下，“标志“类使用了单数的名字。这时，枚举类使用-Flag做后缀： 
+有些情况下，"标志"类使用了单数的名字。这时，枚举类使用-Flag做后缀： 
 
 ```cpp
 enum AlignmentFlag { AlignLeft, AlignTop, ... };
 typedef [QFlags](<http://doc.trolltech.com/4.0/qflags.html>)<AlignmentFlag> Alignment;
 ```
 
-（这里为啥不是把”标志“类用-Flag做后缀，而是把枚举值做后缀呢？感觉有点混淆……） 
+（这里为啥不是把"标志"类用-Flag做后缀，而是把枚举值做后缀呢？感觉有点混淆……） 
 
 ### 给函数和参数命名
 
@@ -266,7 +268,7 @@ void getHsv(int *h, int *s, int *v) const
 void getHsv(int &h, int &s, int &v) const
 ```
 
-大部分C++书推荐在能用引用的地方就用引用，这是因为一般认为引用比指针更“安全且好用”。然而，在奇趣（Trolltech），我们倾向使用指针，因为这让代码更易读。比较： 
+大部分C++书推荐在能用引用的地方就用引用，这是因为一般认为引用比指针更"安全且好用"。然而，在奇趣（Trolltech），我们倾向使用指针，因为这让代码更易读。比较： 
 
 ```cpp
 color.getHsv(&h, &s, &v);
@@ -369,4 +371,4 @@ API需要质量保证。第一个修订版不可能是正确的；你必须做�
 
 其他的技巧包括让别的人分别在有文档和没有文档的情况下，使用这些API；或者为API类写文档（包括类的概述和独立的函数）。 
 
-当你卡住时，写文档也是一种获得好名字的方法：仅仅是尝试把条目（类，函数，枚举值，等等呢个）写下来并且使用你写的第一句话作为灵感。如果你不能找到一个精确的名字，这常常说明这个条目不应该存在。如果所有前面的事情都失败了并且你确认这个概念的存在，发明一个新名字。毕竟，“widget”、 “event”、“focus”和“buddy”这些名字就是这么来的。
+当你卡住时，写文档也是一种获得好名字的方法：仅仅是尝试把条目（类，函数，枚举值，等等呢个）写下来并且使用你写的第一句话作为灵感。如果你不能找到一个精确的名字，这常常说明这个条目不应该存在。如果所有前面的事情都失败了并且你确认这个概念的存在，发明一个新名字。毕竟，"widget"、 "event"、"focus"和"buddy"这些名字就是这么来的。

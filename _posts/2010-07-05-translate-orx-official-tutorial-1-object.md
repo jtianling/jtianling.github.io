@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+本教程介绍Orx数据驱动的特性，教你如何用两行代码创建对象。所有属性都在配置文件中定义，无需编写额外代码即可实现复杂效果。
+
+<!-- more -->
+
 本文译自[orx tutorials](http://orx-project.org/wiki/en/orx/tutorials/main)的[对象(object)](http://orx-project.org/wiki/en/orx/tutorials/object)。  
 [phpxer](http://blog.feihoo.com/) 译，九天雁翎（[博客](http://www.jtianling.com)）修订。最新版本见[Orx 官方中文Wiki](http://orx-project.org/wiki/cn/orx/main)。
 
@@ -81,8 +85,8 @@ orxPLUGIN_DECLARE_ENTRY_POINT(Init);
 
 ## 资源
 
-  * 源代码: 01_Object.c
-  * 配置文件: 01_Object.ini
+* 源代码: 01_Object.c
+* 配置文件: 01_Object.ini
 
 * * *
 

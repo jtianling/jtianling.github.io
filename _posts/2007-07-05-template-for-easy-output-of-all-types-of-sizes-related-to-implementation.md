@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+这是一个C++模板，用于输出任意数据类型的大小和取值范围，方便在不同平台或编译器下检查类型信息。
+
+<!-- more -->
+
 ```cpp
 /*Copyright (c) 2007,九天雁翎
 * All rights reserved.

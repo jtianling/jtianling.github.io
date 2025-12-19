@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+分享双鼠标五子棋源码，演示多鼠标实现，并解释因工作繁忙而暂停相关研究。
+
+<!-- more -->
+
 这是突然看到才想起来发的，发到我常用的地址中：
 
 http://groups.google.com/group/jiutianfile
@@ -36,13 +40,9 @@ http://groups.google.com/group/jiutianfile
 
 展示一下：
 
-![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20081123/gobang1.jpg)  
-  
+![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20081123/gobang1.jpg)
 
-![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20081123/gobang2.jpg)  
-  
-
-  
+![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20081123/gobang2.jpg)
 
 ```cpp
 class CMyApp : public CWinApp
@@ -122,10 +122,6 @@ protected:
 
 };
 ```
-
-  
-
-  
 
 ```cpp
 #include <afxwin.h>
@@ -949,8 +945,6 @@ point)
 }  
 ```
 
- 
-
 ```cpp
 #ifndef ___MULTI_MOUSE_WINDOW_H__
 
@@ -1035,8 +1029,6 @@ public:
 
 #endif // ___MULTI_MOUSE_WINDOW_H__
 ```
-
- 
 
 ```cpp
 #include <afxwin.h>
@@ -1529,6 +1521,5 @@ i=0; i
     }
 
     PostQuitMessage (0);
-
 }
 ```

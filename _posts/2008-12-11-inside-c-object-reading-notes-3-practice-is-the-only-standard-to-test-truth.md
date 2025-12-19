@@ -22,12 +22,13 @@ author:
   last_name: ''
 ---
 
-# 《Inside C++ Object 》 阅读笔记(3)，实践是检验真理的唯一标准
+作者通过编程实践，发现《Inside C++ Object》书中的翻译存在误导，并验证了C++中带函数的类不能使用列表初始化语法。
 
- 
+<!-- more -->
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+# 《Inside C++ Object》 阅读笔记(3)，实践是检验真理的唯一标准
+
+**_write by_ _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_**
 
 在阅读笔记（2）中，我还以为，按《Inside C++ Object》中文版199面（以后页码都以侯捷中文版为准）示例所描述的那样
 
@@ -39,53 +40,39 @@ blog.csdn.net/vagrxie_**
 
 这里解释一下，原文本来是
 
-Point1  
-local1 = { 1.0, 1.0, 1.0 };
+Point1 local1 = { 1.0, 1.0, 1.0 };
 
-Point2  
-local2；
+Point2 local2；
 
 但是侯捷看到并没有Point1,Point2，只有Point，所以就都改成Point了。。。。
 
 变成了
 
-Point  
-local1 = { 1.0, 1.0, 1.0 };
+Point local1 = { 1.0, 1.0, 1.0 };
 
-Point  
-local2;
+Point local2;
 
 导致了我的误解，其实也是侯捷理解上的错误（lippman描述和使用的也有问题）
 
 lippman的大概意思是以Point1来表示196面定义的POD类型的Point，以Point2来表示198面定义的一个有构造函数，并且成员为似有变量的Point。但是实际上这里也有个问题，按照描述Point2的成员变量都是私有的，不能进行类似
 
-local2._x  
-= 1.0;
-
-local2._y  
-= 1.0;
-
-local2._z  
-= 1.0;
+local2._x = 1.0;
+local2._y = 1.0;
+local2._z = 1.0;
 
 的操作，不过从这3句前面的注释描述，说此3句相当于一个inline扩展来看，原lippman想要写的正确的程序应该如下：
 
-Point1  
-local1 = { 1.0, 1.0, 1.0 };
+Point1 local1 = { 1.0, 1.0, 1.0 };
 
-Point2  
-local2(1.0, 1.0, 1.0)；
+Point2 local2(1.0, 1.0, 1.0)；
 
 结合Point2正好有个内联的构造函数，下面三句其实都是lippman的注释：）
 
 这样的解释最符合道理。。。。。。。。。。差点因为侯捷的误导，lippman的笔误导致了认识上的错误，还以为是自己以前认识错了。。。。。
 
- 
-
 对于引用变量生存期倒是真的有了新的认识，而且，还好，是正确的：）
 
 我测试的时候都写在一起了，源代码如下：
-
 ```cpp
 #include <stdio.h>
 
@@ -173,14 +160,6 @@ not a POD
     exit(0);
 }
 ```
-
 虽然这边文章有点太考究书本和语法了。。。。。但是其实也再次的给我巩固了一个道理，那就是实践才是检验真理的唯一标准，哪怕侯捷的翻译，lippman的经典著作，一样可能有问题，再经典的书籍，也不能全信，要经过实验，我才能确信。
 
- 
-
- 
-
- 
-
-**_write by_**** _九天雁翎_**** _(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_ _九天雁翎_ _(JTianLing) -- blog.csdn.net/vagrxie_**

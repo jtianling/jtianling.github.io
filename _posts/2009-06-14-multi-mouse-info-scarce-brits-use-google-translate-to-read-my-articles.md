@@ -21,18 +21,21 @@ author:
   last_name: ''
 ---
 
-多鼠标是博客中发表文章中大家最感兴趣并且联系我最多的一个内容，因为国内的资料相对较少，并且当时的确为了写论文花了一定的时间进行研究，（一年前的事情了，其实现在忘的差不多了）但是今天发现一个很有意思的事情（见下表）。。。。。。呵呵，英国有个兄弟缺少多鼠标的资料。。。。甚至利用google的翻译功能，将我的文章翻译成E文观看。。。。可怜的人哪。。。。不过这方面国内的资料少还可以理解，国外的资料其实还是有一些的，至于这样吗？-_-!呵呵，感觉比较有意思，我们痛苦的读者E文的资料的时候。。。。还有同样痛苦的兄弟啊。。。。
+博主发现英国读者用谷歌翻译看其技术文章，感叹技术学习的语言障碍是中外共通的。
+
+<!-- more -->
+
+多鼠标是博客中发表文章中大家最感兴趣并且联系我最多的一个内容，因为国内的资料相对较少，并且当时的确为了写论文花了一定的时间进行研究，（一年前的事情了，其实现在忘的差不多了）但是今天发现一个很有意思的事情（见下表）。。。。。。呵呵，英国有个兄弟缺少多鼠标的资料。。。。甚至利用google的翻译功能，将我的文章翻译成E文观看。。。。可怜的人哪。。。。不过这方面国内的资料少还可以理解，国外的资料其实还是有一些的，至于这样吗？-_-!呵呵，感觉比较有意思，我们痛苦的读者E文的资料的时候。。。。还有同样痛苦的兄弟啊。。。。  
 
 2009-6-12 13:39:36 ( IP [90.197.196.34](<http://www.51.la/report/3_Last.asp?id=1553135&t=pv&d1=2009-6-12&sIP=90.197.196.34> "点击显示他的详细信息和浏览明细") )  
 ---  
-基本信息 |  这是此用户第 1 次访问九天雁翎博客, [ [](<http://www.51.la/report/3_Last.asp?id=1553135&t=pv&d1=2009-6-12&sIP=90.197.196.34> "点击显示他的详细信息和浏览明细")查看他浏览的所有网页 ]  
+基本信息 | 这是此用户第 1 次访问九天雁翎博客, [ [](<http://www.51.la/report/3_Last.asp?id=1553135&t=pv&d1=2009-6-12&sIP=90.197.196.34> "点击显示他的详细信息和浏览明细")查看他浏览的所有网页 ]  
 英国, 英语 \- 美国 (en-us), 位于1 时区  
-客户端信息 |  Windows XP, MSIE 7.0, 1280×800, 232  
+客户端信息 | Windows XP, MSIE 7.0, 1280×800, 232  
 色, 未装 Alexa 工具条  
-来路 |  [http://translate.google.com/translate?hl=en&sl;=zh-CN&u;=http://blog.csd](<http://translate.google.com/translate?hl=en&sl=zh-CN&u=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&ei=g-kxSp2lE4KQjAf92_mXCg&sa=X&oi=translate&resnum=8&ct=result&prev=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%253> "http://translate.google.com/translate?hl=en&sl=zh-CN&u=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&ei=g-kxSp2lE4KQjAf92_mXCg&sa=X&oi=translate&resnum=8&ct=result&prev=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%3")  
-  
-入口网址 |  [http://209.85.229.132/translate_c?hl=en&sl;=zh-CN&u;=http://blog.csdn.ne](<http://209.85.229.132/translate_c?hl=en&sl=zh-CN&u=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&prev=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%3D30&rurl=tra> "http://209.85.229.132/translate_c?hl=en&sl=zh-CN&u=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&prev=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%3D30&rurl=tra")  
-  
-他查看的详细路径，懂E文的兄弟也可以看看google的机器翻译效果。。。。也可以体会一下此英国兄弟的感受-_-!
+来路 | [http://translate.google.com/translate?hl=en&sl;=zh-CN&u;=http://blog.csd](<http://translate.google.com/translate?hl=en&sl=zh-CN&u=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&ei=g-kxSp2lE4KQjAf92_mXCg&sa=X&oi=translate&resnum=8&ct=result&prev=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%253> "http://translate.google.com/translate?hl=en&sl=zh-CN&u=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&ei=g-kxSp2lE4KQjAf92_mXCg&sa=X&oi=translate&resnum=8&ct=result&prev=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%3")  
+入口网址 | [http://209.85.229.132/translate_c?hl=en&sl;=zh-CN&u;=http://blog.csdn.ne](<http://209.85.229.132/translate_c?hl=en&sl=zh-CN&u=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&prev=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%3D30&rurl=tra> "http://209.85.229.132/translate_c?hl=en&sl=zh-CN&u=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&prev=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%3D30&rurl=tra")  
+
+他查看的详细路径，懂E文的兄弟也可以看看google的机器翻译效果。。。。也可以体会一下此英国兄弟的感受-_-!  
 
 [http://translate.google.com/translate?hl=en&sl;=zh-CN&u;=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&ei;=g-kxSp2lE4KQjAf92_mXCg&sa;=X&oi;=translate&resnum;=8&ct;=result&prev;=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%3](<http://translate.google.com/translate?hl=en&sl=zh-CN&u=http://www.jtianling.com/archive/2008/04/23/2316676.aspx&ei=g-kxSp2lE4KQjAf92_mXCg&sa=X&oi=translate&resnum=8&ct=result&prev=/search%3Fq%3DRegisterRawInputDevices%2Bvb%26hl%3Den%26sa%3DN%26start%3>)

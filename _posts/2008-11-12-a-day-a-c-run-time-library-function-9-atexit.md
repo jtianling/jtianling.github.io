@@ -22,28 +22,24 @@ author:
   last_name: ''
 ---
 
+atexit是C库函数，可在程序正常退出时，按后进先出顺序执行注册的清理函数，常用于C语言的资源释放等收尾工作。
+
+<!-- more -->
+
 ## 一天一个C Run-Time Library 函数 （9） atexit
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com
 
- 
-
 ## msdn:
 
-Processes the specified function at exit.  
-  
----  
+Processes the specified function at exit.
+
+---
 
 ```c
 int
 atexit(   void (__cdecl *_func_ )( void ) );
 ```
-
- 
-
- 
-
- 
 
 ## 测试程序：
 
@@ -108,13 +104,9 @@ void fn4()
 }
 ```
 
- 
-
 ## 说明：
 
 这个函数有点像一个类的析构函数。就是在程序结束的时候调用你指定的函数，按照类似堆栈的先进后出原则调用。呵呵，貌似很有用，其实从来没有用过，就我的想法可以在这里清理一下一些全局的变量，但是实际上因为类用的多，全局变量都等进程退出的时候自动析构处理了，全局打开的文件句柄也从来没有用过，一般起码放在类中，类析构的时候也会自动关闭了，所以实际我还真不太清楚什么时候需要用到这样的函数，也许仅仅是可以多提供一条更好的路径罢了。。。。也许是因为这毕竟是C语言的库，C语言的全局变量，或者全局的文件句柄可能就只能通过这样的方式来保证销毁或关闭了。
-
-** **
 
 ## 实现：
 
@@ -123,8 +115,6 @@ MS:
 还真没有看懂。。。。。。
 
 其实最主要不懂的就是以前看文件操作底层也会用到的一对函数，_encode_pointer和_decode_pointer
-
- 
 
 gcc:
 
@@ -163,32 +153,18 @@ int __cxa_atexit (void (*func) (void *), void *arg, void *d)
 }
 ```
 
- 
-
- 
-
- 
-
 ## 效率测试：
 
 无
 
- 
-
 ## 相关函数：
 
 exit,_exit
-
- 
 
 ## 个人想法：
 
 虽然不知道这3个函数是否标准，但是就实现情况来看，放心用应该是没有问题的。另外，在APUE(Unix环境高级编程)中推荐的进程终止方式不是通过我们习惯的常用的return方式，而是用exit函数结束的方式。这点倒是和《windows核心编程》的作者对于在windows下进程退出的方式有出入，在这本书中作者说进程最佳的退出方式就是return.
 
 具体的原因我也不太清楚，APUE中倒是有一些描述，但是看了很久了，现在忘了，《windows核心编程》作者对于推荐使用return的描述主要是和windows中的[TerminateProcess](<ms-help://MS.MSDNQTR.v80.chs/MS.MSDN.v80/MS.WINCE.v50.en/wcecoreos5/html/wce50lrfterminateprocess.htm>)，ExitProcess等API作为对比的，没有提及exit.
-
- 
-
- 
 
 write by 九天雁翎(JTianLing) -- www.jtianling.com

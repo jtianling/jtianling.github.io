@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+本文分享了一个C++字符串逆序输出的方法。通过使用vector和反向迭代器，并结合noskipws读取输入，实现了简洁高效的解决方案。
+
+<!-- more -->
+
 ```cpp
 /*Copyright (c) 2007,九天雁翎
 

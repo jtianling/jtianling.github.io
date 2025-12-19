@@ -22,15 +22,17 @@ author:
   last_name: ''
 ---
 
+本文通过反汇编实例，剖析了C++虚函数的调用原理，揭示了通过指针调用时如何利用虚表实现动态分派。
+
+<!-- more -->
+
 # C++中的虚函数调用原理的反汇编实例分析(1)
 
-**write by****九天雁翎(JTianLing) -- www.jtianling.com**
+**write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
 具体的原理我并不想多讲，最好的办法是看《inside C++ Object》一书，我只是通过实际的反汇编代码来检验一下。。。。
 
 其实仅仅是最近老在看反汇编的东西，这应该也属于逆向分析初步的知识吧，起码看到汇编代码能知道你看到的到底是什么
-
- 
 
 测试1：
 
@@ -129,8 +131,6 @@ main函数
 .text:0040102D _main           endp
 ```
 
- 
-
 构造函数：
 
 ```asm
@@ -179,8 +179,6 @@ main函数
 .text:0040104F CTestThisPointer__CTestThisPointer endp
 ```
 
- 
-
 CTestThisPointer虚表所在位置只读代码段片段
 
 ```asm
@@ -192,8 +190,6 @@ CTestThisPointer虚表所在位置只读代码段片段
 .rdata:004070DC                                 ; 类型识别需要的标志(RTTI)，有两种可能，一是VC6没有
 .rdata:004070DC                                 ; 实现此功能，二是因为此处不需要，所以优化掉了
 ```
-
- 
 
 Add函数：
 
@@ -222,8 +218,6 @@ Add函数：
 .text:0040107F                 retn    4
 .text:0040107F CTestThisPointer__Add endp
 ```
-
- 
 
 测试2：
 
@@ -259,8 +253,6 @@ Add函数：
 29 }  
 30
 ```
-
- 
 
 反汇编：
 
@@ -310,8 +302,6 @@ Add函数：
 .text:0040104D     _main   endp
 ```
 
- 
-
 其他内容没有变！这代表在VC6中RTTI的实现不是通过在虚表中加内容的方式实现的（《inside C++ Object》只提到这种实现方式），并且实际中分析代码，感觉是开始就为要识别类型的类加了一个特定的type_info类，然后主要是由__unDName这个系统函数实现了类型的鉴别。
 
 而__unDName函数嘛，调用了
@@ -344,6 +334,4 @@ Add函数：
 
 这么多类和函数。。。。。。。。。这些已经超过windows API的范围了，估计是属于VC6编译器内部实现的类了，呵呵，因为Windows内部实现不是主要用C吗？上面用了那么多类，应该不是Windows XP的代码吧。
 
- 
-
-**write by****九天雁翎****(JTianLing) -- www.jtianling.com**
+**write by 九天雁翎(JTianLing) -- www.jtianling.com**

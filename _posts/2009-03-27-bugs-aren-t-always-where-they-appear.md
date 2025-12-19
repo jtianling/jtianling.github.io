@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+调试Bug不能只看报错处，问题根源常在配置、环境或架构等看似无关的地方。需拓宽思路，从全局寻找真正原因。
+
+<!-- more -->
+
 # Bug实际不一定出现在看起来出现的地方
 
 [**write by 九天雁翎 (JTianLing) -- www.jtianling.com**](http://www.jtianling.com)

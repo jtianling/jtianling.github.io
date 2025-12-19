@@ -23,20 +23,18 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+作者通过编程测试，证实Orx引擎的CRC哈希算法存在冲突，并找到实例，表明其哈希表设计有缺陷。
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+<!-- more -->
 
-[上文](<http://www.jtianling.com/archive/2010/08/04/5786973.aspx> "上文")  
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
+
+[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
+
+[上文](<http://www.jtianling.com/archive/2010/08/04/5786973.aspx> "上文")
 我阅读了Orx自己实现的一套hashTable，经我过的初步分析，一个CRC算法作为key是有可能冲突的，但是并没有验证，作为bug提交的话，有些不够完整，所以，我写个测试程序真实的验证一下这个CRC算法，同时，也验证一下自己的分析是否正确。简而言之，就是验证此CRC算法在实际使用中，到底有无冲突的可能。
 
- 
-
 原理很简单，就是生成一堆字符串，然后传进此CRC算法，然后比较CRC后的值有无重复。此时我真希望可以使用Python，但是想想有写将接口使用Python API让Python使用的功夫，我都已经将测试代码写完了，于是作罢，还是老老实实的用C++吧。
-
- 
 
 先将整个Orx的Crc算法抽出来，如下：
 
@@ -168,8 +166,6 @@ orxU32 orxString_ContinueCRC(const orxSTRING _zString)
 }
 ```
 
- 
-
 作为测试结果，我希望检验是否会在string较短时就发生冲突，并且，真的冲突的话，输出冲突的字符串。这里暂时仅测试ASCII的字符，按照Orx的实际使用，UTF8字符的冲突的可能性只会比这个高，不会比这个低。
 
 突然觉得想出一个这样的测试算法也挺有意思的。
@@ -193,8 +189,6 @@ char *rand_str(char *str,const int len)
 ```
 
 用这个函数来生成随机指定长度的字符串。
-
- 
 
 我然后用下列函数来检验：
 
@@ -227,9 +221,7 @@ void testIt(char* testString) {
 }
 ```
 
-原理上也没有什么好说的了，就是一个hash_map<unsigned  long , list > 的变量，用于来保存目前测试过的所有字符串，key是CRC计算后的值，list用于存储字符串。这种用法消耗内存非常多。。。。。。。
-
- 
+原理上也没有什么好说的了，就是一个hash_map<unsigned long , list > 的变量，用于来保存目前测试过的所有字符串，key是CRC计算后的值，list用于存储字符串。这种用法消耗内存非常多。。。。。。。
 
 驱动代码如下，需要增加测试数量的，改NumOftest是改测试字符串的长度，i的最大值是测试的次数。
 
@@ -252,26 +244,17 @@ int _tmain(int argc, _TCHAR* argv[])
 
 事实上， 经过测试，在上面这个级别我就测试出了4组冲突：
 
-Clash strings: rdvohjmmqco      dzfmlbvurvy  
-Clash strings: ezmchjdxzvc      heugmqpnwhr  
-Clash strings: xuosifsuqnz      hdnklsfofvo  
-Clash strings: cxezqfgwkdy      hjccdfyaamc
-
- 
+```
+Clash strings: rdvohjmmqco      dzfmlbvurvy
+Clash strings: ezmchjdxzvc      heugmqpnwhr
+Clash strings: xuosifsuqnz      hdnklsfofvo
+Clash strings: cxezqfgwkdy      hjccdfyaamc
+```
 
 20W的级别，长度为十的字符串。。。。。。。。。。。。这不是现实中可能出现的组合，出现这样的情况，Orx中的hashTable必然就会出现问题。。。。。
 
 另外，这也说明了出现问题的概率不是小到宇宙毁灭的几率那样，谁也不能保证在Orx使用一个256长度的hashTable的时候会不会出现问题。。。。。。。。。。。。。。。。事实上，即使为了效率，也还是参考参考MPQ中暴雪对CRC的使用，或者是如一般std扩展中hashmap的使用吧。
 
- 
-
- 
-
- 
-
- 
-
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

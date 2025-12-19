@@ -30,6 +30,10 @@ author:
   last_name: ''
 ---
 
+Python文档示例中，作者发现了一个有趣的彩蛋：Guido用分数给编程语言排名，Python得分最高，而Ruby的排名低于Lua，令人莞尔。
+
+<!-- more -->
+
 In addition to alternative list implementations, the library also offers other tools such as the [`bisect`](<library/bisect.html> "Array bisection algorithms for binary searching.") module with functions for manipulating sorted lists:
 
 ```python
@@ -41,7 +45,10 @@ In addition to alternative list implementations, the library also offers other t
 [(100, 'perl'), (200, 'tcl'), (300, 'ruby'), (400, 'lua'), (500, 'python')]
 ```
 
-摘自：Python 2.6.1的文档，Brief Tour of the Standard Library – Part II章，Tools for Working with Lists节  
-呵呵，很明显可以看出Guido van Rossum的意图，以scores来表示含义，然后分别给了perl 100分，tcl 200分， ruby 300分， lua 400分，然后给了其创造的语言python 最高的500分：）  
-其他的都还能理解。。。。。不过ruby在其心中排在lua之后，实在有点让ruby阵营的人抓狂-_-!呵呵，虽然个人没有学过ruby,仅学过lua。。。。。。  
+摘自：Python 2.6.1的文档，Brief Tour of the Standard Library – Part II章，Tools for Working with Lists节
+
+呵呵，很明显可以看出Guido van Rossum的意图，以scores来表示含义，然后分别给了perl 100分，tcl 200分， ruby 300分， lua 400分，然后给了其创造的语言python 最高的500分：）
+
+其他的都还能理解。。。。。不过ruby在其心中排在lua之后，实在有点让ruby阵营的人抓狂-_-!呵呵，虽然个人没有学过ruby,仅学过lua。。。。。。
+
 呵呵，纯YY一下，这是偶然从文档中查资料的时候翻出来的：）

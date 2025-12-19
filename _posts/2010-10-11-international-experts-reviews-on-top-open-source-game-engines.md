@@ -21,18 +21,15 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+专家点评了Ogre、Irrlicht等开源引擎，指出其在效率、设计等方面的不足，并因此决定自研新引擎。
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+<!-- more -->
 
-    其实早就看到了（很老了，写于Sunday, December 9, 2007），最近写Bullet相关文章的时候又翻看到了，想到常常有人会问到底哪个开源引擎比较好，这里就顺便简单的翻译一下吧。虽然是一家之言，而且Wolfgang Engel这个大牛（不了解有多牛可以[参考这里](<http://www.linkedin.com/in/wolfgangengel> "参考这里")  
-）的话是针对移动平台的，但是还是有一些普遍的参考价值的。[来源](<http://diaryofagraphicsprogrammer.blogspot.com/2007/12/porting-open-source-engine-to-iphone.html> "来源")  
-。这也是Wolfgang写乌龙引擎（[oolongengine](<http://code.google.com/p/oolongengine/> "oolongengine")  
-）的初衷。
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
- 
+[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
+
+其实早就看到了（很老了，写于Sunday, December 9, 2007），最近写Bullet相关文章的时候又翻看到了，想到常常有人会问到底哪个开源引擎比较好，这里就顺便简单的翻译一下吧。虽然是一家之言，而且Wolfgang Engel这个大牛（不了解有多牛可以[参考这里](<http://www.linkedin.com/in/wolfgangengel> "参考这里")）的话是针对移动平台的，但是还是有一些普遍的参考价值的。[来源](<http://diaryofagraphicsprogrammer.blogspot.com/2007/12/porting-open-source-engine-to-iphone.html> "来源")。这也是Wolfgang写乌龙引擎（[oolongengine](<http://code.google.com/p/oolongengine/> "oolongengine")）的初衷。
 
 ## 译文：
 
@@ -48,38 +45,22 @@ Quake 3:这是个很显然有很多优秀工具，非常有效率的引擎，我
 
 Crystal Space:为什么每个东西都是一个插件？想不通。
 
-C4：这是我最习惯的引擎之一，但是它是闭源的:-(  (对开源引擎的评价怎么会加上这个闭源引擎?-_-!)
+C4：这是我最习惯的引擎之一，但是它是闭源的:-( (对开源引擎的评价怎么会加上这个闭源引擎?-_-!)
 
 所以，我现在想要写我自己的，基于底层框架的引擎。（也就是乌龙引擎）
-
- 
 
 ## 原文：
 
 Evaluated several open source engines:
 
-  * Ogre:  
-the architecture and design is not very performance friendly. The usage  
-of C++ makes the usage and re-design here quite difficult. An example:  
-each material has its own C++ file and there is an inheritance chain  
-from a base class ... 
-  * Irrlicht: the Mac OS X version I tried  
-looks like a Quake 3 engine. It also seems to lack lots of design  
-elements of a modern 3D engine. Other than this it looks quite good for a  
-portable device. You might also use the original Quake 3 engine then  
-...
-  * Quake 3: this is obviously a very efficient game engine with  
-rock-solid tools, I worked with this engine in the Medal of Honor  
-series before, but I wanted a bit more flexibility and I wanted to  
-target more advanced hardware.
-  * Crystal Space: why is everything a plug-in? Can't get my head around this.
-  * C4: this is one of my favourite engines, but it is closed source :-(
+* Ogre: the architecture and design is not very performance friendly. The usage of C++ makes the usage and re-design here quite difficult. An example: each material has its own C++ file and there is an inheritance chain from a base class ...
+* Irrlicht: the Mac OS X version I tried looks like a Quake 3 engine. It also seems to lack lots of design elements of a modern 3D engine. Other than this it looks quite good for a portable device. You might also use the original Quake 3 engine then ...
+* Quake 3: this is obviously a very efficient game engine with rock-solid tools, I worked with this engine in the Medal of Honor series before, but I wanted a bit more flexibility and I wanted to target more advanced hardware.
+* Crystal Space: why is everything a plug-in? Can't get my head around this.
+* C4: this is one of my favourite engines, but it is closed source :-(
 
 So I want to write my own based on the low-level framework I have in place now.
 
- 
-
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

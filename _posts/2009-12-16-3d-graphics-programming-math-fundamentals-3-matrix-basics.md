@@ -22,21 +22,21 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)******** __**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
-[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
+[**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
 
 这里开始，是真正的与3D图形编程相关的知识了，前两节只能算是纯数学。
 
 ### 平移矩阵
 
-要想将向量(x, y, z, 1)沿x轴平移[![yyyy_html_1d45df16](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_1d45df16_thumb.gif)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_1d45df16_2.gif>)个单位，沿y轴平移[![yyyy_html_m6cec65e6](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m6cec65e6_thumb.gif)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m6cec65e6_2.gif>)，沿z轴平移[![yyyy_html_m63b4a2d4](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m63b4a2d4_thumb.gif)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m63b4a2d4_2.gif>)个单位，我们只需要将该向量与如下矩阵相乘。
+要想将向量(x, y, z, 1)沿x轴平移[![yyyy_html_1d45df16](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_1d45df16_thumb.gif)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_1d45df16_2.gif)个单位，沿y轴平移[![yyyy_html_m6cec65e6](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m6cec65e6_thumb.gif)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m6cec65e6_2.gif)，沿z轴平移[![yyyy_html_m63b4a2d4](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m63b4a2d4_thumb.gif)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m63b4a2d4_2.gif)个单位，我们只需要将该向量与如下矩阵相乘。
 
-N(p) = [![yyyy_html_m1964a5f8\[4\]](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m1964a5f8%5B4%5D_thumb.gif)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m1964a5f8%5B4%5D.gif>)
+N(p) = [![yyyy_html_m1964a5f8\[4\]](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m1964a5f8%5B4%5D_thumb.gif)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m1964a5f8%5B4%5D.gif)
 
-从中可以看出4*4矩阵N中的N41,N42,N43分别控制其在x轴y轴z轴上的平移单位. 
+从中可以看出4*4矩阵N中的N41,N42,N43分别控制其在x轴y轴z轴上的平移单位.
 
-[![yyyy_html_m75c5e44f](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m75c5e44f_thumb.gif)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m75c5e44f_2.gif>)是单位矩阵，我们已经知道，乘以其他矩阵相当于没有乘的家伙。这个矩阵就是从单位矩阵稍微变下型，多了第4行的几个值。我们先来看[![yyyy_html_1d45df16](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_1d45df16_thumb.gif)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_1d45df16_2.gif>)为最后结果做出的贡献，向量M(x,y,z,1)与矩阵N(p)相乘后，最后X坐标的值（也就是矩阵M11的值）为x*1 + y*0 + z*0 + 1*px = x + px。（套一下矩形相乘的公式）
+[![yyyy_html_m75c5e44f](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m75c5e44f_thumb.gif)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m75c5e44f_2.gif)是单位矩阵，我们已经知道，乘以其他矩阵相当于没有乘的家伙。这个矩阵就是从单位矩阵稍微变下型，多了第4行的几个值。我们先来看[![yyyy_html_1d45df16](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_1d45df16_thumb.gif)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_1d45df16_2.gif)为最后结果做出的贡献，向量M(x,y,z,1)与矩阵N(p)相乘后，最后X坐标的值（也就是矩阵M11的值）为x*1 + y*0 + z*0 + 1*px = x + px。（套一下矩形相乘的公式）
 
 y,z的公式一样，就不多说了。这里可以看到，对于实施矩阵平移计算来说，需要将原向量（3维）扩充的一维（一般用w表示)设为1，不然的话，上述x坐标=x*1 + y*0 + z*0 + 0*px=x，也就是说，完全不会改变原矩阵了。
 
@@ -66,7 +66,7 @@ ans =
 octave-3.2.3.exe:8:d:/Octave/3.2.3_gcc-
 ```
 
----  
+---
 
 x = 2 + 1 = 3,依次类推，结果正确。
 
@@ -82,7 +82,7 @@ inline void CMatrix4<T>::translateVect( vector3df& vect ) const
 }
 ```
 
-[](<http://11011.net/software/vspaste>)
+[](http://11011.net/software/vspaste)
 
 D3D中利用函数：
 
@@ -92,7 +92,7 @@ D3DXMATRIX* WINAPI D3DXMatrixTranslation
     ( D3DXMATRIX *pOut, FLOAT x, FLOAT y, FLOAT z );
 ```
 
-[](<http://11011.net/software/vspaste>)实现矩阵的平移，具体方式不明。
+[](http://11011.net/software/vspaste)实现矩阵的平移，具体方式不明。
 
 ### 缩放矩阵
 
@@ -128,7 +128,7 @@ ans =
     2    6   12    0
 ```
 
----  
+---
 
 结果正确。其实看了实现的源代码后也会发现这种公式还是没事找事，事实上直接乘多省事啊。
 
@@ -148,7 +148,7 @@ irrlicht中利用下面的实现来构造一个缩放矩阵：
     }
 ```
 
-[](<http://11011.net/software/vspaste>)
+[](http://11011.net/software/vspaste)
 
 D3D中利用下面的实现完成缩放运算，直接乘就好了。。。。。。
 
@@ -168,7 +168,7 @@ D3DXINLINE D3DXVECTOR3* D3DXVec3Scale
 }
 ```
 
-[](<http://11011.net/software/vspaste>)
+[](http://11011.net/software/vspaste)
 
 ### 旋转矩阵：
 
@@ -176,11 +176,11 @@ D3DXINLINE D3DXVECTOR3* D3DXVec3Scale
 
 我们可用如下3个矩阵将一个分量分别绕着x,y,z轴顺时针旋转θ弧度。
 
-X(θ) = [![yyyy_html_m5a3e8644](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m5a3e8644_thumb.gif)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m5a3e8644_2.gif>)
+X(θ) = [![yyyy_html_m5a3e8644](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m5a3e8644_thumb.gif)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_m5a3e8644_2.gif)
 
-Y(θ) = [![yyyy_html_6d8ae198](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_6d8ae198_thumb.gif)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_6d8ae198_3.gif>)
+Y(θ) = [![yyyy_html_6d8ae198](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_6d8ae198_thumb.gif)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_yyyy_html_6d8ae198_3.gif)
 
-Z(θ) = [![html_html_3de18d4c](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_html_html_3de18d4c_thumb.gif)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_html_html_3de18d4c_2.gif>)
+Z(θ) = [![html_html_3de18d4c](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_html_html_3de18d4c_thumb.gif)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_html_html_3de18d4c_2.gif)
 
 还是先看第一个公式，向量M(x,y,z,0)与矩阵X(θ)相乘后，最后X(M11)坐标值为x*1+y*0+z*0+0*0=x,Y(M12)坐标值为x*0+y*cosθ+z*(-sinθ)+0*0 = y*cosθ + z * (-sinθ),Z(M13)坐标值为x*0+y*sinθ+z*cosθ+0*0 = y*sinθ + z*cosθ，w(m14)坐标为x*0+y*0+z*0+0*1 = 0。
 
@@ -190,7 +190,7 @@ Z(θ) = [![html_html_3de18d4c](http://p.blog.csdn.net/images/p_blog_csdn_net/vag
 
 我们用其围绕Z轴顺时针旋转30度时，方式是乘以θ为30的如上矩阵，结果如下：
 
-[![image](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image_thumb_2_633965303466482500.png)](<http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image_6_633965303463826250.png>)
+[![image](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image_thumb_2_633965303466482500.png)](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_image_6_633965303463826250.png)
 
 ```matlab
 > a = pi / 6
@@ -220,7 +220,7 @@ octave-3.2.3.exe:28:f:/Octave/3.2.3_gcc-4.4.0/bin
 > 
 ```
 
----  
+---
 
 精确的30度。
 
@@ -298,7 +298,7 @@ int _tmain(int argc, _TCHAR* argv[])
 }
 ```
 
-[](<http://11011.net/software/vspaste>)运行结果为：
+[](http://11011.net/software/vspaste)运行结果为：
 
 ```text
 0.866025        0.500000        -0.000000       0.000000
@@ -307,7 +307,7 @@ int _tmain(int argc, _TCHAR* argv[])
 0.000000        0.000000        0.000000        1.000000
 ```
 
----  
+---
 
 看到是啥了吗？没错，就是GNU Octave(matlab) 那个例子中的矩阵：
 
@@ -355,7 +355,7 @@ mt.rotateVect(x);
 printf("x = [%f, %f, %f]/n", x.X, x.Y, x.Z);
 ```
 
-[](<http://11011.net/software/vspaste>)
+[](http://11011.net/software/vspaste)
 
 输出结果:
 
@@ -363,7 +363,7 @@ printf("x = [%f, %f, %f]/n", x.X, x.Y, x.Z);
 x = [-0.000000, 2.000000, 0.000000]
 ```
 
----  
+---
 
 与通过GNU Octave(matlab) 的一样,精确的30度旋转。
 
@@ -427,7 +427,7 @@ x.rotateXYBy(30);
 printf("x = [%f, %f, %f]/n", x.X, x.Y, x.Z);
 ```
 
-[](<http://11011.net/software/vspaste>)[](<http://11011.net/software/vspaste>)
+[](http://11011.net/software/vspaste)[](http://11011.net/software/vspaste)
 
 输出：
 
@@ -435,7 +435,7 @@ printf("x = [%f, %f, %f]/n", x.X, x.Y, x.Z);
 x = [-0.000000, 2.000000, 0.000000]
 ```
 
----  
+---
 
 就是前面通过两步得出的结果。上面irrlicht代码需要注意的是，参数是degree是表示单位是度数，其他时候都默认为弧度。
 
@@ -455,6 +455,6 @@ D3DXMATRIX* WINAPI D3DXMatrixRotationZ
     ( D3DXMATRIX *pOut, FLOAT Angle );
 ```
 
-原创文章作者保留版权 转载请注明原作者 并给出链接****
+原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**

@@ -21,249 +21,85 @@ author:
   last_name: ''
 ---
 
-本文译自[  
-orx tutorials ](<http://orx-project.org/wiki/en/orx/tutorials/main>)  
-的[首  
-页(main)](<http://orx-project.org/wiki/en/orx/tutorials/main>)  
-。[phpxer](<http://blog.feihoo.com/>)  
-译，九天雁翎 （[博  
-客](<http://www.jtianling.com>)  
-）修订。最新版本见[Orx  
-官方Wiki中文教程](<http://orx-project.org/wiki/cn/orx/main>)  
-。转载自：phpxer的[博客](<http://blog.feihoo.com/>)  
-。原文链接在<http://blog.feihoo.com/2010/07/orx_tutorial_cn_basic.html>  
-。
+本文是Orx 2D游戏引擎的中文入门教程，涵盖环境配置、对象、动画、物理等核心内容，助你快速上手。
+
+<!-- more -->
+
+本文译自[orx tutorials](<http://orx-project.org/wiki/en/orx/tutorials/main>)的[首页](<http://orx-project.org/wiki/en/orx/tutorials/main>)。[phpxer](<http://blog.feihoo.com/>)译，九天雁翎 （[博客](<http://www.jtianling.com>)）修订。最新版本见[Orx官方Wiki中文教程](<http://orx-project.org/wiki/cn/orx/main>)。转载自：phpxer的[博客](<http://blog.feihoo.com/>)。原文链接在<http://blog.feihoo.com/2010/07/orx_tutorial_cn_basic.html>。
 
 希望有新人能够加入这个翻译者的队伍，早日将Orx的WIKI页中文化。有兴趣的请加入qq群73063577，并与我取得联系，防止重复翻译。
 
-# 
+# 教程
 
-# 教程  
+本教程主要包含Orx的基础和高级教程。Orx 是一个开源、跨平台、轻量级、数据驱动的2D游戏引擎。
 
-本教程主要包含Orx的基础和  
-高级教程。Orx 是一个开源、跨平台、轻量级、数据驱动的2D游戏引擎。
+## 安装
 
-## 
+这些教程演示了如何设置不同的编程环境(IDE)来运行[orx](<https://docs.google.com/document/edit?id=1UGLudR9zxbNw8tNoAqoRX4y45JoBKvjd4OzubCHQJ3E&hl=en&authkey=CMza34sF>)1)。
 
-## 安装  
+  * Microsoft Visual Studio (C++) for Windows: [Tutorial](<http://orx-project.org/wiki/en/orx/tutorials/setup_msvs>) / [Download (Express version)](<http://www.microsoft.com/Express/VC/>)
+  * CodeLite for Windows, Linux and Mac OS X: [Tutorial](<http://orx-project.org/wiki/en/orx/tutorials/setup_codelite>) / [Download](<http://www.codelite.org/>)
+  * XCode for Mac OS X: [Tutorial](<http://orx-project.org/wiki/en/orx/tutorials/setup_xcode>) / [Download](<http://developer.apple.com/technology/Xcode.html>)
 
-这些教程演示了如何设置不同的  
-编程环境(IDE)  
-来运行  
-[orx  
-](<https://docs.google.com/document/edit?id=1UGLudR9zxbNw8tNoAqoRX4y45JoBKvjd4OzubCHQJ3E&hl=en&authkey=CMza34sF>)  
-1)  
-。
+## [基础](<http://developer.apple.com/technology/Xcode.html>)
 
-  * Microsoft Visual  
-Studio (C++) for Windows:  
-[   
-Tutorial  
-](<http://orx-project.org/wiki/en/orx/tutorials/setup_msvs>)  
-/  
-[   
-Download (Express  
-version)  
-](<http://www.microsoft.com/Express/VC/>)
-  * CodeLite for Windows,  
-Linux and Mac OS X:  
-[   
-Tutorial  
-](<http://orx-project.org/wiki/en/orx/tutorials/setup_codelite>)  
-/  
-[   
-Download  
-](<http://www.codelite.org/>)
-  * XCode for Mac OS X:  
-[   
-Tutorial  
-](<http://orx-project.org/wiki/en/orx/tutorials/setup_xcode>)  
-/  
-[   
-Download  
-](<http://developer.apple.com/technology/Xcode.html>)
+本节将要介绍orx的基础知识。
 
-## 
+你可以从[这里](<https://sourceforge.net/projects/orx/files>)下载Windows(mingw, msvs2005 & msvs2008). Linux 和 MacOS X下的可执行文件（包括项目文件，数据和源码）。
 
-## [基础  
-](<http://developer.apple.com/technology/Xcode.html>)  
+前九个基础教程（#1 – #9）使用默认的orx启动程序为基础(underlying layer)，这样易于快速测试/制作原型2)。
 
-本节将要介绍orx的基础知  
-识。
+它们被编译成运行时加载（在命令行3)上或配置文件中指定它们的名字）的动态连接库。
 
-你可以从  
-[这里  
-](<https://sourceforge.net/projects/orx/files>)  
-下载Windows(mingw,  
-msvs2005 & msvs2008). Linux 和 MacOS X下的  
-可执行文件  
-（包括项目文件，数据和源码）。
+此外，下面的内容[4)](<http://orx-project.org/wiki/en/orx/tutorials/main#fn__4>)解释了哪些行为是由默认的orx.exe/orx 启动程序提供的。
 
-前九个基础教程（#1 –  
-#9）使用默认的orx启动程序为  
-基础  
-(underlying  
-layer)，这样易于快速测试/制作原型  
-2  
-。
+这是一个基础的C教程。由于我们在本教程中使用默认的可执行文件，下面的代码将以插件的方式加载和执行。
 
-它们被编译成运行时加载（在命  
-令行  
-3)  
-上  
-或配置文件中指定它们的名字）的动态连接库。
+另外，一些基础设施有主执行文件为我们处理。首先，它会加载所有可用的插件和模块。如果你只需要其中的一些，最好编写你自己的可执行文件而不是插件。这部分包含在[后面的教程](<http://orx-project.org/wiki/en/orx/tutorials/standalone>)中。
 
-此外，下面的内容  
-  
-[4)  
-](<http://orx-project.org/wiki/en/orx/tutorials/main#fn__4>)  
-  
-解释了哪些行为是由默认的orx.exe/orx 启动程序提供的。
+主执行文件还处理下面这些键盘输入：
 
-这是一个基础的C教程。  
-  
-由于我们在本教程中使用默认的可执行文件，下面  
-的代码将以插件的方式加载和执行。
+* F11 是纵向对齐切换
+* Escape 退出
+* F12 截屏
+* 退格键重新载入全部配置文件
 
-另外，一些  
-基础设施  
-有  
-主执行文件  
-为我们处理。  
-  
-首先，它会加载所有可用的插件和模块。如果你只  
-需要其中的一些，最好编写你自己的  
-可执行文件  
-而不是插件。这部分包含在  
-[后面的教程  
-](<http://orx-project.org/wiki/en/orx/tutorials/standalone>)  
-中。
+如果有orxSYSTEM_EVENT_CLOSE事件发生，程序也会退出。
 
-主执行文件还处理下面这些  
-键盘输入  
-：
+不过，如果使用orx作为传统库构建你自己的可执行文件当然也是可以的（也很容易做到）。在[教程 #10](<http://orx-project.org/wiki/en/orx/tutorials/standalone>)(使用C++编写)和[教程 #11](<http://orx-project.org/wiki/en/orx/tutorials/spawner>)(使用 C编写)。[教程 #10](<http://orx-project.org/wiki/en/orx/tutorials/standalone>)还演示了如何使用orx编写C++代码5)。同样地，你可以用任何可与C连接的语言编写程序。
 
-* F11 是  
-纵向对齐切换  
-  
-* Escape 退出  
-  
-* F12 截屏  
-  
-* 退格键(Backspace)  
-重新载入全部配置文件
-
-如果有  
-orxSYSTEM_EVENT_CLOSE事件发生，程序也会退出。
-
-不过，如果使用  
-orx作为传统库构建你自己的可执行文件当然也是可以的（也很容易做到）。在  
-[教程 #10  
-](<http://orx-project.org/wiki/en/orx/tutorials/standalone>)  
-(使用C++编写) 和   
-[教程 #11  
-](<http://orx-project.org/wiki/en/orx/tutorials/spawner>)  
-(使用 C编写)。  
-[教程 #10  
-](<http://orx-project.org/wiki/en/orx/tutorials/standalone>)  
-还演示了如何使用orx编写C++代码  
-5)  
-。  
-同样地，你可以用任何可与C连接的语言编写程序。
-
-在将来的发布中将会为某些常见  
-语言提供封装。如果你想编写这种封装库，为orx做贡献，请通过  
-[论坛  
-](<http://forum.orx-project.org/>)  
-联系我们。
+在将来的发布中将会为某些常见语言提供封装。如果你想编写这种封装库，为orx做贡献，请通过[论坛](<http://forum.orx-project.org/>)联系我们。
 
 当前提供的基础教程列表：
 
-  1. [C]  
-[   
-object  
-](<http://orx-project.org/wiki/en/orx/tutorials/object>)
-  2. [C]  
-[   
-clock  
-](<http://orx-project.org/wiki/en/orx/tutorials/clock>)
-  3. [C]  
-[   
-frame  
-](<http://orx-project.org/wiki/en/orx/tutorials/frame>)
-  4. [C]  
-[   
-animation  
-](<http://orx-project.org/wiki/en/orx/tutorials/anim>)
-  5. [C]  
-[   
-viewport &  
-camera  
-](<http://orx-project.org/wiki/en/orx/tutorials/viewport>)
-  6. [C]  
-[   
-sound & music  
-](<http://orx-project.org/wiki/en/orx/tutorials/sound>)
-  7. [C]  
-[   
-fx  
-](<http://orx-project.org/wiki/en/orx/tutorials/fx>)
-  8. [C]  
-[   
-physics  
-](<http://orx-project.org/wiki/en/orx/tutorials/physics>)
-  9. [C]  
-[   
-scrolling  
-](<http://orx-project.org/wiki/en/orx/tutorials/scrolling>)
-  10. [C++]  
-[   
-stand alone &  
-localization  
-](<http://orx-project.org/wiki/en/orx/tutorials/standalone>)
-  11. [C]  
-[   
-spawner &  
-shader  
-](<http://orx-project.org/wiki/en/orx/tutorials/spawner>)
+  1. [C] [object](<http://orx-project.org/wiki/en/orx/tutorials/object>)
+  2. [C] [clock](<http://orx-project.org/wiki/en/orx/tutorials/clock>)
+  3. [C] [frame](<http://orx-project.org/wiki/en/orx/tutorials/frame>)
+  4. [C] [animation](<http://orx-project.org/wiki/en/orx/tutorials/anim>)
+  5. [C] [viewport & camera](<http://orx-project.org/wiki/en/orx/tutorials/viewport>)
+  6. [C] [sound & music](<http://orx-project.org/wiki/en/orx/tutorials/sound>)
+  7. [C] [fx](<http://orx-project.org/wiki/en/orx/tutorials/fx>)
+  8. [C] [physics](<http://orx-project.org/wiki/en/orx/tutorials/physics>)
+  9. [C] [scrolling](<http://orx-project.org/wiki/en/orx/tutorials/scrolling>)
+  10. [C++] [stand alone & localization](<http://orx-project.org/wiki/en/orx/tutorials/standalone>)
+  11. [C] [spawner & shader](<http://orx-project.org/wiki/en/orx/tutorials/spawner>)
 
-## 
+## [社区](<http://orx-project.org/wiki/en/orx/tutorials/spawner>)
 
-## [社区  
-](<http://orx-project.org/wiki/en/orx/tutorials/spawner>)  
+下面这些教程由社区创建，它们是了解如何使用 orx的不错的资源，可以在这里寻找到对一些简单问题的解答。
 
-下面这些教程由社区创建，它们  
-是了解如何使用 orx的不错的资源，可以在这里寻找到对一些简单问题的解答。
+  * [Grey’s tutorials](<http://orx-project.org/wiki/en/orx/tutorials/community/grey>)（英文版）
 
-  * [Grey’s tutorials  
-](<http://orx-project.org/wiki/en/orx/tutorials/community/grey>)  
-（英文版）
+[1)](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__1>) 所有的IDE都是免费可以从英特网上下载的。
 
-[1)  
-](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__1>)  
-所有的IDE都是免费可以从英特网上下载的。  
-  
-[2)  
-](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__2>)  
-one line for the  
-whole initialization, no main function to write, no loop to handle  
-  
-用一行代码完成初始化，不需要写main函数，  
-没有  
-循环  
-要  
-处理  
-  
-[3)  
-](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__3>)  
-另提供了 .bat/.sh  
-脚本方便启动所有示例  
-  
-[4)  
-](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__4>)  
-  
-你将在在所有教程的源文件的开始处看到这些内容  
-  
-[5)  
-](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__5>)  
-Orx本身使用C编写
+[2)](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__2>) one line for the whole initialization, no main function to write, no loop to handle
+
+用一行代码完成初始化，不需要写main函数，没有循环要处理
+
+[3)](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__3>) 另提供了 .bat/.sh 脚本方便启动所有示例
+
+[4)](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__4>)
+
+你将在在所有教程的源文件的开始处看到这些内容
+
+[5)](<http://orx-project.org/wiki/en/orx/tutorials/main#fnt__5>) Orx本身使用C编写

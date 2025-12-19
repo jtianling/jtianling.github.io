@@ -23,16 +23,17 @@ author:
   last_name: ''
 ---
 
-# 队列(queue)的链表(list)实现及循环数组(circular array)实现  C++实现
+文章提供了队列的两种C++实现：链表实现和循环数组实现，并附有完整的代码和测试。
 
-**_write by_**** _九天雁翎(JTianLing) --  
-blog.csdn.net/vagrxie_**
+<!-- more -->
 
- 
+# 队列(queue)的链表(list)实现及循环数组(circular array)实现 C++实现
+
+**_write by_** _九天雁翎(JTianLing) -- blog.csdn.net/vagrxie_
 
 <<Data Structures and Algorithm Analysis in C++>>
 
-\--《数据结构b与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第78-81面，堆栈的应用(1) 队列(queue)的链表(list)实现及循环数组(circular array) C++实现，需要注意的是，仅仅为了说明问题，没有详细探究代码的健壮，比如，我没有加入错误检测，这点在循环数组的实现是非常容易出现的。并且为了说明问题，我用了一个很小的数组来实现，以完成真正的从尾部到头部的跳转。
+--《数据结构b与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第78-81面，堆栈的应用(1) 队列(queue)的链表(list)实现及循环数组(circular array) C++实现，需要注意的是，仅仅为了说明问题，没有详细探究代码的健壮，比如，我没有加入错误检测，这点在循环数组的实现是非常容易出现的。并且为了说明问题，我用了一个很小的数组来实现，以完成真正的从尾部到头部的跳转。
 
 另外说明的是，书中队列应用一节我实在想不到有什么可以用代码简单实现的，所以都不写了。
 
@@ -200,8 +201,6 @@ maData[ArraySize];
 140 #endif
 ```
 
- 
-
 测试代码：
 
 ```cpp
@@ -259,7 +258,4 @@ liQCir;
 42
 ```
 
- 
-
-**_write by_**** _九天雁翎_**** _(JTianLing) --  
-blog.csdn.net/vagrxie_**
+**_write by_** _九天雁翎_ _(JTianLing) -- blog.csdn.net/vagrxie_**

@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+本文介绍CMake的字符串与文件操作，展示了如何为复杂的多项目目录批量生成工程文件，解决手动创建的繁琐。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
@@ -29,11 +33,11 @@ author:
 
 特别声明的是,本文并不是一个完备3的CMake教程(以前写的简介也不是),需要相关入门教程的应该去寻找(CMake 实践),那才是你想要的.本文仅仅是作为一些缺失资料的收集,也包括我自己对CMake字符串,文件处理的探索.(真是纯个人探索,网上即使是英文的相关资料也不多,可能毕竟CMake还是不怎么流行吧),仅适合需要的人搜索到这里查看相关信息.
 
-##  本文内容:  
+## 本文内容:
 
 实际上,本文研究的仅仅包括CMake的以下两部分,已经一些if,else中对字符串的判断.在本文中,由于目的不同,主要将会把CMake作为一种普通的编程语言来对待,(其实它本来就是)甚至很多地方根本不建工程,请注意.
 
-[string](<http://www.cmake.org/cmake/help/cmake2.6docs.html#command:string> "string"): String operations.  
+[string](<http://www.cmake.org/cmake/help/cmake2.6docs.html#command:string> "string"): String operations.
 ```cmake
 string(REGEX MATCH (regular_expression)  
 (output variable) (input) [(input)...])  
@@ -61,9 +65,7 @@ string(RANDOM [LENGTH (length)] [ALPHABET (alphabet)]
 (output variable))
 ```
 
-  
-
-[file](<http://www.cmake.org/cmake/help/cmake2.6docs.html#command:file> "file"): File manipulation command.  
+[file](<http://www.cmake.org/cmake/help/cmake2.6docs.html#command:file> "file"): File manipulation command.
 ```cmake
 file(WRITE filename "message to write"... )  
 file(APPEND filename "message to write"... )  
@@ -85,37 +87,33 @@ file(TO_NATIVE_PATH path result)
 file(DOWNLOAD url file [TIMEOUT timeout] [STATUS status] [LOG log])
 ```
 
-##    
-
 以上列表来自于CMake最新的文档:http://www.cmake.org/cmake/help/cmake2.6docs.html
 
-##  实验方式:  
+## 实验方式:
 
-完全依靠CMake的GUI工具,通过configure的输出来获取实验结果.最终的结果就是为我的博客所有源代码重建工程,以后在博客源代码中仅保留CMake的配置文件,不再保留工程, 保留工程很有局限性,比如Linux下没有makefile是很有问题的,个人建工程的时候用的是VS2008,这样VS2005的使用者也会很郁闷(虽然改个版本号就可以用),再加上以前刚开始学习OpenGL的时候非常短视,为了方便自己,将GLUT等库都装在系统目录下,这样的确是方便了自己,但是任何人clone的源代码都无法顺利运行,必须首先装一套配套的库才行,这可不是太好的工程管理方法,这次顺便解决.原来的源代码目录完全按照日期分目录,每天又分很多示例,很有典型意义. 
+完全依靠CMake的GUI工具,通过configure的输出来获取实验结果.最终的结果就是为我的博客所有源代码重建工程,以后在博客源代码中仅保留CMake的配置文件,不再保留工程, 保留工程很有局限性,比如Linux下没有makefile是很有问题的,个人建工程的时候用的是VS2008,这样VS2005的使用者也会很郁闷(虽然改个版本号就可以用),再加上以前刚开始学习OpenGL的时候非常短视,为了方便自己,将GLUT等库都装在系统目录下,这样的确是方便了自己,但是任何人clone的源代码都无法顺利运行,必须首先装一套配套的库才行,这可不是太好的工程管理方法,这次顺便解决.原来的源代码目录完全按照日期分目录,每天又分很多示例,很有典型意义.
 
 比如说([ DirectX 9.0 3D游戏开发编程基础](<http://www.amazon.cn/mn/detailApp/ref=sr_1_2?_encoding=UTF8&s=books&qid=1263556171&asin=B0011F2D26&sr=8-2>))--([d3d龙书](<http://www.amazon.cn/mn/detailApp/ref=sr_1_1?_encoding=UTF8&s=books&qid=1263171144&asin=B0011F2D26&sr=8-1> "d3d龙书"))(英文名:(Introduction to 3D Game Programming with DirectX 9.0))的附带源码仅有源代码文件,分散在N个目录(每章一个目录+每章每个示例一个目录),也与我的博客中源代码的分配很类似,事实上,很多书籍配套的源代码都有这样的问题,通过这样的方法可以一次解决.没有CMake的时候,想OpenGL红宝书,D3d龙书,3D游戏编程大师这样的书的源代码你得分别建几十个工程才能很好的在Windows下使用,这是非常让人郁闷的事情,你郁闷吗?我想,我可以通过这中方法搞定这些源代码,弄一个配套的project放在google code上,方便大家;),辛苦我一人,方便千万家的工作,那是责无旁贷的完成啊:)
 
 [ ](<http://www.amazon.cn/mn/detailApp/ref=sr_1_2?_encoding=UTF8&s=books&qid=1263556171&asin=B0011F2D26&sr=8-2>)
 
-本文顺便用于介绍CMake的强大及其推广,按照开源的理念,即使我没有真的参与某个开源产品的研发,我实际的使用了它,这是第一层次的支持,使用后感觉不错,向大家推广,这是第二层次的支持,我决定将我对CMake的支持上升一个层次(以前写简介的时候就上升过了) 
+本文顺便用于介绍CMake的强大及其推广,按照开源的理念,即使我没有真的参与某个开源产品的研发,我实际的使用了它,这是第一层次的支持,使用后感觉不错,向大家推广,这是第二层次的支持,我决定将我对CMake的支持上升一个层次(以前写简介的时候就上升过了)
 
-##    
+## 实验过程
 
-##  实验过程  
+我的HelloWord:
 
-我的HelloWord: 
+获取某个源代码目录下的所有源代码,而不需要单个的列举,这是个很大的进步,在([现代软件构建系统的使用 cmake简介...](<http://www.jtianling.com/archive/2009/10/30/4743484.aspx>))中介绍过,这是从
 
-获取某个源代码目录下的所有源代码,而不需要单个的列举,这是个很大的进步,在([现代软件构建系统的使用 cmake简介...](<http://www.jtianling.com/archive/2009/10/30/4743484.aspx>))中介绍过,这是从 
+set(SRC_LIST test.cpp)
 
-set(SRC_LIST test.cpp)  
-
-到 
+到
 
 aux_source_directory(./ SRC_LIST)
 
-的进步.通过aux_source_directory来实现. 
+的进步.通过aux_source_directory来实现.
 
-现在的问题是,单个工程这个函数很好用了,对于多个工程多级目录的情况呢?答案是file()一族的函数. 
+现在的问题是,单个工程这个函数很好用了,对于多个工程多级目录的情况呢?答案是file()一族的函数.
 
 ```cmake
 cmake_minimum_required(VERSION 2.8)
@@ -129,23 +127,23 @@ MESSAGE( ${src} )
 ENDFOREACH()
 ```
 
-上面的代码,放在我的博客的根目录下,会找到所有的.cpp文件并输出 
+上面的代码,放在我的博客的根目录下,会找到所有的.cpp文件并输出
 
-关键在于两个地方FILE(GLOB_RECURSE ....... 
+关键在于两个地方FILE(GLOB_RECURSE .......
 
-及FOREACH的使用 
+及FOREACH的使用
 
-FILE(GLOB_RECURSE .......用于循环递归遍历目录并且使用GLOB匹配,GLOB是我们熟悉的文件匹配语法,(类似正则的简化版) 
+FILE(GLOB_RECURSE .......用于循环递归遍历目录并且使用GLOB匹配,GLOB是我们熟悉的文件匹配语法,(类似正则的简化版)
 
-*用于表示任意长度的任意文字,?用于匹配任意的一个字符.这里*.cpp用于匹配所有的.cpp后缀的文件. 
+*用于表示任意长度的任意文字,?用于匹配任意的一个字符.这里*.cpp用于匹配所有的.cpp后缀的文件.
 
-同时还有FILE(GLOB....用于非递归式的寻找,(即只寻找当前目录) 
+同时还有FILE(GLOB....用于非递归式的寻找,(即只寻找当前目录)
 
-FOREACH就是我在使用C++时一直梦寐以求的循环语法,这里很明白,就是遍历${SRC_LIST}的值,然后用MESSAGE输出,所以有了以下的输出. 
+FOREACH就是我在使用C++时一直梦寐以求的循环语法,这里很明白,就是遍历${SRC_LIST}的值,然后用MESSAGE输出,所以有了以下的输出.
 
-在CMake的GUI中,确认正确的CMakeLists.txt的位置及工程准备在的位置,Configure后, 
+在CMake的GUI中,确认正确的CMakeLists.txt的位置及工程准备在的位置,Configure后,
 
-输出一下信息: 
+输出一下信息:
 
 ```text
 Check for working C compiler: cl
@@ -195,9 +193,7 @@ F:/MySrc/blog/JTTangram/JTTangram.cpp
 Configuring done
 ```
 
-##    
-
-获取了SRC_LIST后,就可以开始处理了 
+获取了SRC_LIST后,就可以开始处理了
 
 ```cmake
 FOREACH(src ${SRC_LIST})
@@ -223,9 +219,9 @@ ENDIF(NOT (src MATCHES ".*2009-10-20.*"))
 ENDFOREACH(src)
 ```
 
-一下是关键点的解释: 
+一下是关键点的解释:
 
-通过STRING( REGEX REPLACE命令来获取到所有的.cpp后缀的文件,因为我的工程中所有的工程都仅包含一个cpp,所以可以这样做 
+通过STRING( REGEX REPLACE命令来获取到所有的.cpp后缀的文件,因为我的工程中所有的工程都仅包含一个cpp,所以可以这样做
 
 string(REGEX REPLACE (regular_expression)  
 (replace_expression) (output variable)
@@ -234,23 +230,15 @@ string(REGEX REPLACE (regular_expression)
 
 用"1"的方式在替换中表示捕获到的字符串(会正则的理解起来应该不难).但是,特别需要注意的是,CMake中需要用/1的形式来传递参数,就像你在C++中需要做的那样.
 
-  
-
 ADD_EXECUTABLE( ${prjName} ${src} )
 
 以每个cpp的文件名来作为工程名,每个源文件作为此工程需要的文件.
-
-  
 
 SET_TARGET_PROPERTIES(${prjName} PROPERTIES WIN32_EXECUTABLE "true")
 
 用于指定我的这些工程都是Win32的工程(调用WinMain),默认时时命令行的工程.
 
-  
-
 上面这么几句就完成了为我10多个工程的一次工程文件生成
-
-  
 
 此代码中有几个特别点:
 
@@ -258,11 +246,7 @@ SET_TARGET_PROPERTIES(${prjName} PROPERTIES WIN32_EXECUTABLE "true")
 
 IF(NOT (src MATCHES ".*2009-10-20.*")) 的形式过滤掉了
 
-  
-
 IF (NOT (prjName STREQUAL mvarray) )语句用于过滤mvarray所在的工程,因为它是一个命令行的工程(使用Glut管理窗口)
-
-  
 
 以下是完整的文件(CMake的高亮很漂亮吧:)见我以前fachc2c),完成文件也可在我博客的示例代码中获取.
 
@@ -287,9 +271,7 @@ IF (NOT (prjName STREQUAL mvarray) )语句用于过滤mvarray所在的工程,因
 **ENDFOREACH**(src)
 ```
 
-##    
-
-##  进一步的应用  
+## 进一步的应用
 
 有了以上的经验后,我再为([d3d龙书](<http://www.amazon.cn/mn/detailApp/ref=sr_1_1?_encoding=UTF8&s=books&qid=1263171144&asin=B0011F2D26&sr=8-1> "d3d龙书"))的源代码生成工程,以方便大家.
 
@@ -330,10 +312,8 @@ IF (NOT (prjName STREQUAL mvarray) )语句用于过滤mvarray所在的工程,因
 **SET_TARGET_PROPERTIES**(**${prj}** PROPERTIES WIN32_EXECUTABLE "**true** ")
 **TARGET_LINK_LIBRARIES**(**${prj}** d3d9 d3dx9 winmm)
 
-**ENDFOREACH**(dir **${dirName}**)
+**ENDFOREACH**(dir **${dirNameList}**)
 ```
-
-  
 
 已经比较复杂了,基本上,看到这里,你会认可其实CMake就是一个专门用于管理工程的脚本语言-_-!
 
@@ -371,7 +351,7 @@ IF (NOT (prjName STREQUAL mvarray) )语句用于过滤mvarray所在的工程,因
 
 链接上需要的库,OK,一下子生成几十个工程,还带ALL_BUILD选项,爽
 
-为了方便大家,我将所有的([ DirectX 9.0 3D游戏开发编程基础](<http://www.amazon.cn/mn/detailApp/ref=sr_1_2?_encoding=UTF8&s=books&qid=1263556171&asin=B0011F2D26&sr=8-2>))(英文名:(Introduction to 3D Game Programming with DirectX 9.0)源代码托管在Google Code上了,并且建立好了VS2008的工程(不需要的用CMake换吧),大家各取所需吧. 
+为了方便大家,我将所有的([ DirectX 9.0 3D游戏开发编程基础](<http://www.amazon.cn/mn/detailApp/ref=sr_1_2?_encoding=UTF8&s=books&qid=1263556171&asin=B0011F2D26&sr=8-2>))(英文名:(Introduction to 3D Game Programming with DirectX 9.0)源代码托管在Google Code上了,并且建立好了VS2008的工程(不需要的用CMake换吧),大家各取所需吧.
 
 [ ](<http://www.amazon.cn/mn/detailApp/ref=sr_1_2?_encoding=UTF8&s=books&qid=1263556171&asin=B0011F2D26&sr=8-2>)
 
@@ -393,14 +373,14 @@ hg clone https://introd3d9.jtianling.googlecode.com/hg/ jtianling-introd3d9
 
 在网上找到一个CMake 的 [FAQ](<http://www.itk.org/Wiki/CMake_FAQ#Can_CMake_set_the_Debugging.2FWorking_Directory_property_in_Visual_Studio_projects.3F> "FAQ")()是这样解释的:
 
-###  Can CMake set the Debugging/Working Directory property in Visual Studio projects? 
+### Can CMake set the Debugging/Working Directory property in Visual Studio projects?
 
 No. The value of this property is not stored in the project files.  
 It is stored in extra files created by the IDE when a solution is  
 loaded (VS .NET 2003 uses a hidden .suo file next to the .sln solution  
 file). The format of these files is not known to CMake and cannot be  
 generated. In some versions of VS the files are binary and not human  
-readable. 
+readable.
 
 事实上,我一直以为VS中将工作路径放在suo文件中而不是工程文件是MS干过的最愚蠢的事情之一,导致工作中的使用从来没有达到过从
 
@@ -410,22 +390,18 @@ readable.
 
 enjoy them all!
 
-## 
+## 博客本身完整源代码获取说明
 
-## 
-
-## 博客本身完整源代码获取说明  
-
-由于篇幅限制，本文一般仅贴出代码的主要关心的部分，代码带工程（或者makefile）完整版（如果有的话）都能用Mercurial在Google Code中下载。文章以博文发表的日期分目录存放，请直接使用Mercurial克隆下库： 
+由于篇幅限制，本文一般仅贴出代码的主要关心的部分，代码带工程（或者makefile）完整版（如果有的话）都能用Mercurial在Google Code中下载。文章以博文发表的日期分目录存放，请直接使用Mercurial克隆下库：
 
 <https://blog-sample-code.jtianling.googlecode.com/hg/>
 
-Mercurial使用方法见《[分布式的，新一代版本控制系统Mercurial的介绍及简要入门](<http://www.jtianling.com/archive/2009/09/25/4593687.aspx>)》 
+Mercurial使用方法见《[分布式的，新一代版本控制系统Mercurial的介绍及简要入门](<http://www.jtianling.com/archive/2009/09/25/4593687.aspx>)》
 
-要是仅仅想浏览全部代码也可以直接到google code上去看，在下面的地址： 
+要是仅仅想浏览全部代码也可以直接到google code上去看，在下面的地址：
 
 <http://code.google.com/p/jtianling/source/browse?repo=blog-sample-code>
 
-原创文章作者保留版权 转载请注明原作者 并给出链接 
+原创文章作者保留版权 转载请注明原作者 并给出链接
 
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

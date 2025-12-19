@@ -23,10 +23,13 @@ author:
   last_name: ''
 ---
 
-# 在VS中debug时，将未初始化变量都赋值为CC的顿悟  
+VS调试时将未初始化变量赋值为0xCC，因为它是调试中断指令。若程序错误执行该内存，会立即触发中断，帮助开发者更早发现严重bug。
 
-[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**  
-**
+<!-- more -->
+
+# 在VS中debug时，将未初始化变量都赋值为CC的顿悟
+
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [讨论新闻组及文件](<ttp://groups.google.com/group/jiutianfile/>)
 

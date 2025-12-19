@@ -21,49 +21,45 @@ author:
   last_name: ''
 ---
 
+Small Basic V0.6版本发布，新增了图形缩放、三角函数、文字输入等实用功能，并修复了多项bug，继续让编程充满乐趣。
+
+<!-- more -->
+
 **Small Basic V0.6 出来了，快报**
 
 [**write by 九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-今天在Small Basic的论坛上查看有趣的信息，无意看到
-
-微软官方消息：Small Basic V0.6 is Now Available for Download。。。。。。。
+今天在Small Basic的论坛上查看有趣的信息，无意看到微软官方消息：Small Basic V0.6 is Now Available for Download。。。。。。。
 
 Small Basic 的开发速度明显要快于微软一般的产品，几个一个月前我刚开始看到Small Basic这个有意思的东西的时候还是0.4，现在已经0.6了。。。。。阿门，继续有意思下去吧。。。。。。。。。。继续bring fun back to programming 吧。。。。。。
 
- 
-
 以下是官方博客发表的内容：
 
- 
+We have a new version of Small Basic for download at [http://smallbasic.com](<http://smallbasic.com/>). This release adds German localization on top of existing French, Spanish and Russian.
 
-We have a new version of Small Basic for download at [http://smallbasic.com](<http://smallbasic.com/>).  This release adds German localization on top of existing French, Spanish and Russian.
+Also, this release sports a lot of small bug-fixes and some most requested features:
 
-Also, this release sports a lot of small bug-fixes and some most requested features:
+Updated the manual to include a chapter on Arrays
 
-Updated the manual to include a chapter on Arrays 
+Added Zoom capabilities to Shape
 
-Added Zoom capabilities to Shape 
+Added Arc Trigonometric operations in the Math object
 
-Added Arc Trigonometric operations in the Math object 
+Removed Arguments object and moved the functionality into Program object
 
-Removed Arguments object and moved the functionality into Program object 
+GetAllIndices operation on Array allows iteration on top of all array values
 
-GetAllIndices operation on Array allows iteration on top of all array values 
+Added ElapsedMilliseconds to help measure time
 
-Added ElapsedMilliseconds to help measure time 
+Added TextInput events, to help write text input features on GraphicsWindow
 
-Added TextInput events, to help write text input features on GraphicsWindow 
-
-Fixed crashes related to event subscription 
+Fixed crashes related to event subscription
 
 Fixed cursor visibility issues
 
 When you have downloaded and installed, import **STARGATES** and try out the fun game.
-
- 
 
 粗略翻译如下：
 
@@ -87,22 +83,14 @@ When you have downloaded and installed, import **STARGATES** and try out the fun
 
 9.修复鼠标光标的显示问题。
 
- 
-
 最后，导入STARGATES可以尝试玩玩Small Basic编写的一个游戏：）
 
 你不会还不会用Small Basic导入吧：）
 
- 
-
 我不太喜欢MS的大部分东西（包括Windows），但是，我毫不掩饰对Small Basic的喜爱。。。。。
-
- 
 
 STARGATES的游戏截图如下：（游戏还是一般）
 
 ![StarGate截图](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/EntryImages/20090828/stargate.png)
-
- 
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

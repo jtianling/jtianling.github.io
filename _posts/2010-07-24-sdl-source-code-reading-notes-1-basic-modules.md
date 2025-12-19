@@ -21,23 +21,21 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+本文是SDL源码阅读笔记，剖析了计时器、线程和事件等模块，展示了SDL如何用C语言实现跨平台抽象，并重点讲解了其统一的事件系统。
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+<!-- more -->
 
-## 前言  
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-    对于大牛来说，写关于阅读源码的文章都会叫源码剖析或者深入浅出啥的，对于我，自己阅读阅读源码，写一些自己的阅读笔记吧。
+[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-    SDL我就不多介绍了，很多使用过的人都说很好，我自己实际使用的感觉  
-SDL也是非常成熟易用，绝对对得起其  
-simple两字。
+## 前言
 
- 
+对于大牛来说，写关于阅读源码的文章都会叫源码剖析或者深入浅出啥的，对于我，自己阅读阅读源码，写一些自己的阅读笔记吧。
 
-## 基本模块  
+SDL我就不多介绍了，很多使用过的人都说很好，我自己实际使用的感觉 SDL也是非常成熟易用，绝对对得起其 simple两字。
+
+## 基本模块
 
 通过SDL.h中看到SDL作者对SDL进行的划分，可以看出SDL大概包含的内容：
 
@@ -59,11 +57,7 @@ simple两字。
 #include "SDL_version.h"
 ```
 
- 
-
 有声音模块，cdrom模块，有事件模块，多线程模块，计时器模块，video模块等6大模块。
-
- 
 
 SDL_InitSubSystem的参数，可以看出SDL的作者将SDL划分为下列可选子系统：
 
@@ -93,19 +87,11 @@ SDL_InitSubSystem的参数，可以看出SDL的作者将SDL划分为下列可选
 0x0000FFFF
 ```
 
- 
-
 这里的可选模块与包含的头文件并不是太一致。
-
- 
 
 除了声音我的确不是很了解以外，其他模块会在这里逐一来看看，因为个人爱好，将以video模块为主，当然，事实上这也应该是SDL中最重要的模块，虽然video模块的字面意义上是显示模块，但是实际上SDL主要的平台相关函数几乎都集中在了video模块中了。其中，对源码的最主要分析在于SDL是怎么使用C语言对各类接口进行抽象并实现跨平台的，并不会逐句逐句的理解，那样非常没有必要。当然，我不能理解所有SDL支持的平台，这里仅以我熟悉的3大平台为例，Win32,Unix/Linux,Macos，事实上这也是目前最为流行的平台，应该也算是最具代表性了。
 
- 
-
- 
-
-## 计时器  
+## 计时器
 (timer)
 
 计时器和时间相关的东西是几乎每个有意义的游戏都会用到的，将其接口抽象出来并实现跨平台几乎是每个跨平台库的必要工作，相对来说还比较简单，这里以此作为第一篇，也算是热热身。
@@ -130,19 +116,9 @@ extern DECLSPEC SDL_TimerID SDLCALL SDL_AddTimer(Uint32 interval, SDL_NewTimerCa
 extern DECLSPEC SDL_bool SDLCALL SDL_RemoveTimer(SDL_TimerID t);
 ```
 
- 
-
 个人感觉是没有什么值得学习的，叫100个人来设计计时器接口，基本99个与这个类似。无论是用过Unix/Linux还是用过Windows 计时器的人都可以对SDL的计时器API与相应平台的计时器接口对号入座。接口是简单，但是实现并不算简单，各个平台之间的计时器和时间函数还是有些差异。当然，作为C语言的跨平台库，首先要习惯的就是满篇满篇的宏了，这是C语言库跨平台的必要装备。
 
- 
-
- 
-
-### SDL_GetTicks  
-  
-：  
-  
-  
+### SDL_GetTicks：
 
 Win32主要由QueryPerformanceCounter或者timeGetTime实现。
 
@@ -154,9 +130,7 @@ MacOS下首先实现了一套FastTimer的函数，然后再调用这些函数实
 
 另外，此函数返回的并不是一般的从开机开始的计时，而是SDL自己计算的从SDL_StartTicks开始的计时。此函数在SDL的计时模块初始化的时候调用。
 
- 
-
-### SDL_Delay：  
+### SDL_Delay：
 
 Win32下是最清晰简单的函数，sleep而已。
 
@@ -164,12 +138,7 @@ Unix下有nano sleep的话调用nanosleep自然是最简单的，没有的话调
 
 Macos下完全自己计时进行循环。。。。。。。这个应该是效率最低的了，不明白为啥这样做。
 
- 
-
- 
-### SDL_SetTimer，  
-SDL_AddTimer，  
-SDL_RemoveTimer：  
+### SDL_SetTimer，SDL_AddTimer，SDL_RemoveTimer：
 
 我原以为每个平台都会有的函数
 
@@ -179,11 +148,7 @@ Unix下用setitimer开始，也用setitimer结束。
 
 MacOS下用InsXTime，PrimeTime开始，然后用RmvTime停止。
 
- 
-
- 
-
-## 多线程模块  
+## 多线程模块
 
 ```c
 extern DECLSPEC SDL_Thread * SDLCALL SDL_CreateThread(int (SDLCALL *fn)(void *), void *data);
@@ -199,19 +164,13 @@ extern DECLSPEC void SDLCALL SDL_WaitThread(SDL_Thread *thread, int *status);
 extern DECLSPEC void SDLCALL SDL_KillThread(SDL_Thread *thread);
 ```
 
- 
-
- 
-
 多线程模块应该是最一致的模块了，Win32下分别上述接口在的一一对应的接口。
 
 Unix,MacOS下使用pthread，接口也几乎一一对应，只是命名上有些差异，没有什么好说的。
 
 这应该是最最简单的模块了。
 
- 
-
-## 事件模块  
+## 事件模块
 
 在事件模块中，SDL统一了所有的输入，将所有的输入最大的与上层逻辑解耦。
 
@@ -281,10 +240,6 @@ typedef enum
 } SDL_EventType;
 ```
 
- 
-
- 
-
 通过这个枚举，可以看到，除了输入，还包括一些系统事件，比如SDL_VIDEORESIZE和SDL_QUIT。
 
 虽然说大部分以C语言实现的事件系统都实现不了类型安全以及订阅-发布的模式，所以都避免不了需要通过事件类型来决定事件的输入，并且进行强转的操作，然后形成一个很长的switch case，
@@ -329,8 +284,6 @@ typedef union SDL_Event
 } SDL_Event;
 ```
 
- 
-
 所以可以不进行强转，在相应的事件中，直接通过指定对应的成员变量来获取信息。虽然并不是完全类型安全，但是起码减少了强转的步骤。
 
 事件模块有的API如下：
@@ -374,8 +327,6 @@ extern DECLSPEC SDL_EventFilter SDLCALL SDL_GetEventFilter(void);
 extern DECLSPEC Uint8 SDLCALL SDL_EventState(Uint8 type, int state);
 ```
 
- 
-
 其中各个接口的含义还算比较好理解，与Win32的API中消息相关的接口类似，只是命名有差异而已。另外，事件模块本身的实现是与各个操作系统并不太相关的，属于依靠ANSI C跨平台的代码。
 
 我用的最多的是SDL_PollEvent接口，比如在主循环中：
@@ -399,8 +350,6 @@ while (running) {
 
 }
 ```
-
- 
 
 这个最常用的API是由其他API实现的：
 
@@ -494,30 +443,19 @@ while ( SDL_EventQ.active ) {
     }
 ```
 
-  
-
 可以看到主要是调用显示模块的PumpEvents来获取显示系统相关的事件，其次就是重复按键的事件检测和摇杆了。另外，可以看到前面那个全局事件列表是带互斥量的，事实上，整个SDL的事件系统的实现都是线程安全的。  
 SDL_SetEventFilter等事件过滤的函数，实现非常简单，就是根据设置的回调函数的结果来决定事件是否添加到事件列表，就不多说了。
 
 事实上，虽然各类输入最后都统一归结到SDL的事件模块中，然后提供给用户或者SDL本身进行处理，但是在SDL中将这些输入检测本身都放在了video模块中。所以这里暂时不讲它们的实现了。
 
- 
+## 小结：
 
-## 小结：  
+以一般看源码一边记录下来的方式完成本文，基本上将SDL除Video以外的一些周边模块都看了一遍，除了事件模块，这些模块的编写都没有太多值得深入了解的东西，无非就是抽象出一个大概的API，然后在不同的平台上实现，相当于SDL将很多平台相关的dirty的工作都做了，剩下clean的跨平台接口供用户使用。事件模块本身就不是平台相关的，SDL的实现相对来说使用还是比较方便的。利用联合来减少强转虽然不是第一次见，但是还是比更常见的void*表示event data+强转更加方便。看得出SDL的用心设计。
 
-     以一般看源码一边记录下来的方式完成本文，基本上将SDL除Video以外的一些周边模块都看了一遍，除了事件模块，这些模块的编写都没有太多值得深入了解的东西，无非就是抽象出一个大概的API，然后在不同的平台上实现，相当于SDL将很多平台相关的dirty的工作都做了，剩下clean的跨平台接口供用户使用。事件模块本身就不是平台相关的，SDL的实现相对来说使用还是比较方便的。利用联合来减少强转虽然不是第一次见，但是还是比更常见的void*表示event data+强转更加方便。看得出SDL的用心设计。
+因为这些周边模块主要抽象一些接口，然后实现，没有太多亮点，所以看的时候有的时候都不知道该写什么，所以按照自己看源码的流程记录了一些琐碎的东西，全文比较混乱。
 
-    因为这些周边模块主要抽象一些接口，然后实现，没有太多亮点，所以看的时候有的时候都不知道该写什么，所以按照自己看源码的流程记录了一些琐碎的东西，全文比较混乱。
-
-    准备下篇文章中讲述SDL最关键的video模块，相对来说，就比这些周边模块有意思的多。
-
- 
-
- 
-
- 
+准备下篇文章中讲述SDL最关键的video模块，相对来说，就比这些周边模块有意思的多。
 
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

@@ -24,24 +24,22 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+演示在Cocos2D for iPhone中，使用TouchJson库解析JSON配置，从而动态控制游戏对象属性的方法。
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+<!-- more -->
+
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
+
+[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
 ## 前言
 
-配置的好处，JSon介绍,及为什么要使用Json都参看原来[JsonCpp篇](<http://www.jtianling.com/archive/2010/07/22/5754179.aspx> "JsonCpp篇")  
-的内容。本文仅针对TouchJson稍微进行一些讲解。
+配置的好处，JSon介绍,及为什么要使用Json都参看原来[JsonCpp篇](<http://www.jtianling.com/archive/2010/07/22/5754179.aspx> "JsonCpp篇")的内容。本文仅针对TouchJson稍微进行一些讲解。
 
- 
+## [Cocos2D For IPhone](<http://www.cocos2d-iphone.org/> "Cocos2D For IPhone") + [TouchJson](<http://code.google.com/p/touchcode/> "TouchJson")
 
-## [Cocos2D For IPhone](<http://www.cocos2d-iphone.org/> "Cocos2D For IPhone")  
-\+ [TouchJson](<http://code.google.com/p/touchcode/> "TouchJson")  
-
-    Cocos2D For IPhone是我见过的开源2D引擎中特性最完备的一个，即使速度上不算最快的。因为其只支持IPhone平台，所以能够在这个平台上做的很出众，现在新版的Cocos2D For IPhone已经支持iOS4和IPhone4，其工程模板的安装使用也是非常方便。新版甚至将原来的LGPL协议改为现在的MIT协议了，使用更加灵活自由。。。。  
-    TouchJson的使用属于不想在一个比较完全的Objective C环境中添加C++代码，(事实上使用Box2D的话还是避免不了）所以不使用JsonCpp来配合Cocos2D，何况Cocos2D的模板工程中本来就带有TouchJson了，将其删掉再插进JsonCpp也太不人道了。。。。呵呵。另外，因为TouchJson用Objective C完成，解析后也是个NSDictionary的对象所以与Objecitve C的对象组合使用会更加自然一些，使用苹果并为苹果开发，我是几乎已经习惯一整套都是用apple平台专有的东西了，唉。。。。对比当年简单的因为C#完全掌握在MS手中而不想学习，这也算是一种悲哀，因为Objective C比C#更加封闭，而且，起码C#还是这个世界上语法最漂亮，最先进语言的代表。
+Cocos2D For IPhone是我见过的开源2D引擎中特性最完备的一个，即使速度上不算最快的。因为其只支持IPhone平台，所以能够在这个平台上做的很出众，现在新版的Cocos2D For IPhone已经支持iOS4和IPhone4，其工程模板的安装使用也是非常方便。新版甚至将原来的LGPL协议改为现在的MIT协议了，使用更加灵活自由。。。。  
+TouchJson的使用属于不想在一个比较完全的Objective C环境中添加C++代码，(事实上使用Box2D的话还是避免不了）所以不使用JsonCpp来配合Cocos2D，何况Cocos2D的模板工程中本来就带有TouchJson了，将其删掉再插进JsonCpp也太不人道了。。。。呵呵。另外，因为TouchJson用Objective C完成，解析后也是个NSDictionary的对象所以与Objecitve C的对象组合使用会更加自然一些，使用苹果并为苹果开发，我是几乎已经习惯一整套都是用apple平台专有的东西了，唉。。。。对比当年简单的因为C#完全掌握在MS手中而不想学习，这也算是一种悲哀，因为Objective C比C#更加封闭，而且，起码C#还是这个世界上语法最漂亮，最先进语言的代表。
 
 首先，利用Cocos2D的模板，创建一个新的工程，此时默认的效果是显示一个Hello World。如下：
 
@@ -92,24 +90,23 @@ if (error) {
 
 下面来看使用：  
 首先，text改变HelloWorld显示的文字：  
-    NSString *text = [jsonDict valueForKey:@"text"];  
-        // create and initialize a Label  
-        CCLabel* label = [CCLabel labelWithString:text fontName:@"Marker Felt" fontSize:64];  
+NSString *text = [jsonDict valueForKey:@"text"];  
+// create and initialize a Label  
+CCLabel* label = [CCLabel labelWithString:text fontName:@"Marker Felt" fontSize:64];  
 这里就已经是cocoa中NSDictionary  
 怎么使用的问题了。
 
 然后，rotation改变旋转：  
-    NSNumber *rotation = [jsonDict valueForKey:@"rotation"];  
-    NSAssert(rotation, @"Didn't have a key named rotation");  
-    label.rotation = [rotation floatValue];
+NSNumber *rotation = [jsonDict valueForKey:@"rotation"];  
+NSAssert(rotation, @"Didn't have a key named rotation");  
+label.rotation = [rotation floatValue];
 
 一切就绪，看效果：
 
 ![](http://docs.google.com/File?id=dhn3dw87_171fjxsccd5_b)
 
 上面的流程已经基本完整了，作为补充，还是添加一个Json数组使用的例子。  
-在TouchJson中，作者不推荐将根对象设定为数组([参见这里](<http://stackoverflow.com/questions/288412/deserializing-a-complex-json-result-array-of-dictionaries-with-touchjson> "参见这里")  
-，TouchJson的作者自己说的），事实上也就不那么做就好了。我们随便用一个key来指定这个数组即可。  
+在TouchJson中，作者不推荐将根对象设定为数组([参见这里](<http://stackoverflow.com/questions/288412/deserializing-a-complex-json-result-array-of-dictionaries-with-touchjson> "参见这里")，TouchJson的作者自己说的），事实上也就不那么做就好了。我们随便用一个key来指定这个数组即可。  
 所以，定义Json文件如下：
 
 ```json
@@ -164,17 +161,6 @@ for (NSDictionary *dict in dictArray) {
 小结：  
 在使用了JsonCpp和TouchJson后，可以发现由于Json的数据结构主要就是一个Key:Value的映射加数组，所以无论在C++中还是在Objective C中，总是能用语言的原生结构很好的表示，（在C++中是map，在Objective C中是NSDictionary和NSArray）所以使用会非常方便，对比XML的强大并且复杂，简单的Json在保持概念非常简单的情况下完成了配置任务。
 
- 
-
- 
-
- 
-
- 
-
- 
-
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

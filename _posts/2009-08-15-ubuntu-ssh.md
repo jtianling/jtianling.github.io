@@ -22,6 +22,10 @@ author:
   last_name: ''
 ---
 
+本文是一份Ubuntu服务器SSH安装配置指南，详细介绍了从网络设置、安装openssh-server，到配置证书认证以实现安全便捷远程登录的全过程。
+
+<!-- more -->
+
 昨天的文章里，我记录了[搭建一个小型 Ubuntu 服务器的过程](<http://blog.istef.info/2008/10/02/build-a-linux-light-server/>)，相信如果各位按照我写的做了，您的 Ubuntu Server 已经可以跑起来了。不过，现在这个系统只是个基本的系统，算不上服务器，因为什么都没法做。如果需要让它行使服务器的职能，还需要给它装一些软件。
 
 因为我需要的服务器最终会被“抛弃”在实验室的某个角落，无论是后期设置还是维护的需要，都必须安装一个远程管理的工具。在 Linux 系统中，不二的选择就是 openssh 了。在 Ubuntu 中安装 openssh 实在是再简单不过的一件事情了，下面的内容也只是纯记录，给我这个菜鸟备个份。如果是高手直接绕过就好。
@@ -127,6 +131,6 @@ ssh-keygen 命令会生成两个密钥，首先我们需要将公钥改名留在
 
 好了，今天就写到这，以后逐步再写 AMP，Proftpd 和 Squid 的安装和设置。
 
-**原文链接** **：[花儿开了](<http://blog.istef.info/>) \- [Ubuntu 服务器上 SSH Server 的安装和设置](<http://blog.istef.info/2008/10/02/setup-ssh-server-on-ubuntu-server/> "Permanent Link to Ubuntu 服务器上 SSH Server 的安装和设置")
+**原文链接**：[花儿开了](<http://blog.istef.info/>) - [Ubuntu 服务器上 SSH Server 的安装和设置](<http://blog.istef.info/2008/10/02/setup-ssh-server-on-ubuntu-server/> "Permanent Link to Ubuntu 服务器上 SSH Server 的安装和设置")
 
-** 本博客文章欢迎转载，但请务必保留原文链接！同时，本博文章不欢迎任何形式的派生及篡改，如需引用，请使用引用通告(Trackback) - [http://blog.istef.info/2008/10/02/setup-ssh-se.../trackback/](<http://blog.istef.info/2008/10/02/setup-ssh-server-on-ubuntu-server/trackback/>)。商业网站使用请务必先取得作者授权！
+** 本博客文章欢迎转载，但请务必保留原文链接！同时，本博文章不欢迎任何形式的派生及篡改，如需引用，请使用引用通告 - [http://blog.istef.info/2008/10/02/setup-ssh-se.../trackback/](<http://blog.istef.info/2008/10/02/setup-ssh-server-on-ubuntu-server/trackback/>)。商业网站使用请务必先取得作者授权！

@@ -22,11 +22,15 @@ author:
   last_name: ''
 ---
 
+本文讲解了在Qt和PyQt中实现全局快捷键的方法。因Qt本身不支持，需分别调用Windows API，并重写事件过滤器来捕获和响应热键消息。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-估计这种小的知识会有几篇文章，除了全局快捷键部分外，其他的都比较简单，都是我实现 _[“ onekeycodehighlighter"](<http://code.google.com/p/onekeycodehighlighter/>)_中碰到的一些小问题，这里顺便整理一下。事实上，稍微懂一点的人，去看看one key code highlighter的源代码都能明白了。这里相当于将其详细的剖析一下。。。。。。。另外，实现上用Python+PyQt，事实上，主要的部分是对Qt的一些类的使用，所以其实看懂了C++的Qt中使用上是一样的。啥？你看不懂Python？好的，这就是我为什么靠C++吃饭，却学习JAVA,JavaScript,Lua,Python,Bash的一个原因，不然你看不懂别人在写啥-_-!（当然，我基本上也就学到能看懂）  
+估计这种小的知识会有几篇文章，除了全局快捷键部分外，其他的都比较简单，都是我实现 _[“ onekeycodehighlighter"](<http://code.google.com/p/onekeycodehighlighter/>)_中碰到的一些小问题，这里顺便整理一下。事实上，稍微懂一点的人，去看看one key code highlighter的源代码都能明白了。这里相当于将其详细的剖析一下。。。。。。。另外，实现上用Python+PyQt，事实上，主要的部分是对Qt的一些类的使用，所以其实看懂了C++的Qt中使用上是一样的。啥？你看不懂Python？好的，这就是我为什么靠C++吃饭，却学习JAVA,JavaScript,Lua,Python,Bash的一个原因，不然你看不懂别人在写啥-_-!（当然，我基本上也就学到能看懂）
 对于pyQt完全不懂的，这里也不用看了，《[pyqt的学习(1) 入门](<http://www.jtianling.com/archive/2009/06/17/4272009.aspx>)》，《[pyqt(2) 对话框...](<http://www.jtianling.com/archive/2009/06/20/4281633.aspx>)》可以看看，但是写的有点乱，因为那时候我懂得也少（不代表现在就懂的多了）
 
 ## 概述
@@ -35,16 +39,17 @@ author:
 
 ## Qt中的实现
 
-主要的API为：（来自MSDN)  
-  
-  
-BOOL RegisterHotKey( HWND hWnd,  
-int id,  
-UINT fsModifiers,  
-UINT vk  
-);  
-  
-在Qt中实现并不算什么大问题，《[Qt中使用全局热键](<http://yanboo.ycool.com/post.3224143.html#>)》中有一些说明，此文说明了一件事情，技术文章的价值不以篇幅来衡量，而是以技术含量衡量，此文没有太多的文字，但是详细解释了所有过程。  
+主要的API为：（来自MSDN)
+
+```cpp
+BOOL RegisterHotKey( HWND hWnd,
+int id,
+UINT fsModifiers,
+UINT vk
+);
+```
+
+在Qt中实现并不算什么大问题，《[Qt中使用全局热键](<http://yanboo.ycool.com/post.3224143.html#>)》中有一些说明，此文说明了一件事情，技术文章的价值不以篇幅来衡量，而是以技术含量衡量，此文没有太多的文字，但是详细解释了所有过程。
 主要步骤为用RegisterHotKey向系统注册全局的快捷键，然后重载QApplication的winEventFilter函数，并响应msg为WM_HOTKEY时的消息，整个过程类似于在Windows下的OnMessage进行消息响应，只是这次是在Qt中。原文给出的示例代码如下：（原文排版有点乱，但是不损其技术价值）
 
 ```cpp
@@ -64,8 +69,8 @@ emit hotKey(int(msg->wParam),LOWORD(msg->lParam),HIWORD(msg->lParam));
 
 ## PyQt中的实现
 
-相对于Qt中的实现来说，对于Qt中没有的东西，很显然PyQt中也很难有了，那么，我们还是只能通过调用Win32 API了，而在Python中调用Win32 API就没有那么太简单了。。。。。。。  
-介绍的是用ctypes来调用，当然，因为感觉此部分会与本主题太偏，所以额外写了一篇文章讲述。《[Python与C之间的相互调用（Python C API及Python ctypes库）](<http://www.jtianling.com/archive/2010/01/24/5251306.aspx>)》，看了前文就会知道，其实用Python C API包装以下RegisterHotKey也可以实现一样的效果，知识用ctypes更简单一些。  
+相对于Qt中的实现来说，对于Qt中没有的东西，很显然PyQt中也很难有了，那么，我们还是只能通过调用Win32 API了，而在Python中调用Win32 API就没有那么太简单了。。。。。。。
+介绍的是用ctypes来调用，当然，因为感觉此部分会与本主题太偏，所以额外写了一篇文章讲述。《[Python与C之间的相互调用（Python C API及Python ctypes库）](<http://www.jtianling.com/archive/2010/01/24/5251306.aspx>)》，看了前文就会知道，其实用Python C API包装以下RegisterHotKey也可以实现一样的效果，知识用ctypes更简单一些。
 这里就直接讲RegisterHotKey的调用了。以下是一些代码片段。。。。。
 
 ```python
@@ -84,7 +89,7 @@ QtGui.QMessageBox.critical(None, 'Hot key', 'Can't Register Hotkey Win + Z')
 sys.exit(1)
 ```
 
-这里用了比直接调用RegisterHotKey更复杂的方法来使用ctypes，（在《[Python与C之间的相互调用（Python C API及Python ctypes库）](<http://www.jtianling.com/archive/2010/01/24/5251306.aspx>)》中描述了最简单的办法），好处是实现了“命名参数”及参数默认值，这里虽然实际没有使用-_-!另外，利用config中的配置的大写字母的ord，来表示Windows中的虚拟键值真是很方便，为什么这样能省去那一大堆的VK_*定义？因为WinUser.h中就是这样定义这些VK_*的。。。。。。。  
+这里用了比直接调用RegisterHotKey更复杂的方法来使用ctypes，（在《[Python与C之间的相互调用（Python C API及Python ctypes库）](<http://www.jtianling.com/archive/2010/01/24/5251306.aspx>)》中描述了最简单的办法），好处是实现了“命名参数”及参数默认值，这里虽然实际没有使用-_-!另外，利用config中的配置的大写字母的ord，来表示Windows中的虚拟键值真是很方便，为什么这样能省去那一大堆的VK_*定义？因为WinUser.h中就是这样定义这些VK_*的。。。。。。。
 还有，mainWindow实际是一个QMainWindow的对象，其winId函数可以获取到Windows窗口的句柄，这里将其转化为c_int而不是HWND，因为在Python中不允许从int到HWND的转换（这有点扭曲），知道原因的请告诉我。完成了这些后，QApplication的winEventFilter函数的重载还是少不了的。
 
 以下是我的一段实现代码：
@@ -109,10 +114,10 @@ sys.exit(1)
     **return** False, 0
 ```
 
-基本思路与C++中并无差异，查找到WM_HOTKEY，然后响应之。我这里利用了reload来达到每次都动态查询配置的效果^^chc2c就是我的主要函数。  
+基本思路与C++中并无差异，查找到WM_HOTKEY，然后响应之。我这里利用了reload来达到每次都动态查询配置的效果^^chc2c就是我的主要函数。
 以上就是PyQt中实现全局快捷键的全部过程了。
 
-另外，我本来以为假如愿意使用[PyWin32](<http://sourceforge.net/projects/pywin32/> "PyWin32")的话，直接可以调用其中的RegisterHotKey，后来竟然在里面没有找到，奇了怪了。
+另外，我本来以为假如愿意使用[PyWin32](<http://sourceforge.net/projects/pywin32/ "PyWin32">)的话，直接可以调用其中的RegisterHotKey，后来竟然在里面没有找到，奇了怪了。
 
 ## 参考文章
 

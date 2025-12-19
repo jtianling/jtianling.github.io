@@ -23,6 +23,10 @@ author:
   last_name: ''
 ---
 
+作者制定了一个疯狂计划，用多种语言实现《数据结构与算法分析》书中的所有例子和习题，以系统学习数据结构。
+
+<!-- more -->
+
 write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 学习以《数据结构与算法分析—C++描述》第三版为基础。
@@ -45,6 +49,4 @@ write by 九天雁翎(JTianLing) -- www.jtianling.com
 
 不过当时的计划现在却还一直坚持着（虽然只目前只把书看到了45面，才只实现了5个很简单的算法），呵呵，也算个收获。希望能够一直坚持到将这本书看完。
 
-write  
-by 九天雁翎(JTianLing)  
-\-- www.jtianling.com
+write by 九天雁翎(JTianLing) \-- www.jtianling.com

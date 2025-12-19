@@ -23,25 +23,27 @@ author:
   last_name: ''
 ---
 
+通过对比传统Socket API，本文讲解Boost.Asio的TCP应用开发。Asio代码更简洁且跨平台，但学习曲线陡峭，作者期待其成为C++标准。
+
+<!-- more -->
+
 # ASIO—下一代C++标准可能接纳的网络库（2）TCP网络应用
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-# 一、   综述
+# 一、 综述
 
 本文仅仅是附着在boost::asio文档的一个简单说明和讲解，没有boost::asio文档可能你甚至都不知道我在讲什么，boost::asio的文档自然是需要从[www.boost.org](<http://www.boost.org/>)上去下。
 
 基本上，网络编程领域的”Hello World”程序就是类似Echo，daytime等服务器应用了。大牛Stevens经典的《Unix Network Programming》一书更是在这两个服务器上折腾了半本书，Comer的《Internetworking With TCP/IP vol III》也不例外。boost::asio的文档也就更不例外了，全部的网络方面的例子都是以daytime服务为蓝本来讲解的。呵呵，大家这样做是有道理的，毕竟从讲解网络编程的原理来看，echo,daytime等足够的简单：）
 
- 
-
-# 二、    Tutorial
+# 二、 Tutorial
 
 首先，因为客户端程序相对服务器程序更为简单，所以一般都从客户端开始，boost::asio也是如此，第一节，给出了一个TCP 的Daytime的实现所谓示例，这里，我不拷贝其源码了，只是列出一个用windows 下用套接字接口实现的同样程序作为对比。
 
-## 1.      A synchronous TCP daytime client（一个同步的TCP daytime客户端程序）
+## 1. A synchronous TCP daytime client（一个同步的TCP daytime客户端程序）
 
 原始的套接字实现：
 
@@ -110,8 +112,6 @@ int main(int argc, char **argv)
 
 共六十一行，并且需要处理socket创建，初始化等繁琐细节，做任何决定时基本上是通过typecode，其实相对来说也不算太难，因为除了socket的API接口属于需要额外学习的东西，没有太多除了C语言以外的东西需要学习，并且因为BSD socket是如此的出名，以至于几乎等同与事实的标准，所以这样的程序能被大部分学习过一定网络编程知识的人了解。
 
- 
-
 为了方便对比，我还是贴一下boost::asio示例中的代码：
 
 ```cpp
@@ -167,9 +167,7 @@ boost::asio的文档中的实现也有47行，用了多个try,catch来处理异�
 
 当然，此例子过于简单，而asio是为了较大规模程序的实现而设计的，假如这么小规模的程序用原始的套接字就足够了。这点是需要说明的。
 
- 
-
-## 2.      Daytime.2 - A synchronous TCP daytime server（同步的TCP daytime服务器）
+## 2. Daytime.2 - A synchronous TCP daytime server（同步的TCP daytime服务器）
 
 有了客户端没有服务器，那客户端有什么用呢？^^所以，接下来boost::asio适时的给出了一个daytime的服务器实现，这里还是先给出使用一个原始套接字的例子：
 
@@ -297,20 +295,14 @@ int main()
 
 另外，这里值得说明一下，虽然BSD socket套接字属于事实上的标准，但是其实同一套程序不经过一定的更改要放在Linux,Windows上同时运行是不可能的，因为其中总有些细微的差别，总记得刚开始工作的时候，拿着《Unix Network Programming》在Windows下去学习，结果一个小程序都用不了。。。结果是完全不知道Windows下特有的WSAStartup初始化-_-!但是boost::asio就彻底的消除了这样的差别。这也应该算是boost::asio的一个优势吧。
 
- 
-
-## 3.      An asynchronous TCP daytime server（异步TCP daytime服务器）
+## 3. An asynchronous TCP daytime server（异步TCP daytime服务器）
 
 与原有asio的简单应用一样，从第三个例子开始就已经是有点意思了的程序了，程序的复杂性上来了，异步相对同步来说效率更高是不争的事实，并且其不会阻塞的特性使得应用范围更广，并且异步也是大部分高性能服务器实际上使用的方式，比如Windows下的完成端口，Linux下的Epoll等，asio的底层就是用这些方式实现的，只不过将其封装起来，使得使用更加简单了。这里提供异步的例子就不是那么简单了-_-!呵呵，偷懒的我暂时就不提供了。其实用select也是可以模拟出异步的特性的，asio在操作系统没有很好的支持异步特性的API时，就是利用select模拟出异步的。但是作为select的例子，可以参考我以前学习时写的《**[服务器 Select模型的实现](<http://www.jtianling.com/archive/2009/03/02/3948204.aspx>)**》**。******
 
 例子中用tcp_server类处理accept事件，用tcp_connection类来处理连接后的写入事件，并且用shared_ptr来保存tcp_connection类的对象。
 
- 
-
 总结：
 
 boost::asio的确在某种程度上简化了网络客户端/服务器程序的编写，并且易于编写出效率较高的网络应用，（效率能高到什么程度没有实测）但是，作为与C程序员一脉相承的C++程序员，在完全不了解诸如asio:: async_write，asio:: async_accept等函数的实现时有多大的胆量去放心使用，这是个问题。说要去真的理解其实现吧。。。那么就将陷入真正的boost精密C++技巧使用的泥潭，因为boost::asio与其他boost库结合的是如此的紧密，特别是boost::bind,而boost::bind现在的实现实在不是那么优美，并且在下一版的C++标准中variadic templates的加入，是会使其实现简化很多的，这样说来，用boost::asio还是不用。。。是个问题。也许真正能让人下定决心在项目中使用boost::asio的时候，就是在下一代C++标准中其变成了std::asio的时候吧^^
-
- 
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

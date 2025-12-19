@@ -25,10 +25,13 @@ author:
   last_name: ''
 ---
 
+编程初学者应从有趣的图形化编程入手，推荐使用Python的turtle库，在轻松绘制图形的过程中掌握编程核心逻辑与思维。
+
+<!-- more -->
+
 # 初学编程该怎么学？——对初学者程序设计语言学习的思考(2)
 
 [write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)
-
 [讨论新闻组及文件](<http://groups.google.com/group/jiutianfile/>)
 
 作为学习编程几年的并且现在还靠着号称世界上特别复杂的一种语言C++活着的人来说，我也能在这些简单的图形中绘制中找到编程的乐趣，这就是turtle的乐趣了，我想初学者能找到的乐趣会比我更加多吧。
@@ -39,40 +42,19 @@ author:
 
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_071809_2025_1_633835746254067500.png)
 
- 
-
 基本程序执行流程
 
- 
-
-  1. 顺序执行：
-
+1. 顺序执行：
 Python的表现形式，一条接一条的语句
-
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_071809_2025_2_633835746257036250.png)
-  2. 分支：
-
+2. 分支：
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_071809_2025_3_633835746259536250.png)
-
 Python表现方式：If-else
-
- 
-
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_071809_2025_4_633835746262505000.png)
-
- 
-
 python表现语法形式：if-elif-
-
- 
-
 3.循环：
-
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_071809_2025_5_633835746265005000.png)
-
 python语法表现形式：for-in
-
- 
 
 各类语言在这个层面上除了语法的略微不同外，基本上是一致的，这些确实培养计算机思维逻辑的基础，也可以算是编程的初步知识，起码Small Basic用于熟练这些知识还有有用的，虽然它的设计原本是面对小孩子的。不要因为Small Basic是面向小孩子设计的就觉得它功能弱到学习功能都不够，事实上，因为SB对图形的重视，使得对图形控制如此容易，反而可以轻松的做一些很有意思的事情。
 
@@ -105,15 +87,9 @@ EndWhile
 
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_071809_2025_7_633835746447973750.png)
 
- 
-
-大家可以到(http://social.msdn.microsoft.com/Forums/en-US/smallbasic/threads) 
-
-中过去看看，其中有很多很有意思的例子。
+大家可以到(http://social.msdn.microsoft.com/Forums/en-US/smallbasic/threads) 中过去看看，其中有很多很有意思的例子。
 
 其实我说了这么多，并不是鼓励大家都去学习Small Basic，仅仅是为初学者指出一条路，我觉得编程本质的复杂度来源于数学，思维和逻辑，不在于程序语言，即便是如SB这样的kids语言，在合理的思维逻辑下，一样有强大的效果，程序语言的本质并没有改变。
-
- 
 
 "Small Basic is a project that's aimed at bringing "fun" back to programming."MS如是说，的确是，什么时候我们失去了编程的乐趣了？为什么我们用的都是这样庞大的难以理解的语言？因为商业的需求，一个一个现代化的软件都是如此的庞大，犹如新特性的集合体，大量库的堆积。。。。让我们失去了太多本来该有的乐趣。
 
@@ -147,8 +123,6 @@ screen.exitonclick()
 ```
 
 ![](http://p.blog.csdn.net/images/p_blog_csdn_net/vagrxie/555576/o_071809_2025_8_633835746461411250.png)
-
- 
 
 可以看看Python的turtle库中的example代码，其操作复杂到让你会误以为这是Flash完成的效果，其实，这都是乌龟的爬行而已。呵呵，要想以一个乌龟完成很多事情，除了需要足够好的数学基础外，还需要一点想象力。。。。。。。当然，还有美感。Gregor Lingl明显都不缺这些，所以他完成了一个很有意思的turtle库及很有意思的示例。
 

@@ -22,25 +22,23 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+本文记录了为OGRE编译CEGUI时遇到的配置难题与运行时崩溃问题，并提供了修正配置文件和使用正确依赖库的解决方案。
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+<!-- more -->
 
-   
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-    现在在国内做游戏，似乎怎么都绕不开OGRE和CEGUI的学习，因为他们实在是太流行了。。。。。OGRE在Google中搜索game engine长期排在第一，而CEGUI又几乎是OGRE的官方UI。。。毕竟不是盖的。我第一份工作的时候就做过一些CEGUI相关的工作，（但是那时候引擎不是OGRE）但是一直没有太深入的学习，然后在游戏开发的路上绕了很大一圈，接触了OpenGL(ES),以及各色2D，3D引擎，最后似乎还是回到了OGRE和CEGUI，所以还是有些感慨。。。。。。
+[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-    当自己需要从头开始做某些基础工作的时候，与拿着成熟的框架和工程感觉还是有些不一样的。比如CEGUI和OGRE的配置。。。。。。。
+现在在国内做游戏，似乎怎么都绕不开OGRE和CEGUI的学习，因为他们实在是太流行了。。。。。OGRE在Google中搜索game engine长期排在第一，而CEGUI又几乎是OGRE的官方UI。。。毕竟不是盖的。我第一份工作的时候就做过一些CEGUI相关的工作，（但是那时候引擎不是OGRE）但是一直没有太深入的学习，然后在游戏开发的路上绕了很大一圈，接触了OpenGL(ES),以及各色2D，3D引擎，最后似乎还是回到了OGRE和CEGUI，所以还是有些感慨。。。。。。
 
-    主要参考资料来自于《[Building CEGUI for Ogre / OgreRenderer](<http://www.cegui.org.uk/wiki/index.php/Building_CEGUI_for_Ogre_/_OgreRenderer> "Building CEGUI for Ogre / OgreRenderer")  
-》。
+当自己需要从头开始做某些基础工作的时候，与拿着成熟的框架和工程感觉还是有些不一样的。比如CEGUI和OGRE的配置。。。。。。。
 
-    现在(2010.9.13)CEGUI的最新版是0.72，到这里[下载](<http://www.cegui.org.uk/wiki/index.php/Downloads> "下载")  
-。（源码版本）
+主要参考资料来自于《[Building CEGUI for Ogre / OgreRenderer](<http://www.cegui.org.uk/wiki/index.php/Building_CEGUI_for_Ogre_/_OgreRenderer "Building CEGUI for Ogre / OgreRenderer">)》。
 
-    然后，将CEGUI解压到某个地方。我这里选择的是OGRE的目录下。
+现在(2010.9.13)CEGUI的最新版是0.72，到这里[下载](<http://www.cegui.org.uk/wiki/index.php/Downloads "下载">)。（源码版本）
+
+然后，将CEGUI解压到某个地方。我这里选择的是OGRE的目录下。
 
 此时，CEGUI-0.7.2/projects/premake中可以看到批处理build_vs2008.bat，运行一下就可以得到想要的VS2008工程，第一次我尝试的时候编译此工程，然后拷贝相关的lib,dll到OGRE的相关目录，会发现还是少一个文件,debug版本是CEGUIOgreRenderer_d.lib，然后我发现还需要配置。这里感觉就没有那么直观了。。。。。。。。。不属于work out of box，这也是本文写作的唯一有效目的。。。。。
 
@@ -86,17 +84,10 @@ LINK : fatal error LNK1104: cannot open file 'OgreMain_d.lib'
 
 此时将编译出来的lib,dll都拷贝到OGRE的相关目录，（因为我不准备修改CEGUI，所以简单的就拷贝了，需要修改CEGUI的，可以直接修改CEGUI工程配置，设置为编译后拷贝到相应目录）就可以直接在OGRE中使用CEGUI了，只需要再配置工程的CEGUI include目录就好。
 
-然后，当遇到过这么多坑以后，满以为总该顺利了。。。。。。事实上，还有一个大坑在前面等着你，在最新的CEGUI版本中，你会遇到“应用程序正常初始化（0xc0150002)失败”错误，而且不会给你任何头绪。。。。。其实我费了这么多劲，非要从源码编译CEGUI和OGRE，而不是使用各自的SDK，就是因为使用SDK的时候碰到这个问题了，从经验判断应该是库的编译版本不匹配的问题，结果我自己将所有的源码都编译了一次了，还是有问题。。。。。。。。。无奈之余，在网上搜索了一下，碰到这个问题的人还不是少数。
+然后，当遇到过这么多坑以后，满以为总该顺利了。。。。。。事实上，还有一个大坑在前面等着你，在最新的CEGUI版本中，你会遇到"应用程序正常初始化（0xc0150002)失败"错误，而且不会给你任何头绪。。。。。其实我费了这么多劲，非要从源码编译CEGUI和OGRE，而不是使用各自的SDK，就是因为使用SDK的时候碰到这个问题了，从经验判断应该是库的编译版本不匹配的问题，结果我自己将所有的源码都编译了一次了，还是有问题。。。。。。。。。无奈之余，在网上搜索了一下，碰到这个问题的人还不是少数。
 
-这个哥们描述的[背后的故事](<http://blog.csdn.net/yacper/archive/2010/05/19/5607450.aspx> "背后的故事")  
-。。。。。还提供了hack解决方案，牛，可惜我是用VS2008的，VS2005那个补丁不适合我，运行安装不了，我也还是希望通过正常的补丁途径解决。而这个哥们提供了完善的[解决方案](<http://hi.baidu.com/hy469680890/blog/item/b1de7e24187d946c34a80f1f.html> "解决方案")  
-。基本上，简单的说，VS2008的解决方案就是下载[正确的依赖文件VC90](<http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-DEPS-0.7.x-r2-vc9.zip?download> "正确的依赖文件VC90")  
-那个，或者直接下CEGUI SDK [VS2008的SDK](<http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-SDK-0.7.2-vc9.zip?download> "VS2008的SDK")  
-，只是千万不要下VC80任何相关的东西。。。。（我很郁闷MS竟然不让VS2008在这种程度上支持VS2005，起码也能够让任何VS2005编译的东西在VS2008得到直接的支持啊）然后为自己的VS2008打上SP1补丁，就好了。这个问题真的折腾了我挺久，希望大家不要再继续被折腾了。。。。。。。。。。。。。
-
- 
+这个哥们描述的[背后的故事](<http://blog.csdn.net/yacper/archive/2010/05/19/5607450.aspx "背后的故事">)。。。。还提供了hack解决方案，牛，可惜我是用VS2008的，VS2005那个补丁不适合我，运行安装不了，我也还是希望通过正常的补丁途径解决。而这个哥们提供了完善的[解决方案](<http://hi.baidu.com/hy469680890/blog/item/b1de7e24187d946c34a80f1f.html "解决方案">)。基本上，简单的说，VS2008的解决方案就是下载[正确的依赖文件VC90](<http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-DEPS-0.7.x-r2-vc9.zip?download "正确的依赖文件VC90">)那个，或者直接下CEGUI SDK [VS2008的SDK](<http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-SDK-0.7.2-vc9.zip?download "VS2008的SDK">)，只是千万不要下VC80任何相关的东西。。。。（我很郁闷MS竟然不让VS2008在这种程度上支持VS2005，起码也能够让任何VS2005编译的东西在VS2008得到直接的支持啊）然后为自己的VS2008打上SP1补丁，就好了。这个问题真的折腾了我挺久，希望大家不要再继续被折腾了。。。。。。。。。。。。。
 
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

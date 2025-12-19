@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+一个C++程序示例，利用iostream读取不同进制的输入，再通过bitset将其转换为二进制并格式化输出。
+
+<!-- more -->
+
 ```cpp
 /*Copyright (c) 2007,九天雁翎
 

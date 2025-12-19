@@ -22,7 +22,11 @@ author:
   last_name: ''
 ---
 
-# C++中通过指针,引用方式做返回值的汇编代码分析  
+本文通过汇编分析，解释了C++指针解引用操作的底层原理，即通过寄存器和内存寻址实现。
+
+<!-- more -->
+
+# C++中通过指针,引用方式做返回值的汇编代码分析
 
 **write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
@@ -70,7 +74,7 @@ author:
 .text:00401052 void __cdecl max(int *, int *) endp
 ```
 
-这里唯一需要注意的就是
+这里唯一需要注意的就是这4句了，先将一个地址传入，eax/ecx，然后通过[eax]/[ecx]取值，就相当于dereference的操作，即相当于*操作符的作用。
 
 ```asm
 mov eax, [esp+arg_4]
@@ -78,7 +82,5 @@ mov ecx, [esp+arg_0]
 mov eax, [eax]
 mov edx, [ecx]
 ```
-
-这4句了，先将一个地址传入，eax/ecx，然后通过[eax]/[ecx]取值，就相当于dereference的操作，即相当于*操作符的作用。
 
 **write by 九天雁翎(JTianLing) -- www.jtianling.com**

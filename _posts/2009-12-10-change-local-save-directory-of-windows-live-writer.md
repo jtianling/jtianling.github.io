@@ -21,6 +21,10 @@ author:
   last_name: ''
 ---
 
+介绍如何通过创建符号链接，来更改Windows Live Writer的草稿保存目录，方便地将文章备份到Dropbox等其他位置以防丢失。
+
+<!-- more -->
+
 **[write by 九天雁翎(JTianLing) -- www.jtianling.com](http://www.jtianling.com)**
 
 [**讨论新闻组及文件**](http://groups.google.com/group/jiutianfile/)
@@ -33,7 +37,7 @@ Technorati 标签: [WLW](http://technorati.com/tags/WLW),[本地保存目录改�
 
 极为误导，枪毙之。有人有百度账号的话给他回复一下，别继续误导人了。
 
-我仅仅是大概翻译一下： 
+我仅仅是大概翻译一下：
 
 1.都是先将整个目录拷贝到你想要放在的位置。
 

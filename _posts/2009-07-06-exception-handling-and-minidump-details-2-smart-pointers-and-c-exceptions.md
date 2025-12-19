@@ -24,13 +24,17 @@ author:
   last_name: ''
 ---
 
-# 异常处理与MiniDump详解(2)  智能指针与C++异常
+智能指针是C++异常处理的绝佳搭档。它通过RAII机制在异常抛出时自动释放资源，有效避免内存泄漏，让异常代码更简洁安全。
+
+<!-- more -->
+
+# 异常处理与MiniDump详解(2) 智能指针与C++异常
 
 [**write by****九天雁翎(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)****
 
 [**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-# 一、   综述
+# 一、 综述
 
 《[异常处理与MiniDump详解(1) C++异常](<http://www.jtianling.com/archive/2009/07/02/4317423.aspx>)》稍微回顾了下C++异常的语法及其类似于函数参数传递的抛出异常对象的copy,引用语义，但是有个问题没有详细讲，那就是C++异常的绝佳搭档，智能指针。在没有智能指针的时候会感觉C++的异常少了一个用于释放资源的finally语法，但是C++没有这样的语法是有理由的，因为C++的智能指针。假如不用智能指针仅仅使用异常，那就像是吃一道没有放肉的辣椒炒肉一样。。。。。。。。。。。
 
@@ -40,11 +44,9 @@ author:
 
 但是我们可以求助于boost的智能指针库，那里丰富的资源改变了很多事情，但是我工作中是不允许使用boost库的。。。。又一次的无奈。
 
- 
+# 二、 智能指针
 
-# 二、   智能指针
-
-## 1.      什么是智能指针
+## 1. 什么是智能指针
 
 要知道什么是智能指针，首先了解什么称为 “资源分配即初始化”这个翻译的异常扭曲的名词。RAII—Resource Acquisition Is Initialization，外国人也真有意思，用一个完整的句子来表示一个应该用名词表示的概念，我们有更有意思了，直接翻译过来，相当扭曲。。。。。
 
@@ -54,17 +56,14 @@ author:
 
 《Effective C++》给出的关键特点是：
 
-1.     资源分配后立即由资源管理对象接管。
-
-2.     资源管理对象用析构函数来确保资源被释放。
+1. 资源分配后立即由资源管理对象接管。
+2. 资源管理对象用析构函数来确保资源被释放。
 
 基本上，这就是智能指针的核心概念了，至于智能指针实现上的特点，比如所有权转移，所有权独占，引用计数等，都是次要的东西了。
 
- 
-
 目前我见过关于各种智能指针分类，介绍，使用方法说明最详细的应该是《Beyond the C++ Standard Library: An Introduction to Boost》一书，此书第一章第一个专题库就是关于智能指针的，除了对标准库中已有的auto_ptr没有介绍（因为本书是讲Boost的嘛），对Boost库中的智能指针进行了较为详细的描述，推荐想了解的都去看看。
 
-       文中论及的智能指针包括
+文中论及的智能指针包括
 
 scoped_ptr，scoped_array:所有权限制实现
 
@@ -78,9 +77,7 @@ weak_ptr：无所有权实现
 
 这里仅仅介绍最广泛使用的智能指针shared_ptr，加上以前写过的auto_ptr(《[C++可怜的内存管理机制漫谈及奇怪补救auto_ptr介绍](<http://www.jtianling.com/archive/2007/10/12/1821091.aspx>)》)给出智能指针的一些用法示例，其他的智能指针因为实现上的区别导致使用上也有一些区别，但是核心概念是一样的，都是上面提及的两条关键特点。
 
- 
-
-## 2.      shared_ptr介绍
+## 2. shared_ptr介绍
 
 shared_ptr是通过引用计数计数实现的智能指针，应用也最为广泛，也是早在TR1就已经确认会进入下一版C++标准的东西，现在我还会因为标准库中没有，boost库不准用而遗憾，过几年，总有一天，我们就能自由使用类似shared_ptr的指针了。
 
@@ -89,36 +86,36 @@ shared_ptr是通过引用计数计数实现的智能指针，应用也最为广�
 ```cpp
 namespace boost {
 
-    template<typename T> class shared_ptr {
-    public:
-       template <class Y> explicit shared_ptr(Y* p);
-       template <class Y,class D> shared_ptr(Y* p,D d);
+    template<typename T> class shared_ptr {
+    public:
+       template <class Y> explicit shared_ptr(Y* p);
+       template <class Y,class D> shared_ptr(Y* p,D d);
 
-       ~shared_ptr();
+       ~shared_ptr();
 
-       shared_ptr(const shared_ptr & r);
-       template <class Y> explicit
-           shared_ptr(const weak_ptr<Y>& r);
-       template <class Y> explicit shared_ptr(std::auto_ptr<Y>& r);
+       shared_ptr(const shared_ptr & r);
+       template <class Y> explicit
+           shared_ptr(const weak_ptr<Y>& r);
+       template <class Y> explicit shared_ptr(std::auto_ptr<Y>& r);
 
-       shared_ptr& operator=(const shared_ptr& r);
+       shared_ptr& operator=(const shared_ptr& r);
 
-       void reset(); 
+       void reset(); 
 
-       T& operator*() const;
-       T* operator->() const;
-       T* get() const;
+       T& operator*() const;
+       T* operator->() const;
+       T* get() const;
 
-       bool unique() const;
-       long use_count() const;
+       bool unique() const;
+       long use_count() const;
 
-       operator unspecified_bool_type() const; 
+       operator unspecified_bool_type() const; 
 
-       void swap(shared_ptr<T>& b);
-    };
+       void swap(shared_ptr<T>& b);
+    };
 
-    template <class T,class U>
-    shared_ptr<T> static_pointer_cast(const shared_ptr<U>& r);
+    template <class T,class U>
+    shared_ptr<T> static_pointer_cast(const shared_ptr<U>& r);
 }
 ```
 
@@ -132,32 +129,30 @@ template<class T>
 class CResourceObserver
 {
 public:
-    CResourceObserver()
-    {
-       cout <<typeid(T).name() <<" Construct." <<endl;
-    }
+    CResourceObserver()
+    {
+       cout <<typeid(T).name() <<" Construct." <<endl;
+    }
 
-    CResourceObserver(const CResourceObserver& orig)
-    {
-       cout <<typeid(T).name() <<" Copy Construct." <<endl;
-    }
+    CResourceObserver(const CResourceObserver& orig)
+    {
+       cout <<typeid(T).name() <<" Copy Construct." <<endl;
+    }
 
-    operator=(const CResourceObserver& orig)
-    {
-       cout <<typeid(T).name() <<" operator = " <<endl;
-    }
+    operator=(const CResourceObserver& orig)
+    {
+       cout <<typeid(T).name() <<" operator = " <<endl;
+    }
 
-    virtual ~CResourceObserver(void)
-    {
-       cout <<typeid(T).name() <<" Deconstruct." <<endl;
-    }
+    virtual ~CResourceObserver(void)
+    {
+       cout <<typeid(T).name() <<" Deconstruct." <<endl;
+    }
 
 };
 ```
 
 这个类，利用了运行时类型识别及模板，这样发生与资源有关的操作时，都能通过输出恰当的反映出来。
-
- 
 
 ### shared_ptr的最简单应用
 
@@ -177,16 +172,16 @@ class MyClass : public CResourceObserver<MyClass>
 
 void Fun()
 {
-    shared_ptr<MyClass> sp(new MyClass);
+    shared_ptr<MyClass> sp(new MyClass);
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    cout <<"Fun called." <<endl;
-    Fun();
-    cout <<"Fun ended." <<endl;
+    cout <<"Fun called." <<endl;
+    Fun();
+    cout <<"Fun ended." <<endl;
 
-    return 0;
+    return 0;
 }
 ```
 
@@ -204,8 +199,6 @@ Fun ended.
 
 这里将shared_ptr替换成auto_ptr也是完全可以的，效果也一样。
 
- 
-
 ### shared_ptr的与auto_ptr的区别
 
 shared_ptr与auto_ptr的区别在于所有权的控制上。如下例：
@@ -222,51 +215,51 @@ using namespace boost;
 class MyClass : public CResourceObserver<MyClass>
 {
 public:
-    MyClass() : CResourceObserver<MyClass>()
-    {
-       mstr = typeid(MyClass).name();
+    MyClass() : CResourceObserver<MyClass>()
+    {
+       mstr = typeid(MyClass).name();
 
-    }
+    }
 
-    void print()
-    {
-       cout <<mstr <<" print" <<endl;
-    }
+    void print()
+    {
+       cout <<mstr <<" print" <<endl;
+    }
 
-    std::string mstr;
+    std::string mstr;
 };
 
-typedef  shared_ptr<MyClass> spclass_t;
-//typedef  auto_ptr<MyClass> spclass_t;
+typedef  shared_ptr<MyClass> spclass_t;
+//typedef  auto_ptr<MyClass> spclass_t;
 
 void Fun2(spclass_t& asp)
 {
-    spclass_t sp3(asp);
-    cout <<asp.use_count() <<endl;
+    spclass_t sp3(asp);
+    cout <<asp.use_count() <<endl;
 
-    asp->print();
-    return;
+    asp->print();
+    return;
 }
 
 void Fun()
 {
-    spclass_t sp(new MyClass);
-    cout <<sp.use_count() <<endl;
+    spclass_t sp(new MyClass);
+    cout <<sp.use_count() <<endl;
 
-    spclass_t sp2(sp);
-    cout <<sp.use_count() <<endl;
+    spclass_t sp2(sp);
+    cout <<sp.use_count() <<endl;
 
-    Fun2(sp);
-    cout <<sp.use_count() <<endl;
+    Fun2(sp);
+    cout <<sp.use_count() <<endl;
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    cout <<"Fun called." <<endl;
-    Fun();
-    cout <<"Fun ended." <<endl;
+    cout <<"Fun called." <<endl;
+    Fun();
+    cout <<"Fun ended." <<endl;
 
-    return 0;
+    return 0;
 }
 ```
 
@@ -292,8 +285,6 @@ Fun ended.
 
 此例中将shared_ptr分配的资源复制了3份（实际是管理权的复制，资源明显没有复制）,每一个shared_ptr结束其生命周期时释放一份管理权。每一个都有同等的使用权限。输出的引用计数数量显式了这一切。在这里，可以尝试替换shared_ptr到auto_ptr,这个程序没有办法正确运行。
 
- 
-
 ### shared_ptr的引用计数共享所有权
 
 因为没有拷贝构造及operator=的操作，我们可以知道，对象没有被复制，为了证实其使用的都是同一个资源，这里再用一个例子证明一下：
@@ -310,53 +301,53 @@ using namespace boost;
 class MyClass : public CResourceObserver<MyClass>
 {
 public:
-    MyClass() : CResourceObserver<MyClass>()
-    {
-       mstr = typeid(MyClass).name();
+    MyClass() : CResourceObserver<MyClass>()
+    {
+       mstr = typeid(MyClass).name();
 
-    }
+    }
 
-    void set(const char* asz)
-    {
-       mstr = asz;
-    }
+    void set(const char* asz)
+    {
+       mstr = asz;
+    }
 
-    void print()
-    {
-       cout <<mstr <<" print" <<endl;
-    }
+    void print()
+    {
+       cout <<mstr <<" print" <<endl;
+    }
 
-    std::string mstr;
+    std::string mstr;
 };
 
-typedef  shared_ptr<MyClass> spclass_t;
+typedef  shared_ptr<MyClass> spclass_t;
 
 void Fun2(spclass_t& asp)
 {
-    spclass_t sp3(asp);
+    spclass_t sp3(asp);
 
-    sp3->set("New Name");
-    return;
+    sp3->set("New Name");
+    return;
 }
 
 void Fun()
 {
-    spclass_t sp(new MyClass);
-    spclass_t sp2(sp);
+    spclass_t sp(new MyClass);
+    spclass_t sp2(sp);
 
-    Fun2(sp);
+    Fun2(sp);
 
-    sp->print();
-    sp2->print();
+    sp->print();
+    sp2->print();
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    cout <<"Fun called." <<endl;
-    Fun();
-    cout <<"Fun ended." <<endl;
+    cout <<"Fun called." <<endl;
+    Fun();
+    cout <<"Fun ended." <<endl;
 
-    return 0;
+    return 0;
 }
 ```
 
@@ -374,8 +365,6 @@ class MyClass Deconstruct.
 
 Fun ended.
 
- 
-
 ### shared_ptr与标准库容器
 
 在标准库容器中存入普通指针来实现某个动态绑定的实现是很普遍的事情，但是实际上每次都得记住资源的释放，这也是BoundsChecker误报的最多的地方。
@@ -392,63 +381,63 @@ using namespace boost;
 class MyClass : public CResourceObserver<MyClass>
 {
 public:
-    MyClass() : CResourceObserver<MyClass>()
-    {
-       mstr = typeid(MyClass).name();
+    MyClass() : CResourceObserver<MyClass>()
+    {
+       mstr = typeid(MyClass).name();
 
-    }
+    }
 
-    void set(const char* asz)
-    {
-       mstr = asz;
-    }
+    void set(const char* asz)
+    {
+       mstr = asz;
+    }
 
-    void print()
-    {
-       cout <<mstr <<" print" <<endl;
-    }
+    void print()
+    {
+       cout <<mstr <<" print" <<endl;
+    }
 
-    std::string mstr;
+    std::string mstr;
 };
 
-typedef  shared_ptr<MyClass> spclass_t;
-typedef  vector< shared_ptr<MyClass> > spclassVec_t;
+typedef  shared_ptr<MyClass> spclass_t;
+typedef  vector< shared_ptr<MyClass> > spclassVec_t;
 
 void Fun()
 {
-    spclassVec_t spVec;
-    spclass_t sp(new MyClass);
-    spclass_t sp2(sp);
+    spclassVec_t spVec;
+    spclass_t sp(new MyClass);
+    spclass_t sp2(sp);
 
-    cout <<sp.use_count() <<endl;
-    cout <<sp2.use_count() <<endl;
+    cout <<sp.use_count() <<endl;
+    cout <<sp2.use_count() <<endl;
 
-    spVec.push_back(sp);
-    spVec.push_back(sp2);
+    spVec.push_back(sp);
+    spVec.push_back(sp2);
 
-    cout <<sp.use_count() <<endl;
-    cout <<sp2.use_count() <<endl;
+    cout <<sp.use_count() <<endl;
+    cout <<sp2.use_count() <<endl;
 
-    sp2->set("New Name");
-    sp->print();
-    sp2->print();
+    sp2->set("New Name");
+    sp->print();
+    sp2->print();
 
-    spVec.pop_back();
-    cout <<sp.use_count() <<endl;
-    cout <<sp2.use_count() <<endl;
+    spVec.pop_back();
+    cout <<sp.use_count() <<endl;
+    cout <<sp2.use_count() <<endl;
 
-    sp->print();
-    sp2->print();
+    sp->print();
+    sp2->print();
 
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    cout <<"Fun called." <<endl;
-    Fun();
-    cout <<"Fun ended." <<endl;
+    cout <<"Fun called." <<endl;
+    Fun();
+    cout <<"Fun ended." <<endl;
 
-    return 0;
+    return 0;
 }
 ```
 
@@ -484,21 +473,16 @@ Fun ended.
 
 当在标准库容器中保存的是shared_ptr时，几乎就可以不考虑资源释放的问题了，该释放的时候自然就释放了，当一个资源从一个容器辗转传递几个地方的时候，常常会搞不清楚在哪个地方统一释放合适，用了shared_ptr后，这个问题就可以不管了，每次的容器Item的添加增加计数，容器Item的减少就减少计数，恰当的时候，就释放了。。。。方便不可言喻。
 
- 
-
- 
-
-## 3.      智能指针的高级应用：
+## 3. 智能指针的高级应用：
 
 已经说的够多了，再说下去几乎就要脱离讲解智能指针与异常的本意了，一些很有用的应用就留待大家自己去查看资料吧。
 
-1.     定制删除器，shared_ptr允许通过定制删除器的方式将其用于其它资源的管理，几乎只要是通过分配，释放形式分配的资源都可以纳入shared_ptr的管理范围，比如文件的打开关闭，目录的打开关闭等自然不在话下，甚至连临界区，互斥对象这样的复杂对象，一样可以纳入shared_ptr的管理。
-
-2.     从this创建shared_ptr  。
+1. 定制删除器，shared_ptr允许通过定制删除器的方式将其用于其它资源的管理，几乎只要是通过分配，释放形式分配的资源都可以纳入shared_ptr的管理范围，比如文件的打开关闭，目录的打开关闭等自然不在话下，甚至连临界区，互斥对象这样的复杂对象，一样可以纳入shared_ptr的管理。
+2. 从this创建shared_ptr 。
 
 以上两点内容在《Beyond the C++ Standard Library: An Introduction to Boost》智能指针的专题中讲解了一些，但是稍感不够详细，但是我也没有看到更为详细的资料，聊胜于无吧。
 
-3.     Pimpl：
+3. Pimpl：
 
 《Beyond the C++ Standard Library: An Introduction to Boost》中将智能指针的时候有提及，在《C++ Coding Standards: 101 Rules, Guidelines, and Best Practices》 第43 条Pimpl judiciously中对其使用的好处，坏处，方式等都有较为详细的讲解，大家可以去参考一下，我就不在此继续献丑了。
 
@@ -514,9 +498,7 @@ Fun ended.
 
 4.当管理一些需要特殊清除方式的资源时
 
- 
-
-# 三、   智能指针与C++异常
+# 三、 智能指针与C++异常
 
 因为考虑到大家可能对智能指针不够熟悉，所以讲到这里的时候对智能指针进行了较多的讲解，几乎就脱离主题了，在这里开始进入正题。
 
@@ -525,53 +507,53 @@ Fun ended.
 ```cpp
 void Fun()
 {
-    MyClass* lp1 = NULL;
-    MyClass* lp2 = NULL;
-    MyClass* lp3 = NULL;
+    MyClass* lp1 = NULL;
+    MyClass* lp2 = NULL;
+    MyClass* lp3 = NULL;
 
-    lp1 = new MyClass;
-    try
-    {
-       lp2 = new MyClass;
-    }
-    catch(bad_alloc)
-    {
-       delete lp1;
-    }
+    lp1 = new MyClass;
+    try
+    {
+       lp2 = new MyClass;
+    }
+    catch(bad_alloc)
+    {
+       delete lp1;
+    }
 
-    try
-    {
-       lp3 = new MyClass;
-    }
-    catch(bad_alloc)
-    {
-       delete lp1;
-       delete lp2;
-    }
+    try
+    {
+       lp3 = new MyClass;
+    }
+    catch(bad_alloc)
+    {
+       delete lp1;
+       delete lp2;
+    }
 
-    // Do Something.....
+    // Do Something.....
 
-    delete lp1;
-    delete lp2;
-    delete lp3;
+    delete lp1;
+    delete lp2;
+    delete lp3;
 }
 
 void Fun2()
 {
-    try
-    {
-       spclass_t sp1(new MyClass);
-       spclass_t sp2(new MyClass);
-       spclass_t sp3(new MyClass);
-    }
-    catch(bad_alloc)
-    {
-       // No need to delete anything
-    }
+    try
+    {
+       spclass_t sp1(new MyClass);
+       spclass_t sp2(new MyClass);
+       spclass_t sp3(new MyClass);
+    }
+    catch(bad_alloc)
+    {
+       // No need to delete anything
+    }
 
-    // Do Something
+    // Do Something
 
-    // No need to delete anything
+    // No need to delete anything
 
 }
 ```
@@ -580,13 +562,11 @@ void Fun2()
 
 其实从本质上来讲，异常属于增加了程序从函数退出的路径，而C++原来的内存管理机制要求每个分支都需要手动的释放每个分配了的资源，这是本质的复杂度，在用于普通return返回的时候，还有一些hack技巧，见《[do...while(0)的妙用](<http://www.cnblogs.com/flying_bat/archive/2008/01/18/1044693.html>)》，但是异常发生的时候，能够依赖的就只有手动和智能指针两种选择了。
 
-       在没有智能指针的光使用异常的时候，甚至会抱怨因为异常增加了函数的出口，导致代码的膨胀，说智能指针是C++异常处理的绝佳搭档就在于其弥补的此缺点。
+在没有智能指针的光使用异常的时候，甚至会抱怨因为异常增加了函数的出口，导致代码的膨胀，说智能指针是C++异常处理的绝佳搭档就在于其弥补的此缺点。
 
 另外，其实很多语言还有个finally的异常语法，JAVA,Python都有，SEH也有，其与使用了智能指针的C++异常比较在刘未鹏关于异常处理的文章《[错误处理(Error-Handling)：为何、何时、如何(rev#2)](<http://blog.csdn.net/pongba/archive/2007/10/08/1815742.aspx>)》中也有详细描述，我就不在此多费口舌了，将来讲SEH的时候自然还会碰到。个人感觉是，有也不错。。。。毕竟，不是人人都有机会在每个地方都用上智能指针。
 
- 
-
-# 四、   参考资料
+# 四、 参考资料
 
 1.C++ Primer，中文版第4版，Stanley B.Lippman, Josee lajoie, Barbara E.Moo著 人民邮电出版社
 
@@ -594,14 +574,10 @@ void Fun2()
 
 3.More Effective C++（英文版）,Scott Meyes著，Items 28,29,机械工业出版社
 
-4.Beyond the C++ Standard Library: An Introduction to Boost，By Björn Karlsson著，Part 1,Library 1，Addison Wesley Professional
+4.Beyond the C++ Standard Library: An Introduction to Boost，By Björn Karlsson著，Part 1,Library 1，Addison Wesley Professional
 
 5.C++ Coding Standards: 101 Rules, Guidelines, and Best Practices
 
-Herb Sutter, Andrei Alexandrescu著， Addison Wesley Professional
-
- 
-
- 
+Herb Sutter, Andrei Alexandrescu著， Addison Wesley Professional
 
 [**write by****九天雁翎****(JTianLing) -- www.jtianling.com**](<http://www.jtianling.com>)

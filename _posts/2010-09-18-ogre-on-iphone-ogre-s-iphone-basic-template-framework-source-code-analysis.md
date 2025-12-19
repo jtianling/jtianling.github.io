@@ -1,6 +1,12 @@
 ---
 layout: post
-title: OGRE On iPhone ----Ogre的iPhone基础模版框架源代码分析
+title: OGRE On iPhone ---
+
+本文分析了Ogre 3D引擎的iPhone基础模版框架，讲解了其初始化、触摸输入处理等核心功能，并对比了iPhone与桌面版在程序驱动方式上的差异。
+
+<!-- more -->
+
+-Ogre的iPhone基础模版框架源代码分析
 categories:
 - iOS
 - "图形技术"
@@ -21,38 +27,19 @@ author:
   last_name: ''
 ---
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**
 
-[**讨论新闻组及文件**  
-](<http://groups.google.com/group/jiutianfile/>)
+[**讨论新闻组及文件**](<http://groups.google.com/group/jiutianfile/>)
 
-    当想要在iPhone上使用某个3D引擎的时候，感觉我这水平，自己写好像还不现实，学到自己能写都不知道要到何年何月了，于是折腾过没有官方支持但是比较简单而且我比较熟悉的Irrlicht。虽然的确成功了（见我[原来的文章](<http://www.jtianling.com/archive/2010/06/04/5646331.aspx> "原来的文章")
-
-），  
-但是弄2D游戏的时候，（用其他引擎）经历过一些痛苦的事情后，我发现强大，成熟的引擎，以及官方的支持是多么重要。。。。。于是，虽然Ogre的效率在  
-iPhone上还有些难以承受，但是，我还是希望学习学习，并将Ogre作为优先使用的3D引擎。谁叫Ogre那么流行呢？将来要是弄老本行，去做网络游  
-戏，估计也不错^^
-
- 
+当想要在iPhone上使用某个3D引擎的时候，感觉我这水平，自己写好像还不现实，学到自己能写都不知道要到何年何月了，于是折腾过没有官方支持但是比较简单而且我比较熟悉的Irrlicht。虽然的确成功了（见我[原来的文章](<http://www.jtianling.com/archive/2010/06/04/5646331.aspx> "原来的文章")），但是弄2D游戏的时候，（用其他引擎）经历过一些痛苦的事情后，我发现强大，成熟的引擎，以及官方的支持是多么重要。。。。。于是，虽然Ogre的效率在iPhone上还有些难以承受，但是，我还是希望学习学习，并将Ogre作为优先使用的3D引擎。谁叫Ogre那么流行呢？将来要是弄老本行，去做网络游戏，估计也不错^^
 
 ## 本文写作目的：
 
-1.Ogre的[基础模版程序](<http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Basic%20Ogre%20Framework> "基础模版程序")
-
-是Ogre在iPhone平台的模版程序的基础，但是此模版程序没有太多的说明和注释，作者仅仅是说程序具有自解释性。。。。。我这里代为简单解释一下。。。。
+1.Ogre的[基础模版程序](<http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Basic%20Ogre%20Framework> "基础模版程序")是Ogre在iPhone平台的模版程序的基础，但是此模版程序没有太多的说明和注释，作者仅仅是说程序具有自解释性。。。。。我这里代为简单解释一下。。。。
 
 2.Ogre虽然是跨平台引擎，但是既然跨平台，在各平台就会有些差异存在，而从桌面程序到iPhone这样的移动平台，差异就更大了，我这里不从源码的角度，仅仅从示例程序对Ogre的使用角度指出这些差异。
 
-而怎么在iPhone上编译运行Ogre,怎么样安装Ogre为iPhone做的项目模版，因为有官方支持嘛，[下个SDK](<http://www.ogre3d.org/download/sdk> "下个SDK")
-
-，非常容易，不像Irrlicht那样需要调整很多东西，所以，这些都不是本文的重点，大家自己摸索一下吧。本文也不是Ogre的入门教程，这个请去看Ogre的[WIKI](<http://www.ogre3d.org/tikiwiki/Tutorials> "WIKI")
-
-，也有[中文版](<http://wiki.ogrecn.com/wiki/> "中文版")
-
-。（但是WIKI的中级教程有些老，代码一般不能直接在新版本的Ogre和CEGU中工作，但是理解后，稍微进行点改动就行了，中文版可能更老，我没有看，推荐还是去看原版的好，毕竟都是很简单的东西）
-
- 
+而怎么在iPhone上编译运行Ogre,怎么样安装Ogre为iPhone做的项目模版，因为有官方支持嘛，[下个SDK](<http://www.ogre3d.org/download/sdk> "下个SDK")，非常容易，不像Irrlicht那样需要调整很多东西，所以，这些都不是本文的重点，大家自己摸索一下吧。本文也不是Ogre的入门教程，这个请去看Ogre的[WIKI](<http://www.ogre3d.org/tikiwiki/Tutorials> "WIKI")，也有[中文版](<http://wiki.ogrecn.com/wiki/> "中文版")。（但是WIKI的中级教程有些老，代码一般不能直接在新版本的Ogre和CEGU中工作，但是理解后，稍微进行点改动就行了，中文版可能更老，我没有看，推荐还是去看原版的好，毕竟都是很简单的东西）
 
 ## 基础框架了解
 
@@ -72,13 +59,9 @@ iPhone上还有些难以承受，但是，我还是希望学习学习，并将Og
 
 然后，下面对此框架的了解除了大致框架外，了解3个功能是在哪里实现的。
 
- 
-
 ## 基础框架代码分析
 
-主要部分是OgreFramework.h和OgreFramework.cpp两个文件包含的OgreFramework类，这个类虽然内容简单，但是  
-基本功能齐全，并且，在此简单的框架的基础上，尽量简单的实现了跨平台，这样的话，可以尝试开发Mac,Win32程序，然后移植到iPhone中，以加  
-快开发速度，缩短开发周期。
+主要部分是OgreFramework.h和OgreFramework.cpp两个文件包含的OgreFramework类，这个类虽然内容简单，但是基本功能齐全，并且，在此简单的框架的基础上，尽量简单的实现了跨平台，这样的话，可以尝试开发Mac,Win32程序，然后移植到iPhone中，以加快开发速度，缩短开发周期。
 
 如下所示
 
@@ -155,8 +138,6 @@ public:
 ### 初始化
 
 其他部分都属于进一步的操作和更新了，主要部分是Ogre的初始化部分，在initOgre，先看看这个函数：(感觉必要的地方我添加了注释）
-
- 
 
 /|||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -312,8 +293,6 @@ bool OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListen
 
 这个函数的目的是很单纯的，作为框架性代码，没有像Ogre的基础教程createScene函数一样，添加场景创建的代码，仅仅是初始化了一些相关的对象。而这个函数已经完成了此基础框架希望完成的大部分功能了。
 
- 
-
 ### 输入
 
 keyPressed，mouseMoved在iPhone中是完全没有什么用了，touch的系列接口虽然与iOS SDK基本一致，但是参数上OIS进行了进一步的分装，估计是为了将来方便移植到其他触摸移动平台（比如Android)。
@@ -370,8 +349,6 @@ public:
 
 此外，这种参数封装还是有些弱的，iOS的SDK要强大一些，直接内置了多次触摸的查询等的支持，OIS为了通用，看来是不行了。
 
- 
-
 然后，在touchMoved函数中，实现了camera的旋转。
 
 ```cpp
@@ -410,8 +387,6 @@ bool OgreFramework::touchMoved(const OIS::MultiTouchEvent &evt)
 ```
 
 大部分代码是为了不同的设备方向而进行的参数调整，其实主要也就是Camera的yaw,pitch旋转而已，有意思的是，touch参数里面的相对值的存在，使得旋转速度的设定非常简洁。
-
- 
 
 ### 调试信息输出
 
@@ -454,8 +429,6 @@ void OgreFramework::updateStats()
 
 都是获取到响应的UI元素，然后进行输出，没有太多好讲的。
 
- 
-
 ## 框架驱动代码
 
 上述的框架还不足以构成一个完成的程序，仅仅是跨平台实现中干了一些脏活，可以跨平台的部分，我们还需要实际的驱动代码来使用这个框架。
@@ -484,19 +457,9 @@ private:
 };
 ```
 
- 
-
-很简洁也很直接的定义，没有去继承使用Ogre的ExampleApplication等类。仅仅继承了KeyListener
-
-，响应keyPressed
-
-和keyReleased
-
-，而在iPhone中我们又不用管。
+很简洁也很直接的定义，没有去继承使用Ogre的ExampleApplication等类。仅仅继承了KeyListener，响应keyPressed和keyReleased，而在iPhone中我们又不用管。
 
 那么，需要看到就是真实创建天空盒和那个癞蛤蟆头的部分了。
-
- 
 
 ```cpp
 void DemoApp::startDemo()
@@ -512,13 +475,9 @@ void DemoApp::startDemo()
 }
 ```
 
- 
-
 此函数完成了前面讲到的OgreFramework的创建及初始化，于是，此时，我们Ogre程序需要的root,scene manager, viewport,camera,等东西都已经有了。
 
 下面直接调用setupDemoScene来创建了场景，然后通过runDemo来运行程序(即进入主循环）。
-
- 
 
 ```cpp
 void DemoApp::setupDemoScene()
@@ -531,11 +490,7 @@ void DemoApp::setupDemoScene()
 }
 ```
 
- 
-
 因为初始化完了，那么创建场景的部分就简单了，如上所示，也就几句代码。属于Ogre常规操作，也就不多说了。
-
- 
 
 ```cpp
 //|||||||||||||||||||||||||||||||||||||||||||||||
@@ -582,29 +537,15 @@ void DemoApp::runDemo()
 }
 ```
 
-看完这里，代码上是没有什么疑问了，主循环嘛。。。。。。。。不过，对于代码实现的问题上，还是有些问题的，从前面的代码来看，主循环通过
+看完这里，代码上是没有什么疑问了，主循环嘛。。。。。。。。不过，对于代码实现的问题上，还是有些问题的，从前面的代码来看，主循环通过while(!m_bShutdown && !OgreFramework::getSingletonPtr()->isOgreToBeShutDown())控制，而且里面完全没有帧率控制代码。。。。也没有使用Ogre在教程中提倡的使用FrameListeners的frameRenderingQueued回调函数来完成update，这个感觉比较奇怪。
 
-    while(!m_bShutdown && !OgreFramework::getSingletonPtr()->isOgreToBeShutDown())
-
-控制，而且里面完全没有帧率控制代码。。。。也没有使用Ogre在教程中提倡的使用FrameListeners的frameRenderingQueued
-
-回调函数来完成update，这个感觉比较奇怪。
-
-而假如是通过
-
-if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isActive())
-
-即，是否Actice来控制帧率也不正常，这个应该是窗口在后台不需要处理输入的时候使用的，而且一次sleep了1秒钟，也不可能胜任这个工作。
+而假如是通过if(OgreFramework::getSingletonPtr()->m_pRenderWnd->isActive())即，是否Actice来控制帧率也不正常，这个应该是窗口在后台不需要处理输入的时候使用的，而且一次sleep了1秒钟，也不可能胜任这个工作。
 
 带着疑问调试此函数的代码，发现根本没有调用此函数。。。。。。-_-!
 
 这里搞这么多#if OGRE_PLATFORM != OGRE_PLATFORM_IPHONE，结果iPhone中根本不调用，还是比较具有迷惑性的。。。。。。
 
- 
-
 真实的版本，当然就看AppDelegate了，AppDelegate是ObjC类。。。。。。看到这里，突然感觉，我虽然仅仅是最近用了几个月的ObjC，但是因为最近一直在用Objc，竟然感觉比用了好几年的C++更加亲切了。。。。。-_-!
-
- 
 
 ### AppDelegate
 
@@ -631,10 +572,7 @@ int main(int argc, char **argv)
 }
 ```
 
-所  
-以，我原本以为AppDelegate就是一个从ObjC到DemoApp的一个小外壳而已，处理一些简单的delegate回调，结果发现根本不是这  
-样，在iPhone版本的示例程序中，AppDelegate才是实际的DemoApp，而原来DemoApp，其实AppDelegate只是使用了其  
-setup场景的部分而已。原来我也是只猜到了开始，但是猜不到这个结果。。。。。。。
+所以，我原本以为AppDelegate就是一个从ObjC到DemoApp的一个小外壳而已，处理一些简单的delegate回调，结果发现根本不是这样，在iPhone版本的示例程序中，AppDelegate才是实际的DemoApp，而原来DemoApp，其实AppDelegate只是使用了其setup场景的部分而已。原来我也是只猜到了开始，但是猜不到这个结果。。。。。。。
 
 在applicationDidFinishLaunching中经过了一些在iPhone中必须进行的一些window,view操作后，直接进入了主题，go函数，看看go函数：
 
@@ -690,11 +628,7 @@ earlier versions will result in a warning, but can be dismissed
 }
 ```
 
- 
-
 原来这才是真正驱动OgreFramework的地方啊。。。。。。前面那都是迷惑人的。。。。
-
- 
 
 ```cpp
     new OgreFramework();
@@ -709,8 +643,6 @@ earlier versions will result in a warning, but can be dismissed
 ```
 
 在iPhone版本中，在go函数中进行了OgreFramework的创建及初始化，然后调用demo的setupDemoScene进行场景的创建（前面分析的也就这一部分是对的了。。。。。。其他demo部分分析仅适用于其它版本）。
-
- 
 
 ```objc
     if (mDisplayLinkSupported)
@@ -737,13 +669,9 @@ earlier versions will result in a warning, but can be dismissed
 
 可以看到此处是通过iPhone的CADisplayLink类来完成刷新及帧率控制的，（前面还特意检查了版本，以判断当前iPhone版本是否支持此特性，3.1以后才有的东西）而renderOneFrame里面的内容很简单，这里就不讲了。
 
- 
-
 看看CADisplayLink吧，在apple的文档中，有如下描述：
 
-A  
-CADisplayLink object is a timer object that allows your application to  
-synchronize its drawing to the refresh rate of the display.
+A CADisplayLink object is a timer object that allows your application to synchronize its drawing to the refresh rate of the display.
 
 很明显，这个iPhone平台特定的东西估计要比Ogre跨平台的FrameListener要好用一些，所以此基础框架程序中使用了这个iPhone原生的东西。
 
@@ -765,23 +693,11 @@ The number of frames that must pass before the display link notifies the target 
 
 Discussion
 
-The  
-default value is 1, which results in your application being notified at  
-the refresh rate of the display. If the value is set to a value larger  
-than 1, the display link notifies your application at a fraction of the  
-native refresh rate. For example, setting the interval to 2 causes the  
-display link to fire every other frame, providing half the frame rate.
+The default value is 1, which results in your application being notified at the refresh rate of the display. If the value is set to a value larger than 1, the display link notifies your application at a fraction of the native refresh rate. For example, setting the interval to 2 causes the display link to fire every other frame, providing half the frame rate.
 
 Setting this value to less than 1 results in undefined behavior and is a programmer error.
 
- 
-
-注  
-意最后一句。。。。。。设置成小于1的值会导致未定义行为，并且是一个错误。。。。。既然默认是1，那么其实后面的frameInterval根本不用设  
-置。（原程序能够正常的运行，估计apple还是进行了一定的错误处理，当小于1时还是设置成1了）为了安全起见，这一句还是删掉吧。事实上，删掉后，运  
-行还是正常，此时使用默认值1，也就是每次显示刷新调用一次此函数。
-
- 
+注意最后一句。。。。。。设置成小于1的值会导致未定义行为，并且是一个错误。。。。。既然默认是1，那么其实后面的frameInterval根本不用设置。（原程序能够正常的运行，估计apple还是进行了一定的错误处理，当小于1时还是设置成1了）为了安全起见，这一句还是删掉吧。事实上，删掉后，运行还是正常，此时使用默认值1，也就是每次显示刷新调用一次此函数。
 
 相对的，看Cocos2D for iPhone的代码，现在默认的director类CCDisplayLinkDirector，对DisplayLink的使用实现代码如下：
 
@@ -794,16 +710,8 @@ Setting this value to less than 1 results in undefined behavior and is a program
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 ```
 
- 
-
-注  
-意，这里的animationInterval是秒为单位的表示时间间隔的变量，但是这里没有直接使用此变量来设定frameInterval，而是乘以  
-了60，（Cocos认为iPhone设备的刷新率近似为60）应该来说，这才是正确用法。。。。。。。我看来可以向Ogre的开发组提交个bug  
-了。。。。。。
-
- 
+注意，这里的animationInterval是秒为单位的表示时间间隔的变量，但是这里没有直接使用此变量来设定frameInterval，而是乘以了60，（Cocos认为iPhone设备的刷新率近似为60）应该来说，这才是正确用法。。。。。。。我看来可以向Ogre的开发组提交个bug了。。。。。。
 
 原创文章作者保留版权 转载请注明原作者 并给出链接
 
-**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)  
-**
+**[write by 九天雁翎(JTianLing) -- www.jtianling.com](<http://www.jtianling.com>)**

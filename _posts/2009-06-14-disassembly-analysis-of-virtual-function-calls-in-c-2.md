@@ -22,17 +22,19 @@ author:
   last_name: ''
 ---
 
-# C++中的虚函数调用原理的反汇编实例分析(2) 
+通过反汇编分析，揭示了C++虚函数的调用机制及RTTI在虚表中的存储实现原理。
+
+<!-- more -->
+
+# C++中的虚函数调用原理的反汇编实例分析(2)
 
 **write by 九天雁翎(JTianLing) -- www.jtianling.com**
 
-因为昨天的第一节中我其实感觉并没有太透彻的理解其原理，也对VC6的实现是否会继续抱有怀疑态度，所以今天特意用VS2005编译并分析了一下，只能说，从反汇编的角度来看都可以看出微软的进步实在是很大的，有钱嘛：）呵呵，也许Stanley B.Lippman的功劳不是白费的吧。速度上我是没有好好的去测试了，从逻辑上看，可读性都强了很多（呵呵，汇编代码要可读性干什么。。。。。） 
+因为昨天的第一节中我其实感觉并没有太透彻的理解其原理，也对VC6的实现是否会继续抱有怀疑态度，所以今天特意用VS2005编译并分析了一下，只能说，从反汇编的角度来看都可以看出微软的进步实在是很大的，有钱嘛：）呵呵，也许Stanley B.Lippman的功劳不是白费的吧。速度上我是没有好好的去测试了，从逻辑上看，可读性都强了很多（呵呵，汇编代码要可读性干什么。。。。。）
 
 为了可读性。。。。我个人就麻烦一点了，以后汇编代码也不是全黑出镜了。。。。我还是用gvim给大家上上色吧。。。。 
 
- 
-
-## 示例程序： 
+## 示例程序：
 
 ```cpp
 #include
@@ -92,11 +94,9 @@ int main()
 
 和在第一节中的源代码是一样的，只是这次我用VS2005最大速度优化release编译 
 
- 
+## 反汇编：
 
-## 反汇编： 
-
-主函数： 
+主函数：
 
 ```asm
  1 .text:00401010 ; int __cdecl main(int argc, const char **argv, const char *envp)  
@@ -134,7 +134,7 @@ int main()
 33 .text:00401041                 **push**     **offset**  __type_info_root_node ; 此处不明，可能需要多个RTTI对象才能知道  
 34 .text:00401041                                         ; 因为就命名上来推测，可能是维护了一个RTTI对象的链表  
 35 .text:00401041                                         ; 而因为元素只有一个，所以没有办法肯定了  
-36 .text:00401046                 **mov**      ecx, **offset**  CTestThisPointer * `RTTI**  Type** Descriptor' ; 此处相当于构建一个type_info的类，当时由于优化，没有  
+36 .text:00401046                 **mov**      ecx, **offset**  CTestThisPointer * `RTTI**  Type**  Descriptor' ; 此处相当于构建一个type_info的类，当时由于优化，没有  
 37 .text:00401046                                         ; 使用栈来创建局部变量和使用构造函数等，直接将type_info  
 38 .text:00401046                                         ; 的虚表赋值给ecx了，ecx在thiscall调用约定中就是this  
 39 .text:00401046                                         ; 指针传递的参数啊，下面就调用了此对象的name成员函数  
@@ -151,8 +151,6 @@ int main()
 50 .text:00401062 _main           **endp**                     ; 其实自然啦，因为main函数的参数个数也是不定的
 ```
 
- 
-
 虚表：
 
 ```asm
@@ -166,15 +164,11 @@ int main()
 8 .rdata:00402118                                         ; _main+1A^Xr 
 ```
 
- 
-
 而虚表的前4个字节就是一个指针，指向了表示正确类型的type_info类的子类。
 
 到这里，一切就慢慢符合《inside C++ Object》中描述的虚表了，呵呵，有了lippman,微软总算走上正轨了，慢慢的。。。充满技术性天才的可怜borland也走入了末途。
 
- 
-
-## 继续，例2： 
+## 继续，例2：
 
 ```cpp
 #include
@@ -289,13 +283,11 @@ int main()
 }
 ```
 
- 
-
-## 反汇编代码： 
+## 反汇编代码：
 
 不重复注释重复内容 
 
-主程序： 
+主程序：
 
 ```asm
 .text:00401070 ; int __cdecl main(int argc, const char **argv, const char *envp)  
@@ -336,7 +328,7 @@ int main()
 .text:004010C7                 **mov**      edi, ds:type_info::**name**(__type_info_node *)  
 .text:004010CD                 **add**      esp, 8  
 .text:004010D0                 **push**     **offset**  __type_info_root_node  
-.text:004010D5                 **mov**      ecx, **offset**  CTestThisPointer * `RTTI**  Type** Descriptor'  
+.text:004010D5                 **mov**      ecx, **offset**  CTestThisPointer * `RTTI**  Type**  Descriptor'  
 .text:004010DA                 **call**     edi ; type_info::name(__type_info_node *)  
 .text:004010DC                 **push**     eax  
 .text:004010DD                 **push**     **offset**  aS       ; "%s/n"  
@@ -345,7 +337,7 @@ int main()
 .text:004010E7                 **mov**      [esp+28h+var_14], **offset**  const CTestBase::`vftable'  
 .text:004010EF                 **mov**      [esp+28h+var_10], 14h  
 .text:004010F7                 **push**     **offset**  __type_info_root_node  
-.text:004010FC                 **mov**      ecx, **offset**  CTestBase `RTTI**  Type** Descriptor'  
+.text:004010FC                 **mov**      ecx, **offset**  CTestBase `RTTI**  Type**  Descriptor'  
 .text:00401101                 **mov**      **byte**  **ptr**  [esp+2Ch+var_4], 1  
 .text:00401106                 **call**     edi ; type_info::name(__type_info_node *)  
 .text:00401108                 **push**     eax  
@@ -353,14 +345,14 @@ int main()
 .text:0040110E                 **call**     esi ; __imp__printf  
 .text:00401110                 **add**      esp, 8  
 .text:00401113                 **push**     **offset**  __type_info_root_node  
-.text:00401118                 **mov**      ecx, **offset**  CTestBase `RTTI**  Type** Descriptor'  
+.text:00401118                 **mov**      ecx, **offset**  CTestBase `RTTI**  Type**  Descriptor'  
 .text:0040111D                 **call**     edi ; type_info::name(__type_info_node *)  
 .text:0040111F                 **push**     eax  
 .text:00401120                 **push**     **offset**  aS       ; "%s/n"  
 .text:00401125                 **call**     esi ; __imp__printf  
 .text:00401127                 **add**      esp, 8  
 .text:0040112A                 **push**     **offset**  __type_info_root_node  
-.text:0040112F                 **mov**      ecx, **offset**  CTestBase * `RTTI**  Type** Descriptor'  
+.text:0040112F                 **mov**      ecx, **offset**  CTestBase * `RTTI**  Type**  Descriptor'  
 .text:00401134                 **call**     edi ; type_info::name(__type_info_node *)  
 .text:00401136                 **push**     eax  
 .text:00401137                 **push**     **offset**  aS       ; "%s/n"  
@@ -381,7 +373,7 @@ int main()
 
 贴出来仅仅是为了完整性，其实已经没有什么新意了，无非就是多一些，唯一有价值提起的就是SEH机制的加入，这又是另外一个话题了，在此不详述了，可以查阅相关书籍，推荐的有《windows核心编程》和《加密与解密》相关章节，虽然内容都并不是很多。 
 
-虚表。。。这才是符合主题的部分： 
+虚表。。。这才是符合主题的部分：
 
 ```asm
 .rdata:00402124                 **dd**  **offset**  const CTestThisPointer::`RTTI Complete Object Locator'  
@@ -400,11 +392,7 @@ int main()
 .rdata:00402134                                         ; RTTI使用的。。。。只是this指针直接指向的是虚表
 ```
 
- 
-
- 
-
-以下是__type_info_node的链表。。。。。。。。。,没有上色了。。。 
+以下是__type_info_node的链表。。。。。。。。。,没有上色了。。。
 
 ```asm
 .rdata:00402274 dd offset CTestBase::`RTTI Class Hierarchy Descriptor' 
@@ -474,10 +462,6 @@ int main()
 .rdata:0040229C ; DATA XREF: .rdata:00402298o 
 ```
 
- 
-
- 
-
 __type_info_node的链表。。。。可以在VS2005的头文件中找到依据：
 
 ```cpp
@@ -493,8 +477,6 @@ extern __type_info_node __type_info_root_node;
 ```
 
 呵呵，不就是这个吗？ 
-
- 
 
 最后，在VS2005的头文件中可以看到type_info类的声明和反汇编代码上看到的完全一致。。。。 
 
@@ -532,10 +514,6 @@ _CRTIMP_PURE static void __CLRCALL_OR_CDECL _Type_info_dtor(type_info *);
 }; 
 ```
 
- 
-
 至此。。。。C++中虚函数调用的机制差不多可以知道了。。。。顺便还搞定了RTTI....加上继承不过就是换个虚表的问题了。虚表的结构又不会变。。。。。不深究了，生命是有限的。。。。。 
-
- 
 
 **write by 九天雁翎(JTianLing) -- www.jtianling.com**
