@@ -20,7 +20,7 @@ author:
   last_name: ''
 ---
 
-作者分享了自己使用Linux的经历，从早期Red Hat的种种困难，到如今Ubuntu的简单易用。Linux在易用性上进步巨大，已成为一个可靠的日常操作系统。
+分享了自己使用Linux的经历，从早期Red Hat的种种困难，到如今Ubuntu的简单易用。Linux在易用性上进步巨大，已成为一个可靠的日常操作系统。
 
 <!-- more -->
 

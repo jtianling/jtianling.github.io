@@ -29,8 +29,6 @@ author:
 
 Windows中多指针输入技术的实现与应用（6 Single Display Groupware Toolkit的应用）
 
-湖南大学 谢祁衡
-
 4.Single Display Groupware Toolkit的应用
 
 在新设计软件中要加入多指针设备的输入，通过分析对比，目前最成熟的方案是利用SDG Toolkit实现，SDG Toolkit包含了其他方案的很多优点，而且使用的方便程度及官方的文档支持，甚至强过微软目前的MultiPoint SDK，而且效率上实现的非常好，加入SDG Toolkit的事件后，甚至看不出与原有软件的效率区别。还有就是因为SDG Toolkit是开源软件，自己可以进一步改进效率，比如去除不需要的部分重新编译以得到更精简的代码。最大的缺点就是此项目从2004年开始已停止更新，很难加入对未来Windows版本的直接支持，并且因为技术原因不能运行在Windows 9X上，导致目前SDG Toolkit可以预知的使用环境仅仅是Windows XP/NT系统。考虑到微软将来在Windows Vista中的直接支持及MultiPoint SDK将来的技术升级，利用MultiPoint SDK实现是将来有前途的实现。而假如不愿意受制于微软的Visual Studio.Net编程环境，或者希望在Windows 9X中也能运行，可以接受的方案就是自己利用RawInput技术实现或则利用CPNmouse库。对于一般情况，SDG Toolkit将是目前最好的选择。以下简要讲解了SDG Toolkit的使用方法，仍旧主要通过鼠标指针的绘制及输入数据的识别两方面讲述，并以Visual Studio .NET 2005 下使用C#语言编程控制3个鼠标为例，其中一个为PS/2，两个为USB接口。

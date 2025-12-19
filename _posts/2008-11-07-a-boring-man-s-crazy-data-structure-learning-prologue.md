@@ -7,32 +7,15 @@ tags: []
 status: publish
 type: post
 published: true
-meta:
-  ratings_users: '0'
-  ratings_score: '0'
-  ratings_average: '0'
-  views: '10'
-  _edit_last: '1'
-  ks_metadata: a:7:{s:4:"lang";s:2:"en";s:8:"keywords";s:0:"";s:19:"keywords_autoupdate";s:1:"1";s:11:"description";s:0:"";s:22:"description_autoupdate";s:1:"1";s:5:"title";s:0:"";s:6:"robots";s:12:"index,follow";}
-  _wp_old_slug: "%0d%0a%20%20%20%20%20%20%20%20%e4%b8%80%e4%b8%aa%e6%97%a0%e8%81%8a%e7%94%b7%e4%ba%ba%e7%9a%84%e7%96%af%e7%8b%82%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e5%ad%a6%e4%b9%a0%28%e7%bb%aa%29%0d%0a%20%20%20%20%2"
-author:
-  login: jtianling
-  email: jtianling@gmail.com
-  display_name: jtianling
-  first_name: ''
-  last_name: ''
 ---
-
-作者制定了一个疯狂计划，用多种语言实现《数据结构与算法分析》书中的所有例子和习题，以系统学习数据结构。
-
-<!-- more -->
-
 
 学习以《数据结构与算法分析—C++描述》第三版为基础。
 
 目标是，以C++, python,lua,（甚至，只要感觉可能，加上bash）来实现书中所描述的所有例子（例子用C++实现了我就用其他语言），和所有习题。
 
 这是个疯狂的学习计划，以前我学习数据结构老是学着学着从开始的慢慢的，耐心的学习变成了后期的光看书看概念，damn it.以至于无论工作了多么久，老是感觉一块是空的。现在不像当时纯粹在学习的时候了，老是感觉需要学点能赶快找到工作的东西（比如MFC），现在我开始做工具这一块了，感觉可能会稍微轻松点，（谁知道当时做服务器的时候进度怎么赶得）。
+
+<!-- more -->
 
 虽然每天可能仅仅实现那么一个例子，看那么一两面书，做那么一个题目，用一个月完成书的第一章，who care it。我有的是时间。又不担心没有工作，又不担心饿死，不用这点机会好好的学习一下数据结构那还干什么？lua,python,bash就是真的是书看的多，实践的少，不正好靠这个机会来实践一下吗？每天看一两面，看完这本书也仅仅需要一年。仅仅一年。数据结构和算法对我的帮助可是一辈子。想我光用工作的空隙，中午一个小时吃饭剩下的时间，晚上9点以后到家的时间都已经看了从《Effective C++》，《windows核心编程》，《lua程序设计》，《python核心编程》，《advanced bash shell》，和《win32多线程程序设计》的一半了，我还当心什么？担心什么啊。就一周一天的休息，我还能看完上述书籍，再熟悉了makefile的写法，vim的用法，（很好用哦：），我现在在公司都是用VS+VA+vimemu）,gdb的调试方法，学完了上面的所有，才用了我半年。半年以来几乎天天加班，一周才休息一天，我怕什么？怎么还怕没有时间来学点数据结构，并且实践一下我喜欢的lua和python?呵呵，不会没有时间，我有的是时间，时间不就像海绵里的水吗？（谁说的来着？）
 

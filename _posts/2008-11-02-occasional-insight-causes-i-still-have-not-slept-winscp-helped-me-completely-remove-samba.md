@@ -22,7 +22,7 @@ author:
   last_name: ''
 ---
 
-作者告别配置繁琐的Samba，转而使用SFTP和WinSCP，轻松实现了安全加密的文件共享。
+告别配置繁琐的Samba，转而使用SFTP和WinSCP，轻松实现了安全加密的文件共享。
 
 <!-- more -->
 

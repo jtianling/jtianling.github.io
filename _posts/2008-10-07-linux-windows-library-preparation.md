@@ -20,7 +20,7 @@ author:
   last_name: ''
 ---
 
-作者计划用C++、Python、Lua和Shell四种语言，开发一个适合开发使用的Makefile自动生成工具，以解决实际问题并锻炼编程能力。
+计划用C++、Python、Lua和Shell四种语言，开发一个适合开发使用的Makefile自动生成工具，以解决实际问题并锻炼编程能力。
 
 <!-- more -->
 

@@ -22,13 +22,11 @@ author:
   last_name: ''
 ---
 
-本文档讲解SelfExtractor的实现，它通过在文件尾部添加目录，将可执行文件与数据打包成自解压程序，并支持解压其中文件。
+本讲解SelfExtractor的实现，它通过在文件尾部添加目录，将可执行文件与数据打包成自解压程序，并支持解压其中文件。
 
 <!-- more -->
 
 # SelfExtractor理解文档
-
-九天雁翎:blog.jtianling.cn
 
 ## ReadToc(CString Filename)
 

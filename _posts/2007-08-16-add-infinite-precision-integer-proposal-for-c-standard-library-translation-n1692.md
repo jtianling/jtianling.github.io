@@ -21,10 +21,6 @@ author:
   last_name: ''
 ---
 
-本文是一份提案，建议为C++标准库添加无限精度整数类，以处理超出内置类型范围的超大整数。文章详细探讨了其设计动机、数据结构、性能优化及具体接口方案。
-
-<!-- more -->
-
 A Proposal to add the Infinite Precision Integer to the C++ Standard Library N1692 1 July 2004
 
 原作者：M.J. Kronenburg
@@ -34,6 +30,8 @@ e-mail: M.Kronenburg@inter.nl.net
 原文链接:http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1692.pdf
 
 九天雁翎简单翻译稿：
+
+<!-- more -->
 
 **增加无限长精确整数（infinite precision integer）给C++标准库的提案**
 
