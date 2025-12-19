@@ -132,5 +132,3 @@ ssh-keygen 命令会生成两个密钥，首先我们需要将公钥改名留在
 好了，今天就写到这，以后逐步再写 AMP，Proftpd 和 Squid 的安装和设置。
 
 **原文链接**：[花儿开了](<http://blog.istef.info/>) - [Ubuntu 服务器上 SSH Server 的安装和设置](<http://blog.istef.info/2008/10/02/setup-ssh-server-on-ubuntu-server/> "Permanent Link to Ubuntu 服务器上 SSH Server 的安装和设置")
-
-** 本博客文章欢迎转载，但请务必保留原文链接！同时，本博文章不欢迎任何形式的派生及篡改，如需引用，请使用引用通告 - [http://blog.istef.info/2008/10/02/setup-ssh-se.../trackback/](<http://blog.istef.info/2008/10/02/setup-ssh-server-on-ubuntu-server/trackback/>)。商业网站使用请务必先取得作者授权！
