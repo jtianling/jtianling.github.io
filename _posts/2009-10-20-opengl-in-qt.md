@@ -26,7 +26,6 @@ author:
 
 <!-- more -->
 
-# OpenGL in Qt
 
 
 

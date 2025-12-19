@@ -26,7 +26,6 @@ atexit是C库函数，可在程序正常退出时，按后进先出顺序执行�
 
 <!-- more -->
 
-## 一天一个C Run-Time Library 函数 （9） atexit
 
 
 ## msdn:

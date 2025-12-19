@@ -28,7 +28,6 @@ author:
 
 <!-- more -->
 
-# 个人研究《数据结构与算法分析-C++描述》Vector实现的问题，new与初始化
 
 <<Data Structures and Algorithm Analysis in C++>> --《数据结构与算法分析c++描述》 Mark Allen Weiss著 人民邮电大学出版 中文版第61面， 图3-7,3-8，实现的一个列表Vector类。
 原实现大概如下：（我可能修改了一些变量的命名以符合我的习惯）

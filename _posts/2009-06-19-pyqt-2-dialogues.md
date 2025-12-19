@@ -26,7 +26,6 @@ author:
 
 <!-- more -->
 
-# PyQt(2) 对话框
 
 
 

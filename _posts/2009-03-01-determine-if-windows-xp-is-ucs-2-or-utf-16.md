@@ -24,7 +24,6 @@ author:
 
 <!-- more -->
 
-# 确定Windows XP到底是UCS-2的还是UTF-16的
 
 
 

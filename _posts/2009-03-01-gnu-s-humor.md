@@ -25,7 +25,6 @@ GNU社区充满幽默感，其独特的命名（如GNU、copyleft）和有趣的
 
 <!-- more -->
 
-### GNU的幽默
 
 
 GNU从名字开始幽默,GNU是GNU Not Unix的缩写。。。。-_-!

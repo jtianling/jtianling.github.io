@@ -24,7 +24,6 @@ author:
 
 <!-- more -->
 
-# 黑客调试技术揭秘（Hacker Debugging Uncovered） 学习（1） 最简单的密码保护破解
 
 
 源代码：

@@ -27,7 +27,6 @@ author:
 
 <!-- more -->
 
-# 队列(queue)的链表(list)实现及循环数组(circular array)实现 C++实现
 
 
 <<Data Structures and Algorithm Analysis in C++>>

@@ -25,7 +25,6 @@ author:
 
 <!-- more -->
 
-# 假如说Debug是减少Bug的过程，那么编程就是制造Bug的过程
 
 
 

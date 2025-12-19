@@ -29,7 +29,6 @@ author:
 
 <!-- more -->
 
-## 一天一个C Run-Time Library 函数 (10) atol,atof,atoi, ltoa , itoa,
 
 
 ## msdn:

@@ -26,7 +26,6 @@ author:
 
 <!-- more -->
 
-# UTF-16的编码转换函数（Python实现）
 
 
 

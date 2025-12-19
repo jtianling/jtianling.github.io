@@ -26,7 +26,6 @@ author:
 
 <!-- more -->
 
-# 从最简单的Win32汇编程序，HelloWorld说起
 
 
 

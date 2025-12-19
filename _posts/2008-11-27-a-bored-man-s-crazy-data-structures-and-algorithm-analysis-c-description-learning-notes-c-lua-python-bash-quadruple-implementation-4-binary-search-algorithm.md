@@ -32,7 +32,6 @@ author:
 
 <!-- more -->
 
-# 一个无聊男人的疯狂《数据结构与算法分析-C++描述》学习笔记 用C++/lua/python/bash的四重实现（4）二分搜索算法
 
 
 <<Data Structures and Algorithm Analysis in C++>>

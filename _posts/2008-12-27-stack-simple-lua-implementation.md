@@ -27,7 +27,6 @@ author:
 
 <!-- more -->
 
-# 堆栈的简单lua实现
 
 
 ```lua

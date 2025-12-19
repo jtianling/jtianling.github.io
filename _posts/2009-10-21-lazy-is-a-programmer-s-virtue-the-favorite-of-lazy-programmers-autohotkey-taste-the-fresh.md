@@ -25,7 +25,6 @@ AutoHotkey是Windows平台的自动化工具，能通过脚本自定义快捷键
 
 <!-- more -->
 
-### 懒惰是程序员的美德! 懒惰程序员的最爱AutoHotkey 尝鲜
 
 
 

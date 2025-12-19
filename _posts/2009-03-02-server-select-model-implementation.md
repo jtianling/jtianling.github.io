@@ -25,7 +25,6 @@ author:
 
 <!-- more -->
 
-# 服务器Select模型的实现
 
 
 

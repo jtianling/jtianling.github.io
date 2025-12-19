@@ -28,7 +28,6 @@ author:
 
 <!-- more -->
 
-# UCS-2与UTF8之间的选择（2）--Unicode组织提供的C/C++的Unicode编码转换函数
 
 
 
