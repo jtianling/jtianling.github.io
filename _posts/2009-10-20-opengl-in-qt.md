@@ -47,8 +47,8 @@ Qt可以说是对OpenGL有直接支持的，提供了QGLWidget类来绘制OpenGL
 #ifndef OPENGL_H
 #define OPENGL_H
 
-#include   
-#include   
+#include <iostream>
+#include <string>
 #include "ui_opengl.h"
 
 class OpenGL : public QGLWidget

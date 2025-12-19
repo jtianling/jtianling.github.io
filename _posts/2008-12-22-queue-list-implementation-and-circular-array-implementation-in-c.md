@@ -43,10 +43,8 @@ queue.h
   1 #ifndef __QUEUE_H__  
   2 #define  
 __QUEUE_H__  
-  3 #include  
-<list>  
-  4 #include  
-<vector>  
+  3 #include  <list>  
+  4 #include  <vector>  
   5 **using**  **namespace**  std;  
   6   
   7 **template** <**typename**  T>  
@@ -73,8 +71,7 @@ __QUEUE_H__
  28         moList.pop_front();  
  29     }  
  30   
- 31     T&  
-front()  
+ 31     T&  front()  
  32     {  
  33         **return**  moList.front();  
  34     }  
@@ -85,8 +82,7 @@ front()
  39     }  
  40   
  41   
- 42     T&  
-back()  
+ 42     T&  back()  
  43     {  
  44         **return**  moList.back();  
  45     }  
@@ -96,21 +92,17 @@ back()
  49         **return**  moList.back();  
  50     }  
  51   
- 52     **void**  push(**const**  T&  
-aItem)  
+ 52     **void**  push(**const**  T&  aItem)  
  53     {  
  54         moList.push_back(aItem);  
  55     }  
  56   
  57 **private** :  
- 58     list<T>  
-moList;  
+ 58     list<T>  moList;  
  59 };  
  60   
- 61 //  
-implement a queue with circular array  
- 62 // there  
-is no error check.  
+ 61 //  implement a queue with circular array  
+ 62 // there  is no error check.  
  63 **template** <**typename**  T, **size_t**  ArraySize>  
  64 **class**  CQueueCir  
  65 {  
@@ -118,11 +110,8 @@ is no error check.
  67     CQueueCir()  
  68     {  
  69         // init to zero  
- 70         memset(maData,  
-0, ArraySize * **sizeof**(T)  
-);  
- 71         mpFront  
-= mpBack = maData + ArraySize/2;  
+ 70         memset(maData,  0, ArraySize * **sizeof**(T)  );  
+ 71         mpFront  = mpBack = maData + ArraySize/2;  
  72     }  
  73   
  74   
@@ -168,11 +157,9 @@ is no error check.
 114         **return**  *(mpBack-1);  
 115     }  
 116   
-117     **void**  push(**const**  T&  
-aItem)  
+117     **void**  push(**const**  T&  aItem)  
 118     {  
-119         *mpBack++  
-= aItem;  
+119         *mpBack++  = aItem;  
 120         RollToHead(&mpBack);  
 121     }  
 122   
@@ -180,16 +167,13 @@ aItem)
 124 **private** :  
 125     **void**  RollToHead(T** ap)  
 126     {  
-127         **if**(**size_t**(*ap  
-\- maData) >= ArraySize)  
+127         **if**(**size_t**(*ap  \- maData) >= ArraySize)  
 128         {  
-129             *ap  
-= maData;  
+129             *ap  = maData;  
 130         }  
 131     }  
 132   
-133     T  
-maData[ArraySize];  
+133     T  maData[ArraySize];  
 134     
 135     // Hold the important position  
 136     T* mpFront;  
@@ -203,22 +187,15 @@ maData[ArraySize];
 
 ```cpp
  1 #include <stdio.h>  
- 2 #include  
-<stdlib.h>  
- 3 #include  
-<iostream>   
- 4 #include  
-"Queue.h"  
+ 2 #include  <stdlib.h>  
+ 3 #include  <iostream>   
+ 4 #include  "Queue.h"  
  5   
- 6 #define  
-OUT(queue) /  
- 7     cout  
-<<"front: " <<queue.front() <<",back: " <<queue.back()  
-<<",size: " <<queue.size() <<endl  
+ 6 #define  OUT(queue) /  
+ 7     cout  <<"front: " <<queue.front() <<",back: " <<queue.back()  <<",size: " <<queue.size() <<endl  
  8   
  9 **template** <**typename**  Queue>  
-10 **void**  test(Queue&  
-aoQueue)  
+10 **void**  test(Queue&  aoQueue)  
 11 {  
 12     aoQueue.push(1);  
 13     OUT(aoQueue);  
@@ -239,16 +216,13 @@ aoQueue)
 28     OUT(aoQueue);  
 29 }  
 30   
-31 **int**  main(**int**  argc, **char** *  
-argv[])  
+31 **int**  main(**int**  argc, **char** *  argv[])  
 32 {  
 33     CQueueSimple<**int** > liQ;  
 34     test(liQ);  
-35     cout  
-<<endl;  
+35     cout  <<endl;  
 36   
-37     CQueueCir<**int** , 3>  
-liQCir;  
+37     CQueueCir<**int** , 3>  liQCir;  
 38     test(liQCir);  
 39   
 40     exit(0);  

@@ -30,8 +30,8 @@ author:
 测试 源代码：
 
 ```cpp
-1 #include   
-2 #include   
+1 #include  <iosteam>
+2 #include  <string>
 3   
 4 **class** CTestThisPointer  
 5 {  

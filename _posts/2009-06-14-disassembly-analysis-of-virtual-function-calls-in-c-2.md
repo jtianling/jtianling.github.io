@@ -35,11 +35,6 @@ author:
 ## 示例程序：
 
 ```cpp
-#include
-
-#include
-
-#include
 
 class CTestThisPointer 
 
@@ -169,11 +164,6 @@ int main()
 ## 继续，例2：
 
 ```cpp
-#include
-
-#include
-
-#include
 
 class CTestThisPointer 
 

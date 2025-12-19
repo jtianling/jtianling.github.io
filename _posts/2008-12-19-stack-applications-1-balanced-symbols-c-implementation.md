@@ -29,26 +29,19 @@ author:
 
 ```cpp
 1 #include <stdio.h>  
-2 #include  
-<stdlib.h>  
-3 #include  
-<stack>  
-4 #include  
-<string>  
-5 #include  
-<iostream>  
+2 #include  <stdlib.h>  
+3 #include  <stack>  
+4 #include  <string>  
+5 #include  <iostream>  
 6 **using**  **namespace**  std;  
 7   
-8 **bool**  CheckStack(**const**  **char**  ac,  
-stack<**char** >& acSta)  
+8 **bool**  CheckStack(**const**  **char**  ac,  stack<**char** >& acSta)  
 9 {  
-10     **if**(ac == '(' ||  
-ac == '[')  
+10     **if**(ac == '(' ||  ac == '[')  
 11     {  
 12         acSta.push(ac);  
 13     }  
-14     **else**  **if**(ac  
-== ')')  
+14     **else**  **if**(ac  == ')')  
 15     {  
 16         **if**( acSta.empty() || acSta.top() != '(' )  
 17         {  
@@ -73,21 +66,17 @@ ac == ']')
 35 {  
 36     **if**(!acSta.empty())  
 37     {  
-38         cout  
-<<"stack: ";  
+38         cout  <<"stack: ";  
 39         **while**(!acSta.empty())  
 40         {  
-41             cout  
-<<acSta.top() <<" ";  
+41             cout  <<acSta.top() <<" ";  
 42             acSta.pop();  
 43         }  
-44         cout  
-<<endl;  
+44         cout  <<endl;  
 45     }  
 46 }  
 47   
-48 **int**  main(**int**  argc, **char** *  
-argv[])  
+48 **int**  main(**int**  argc, **char** *  argv[])  
 49 {  
 50     **char**  lc;  
 51     stack<**char** > lcSta;  
@@ -95,9 +84,7 @@ argv[])
 53     {  
 54         **if**(!CheckStack(lc, lcSta))  
 55         {  
-56             cout  
-<<"Error happen: " <<lc  
-<<endl;  
+56             cout  <<"Error happen: " <<lc  <<endl;  
 57             DumpStack(lcSta);  
 58             exit(1);  
 59         }  

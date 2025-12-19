@@ -150,8 +150,8 @@ author:
 还原的算法源代码如下：
 
 ```c
-1 #include   
-2 #include   
+1 #include <iostream>
+2 #include <string>
 3 **int** gacCode[] = {0x0c, 0x0A, 0x13, 0x9, 0x0c, 0x0b, 0x0a, 0x08};  
 4   
 5 **int** __cdecl KeyGen(**char** * lpName, **int** aiLen)  

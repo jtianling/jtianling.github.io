@@ -42,11 +42,8 @@ atexit(   void (__cdecl *_func_ )( void ) );
 ## 测试程序：
 
 ```c
-#include  
-<stdlib.h>
-
-#include  
-<stdio.h>
+#include  <stdlib.h>
+#include  <stdio.h>
 
 void fn1(  
 void ), fn2( void ), fn3( void ), fn4( void );

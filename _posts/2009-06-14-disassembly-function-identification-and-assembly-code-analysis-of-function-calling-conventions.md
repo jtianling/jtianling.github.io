@@ -128,7 +128,7 @@ Release编译后，反汇编代码及其注释如下：
 源码：
 
 ```cpp
-1 #include   
+1 #include <iostream>
 2   
 3 **int** __cdecl Add1(**int** x,**int** y) // default  
 4 {  
@@ -342,7 +342,7 @@ Release编译后，反汇编代码及其注释如下：
 这里再看两个复杂点的例子，一个是局部变量多一点的Add5,一个是参数多一点的fastcall调用的函数Add6
 
 ```cpp
-1 #include   
+1 #include <iostream>
 2   
 3 **int** __cdecl Add5(**int** x,**int** y) // default  
 4 {  

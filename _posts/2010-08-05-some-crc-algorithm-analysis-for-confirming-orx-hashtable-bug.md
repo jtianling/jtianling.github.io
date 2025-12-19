@@ -37,8 +37,6 @@ author:
 先将整个Orx的Crc算法抽出来，如下：
 
 ```cpp
-#include   
-
 typedef unsigned long          orxU32;
 typedef char                    orxCHAR;
 #define orxCHAR_NULL               '0'
