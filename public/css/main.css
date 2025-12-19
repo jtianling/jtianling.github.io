@@ -290,8 +290,11 @@ article .codehilite pre
   padding-right: 5px;
   display: block;
   background-color: #f9f9f9;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  white-space: pre;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-width: 100%;
+  word-wrap: normal;
 }
 
 article img {

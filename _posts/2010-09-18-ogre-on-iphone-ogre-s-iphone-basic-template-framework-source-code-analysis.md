@@ -1,35 +1,20 @@
 ---
 layout: post
-title: OGRE On iPhone ---
-
-本文分析了Ogre 3D引擎的iPhone基础模版框架，讲解了其初始化、触摸输入处理等核心功能，并对比了iPhone与桌面版在程序驱动方式上的差异。
-
-<!-- more -->
-
--Ogre的iPhone基础模版框架源代码分析
+title: OGRE On iPhone - Ogre的iPhone基础模版框架源代码分析
 categories:
 - iOS
 - "图形技术"
-tags: []
+tags:
+- OGRE
 status: publish
 type: post
 published: true
-meta:
-  ratings_users: '0'
-  ratings_score: '0'
-  ratings_average: '0'
-  views: '37'
-author:
-  login: jtianling
-  email: jtianling@gmail.com
-  display_name: jtianling
-  first_name: ''
-  last_name: ''
 ---
 
 
-
 当想要在iPhone上使用某个3D引擎的时候，感觉我这水平，自己写好像还不现实，学到自己能写都不知道要到何年何月了，于是折腾过没有官方支持但是比较简单而且我比较熟悉的Irrlicht。虽然的确成功了（见我[原来的文章](<http://www.jtianling.com/archive/2010/06/04/5646331.aspx> "原来的文章")），但是弄2D游戏的时候，（用其他引擎）经历过一些痛苦的事情后，我发现强大，成熟的引擎，以及官方的支持是多么重要。。。。。于是，虽然Ogre的效率在iPhone上还有些难以承受，但是，我还是希望学习学习，并将Ogre作为优先使用的3D引擎。谁叫Ogre那么流行呢？将来要是弄老本行，去做网络游戏，估计也不错^^
+
+<!-- more -->
 
 ## 本文写作目的：
 
