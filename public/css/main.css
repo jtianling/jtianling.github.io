@@ -162,6 +162,10 @@ blockquote {
   border: 0;
 }
 
+#social .site-search {
+  display: inline-block;
+}
+
 @media screen and (max-width: 488px) {
   #social {
     position: relative;
@@ -174,6 +178,17 @@ blockquote {
   padding: 0 5px;
   font-size: 1.2rem;
   color: #3A4145;
+}
+
+#main #social .social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#main #social .social-icon {
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 #main #social a:hover { color: steelblue; }
@@ -299,6 +314,21 @@ article img {
   background-position: center center;
   background-repeat: no-repeat;
   margin: auto;
+}
+
+.fluid-width-video-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 0;
+}
+
+.fluid-width-video-wrapper iframe,
+.fluid-width-video-wrapper object,
+.fluid-width-video-wrapper embed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 article .sign {
