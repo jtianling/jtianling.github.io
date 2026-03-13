@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Agent of Empires：一个基于 tmux 的 AI agent 会话管理器
-date: 2026-03-13
+date: 2026-03-13 15:21:39 +0800
 comments: true
 categories: 编程
 published: true
