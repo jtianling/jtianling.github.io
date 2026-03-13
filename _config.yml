@@ -23,7 +23,15 @@ source: .
 destination: ./_site
 layouts_dir:     ./_layouts
 include:     ['.htaccess']
-exclude:     ['Gemfile', 'Gemfile.lock', 'README.md', '/vendor']
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - venv
+  - target
+  - __pycache__
+  - _posts_backup
 keep_files:  ['.git','.svn']
 plugins: [jekyll-paginate]
 timezone:    Asia/Shanghai
