@@ -30,6 +30,9 @@ Set `google_analytics` in `_config.yml` to a GA4 measurement ID such as `G-XXXXX
 
 ## Recent posts
 
+- [只给 Spec，不给代码：也许这会成为一种新的软件发布方式](https://www.jtianling.com/spec-first-software-release.html)
+- [Agent of Empires：一个基于 tmux 的 AI agent 会话管理器](https://www.jtianling.com/agent-of-empires-intro.html)
+- [net-use 发布：监控 macOS app 实际访问了哪些 IP](https://www.jtianling.com/net-use-release.html)
 - [skillsmgr 发布](https://www.jtianling.com/skillsmgr-release.html)
 - [rulesmgr 发布：一份规则，多工具同步](https://www.jtianling.com/rules-manager-release.html)
 - [Ollama rerank adapter](https://www.jtianling.com/ollama-rerank-adapter.html)
@@ -37,6 +40,3 @@ Set `google_analytics` in `_config.yml` to a GA4 measurement ID such as `G-XXXXX
 - [编程语言语法比较网站](https://www.jtianling.com/programming-language-comparison.html)
 - [Rust 的交叉编译](https://www.jtianling.com/cross-compile-with-rust.html)
 - [用 Dart 加 Pixijs 写 HTML 游戏](https://www.jtianling.com/dart-with-pixijs.html)
-- [用 Python 写游戏 第二篇](https://www.jtianling.com/learn-python-by-game-examples-2.html)
-- [用 Python 写游戏 第一篇](https://www.jtianling.com/learn-python-by-game-examples-1.html)
-- [用 Python 写游戏 第一篇 课后习题答案](https://www.jtianling.com/learn-python-by-game-examples-1-answer.html)
