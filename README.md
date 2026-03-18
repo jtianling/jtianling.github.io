@@ -30,6 +30,7 @@ Set `google_analytics` in `_config.yml` to a GA4 measurement ID such as `G-XXXXX
 
 ## Recent posts
 
+- [dual-yazi: 给 Yazi 加上我想要的双栏模式](https://www.jtianling.com/yazi-dual-pane-mode.html)
 - [只给 Spec，不给代码：也许这会成为一种新的软件发布方式](https://www.jtianling.com/spec-first-software-release.html)
 - [Agent of Empires：一个基于 tmux 的 AI agent 会话管理器](https://www.jtianling.com/agent-of-empires-intro.html)
 - [net-use 发布：监控 macOS app 实际访问了哪些 IP](https://www.jtianling.com/net-use-release.html)
@@ -39,4 +40,3 @@ Set `google_analytics` in `_config.yml` to a GA4 measurement ID such as `G-XXXXX
 - [给 DeepSeek 网站加个搜索功能的Chrome插件](https://www.jtianling.com/add-search-to-deepseek.html)
 - [编程语言语法比较网站](https://www.jtianling.com/programming-language-comparison.html)
 - [Rust 的交叉编译](https://www.jtianling.com/cross-compile-with-rust.html)
-- [用 Dart 加 Pixijs 写 HTML 游戏](https://www.jtianling.com/dart-with-pixijs.html)
