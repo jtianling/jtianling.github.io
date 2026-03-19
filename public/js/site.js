@@ -1,3 +1,25 @@
+// Normalize duplicate content URLs for crawlers and users on the static site.
+(function () {
+  var pathname = window.location.pathname || "/";
+  var normalizedPath = pathname;
+
+  if (normalizedPath.slice(-10) === "index.html") {
+    normalizedPath = normalizedPath.slice(0, -10);
+  }
+
+  if (normalizedPath === "") {
+    normalizedPath = "/";
+  }
+
+  if (window.location.search || normalizedPath !== pathname) {
+    var target = normalizedPath + window.location.hash;
+
+    if (target !== pathname + window.location.search + window.location.hash) {
+      window.location.replace(target);
+    }
+  }
+})();
+
 document.addEventListener("DOMContentLoaded", function () {
   var selectors = [
     "iframe[src*='player.vimeo.com']",

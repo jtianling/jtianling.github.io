@@ -4,6 +4,20 @@
 <!DOCTYPE html>
 <html>
   <head>
+    {% assign canonical_path = page.url | default: "/" %}
+    {% if canonical_path contains "/index.html" %}
+      {% assign canonical_path = canonical_path | replace: "/index.html", "/" %}
+    {% endif %}
+    {% assign canonical_url = site.url | append: canonical_path %}
+    {% if page.description %}
+      {% assign meta_description = page.description %}
+    {% elsif page.excerpt %}
+      {% assign meta_description = page.excerpt | strip_html | strip_newlines | truncate: 120 %}
+    {% elsif page.title %}
+      {% assign meta_description = page.content | strip_html | strip_newlines | truncate: 120 %}
+    {% else %}
+      {% assign meta_description = site.description %}
+    {% endif %}
     <meta charset="UTF-8">
 
     <title>{% if page.title %} {{ page.title }} {% else %} {{ site.name }} {% endif %} </title>
@@ -22,11 +36,7 @@
     <meta name="author" content="{{ site.author }}">
     <meta http-equiv="refresh" content="80000">
 
-    {% if page.title %}
-    <meta name="description" content="{{ page.content | strip_html | strip_newlines | truncate: 120 }}">
-    {% else %}
-    <meta name="description" content="{{ site.description }}">
-    {% endif %}
+    <meta name="description" content="{{ meta_description }}">
 
     {% if page.tags %}
     <meta name="keywords" content="{{ page.tags | array_to_sentence_string }}">
@@ -38,11 +48,9 @@
     <meta itemprop="name" content="{{ site.name }}">
     <meta itemprop="image" content="{{ site.url }}/public/images/logo.png">
 
-    {% if page.title %}
-    <meta itemprop="description" content="{{ page.content | strip_html | strip_newlines | truncate: 120 }}">
-    {% else %}
-    <meta itemprop="description" content="{{ site.description }}">
-    {% endif %}
+    <meta itemprop="description" content="{{ meta_description }}">
+
+    <link rel="canonical" href="{{ canonical_url }}">
 
     <!-- feed links -->
     <link rel="alternate" href="{{ site.url }}/feed.xml" type="application/rss+xml" title="{{ site.name }}">
