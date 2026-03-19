@@ -33,7 +33,9 @@ exclude:
   - __pycache__
   - _posts_backup
 keep_files:  ['.git','.svn']
-plugins: [jekyll-paginate]
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
 timezone:    Asia/Shanghai
 encoding:    utf-8
 
