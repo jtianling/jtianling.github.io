@@ -32,7 +32,6 @@ Set `google_analytics` in `_config.yml` to a GA4 measurement ID such as `G-XXXXX
 
 - [dual-yazi: 给 Yazi 加上我想要的双栏模式](https://www.jtianling.com/yazi-dual-pane-mode.html)
 - [只给 Spec，不给代码：也许这会成为一种新的软件发布方式](https://www.jtianling.com/spec-first-software-release.html)
-- [Agent of Empires：一个基于 tmux 的 AI agent 会话管理器](https://www.jtianling.com/agent-of-empires-intro.html)
 - [net-use 发布：监控 macOS app 实际访问了哪些 IP](https://www.jtianling.com/net-use-release.html)
 - [skillsmgr 发布](https://www.jtianling.com/skillsmgr-release.html)
 - [rulesmgr 发布：一份规则，多工具同步](https://www.jtianling.com/rules-manager-release.html)
