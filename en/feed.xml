@@ -1,0 +1,30 @@
+---
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title type="text">{{ site.english.title | default: site.english.name | xml_escape }}</title>
+<generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="{{ site.url }}/en/feed.xml" />
+<link rel="alternate" type="text/html" href="{{ site.url }}/en/" />
+<updated>{{ site.time | date_to_xmlschema }}</updated>
+<id>{{ site.url }}/en/</id>
+<author>
+  <name>{{ site.english.author | default: site.author | xml_escape }}</name>
+  <uri>{{ site.url }}/en/</uri>
+</author>
+{% assign en_posts = site.en_posts | sort: "date" | reverse %}
+{% for post in en_posts limit:20 %}
+<entry>
+  <title type="html"><![CDATA[{{ post.title | cdata_escape }}]]></title>
+  <link rel="alternate" type="text/html" href="{{ site.url }}{{ post.url }}" />
+  <id>{{ site.url }}{{ post.url }}</id>
+  <published>{{ post.date | date_to_xmlschema }}</published>
+  <updated>{{ post.date | date_to_xmlschema }}</updated>
+  <author>
+    <name>{{ site.english.author | default: site.author | xml_escape }}</name>
+    <uri>{{ site.url }}/en/</uri>
+  </author>
+  <content type="html">{{ post.content | xml_escape }}</content>
+</entry>
+{% endfor %}
+</feed>

@@ -1,0 +1,84 @@
+---
+layout: default_en
+---
+
+{% assign en_posts = site.en_posts | sort: "date" | reverse %}
+{% assign newer_post = nil %}
+{% assign older_post = nil %}
+{% assign en_posts_size = en_posts | size %}
+{% for post in en_posts %}
+  {% if post.url == page.url %}
+    {% assign current_index = forloop.index0 %}
+    {% assign newer_index = current_index | minus: 1 %}
+    {% assign older_index = current_index | plus: 1 %}
+    {% if newer_index >= 0 %}
+      {% assign newer_post = en_posts[newer_index] %}
+    {% endif %}
+    {% if older_index < en_posts_size %}
+      {% assign older_post = en_posts[older_index] %}
+    {% endif %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<section class="posts">
+  <article>
+    <header class="center">
+      <time>{{ page.date | date: "%B %-d, %Y" }}</time>
+      <h1><a href="{{ page.url }}">{{ page.title }}</a></h1>
+    </header>
+    {{ content | replace: '<img ', '<img loading="lazy" decoding="async" ' }}
+
+    {% if page.categories and page.categories.size > 0 or page.tags and page.tags.size > 0 %}
+    <p>
+      {% if page.categories and page.categories.size > 0 %}
+      Categories:&nbsp;
+      {% for category in page.categories %}
+      <span class="category">{{ category }}</span>{% unless forloop.last %}, {% endunless %}
+      {% endfor %}
+      <br />
+      {% endif %}
+
+      {% if page.tags and page.tags.size > 0 %}
+      Tags:&nbsp;
+      {% for tag in page.tags %}
+      <span class="tag">{{ tag }}</span>{% unless forloop.last %}, {% endunless %}
+      {% endfor %}
+      {% endif %}
+    </p>
+    {% endif %}
+
+    <div class="sign">
+      <p> By {{ site.english.author | default: site.author }} </p>
+      <p> {{ page.date | date: "%B %-d, %Y" }} | <a href="{{ page.url }}">{{ site.english.name | default: site.name }}</a></p>
+    </div>
+
+    <div>
+      {% if older_post %}
+      <a href="{{ older_post.url }}" class="nav_previous" title="{{ older_post.title }}">Older: {{ older_post.title }}</a>
+      {% endif %}
+      {% if newer_post %}
+      <a href="{{ newer_post.url }}" class="nav_next" title="{{ newer_post.title }}">Newer: {{ newer_post.title }}</a>
+      {% endif %}
+    </div>
+
+    {% if page.comments %}
+    <script src="https://giscus.app/client.js"
+            data-repo="jtianling/jtianling.github.io"
+            data-repo-id="MDEwOlJlcG9zaXRvcnkxOTQ2NjYwNQ=="
+            data-category="Announcements"
+            data-category-id="DIC_kwDOASkJbc4Cz8_R"
+            data-mapping="pathname"
+            data-strict="1"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="top"
+            data-theme="light"
+            data-lang="en"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async>
+    </script>
+    {% endif %}
+  </article>
+</section>

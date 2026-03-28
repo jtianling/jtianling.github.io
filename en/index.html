@@ -1,0 +1,35 @@
+---
+layout: default_en
+title: English
+permalink: /en/
+description: English posts from JTianling's blog.
+---
+
+{% assign en_posts = site.en_posts | sort: "date" | reverse %}
+
+<section class="posts">
+{% if en_posts.size > 0 %}
+  {% for post in en_posts limit:10 %}
+  <article>
+    <header class="center">
+      <time>{{ post.date | date: "%B %-d, %Y" }}</time>
+      <h1><a href="{{ post.url }}">{{ post.title }}</a></h1>
+    </header>
+    {{ post.excerpt | replace: '<img ', '<img loading="lazy" decoding="async" ' }}
+    <p class="sign"><a href="{{ post.url }}">Read more....</a></p>
+  </article>
+  {% endfor %}
+{% else %}
+  <article>
+    <header class="center">
+      <h1>English Posts</h1>
+    </header>
+    <p>No English posts have been published yet.</p>
+    <p>Put new English articles under <code>_en_posts/</code>.</p>
+  </article>
+{% endif %}
+</section>
+
+<div class="center" style="margin-bottom: 30px;">
+  <a href="/en/archive.html">All English Posts</a>
+</div>

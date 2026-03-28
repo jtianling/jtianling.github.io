@@ -14,6 +14,8 @@ Blog: <https://www.jtianling.com>
 ## Sections
 
 - Archive: <https://www.jtianling.com/archive.html>
+- English: <https://www.jtianling.com/en/>
+- English archive: <https://www.jtianling.com/en/archive.html>
 - Categories: <https://www.jtianling.com/categories.html>
 - Tags: <https://www.jtianling.com/tags.html>
 - Programming: <https://www.jtianling.com/programming.html>
@@ -27,6 +29,27 @@ Blog: <https://www.jtianling.com>
 - Serve locally: `bundle exec jekyll serve --host 127.0.0.1 --port 8080`
 
 Set `google_analytics` in `_config.yml` to a GA4 measurement ID such as `G-XXXXXXXXXX` if you want analytics enabled.
+
+## English posts
+
+- Put English articles in `_en_posts/`
+- Keep Chinese source posts in `_posts/`
+- English index: `/en/`
+- English archive: `/en/archive.html`
+- Each English post should include an explicit `date` in front matter because `_en_posts/` is a Jekyll collection, not the built-in posts directory
+
+Example:
+
+```md
+---
+title: Hello English
+date: 2026-03-29 10:00:00 +0800
+categories: [programming]
+tags: [jekyll, english]
+---
+
+English post content.
+```
 
 ## Recent posts
 
