@@ -110,13 +110,13 @@ aoe add --sandbox .
 
 ### 我自己 fork 以后改了哪些
 
-我从比较早期就开始 fork 了, 累计提交了大概 90 多个 commit. 早期加的一些功能, 比如 profile 机制, 终端标题管理, session 之间的快捷切换(`Ctrl+.` / `Ctrl+,`), tmux 下的各种交互修复.
+我从比较早期就开始 fork 了, 累计提交了大概 90 多个 commit. 早期加的一些功能, 比如 profile 机制, 终端标题管理, tmux 下的各种交互修复. 目前 fork 比上游多出来的改动, 主要集中在几个日常体验的细节上:
 
-目前 fork 比上游多出来的改动, 主要集中在几个日常体验的细节上:
+第一个是大量的快捷键添加. 原版 AoE 在 tmux session 之间的导航比较基础, 我加了一整套: `Ctrl+.` / `Ctrl+,` 在 session 之间快速切换(跨 group 循环), 在 TUI 和 tmux 里都可以用数字键(1-99)直接跳转到指定 session, `Ctrl+b b` 回到上一个 session(类似 vim 的 `Ctrl+^`). tmux 内部也加了 vi 风格的 pane 导航(`Ctrl+b h/j/k/l`), `Ctrl+;` 循环切换 pane, `Ctrl+Q` 一键 detach. 这些快捷键加起来以后, 日常在多个 agent 之间跳转的手感好了很多, 基本不需要再回到 TUI 列表里去选.
 
-第一个是 pane 工作目录继承. 在 AoE session 里用 `%` 或 `"` 分割 pane 的时候, 新 pane 会自动继承当前项目的工作目录, 不用每次手动 cd 过去. 实现上是通过 tmux session option 存了项目路径, 然后覆盖了 split 相关的 keybinding. 看起来是小事, 但如果经常在 agent session 里开额外的 pane 做辅助操作, 省掉这一步其实挺舒服.
+第二个是 Notification Bar. 灵感来自 [Agent Deck](https://github.com/asheshgoplani/agent-deck), 在 tmux 的状态栏里直接显示所有 session 的实时状态(Running / Waiting / Idle), 带状态图标. 这样即使你 attach 在某一个 agent session 里工作, 也能通过状态栏一眼看到其他 session 有没有在等你输入, 不用切回 TUI 去检查. 配合 quick-switch, 跳过去的时候还会自动 ack 掉 Waiting 状态.
 
-第二个是 macOS 系统声音支持. 原版的声音提醒只支持 `.wav` 和 `.ogg`, 我加了 `.aiff` 格式的支持, 这样可以直接用 `/System/Library/Sounds/` 下面的 macOS 系统音效, 不用额外找音频文件.
+第三个是 Agent 的 Restart 功能. 按 `R` 键可以直接重启 agent pane, 不需要销毁整个 session 再重建. 主要场景是像 Claude Code 这样需要重启才能刷新 skill 配置的 agent, 改完 skill 以后按一下就行, 不用手动退出再重开. 对 Claude Code 和 Codex 还做了优雅的 resume restart, 会持久化 resume token, 重启后可以从上次的对话状态恢复.
 
 
 ### 总的感觉
