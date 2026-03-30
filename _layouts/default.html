@@ -52,6 +52,18 @@
 
     <link rel="canonical" href="{{ canonical_url }}">
 
+    <!-- hreflang: link Chinese/English counterparts for SEO -->
+    {% if page.url == '/' %}
+    <link rel="alternate" hreflang="zh" href="{{ site.url }}/" />
+    <link rel="alternate" hreflang="en" href="{{ site.url }}/en/" />
+    <link rel="alternate" hreflang="x-default" href="{{ site.url }}/" />
+    {% elsif page.layout == 'post' %}
+    {% for en_post in site.en_posts %}{% if en_post.slug == page.slug %}
+    <link rel="alternate" hreflang="zh" href="{{ site.url }}{{ page.url }}" />
+    <link rel="alternate" hreflang="en" href="{{ site.url }}{{ en_post.url }}" />
+    {% endif %}{% endfor %}
+    {% endif %}
+
     <!-- Language auto-detection: redirect English browsers to /en/ on homepage -->
     {% if page.url == '/' %}
     <script>
