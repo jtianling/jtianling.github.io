@@ -141,8 +141,7 @@ MANUAL = {
 }.freeze
 
 IGNORED = [
-  "/转-我不是谁的代言-我是程序员-程序员版的凡客体.html",
-  "/agent-of-empires-intro.html"
+  "/转-我不是谁的代言-我是程序员-程序员版的凡客体.html"
 ].freeze
 
 def target_for(path, title_index, slug_index)
