@@ -52,6 +52,19 @@
 
     <link rel="canonical" href="{{ canonical_url }}">
 
+    <!-- Language auto-detection: redirect English browsers to /en/ on homepage -->
+    {% if page.url == '/' %}
+    <script>
+    (function() {
+      var pref = localStorage.getItem('lang_preference');
+      if (pref === 'zh') return;
+      if (pref === 'en' || (!pref && /^en\b/.test(navigator.language))) {
+        location.replace('/en/');
+      }
+    })();
+    </script>
+    {% endif %}
+
     <!-- feed links -->
     <link rel="alternate" href="{{ site.url }}/feed.xml" type="application/rss+xml" title="{{ site.name }}">
 
@@ -92,7 +105,7 @@
           <a href="/programming.html" title="编程">编程</a>
           <a href="/essay.html" title="随笔">随笔</a>
           <a href="/archive.html" title="所有文章" >所有文章</a>
-          <a href="/en/" title="English">English</a>
+          <a href="/en/" title="English" onclick="localStorage.setItem('lang_preference','en')">English</a>
 
           <div id="social">
             <div class="site-search">
