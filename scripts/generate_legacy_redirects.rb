@@ -9,7 +9,7 @@ require "json"
 require "yaml"
 
 ROOT = File.expand_path("..", __dir__)
-CSV_PATH = ARGV[0] || "/Users/jtianling/Downloads/jtianling.com-Coverage-Drilldown-2026-03-19/Table.csv"
+CSV_PATH = ARGV[0] || "/Users/jtianling/Downloads/jtianling.com-Coverage-Drilldown-2026-03-30/Table.csv"
 OUTPUT_DIR = File.join(ROOT, "legacy-redirects")
 SITE_URL = "https://www.jtianling.com"
 
@@ -94,6 +94,8 @@ MANUAL = {
   "/archive/2010/07/31/5777944.aspx" => "/unconventional-2d-game-engine-orx-source-code-reading-notes-1-overall-structure.html",
   "/archive/2010/08/01/5780357.aspx" => "/unconventional-2d-game-engine-orx-source-code-reading-notes-3-memory-management.html",
   "/archive/2010/10/09/5930269.aspx" => "/bullet-3ds-max-plugin.html",
+  "/archive/2008/01/04/2025132.aspx" => "/dos-commands-in-c-hiding-the-command-line-window-magic-trick.html",
+  "/archive/2010/10/11/5933822.aspx" => "/international-experts-reviews-on-top-open-source-game-engines.html",
   "/archive/2010/10/25/5963301.aspx" => "/line-razoring-algorithm.html",
   "/articles/1002.html" => "/frightening-boost-library-what-more-could-there-be-changing-views-on-existing-cross-platform-support-library-development-what-if-i-cant-use-boost-library-in-the-future.html",
   "/articles/1172.html" => "/lisp-powerful-features-v-s-python3-part-1.html",
@@ -139,7 +141,8 @@ MANUAL = {
 }.freeze
 
 IGNORED = [
-  "/转-我不是谁的代言-我是程序员-程序员版的凡客体.html"
+  "/转-我不是谁的代言-我是程序员-程序员版的凡客体.html",
+  "/agent-of-empires-intro.html"
 ].freeze
 
 def target_for(path, title_index, slug_index)
