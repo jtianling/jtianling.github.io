@@ -44,6 +44,14 @@ keep_files:  ['.git','.svn']
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-seo-tag
+
+# jekyll-seo-tag settings
+logo: /public/images/logo.png
+social:
+  name: 九天雁翎
+  links:
+    - https://github.com/jtianling
 timezone:    Asia/Shanghai
 encoding:    utf-8
 

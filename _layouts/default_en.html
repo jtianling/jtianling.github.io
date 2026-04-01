@@ -4,23 +4,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% assign canonical_path = page.url | default: "/" %}
-    {% if canonical_path contains "/index.html" %}
-      {% assign canonical_path = canonical_path | replace: "/index.html", "/" %}
-    {% endif %}
-    {% assign canonical_url = site.url | append: canonical_path %}
-    {% if page.description %}
-      {% assign meta_description = page.description %}
-    {% elsif page.excerpt %}
-      {% assign meta_description = page.excerpt | strip_html | strip_newlines | truncate: 120 %}
-    {% elsif page.title %}
-      {% assign meta_description = page.content | strip_html | strip_newlines | truncate: 120 %}
-    {% else %}
-      {% assign meta_description = site.english.description | default: site.description %}
-    {% endif %}
     <meta charset="UTF-8">
+    {% seo title=false %}
 
-    <title>{% if page.title %} {{ page.title }} {% else %} {{ site.english.name | default: site.name }} {% endif %} </title>
+    <title>{% if page.title %} {{ page.title }} {% else %} {{ site.english.name | default: site.name }} {% endif %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
@@ -30,22 +17,11 @@
     <link rel="stylesheet" href="/public/css/main.css">
     <link rel="stylesheet" href="/public/css/pygments_style.css">
 
-    <meta name="author" content="{{ site.english.author | default: site.author }}">
-    <meta http-equiv="refresh" content="80000">
-
-    <meta name="description" content="{{ meta_description }}">
-
     {% if page.tags %}
     <meta name="keywords" content="{{ page.tags | array_to_sentence_string }}">
     {% else %}
     <meta name="keywords" content="{{ site.english.keywords | default: site.name }}">
     {% endif %}
-
-    <meta itemprop="name" content="{{ site.english.name | default: site.name }}">
-    <meta itemprop="image" content="{{ site.url }}/public/images/logo.png">
-    <meta itemprop="description" content="{{ meta_description }}">
-
-    <link rel="canonical" href="{{ canonical_url }}">
 
     <!-- hreflang: link Chinese/English counterparts for SEO -->
     {% if page.url == '/en/' %}
