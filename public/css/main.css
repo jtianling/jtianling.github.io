@@ -265,6 +265,7 @@ article p { padding: 0 100px; }
 article ol, article ul {
   padding-left: 130px;
   padding-right: 100px;
+  list-style-position: inside;
 }
 
 article blockquote p { 
