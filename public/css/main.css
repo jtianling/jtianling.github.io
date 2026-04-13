@@ -263,7 +263,7 @@ article h6 {
 
 article p { padding: 0 100px; }
 article ol, article ul {
-  padding-left: 120px;
+  padding-left: 100px;
   padding-right: 100px;
 }
 
@@ -347,7 +347,7 @@ article .sign {
   }
 
   article ol, article ul {
-    padding-left: 65px;
+    padding-left: 50px;
     padding-right: 50px;
   }
   article p { padding: 0 50px; }
@@ -408,7 +408,7 @@ article .sign {
   }
 
   article ol, article ul {
-    padding-left: 25px;
+    padding-left: 10px;
     padding-right: 10px;
   }
 
