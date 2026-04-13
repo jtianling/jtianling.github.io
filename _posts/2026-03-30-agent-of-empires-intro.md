@@ -112,13 +112,13 @@ aoe add --sandbox .
 
 我从比较早期就开始 fork 了, 累计提交了大概 90 多个 commit. 早期加的一些功能, 比如 profile 机制, 终端标题管理, tmux 下的各种交互修复. 目前 fork 比上游多出来的改动, 主要集中在几个日常体验的细节上:
 
-**Session 导航快捷键** -- 原版在 session 之间的导航比较基础, 我加了一整套: `Ctrl+.` / `Ctrl+,` 在 session 之间快速切换(跨 group 循环), 在 TUI 和 tmux 里都可以用数字键(1-99)直接跳转到指定 session, `Ctrl+b b` 回到上一个 session(类似 vim 的 `Ctrl+^`). tmux 内部也加了 vi 风格的 pane 导航(`Ctrl+b h/j/k/l`), `Ctrl+;` 循环切换 pane, `Ctrl+Q` 一键 detach. 这些快捷键加起来以后, 日常在多个 agent 之间跳转的手感好了很多, 基本不需要再回到 TUI 列表里去选.
+- **Session 导航快捷键** -- 原版在 session 之间的导航比较基础, 我加了一整套: `Ctrl+.` / `Ctrl+,` 在 session 之间快速切换(跨 group 循环), 在 TUI 和 tmux 里都可以用数字键(1-99)直接跳转到指定 session, `Ctrl+b b` 回到上一个 session(类似 vim 的 `Ctrl+^`). tmux 内部也加了 vi 风格的 pane 导航(`Ctrl+b h/j/k/l`), `Ctrl+;` 循环切换 pane, `Ctrl+Q` 一键 detach. 这些快捷键加起来以后, 日常在多个 agent 之间跳转的手感好了很多, 基本不需要再回到 TUI 列表里去选.
 
-**Notification Bar** -- 灵感来自 [Agent Deck](https://github.com/asheshgoplani/agent-deck), 在 tmux 的状态栏里直接显示所有 session 的实时状态(Running / Waiting / Idle), 带状态图标. 这样即使你 attach 在某一个 agent session 里工作, 也能通过状态栏一眼看到其他 session 有没有在等你输入, 不用切回 TUI 去检查. 配合 quick-switch, 跳过去的时候还会自动 ack 掉 Waiting 状态.
+- **Notification Bar** -- 灵感来自 [Agent Deck](https://github.com/asheshgoplani/agent-deck), 在 tmux 的状态栏里直接显示所有 session 的实时状态(Running / Waiting / Idle), 带状态图标. 这样即使你 attach 在某一个 agent session 里工作, 也能通过状态栏一眼看到其他 session 有没有在等你输入, 不用切回 TUI 去检查. 配合 quick-switch, 跳过去的时候还会自动 ack 掉 Waiting 状态.
 
-**Agent Restart** -- 按 `R` 键可以直接重启 agent pane, 不需要销毁整个 session 再重建. 主要场景是像 Claude Code 这样需要重启才能刷新 skill 配置的 agent, 改完 skill 以后按一下就行, 不用手动退出再重开. 对 Claude Code 和 Codex 还做了优雅的 resume restart, 会持久化 resume token, 重启后可以从上次的对话状态恢复.
+- **Agent Restart** -- 按 `R` 键可以直接重启 agent pane, 不需要销毁整个 session 再重建. 主要场景是像 Claude Code 这样需要重启才能刷新 skill 配置的 agent, 改完 skill 以后按一下就行, 不用手动退出再重开. 对 Claude Code 和 Codex 还做了优雅的 resume restart, 会持久化 resume token, 重启后可以从上次的对话状态恢复.
 
-**Narrow-screen layout** -- 在窄终端下(iPhone 竖屏, Mac 分屏, 小 tmux pane), TUI 会自动隐藏预览面板, 只显示全宽的 session 列表. Attach 到有 split pane 的 session 时, agent pane 会自动 zoom 成全屏可用的视图; 回到宽终端时自动 unzoom. Pane 切换快捷键(`Ctrl+b h/j/k/l`, `Ctrl+;`)是 zoom-aware 的, 在 zoom 状态下切换 pane 会自动 re-zoom 目标 pane, 体验无缝.
+- **Narrow-screen layout** -- 在窄终端下(iPhone 竖屏, Mac 分屏, 小 tmux pane), TUI 会自动隐藏预览面板, 只显示全宽的 session 列表. Attach 到有 split pane 的 session 时, agent pane 会自动 zoom 成全屏可用的视图; 回到宽终端时自动 unzoom. Pane 切换快捷键(`Ctrl+b h/j/k/l`, `Ctrl+;`)是 zoom-aware 的, 在 zoom 状态下切换 pane 会自动 re-zoom 目标 pane, 体验无缝.
 
 
 ### 总的感觉
