@@ -19,6 +19,8 @@ So I went ahead and forked Yazi to create `dual-yazi`: <https://github.com/jtian
 
 For me, this was a natural direction. I love Yazi's modern TUI file management experience, but I've always missed the directness of traditional dual-pane managers — having two directories side by side, always in view. Now I've finally brought these two worlds together.
 
+![dual-yazi dual-pane mode screenshot](/public/images/2026/dual-yazi-screenshot.png)
+
 Repository links:
 
 - Yazi official repository: <https://github.com/sxyazi/yazi>
@@ -138,3 +140,11 @@ If you're already using the original Yazi, you can treat this as an experimental
 In short, I'm not trying to prove that "dual-pane is inherently better than single-pane." I just wanted to bring a file management habit I've used for many years back into a modern tool I already love. For me, `dual-yazi` is one step closer to fitting Yazi into my daily workflow.
 
 If you also like Yazi's speed, preview capabilities, and plugin system, but can't quite let go of the directness of dual-pane file managers, give this fork a try.
+
+### Why a Fork, Not a Plugin
+
+One more note: initially, I actually tried to build this using Yazi's built-in plugin system. The plugin route would be friendlier to users and wouldn't require rebasing against upstream every time, so by all accounts it should have been the preferred approach.
+
+But once I started working on it, I ran into fairly clear limitations in what Yazi plugins can do. Things like a fixed dual-pane layout, independent tabs and cursor state per pane, and cross-pane one-key copy/move via `F5` / `F6` all involve changes to the rendering layer and the core state structures — areas where the plugin layer simply doesn't have enough authority to intervene, at least not enough to express the complete dual-pane workflow I wanted. Working around these limits would either mean compromising on features, or producing a very hacky implementation.
+
+So in the end I went with the fork approach, adding dual-pane as a first-class citizen directly in the source. The cost is having to maintain sync with upstream myself, but in exchange I can shape each interaction exactly the way I want. For me, that trade-off is worth it.
