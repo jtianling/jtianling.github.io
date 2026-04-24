@@ -145,6 +145,9 @@ If you also like Yazi's speed, preview capabilities, and plugin system, but can'
 
 One more note: initially, I actually tried to build this using Yazi's built-in plugin system. The plugin route would be friendlier to users and wouldn't require rebasing against upstream every time, so by all accounts it should have been the preferred approach.
 
-But once I started working on it, I ran into fairly clear limitations in what Yazi plugins can do. Things like a fixed dual-pane layout, independent tabs and cursor state per pane, and cross-pane one-key copy/move via `F5` / `F6` all involve changes to the rendering layer and the core state structures — areas where the plugin layer simply doesn't have enough authority to intervene, at least not enough to express the complete dual-pane workflow I wanted. Working around these limits would either mean compromising on features, or producing a very hacky implementation.
+But once I actually started, I realized Yazi's plugins are essentially Lua scripts running on top of a Rust state machine: they can draw UI and compose existing commands, but they can't change the underlying data structures, and they can't add new commands. The things I wanted — independent tabs per pane, one-key cross-pane copy/move, single/dual toggle, preview toggle inside dual mode, undo/redo — pretty much all required changes at that lower level. It wasn't something a layout tweak could solve.
 
-So in the end I went with the fork approach, adding dual-pane as a first-class citizen directly in the source. The cost is having to maintain sync with upstream myself, but in exchange I can shape each interaction exactly the way I want. For me, that trade-off is worth it.
+There are pure-plugin attempts out there, which take the approach of drawing the two existing tabs side by side. Visually it looks like dual-pane, but "switching panes" is really just switching tabs, cross-pane copy has to be simulated with "switch over → paste → switch back" (visible flicker), and you can't have truly independent tabs on each side. It ends up feeling more like a "two-view viewer" than a real dual-pane file manager.
+
+So in the end I went with the fork. The cost is keeping it in sync with upstream myself, but in exchange every interaction can be shaped exactly the way I want. For me, that trade-off is worth it.
+
