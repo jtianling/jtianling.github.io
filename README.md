@@ -53,6 +53,7 @@ English post content.
 
 ## Recent posts
 
+- [cross-agent-teams 发布: 让本机的多个 coding agent 互相通信](https://www.jtianling.com/cross-agent-teams-release.html)
 - [Agent of Empires: 一个基于 tmux 的 AI agent 会话管理器](https://www.jtianling.com/agent-of-empires-intro.html)
 - [dual-yazi: 给 Yazi 加上我想要的双栏模式](https://www.jtianling.com/yazi-dual-pane-mode.html)
 - [只给 Spec，不给代码：也许这会成为一种新的软件发布方式](https://www.jtianling.com/spec-first-software-release.html)
