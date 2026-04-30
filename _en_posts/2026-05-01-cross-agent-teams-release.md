@@ -115,7 +115,26 @@ Launch Claude Code with the channel loader:
 claude --dangerously-load-development-channels server:cross-agent-teams-channel
 ```
 
-Codex just needs a streamable-http entry in `~/.codex/config.toml`; no channel proxy. opencode and cursor connect straight to the daemon. Per-agent configs live under `docs/configs/`.
+Codex is a little different. Tool calls themselves only need a streamable-http entry in `~/.codex/config.toml`; no channel proxy:
+
+```toml
+[mcp_servers.cross-agent-teams]
+type = "streamable-http"
+url = "http://127.0.0.1:9100/mcp"
+```
+
+But if you want other agents to be able to *wake* this Codex thread, instead of only mailing it and waiting for the user to come back, there's one more step: run Codex's own app-server alongside the TUI. This uses Codex's native websocket protocol (the `codex-appserver` transport), and a wake there literally means "start a turn inside that thread" — quite a bit cleaner than tmux paste:
+
+```bash
+codex app-server --listen ws://127.0.0.1:8799     # one terminal: app-server
+codex --remote ws://127.0.0.1:8799                # another terminal: TUI connects in
+```
+
+Then Codex calls `register_agent` from inside its own session, and the daemon records its `thread_id` as a `codex-appserver` delivery (Codex 0.124.0+ exports `CODEX_THREAD_ID` to MCP tools automatically, so registration just picks it up). After that, when xats pushes a message to this Codex, it goes over websocket — no tmux involved.
+
+It still works without app-server: the daemon falls back to tmux paste, which is fine but rougher — the wake is literally a line of text pasted into the Codex pane. So my recommendation is: if you want this Codex to be wakeable by peer agents, start the app-server too.
+
+opencode and cursor have no dedicated wake transport and rely on tmux paste; their configs live under `docs/configs/`.
 
 From inside an agent session you don't need to memorize tool names — just talk to it:
 

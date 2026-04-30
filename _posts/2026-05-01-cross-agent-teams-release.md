@@ -117,7 +117,26 @@ npx -y cross-agent-teams-mcp@latest daemon --port 9100
 claude --dangerously-load-development-channels server:cross-agent-teams-channel
 ```
 
-Codex 那边只要在 `~/.codex/config.toml` 里加一段 streamable-http 配置就行, 没有 channel proxy 的事. opencode / cursor 这类 agent 直接连 daemon, 配置都在 `docs/configs/` 下面.
+Codex 那边稍微特殊一点. 工具调用本身只要在 `~/.codex/config.toml` 里加一段 streamable-http 配置就行, 没有 channel proxy 的事:
+
+```toml
+[mcp_servers.cross-agent-teams]
+type = "streamable-http"
+url = "http://127.0.0.1:9100/mcp"
+```
+
+但如果你希望别的 agent 能"唤醒"这个 Codex thread, 而不是只能给它写邮件等它自己来读, 就要再多一步: 把 Codex 自带的 app-server 一起拉起来, 让 Codex TUI 通过它连过来. 这条路用的是 Codex 自家的 websocket 协议 (`codex-appserver` transport), wake 的本质是直接在那个 thread 里 start a turn, 比 tmux paste 干净不少:
+
+```bash
+codex app-server --listen ws://127.0.0.1:8799     # 一个终端开 app-server
+codex --remote ws://127.0.0.1:8799                # 另一个终端开 TUI 连过来
+```
+
+之后 Codex 在自己的会话里调 `register_agent` 注册一下, daemon 就会把它的 `thread_id` 记成 `codex-appserver` delivery (Codex 0.124.0+ 会自动 export `CODEX_THREAD_ID` 给 MCP 工具, 注册时直接用即可). 后面 xats 给这个 Codex 推消息, 走的就是 websocket 直连, 不再依赖 tmux.
+
+如果不开 app-server 也能用, daemon 会回退到 tmux paste, 只是体验上会差一点 — 唤醒得靠把一行字 paste 到 Codex 所在的 pane. 所以个人建议是: 想被同侪 agent 主动唤醒的 Codex, 就把 app-server 一起开上.
+
+opencode / cursor 这类 agent 直接连 daemon, 没有专属 wake 通道, 都是走 tmux paste, 配置都在 `docs/configs/` 下面.
 
 接下来在 agent 会话里直接说人话就够了, 不用记工具名:
 
