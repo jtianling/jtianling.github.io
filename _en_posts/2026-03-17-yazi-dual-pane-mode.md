@@ -126,7 +126,22 @@ Of course, undo currently isn't universal. Permanent delete `D`, shell commands,
 
 ### How to Try It
 
-This is still a fork, and I haven't set up a full release process for it yet. If you're comfortable installing Rust projects from source, just go ahead:
+The easiest path is via my personal Homebrew tap:
+
+```bash
+brew install jtianling/tap/dual-yazi
+```
+
+Or `brew tap jtianling/tap` first and then `brew install dual-yazi` — same result. It works on macOS (Apple Silicon / Intel) and Linuxbrew. There's no prebuilt bottle yet, so the first install compiles the Rust project from source — about 5-10 minutes on my machine. Upgrades go through `brew upgrade dual-yazi` like anything else.
+
+One thing to be aware of: the binaries are still named `yazi` and `ya`, the same as upstream, and the formula declares `conflicts_with "yazi"`. The upside is that every keymap, plugin, and doc that references the `yazi` command keeps working unchanged; the cost is that the two can't coexist. If you already have the official Yazi installed:
+
+```bash
+brew uninstall yazi
+brew install jtianling/tap/dual-yazi
+```
+
+If you'd rather skip brew, or you're used to building Rust projects from source, you can also build it directly:
 
 ```bash
 git clone https://github.com/jtianling/dual-yazi.git
