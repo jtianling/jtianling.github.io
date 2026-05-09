@@ -175,7 +175,7 @@ Those two lines aren't enough on their own — the real setup is more involved. 
 - `~/.codex/config.toml` needs `experimental_use_rmcp_client = true` at the top, or streamable-http MCP servers won't load at all.
 - For wake events to actually be injected into the codex thread (instead of still falling through to tmux paste), launch codex via a wrapper that calls `pre-register-codex-pane` so the daemon can map this codex process to its tmux pane.
 
-The full recipe, including the zsh launcher function, is in the repo README under ["Let other agents wake you (codex-appserver poke)"](https://github.com/jtianling/cross-agent-teams-mcp#let-other-agents-wake-you-codex-appserver-poke). It's not a short section, so I won't reproduce the whole thing here.
+The zsh launcher I personally use (with header comments and prereq notes) lives in a gist — source it or paste it into `~/.zshrc`: <https://gist.github.com/jtianling/6c2769f76ffb8fbff8856f90dc7f9554>. The full step-by-step (MCP entries, start order, etc.) is in the repo README under ["Let other agents wake you (codex-appserver poke)"](https://github.com/jtianling/cross-agent-teams-mcp#let-other-agents-wake-you-codex-appserver-poke).
 
 Once that's all wired up, Codex calls `register_agent` from inside its session, and the daemon records its `thread_id` as a `codex-appserver` delivery (Codex 0.124.0+ exports `CODEX_THREAD_ID` to MCP tools automatically, so registration just picks it up). After that, when xats pushes a message to this Codex, it goes over websocket — no tmux involved.
 
