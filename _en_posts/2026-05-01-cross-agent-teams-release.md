@@ -82,13 +82,56 @@ I'll add them to the README once they earn it.
 
 ### Getting started
 
-Start the daemon (run once, keep alive — dedicated terminal, `tmux`, `launchd`, your call):
+The fastest path is daemon + `mcpsmgr` in three commands, no hand-editing of `.mcp.json` required.
+
+**Claude Code (default)**:
 
 ```bash
-npx -y cross-agent-teams-mcp@latest daemon --port 9100
+# 1. Start the daemon (run once, keep it alive — dedicated terminal, tmux, launchd, your call)
+npx -y cross-agent-teams-mcp@latest daemon --port 9100 &
+# 2. From your project, let mcpsmgr install the MCP config (it edits the project's .mcp.json)
+npx mcpsmgr add jtianling/cross-agent-teams-mcp -a claude-code
+# 3. Launch Claude Code with the channel loader
+claude --dangerously-load-development-channels server:cross-agent-teams-channel
 ```
 
-Then add two entries to Claude Code's `.mcp.json` — the HTTP endpoint plus the channel shim:
+**Other agents (Codex, opencode, ...)**:
+
+```bash
+npx -y cross-agent-teams-mcp@latest daemon --port 9100 &
+npx mcpsmgr add jtianling/cross-agent-teams-mcp     # interactive: pick the agent
+# Then start the coding agent as usual
+```
+
+Once inside an agent session, you don't need to memorize tool names — just talk to it:
+
+```
+# Agent A: Register me to xats as backend on team default.
+# Agent B: Register me to xats as frontend on team default.
+#         Send backend a message: the API has changed.
+```
+
+The agent picks the right tool (`register_agent`, `send_message`, `get_inbox`, ...) on its own.
+
+Note: the name after `--dangerously-load-development-channels server:` must match the channel shim's server key in `.mcp.json`, which is `cross-agent-teams-channel` by default.
+
+#### Detailed reference
+
+The daemon listens on 9100 by default; pass `--port` to change it:
+
+```bash
+npx -y cross-agent-teams-mcp@latest daemon --port 9300
+```
+
+##### Recommended: install the MCP config with mcpsmgr
+
+`npx mcpsmgr add jtianling/cross-agent-teams-mcp -a claude-code` writes both Claude Code entries (the HTTP endpoint and the channel shim) into the project's `.mcp.json` automatically. Drop the `-a` flag to get an interactive picker for the agent type (codex, opencode, cursor, ...).
+
+If you've changed the daemon port (e.g. to 9300 above), tweak the daemon URL afterwards via env var or by editing `.mcp.json` directly — the file is plain JSON, so post-hoc tweaks are fine.
+
+##### Manual .mcp.json
+
+If you'd rather not involve mcpsmgr, you can hand-write it. Claude Code needs two entries — the HTTP endpoint plus the channel shim:
 
 ```json
 {
@@ -107,12 +150,6 @@ Then add two entries to Claude Code's `.mcp.json` — the HTTP endpoint plus the
     }
   }
 }
-```
-
-Launch Claude Code with the channel loader:
-
-```bash
-claude --dangerously-load-development-channels server:cross-agent-teams-channel
 ```
 
 Codex is a little different. Tool calls themselves only need a streamable-http entry in `~/.codex/config.toml`; no channel proxy:
@@ -135,18 +172,6 @@ Then Codex calls `register_agent` from inside its own session, and the daemon re
 It still works without app-server: the daemon falls back to tmux paste, which is fine but rougher — the wake is literally a line of text pasted into the Codex pane. So my recommendation is: if you want this Codex to be wakeable by peer agents, start the app-server too.
 
 opencode and cursor have no dedicated wake transport and rely on tmux paste; their configs live under `docs/configs/`.
-
-From inside an agent session you don't need to memorize tool names — just talk to it:
-
-> Register me to xats as alice.
->
-> Send a message to bob: how's the migration going?
->
-> What's in my inbox?
->
-> Who else is registered on xats?
-
-The agent picks the right tool (`register_agent`, `send_message`, `get_inbox`, ...) on its own.
 
 ### What's next (loose plans, not commitments)
 
