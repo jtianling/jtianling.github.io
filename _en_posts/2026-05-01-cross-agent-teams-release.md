@@ -103,6 +103,8 @@ npx mcpsmgr add jtianling/cross-agent-teams-mcp     # interactive: pick the agen
 # Then start the coding agent as usual
 ```
 
+A heads-up: these agents don't have Claude Code's channel push transport, so the daemon falls back to tmux paste when delivering wake events (Codex with app-server is the exception). In practice you'll likely have to nudge the agent to call `get_inbox` yourself from time to time — something as casual as "check my inbox" works. For more native waking on Codex, run its app-server alongside (covered in "Detailed reference" below).
+
 Once inside an agent session, you don't need to memorize tool names — just talk to it:
 
 ```
