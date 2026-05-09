@@ -164,16 +164,24 @@ type = "streamable-http"
 url = "http://127.0.0.1:9100/mcp"
 ```
 
-但如果你希望别的 agent 能"唤醒"这个 Codex thread, 而不是只能给它写邮件等它自己来读, 就要再多一步: 把 Codex 自带的 app-server 一起拉起来, 让 Codex TUI 通过它连过来. 这条路用的是 Codex 自家的 websocket 协议 (`codex-appserver` transport), wake 的本质是直接在那个 thread 里 start a turn, 比 tmux paste 干净不少:
+但如果你希望别的 agent 能"唤醒"这个 Codex thread, 而不是只能给它写邮件等它自己来读, 就要再多走一步: 把 Codex 自带的 app-server 一起拉起来, 让 Codex TUI 通过它连过来. 这条路用的是 Codex 自家的 websocket 协议 (`codex-appserver` transport), wake 的本质是直接在那个 thread 里 start a turn, 比 tmux paste 干净不少. 大致形状是:
 
 ```bash
 codex app-server --listen ws://127.0.0.1:8799     # 一个终端开 app-server
 codex --remote ws://127.0.0.1:8799                # 另一个终端开 TUI 连过来
 ```
 
-之后 Codex 在自己的会话里调 `register_agent` 注册一下, daemon 就会把它的 `thread_id` 记成 `codex-appserver` delivery (Codex 0.124.0+ 会自动 export `CODEX_THREAD_ID` 给 MCP 工具, 注册时直接用即可). 后面 xats 给这个 Codex 推消息, 走的就是 websocket 直连, 不再依赖 tmux.
+光跑这两行其实是不够的, 实际配置比这两行复杂. 三个关键点:
 
-如果不开 app-server 也能用, daemon 会回退到 tmux paste, 只是体验上会差一点 — 唤醒得靠把一行字 paste 到 Codex 所在的 pane. 所以个人建议是: 想被同侪 agent 主动唤醒的 Codex, 就把 app-server 一起开上.
+- `--remote` 模式下 MCP server 是 app-server 加载的, 不是 TUI, 所以 `cross-agent-teams-mcp` 那条 MCP 配置必须落在 app-server 启动时读的 `CODEX_HOME` 下 (通常是全局 `~/.codex/config.toml`); 在 TUI 那边覆盖 `CODEX_HOME` 不会生效.
+- `~/.codex/config.toml` 顶部要加 `experimental_use_rmcp_client = true`, 否则 streamable-http 类型的 MCP server 加载不了.
+- 要让 wake 真的 inject 进 codex thread (而不是仍然落到 tmux paste), 还得用一个挂了 `pre-register-codex-pane` 的 launcher 脚本启 codex, 让 daemon 知道这个 codex 进程对应的是哪个 tmux pane.
+
+完整步骤(包括那个 zsh launcher 函数) 在仓库 README 的 ["Let other agents wake you (codex-appserver poke)"](https://github.com/jtianling/cross-agent-teams-mcp#let-other-agents-wake-you-codex-appserver-poke) 那节, 篇幅不算短, 这里就不全抄了.
+
+配齐之后, Codex 在自己的会话里调 `register_agent` 注册一下, daemon 就会把它的 `thread_id` 记成 `codex-appserver` delivery (Codex 0.124.0+ 会自动 export `CODEX_THREAD_ID` 给 MCP 工具, 注册时直接用即可). 后面 xats 给这个 Codex 推消息走的就是 websocket 直连, 不再依赖 tmux.
+
+如果不开 app-server 也能用, daemon 会回退到 tmux paste, 只是体验上会差一点 — 唤醒得靠把一行字 paste 到 Codex 所在的 pane. 所以个人建议是: 想被同侪 agent 主动唤醒的 Codex, 就照 README 把 app-server + launcher 一起配好.
 
 opencode / cursor 这类 agent 直接连 daemon, 没有专属 wake 通道, 都是走 tmux paste, 配置都在 `docs/configs/` 下面.
 

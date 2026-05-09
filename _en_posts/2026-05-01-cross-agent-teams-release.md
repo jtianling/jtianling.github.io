@@ -162,16 +162,24 @@ type = "streamable-http"
 url = "http://127.0.0.1:9100/mcp"
 ```
 
-But if you want other agents to be able to *wake* this Codex thread, instead of only mailing it and waiting for the user to come back, there's one more step: run Codex's own app-server alongside the TUI. This uses Codex's native websocket protocol (the `codex-appserver` transport), and a wake there literally means "start a turn inside that thread" — quite a bit cleaner than tmux paste:
+But if you want other agents to be able to *wake* this Codex thread, instead of only mailing it and waiting for the user to come back, there's one more step: run Codex's own app-server alongside the TUI. This uses Codex's native websocket protocol (the `codex-appserver` transport), and a wake there literally means "start a turn inside that thread" — quite a bit cleaner than tmux paste. The rough shape:
 
 ```bash
 codex app-server --listen ws://127.0.0.1:8799     # one terminal: app-server
 codex --remote ws://127.0.0.1:8799                # another terminal: TUI connects in
 ```
 
-Then Codex calls `register_agent` from inside its own session, and the daemon records its `thread_id` as a `codex-appserver` delivery (Codex 0.124.0+ exports `CODEX_THREAD_ID` to MCP tools automatically, so registration just picks it up). After that, when xats pushes a message to this Codex, it goes over websocket — no tmux involved.
+Those two lines aren't enough on their own — the real setup is more involved. Three key gotchas:
 
-It still works without app-server: the daemon falls back to tmux paste, which is fine but rougher — the wake is literally a line of text pasted into the Codex pane. So my recommendation is: if you want this Codex to be wakeable by peer agents, start the app-server too.
+- Under `--remote`, MCP servers are loaded by the app-server, NOT by the TUI. So the `cross-agent-teams-mcp` entry has to live in the `CODEX_HOME` that the *app-server* reads at startup (usually the global `~/.codex/config.toml`). Setting `CODEX_HOME` on the TUI side does nothing.
+- `~/.codex/config.toml` needs `experimental_use_rmcp_client = true` at the top, or streamable-http MCP servers won't load at all.
+- For wake events to actually be injected into the codex thread (instead of still falling through to tmux paste), launch codex via a wrapper that calls `pre-register-codex-pane` so the daemon can map this codex process to its tmux pane.
+
+The full recipe, including the zsh launcher function, is in the repo README under ["Let other agents wake you (codex-appserver poke)"](https://github.com/jtianling/cross-agent-teams-mcp#let-other-agents-wake-you-codex-appserver-poke). It's not a short section, so I won't reproduce the whole thing here.
+
+Once that's all wired up, Codex calls `register_agent` from inside its session, and the daemon records its `thread_id` as a `codex-appserver` delivery (Codex 0.124.0+ exports `CODEX_THREAD_ID` to MCP tools automatically, so registration just picks it up). After that, when xats pushes a message to this Codex, it goes over websocket — no tmux involved.
+
+It still works without app-server: the daemon falls back to tmux paste, which is fine but rougher — the wake is literally a line of text pasted into the Codex pane. So my recommendation: if you want this Codex to be wakeable by peer agents, follow the README and wire up app-server + launcher together.
 
 opencode and cursor have no dedicated wake transport and rely on tmux paste; their configs live under `docs/configs/`.
 
