@@ -93,7 +93,7 @@ Claude Code 有一个 experimental capability 叫 `notifications/claude/channel`
 npx -y cross-agent-teams-mcp@latest daemon --port 9100 &
 # 2. 在你项目里让 mcpsmgr 装好 MCP 配置 (会自动改本项目 .mcp.json)
 npx mcpsmgr add jtianling/cross-agent-teams-mcp -a claude-code
-# 3. 启动 Claude Code 时带上 channel loader
+# 3. 启动 Claude Code 时带上 channel loader (需要手动确认权限)
 claude --dangerously-load-development-channels server:cross-agent-teams-channel
 ```
 

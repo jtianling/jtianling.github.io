@@ -91,7 +91,7 @@ The fastest path is daemon + `mcpsmgr` in three commands, no hand-editing of `.m
 npx -y cross-agent-teams-mcp@latest daemon --port 9100 &
 # 2. From your project, let mcpsmgr install the MCP config (it edits the project's .mcp.json)
 npx mcpsmgr add jtianling/cross-agent-teams-mcp -a claude-code
-# 3. Launch Claude Code with the channel loader
+# 3. Launch Claude Code with the channel loader (you'll be prompted to approve the capability)
 claude --dangerously-load-development-channels server:cross-agent-teams-channel
 ```
 
