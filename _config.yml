@@ -12,11 +12,11 @@ english:
   subtitle: Programming Is Life
   author: JTianling
   description: JTianling's personal blog about software engineering, tools, and notes from work and life.
-  tagline: Build with the strongest language you know, solve the hardest problems you can find, and wait while the competition settles for less. -- Paul Graham
+  tagline: In the AI era, the question is not to find what AI cannot do, but to do what should be done by humans even when AI can do it too. -- opus 4.7
   keywords: JTianling blog software engineering programming open source tools
 simple_search: https://www.google.com/search
 description: 九天雁翎的博客(原程序即人生), 主要是记录自己学习编程的过程, 不过各种爱好都可能会写一些, 比如玩过的游戏, 看过的电影, 读过的书, 走过的路.
-tagline: 如果你想在软件业获得成功，就使用你知道的最强大的语言，用它解决你知道的最难的问题，并且等待竞争对手的经理做出自甘平庸的选择。 -- Paul Graham
+tagline: 在 AI 时代, 人类要做的不是去找 AI 不能做的事情, 而是应该去做哪怕 AI 能做, 也应该是人去做的事情. -- opus 4.7
 google_analytics: "G-KSC7WJW5X7"
 
 # RSS / Email (optional) subscription links (change if using something like Feedburner)
